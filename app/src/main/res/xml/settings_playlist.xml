@@ -33,17 +33,21 @@
                     app:summary="@string/playlist_scheduled_blackout_enabled_summary"
                     app:title="@string/playlist_scheduled_blackout_enabled_title" />
 
-                <com.neilturner.aerialviews.ui.controls.TimePickerDialogPreference
+                <com.neilturner.aerialviews.ui.controls.TimeListPreference
+                    app:defaultValue="22:00"
                     app:dependency="scheduled_blackout_enabled"
+                    app:dialogTitle="@string/playlist_scheduled_blackout_start_title"
                     app:key="scheduled_blackout_start"
                     app:title="@string/playlist_scheduled_blackout_start_title"
-                    app:dialogTitle="@string/playlist_scheduled_blackout_start_title" />
+                    app:useSimpleSummaryProvider="true" />
 
-                <com.neilturner.aerialviews.ui.controls.TimePickerDialogPreference
+                <com.neilturner.aerialviews.ui.controls.TimeListPreference
+                    app:defaultValue="08:00"
                     app:dependency="scheduled_blackout_enabled"
+                    app:dialogTitle="@string/playlist_scheduled_blackout_end_title"
                     app:key="scheduled_blackout_end"
                     app:title="@string/playlist_scheduled_blackout_end_title"
-                    app:dialogTitle="@string/playlist_scheduled_blackout_end_title" />
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_time_of_day">
