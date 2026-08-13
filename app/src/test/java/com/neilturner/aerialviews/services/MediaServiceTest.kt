@@ -35,10 +35,13 @@ internal class MediaServiceTest {
         every { anyConstructed<Bundle>().keySet() } returns emptySet()
         mockkObject(FirebaseHelper)
         every { FirebaseHelper.analyticsEvent(any(), any()) } returns Unit
+        mockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
+        every { com.neilturner.aerialviews.data.network.NetworkHelper.isOnWifiOrEthernet(any()) } returns false
     }
 
     @AfterEach
     fun tearDown() {
+        unmockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
         unmockkObject(FirebaseHelper)
         unmockkConstructor(Bundle::class)
     }
@@ -112,6 +115,32 @@ internal class MediaServiceTest {
 
             assertEquals(0, result.mediaPlaylist.size)
             assertNull(result.musicPlaylist)
+        }
+
+    @Test
+    fun `filters out remote media sources when wifiOnly is true and not on wifi`() =
+        runTest {
+            val appleMedia = testMedia("apple-1", AerialMediaSource.APPLE)
+            val localMedia = testMedia("local-1", AerialMediaSource.LOCAL)
+
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(appleMedia, localMedia),
+                            ),
+                        ),
+                    config = defaultConfig().copy(wifiOnly = true),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, result.mediaPlaylist.size)
+            assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem().source)
         }
 
     @Test

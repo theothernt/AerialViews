@@ -94,7 +94,6 @@ class MediaService(
                 add(GeneralPrefs.shuffleVideos.toString())
                 add(MusicPrefs.shuffle.toString())
                 add(MusicPrefs.repeat.toString())
-                add(GeneralPrefs.wifiOnly.toString())
             }
         val generalHash = generalParts.joinToString("|")
 
@@ -123,6 +122,7 @@ class MediaService(
     suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
             val settingsHash = hashFn?.invoke() ?: buildCompositeHash()
+            val filterRemote = config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)
             val cacheRepo =
                 if (config.playlistCache) {
                     com.neilturner.aerialviews.data
@@ -133,7 +133,7 @@ class MediaService(
 
             if (config.playlistCache) {
                 if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
-                    val cached = cacheRepo.getCachedPlaylist()
+                    val cached = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
                     if (cached != null) {
                         onStatus(LoadingStatus.RESUMING)
                         Timber.i("MediaService: USING CACHED PLAYLIST")
@@ -150,15 +150,7 @@ class MediaService(
                 onStatus(LoadingStatus.LOADING)
             }
 
-            val activeProviders =
-                if (config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)) {
-                    Timber.i("MediaService: WiFi-only mode enabled, filtering out REMOTE providers (not on WiFi/Ethernet)")
-                    providers.filter { it.type != ProviderSourceType.REMOTE }
-                } else {
-                    providers
-                }
-
-            val (media, tracks) = buildProviderContent(activeProviders)
+            val (media, tracks) = buildProviderContent(providers)
 
             // Split into videos and photos
             var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
@@ -279,7 +271,7 @@ class MediaService(
                     shuffleEnabled = config.shuffleVideos,
                 )
 
-                val cachedResult = cacheRepo.getCachedPlaylist()
+                val cachedResult = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
                 if (cachedResult != null) {
                     Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
                     return@withContext cachedResult
@@ -290,11 +282,32 @@ class MediaService(
             }
 
             // Cache disabled or cache read-back failed: all items in memory, no DB
+            if (filterRemote) {
+                val before = filteredMedia.size
+                filteredMedia = filteredMedia.filter { it.source !in remoteSources }
+                Timber.i("MediaService: WiFi-only filter removed ${before - filteredMedia.size} remote items (in-memory path)")
+            }
+
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,
             )
         }
+
+    companion object {
+        private val remoteSources =
+            setOf(
+                AerialMediaSource.APPLE,
+                AerialMediaSource.AMAZON,
+                AerialMediaSource.COMM1,
+                AerialMediaSource.COMM2,
+                AerialMediaSource.CUSTOM,
+                AerialMediaSource.RTSP,
+                AerialMediaSource.HLS,
+                AerialMediaSource.IMMICH,
+                AerialMediaSource.NCMEMORIES,
+            )
+    }
 
     private fun trackMediaUsage(media: List<AerialMedia>) {
         // Count distinct sources

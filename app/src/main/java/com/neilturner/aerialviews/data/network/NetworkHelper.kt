@@ -27,7 +27,7 @@ object NetworkHelper {
     @Suppress("DEPRECATION")
     fun getActiveNetworkCapabilities(context: Context): NetworkCapabilities? {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return null
         val network = connectivityManager.activeNetwork ?: return null
         return connectivityManager.getNetworkCapabilities(network)
     }
