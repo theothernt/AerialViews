@@ -357,22 +357,22 @@ class ScreenController(
         val endTime = parseLocalTime(GeneralPrefs.scheduledBlackoutEnd) ?: return
         val now = java.time.LocalTime.now()
 
-        val isNowInWindow = isTimeInWindow(startTime, endTime, now)
+        val isNowInWindow = ScheduledBlackoutWindow.contains(startTime, endTime, now)
 
         if (wasInScheduledBlackoutWindow == null) {
             wasInScheduledBlackoutWindow = isNowInWindow
             if (isNowInWindow && !blackOutMode) {
                 Timber.i("Initial check: inside scheduled blackout window ($startTime to $endTime)")
-                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+                enterBlackOutMode(BlackOutSource.SCHEDULED)
             }
         } else if (isNowInWindow != wasInScheduledBlackoutWindow) {
             wasInScheduledBlackoutWindow = isNowInWindow
             if (isNowInWindow && !blackOutMode) {
                 Timber.i("Scheduled blackout window started ($startTime to $endTime)")
-                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+                enterBlackOutMode(BlackOutSource.SCHEDULED)
             } else if (!isNowInWindow && blackOutMode && blackOutSource == BlackOutSource.SCHEDULED) {
                 Timber.i("Scheduled blackout window ended ($startTime to $endTime)")
-                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+                exitBlackOutMode()
             }
         }
     }
@@ -385,18 +385,6 @@ class ScreenController(
             } else null
         } catch (e: Exception) {
             null
-        }
-    }
-
-    private fun isTimeInWindow(
-        start: java.time.LocalTime,
-        end: java.time.LocalTime,
-        now: java.time.LocalTime,
-    ): Boolean {
-        return if (start <= end) {
-            !now.isBefore(start) && now.isBefore(end)
-        } else {
-            !now.isBefore(start) || now.isBefore(end)
         }
     }
 
@@ -421,8 +409,13 @@ class ScreenController(
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
         musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
-        musicPlayer?.play(resumeIndex)
-        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
+        if (blackOutMode) {
+            musicPlayer?.pause()
+            Timber.i("MusicPlayer: not starting while blackout is active")
+        } else {
+            musicPlayer?.play(resumeIndex)
+            Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
+        }
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -498,6 +491,8 @@ class ScreenController(
     }
 
     private fun fadeInNextItem() {
+        if (blackOutMode) return
+
         canShowOverlays = false
         var startDelay: Long = 0
         val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
@@ -821,20 +816,57 @@ class ScreenController(
         }
 
         if (!blackOutMode) {
-            blackOutMode = true
-            blackOutSource = source
-            // Cancel any pending sleep timer as we've already entered blackout
-            sleepTimerJob?.cancel()
-            fadeOutCurrentItem()
-            musicPlayer?.pause()
-        } else {
-            blackOutMode = false
-            blackOutSource = BlackOutSource.NONE
-            loadNextItem()
-            musicPlayer?.resume()
-            // Restart sleep timer if preference still enabled
-            scheduleSleepTimer()
+            enterBlackOutMode(source)
+        } else if (
+            blackOutSource != BlackOutSource.SCHEDULED || source == BlackOutSource.SCHEDULED
+        ) {
+            exitBlackOutMode()
         }
+    }
+
+    /**
+     * Enters blackout immediately, including during initial media preparation. The normal
+     * fade-out path intentionally requires a fully displayed item, which made scheduled
+     * blackout ineffective when the first item was still loading.
+     */
+    private fun enterBlackOutMode(source: BlackOutSource) {
+        blackOutMode = true
+        blackOutSource = source
+        sleepTimerJob?.cancel()
+        canSkip = false
+
+        loadingView.animate().cancel()
+        loadingView.setBackgroundColor(Color.BLACK)
+        loadingContainer.visibility = View.GONE
+        loadingView.alpha = 1f
+        loadingView.visibility = View.VISIBLE
+
+        videoViewBinding.root.visibility = View.INVISIBLE
+        videoViewBinding.videoPlayer.stop()
+        imageViewBinding.root.visibility = View.INVISIBLE
+        imageViewBinding.imagePlayer.stop()
+
+        // The loading view sits below these layers, so hide them for a true blackout.
+        overlayView.visibility = View.INVISIBLE
+        progressBarView.visibility = View.INVISIBLE
+        brightnessView.visibility = View.INVISIBLE
+        notificationContainer.visibility = View.INVISIBLE
+        musicPlayer?.pause()
+    }
+
+    private fun exitBlackOutMode() {
+        blackOutMode = false
+        blackOutSource = BlackOutSource.NONE
+        loadingView.setBackgroundColor(ColourHelper.colourFromString(GeneralPrefs.backgroundLoading))
+        overlayView.visibility = View.VISIBLE
+        progressBarView.visibility =
+            if (GeneralPrefs.progressBarLocation == ProgressBarLocation.DISABLED) View.GONE else View.VISIBLE
+        brightnessView.visibility =
+            if (GeneralPrefs.videoBrightness == "100") View.GONE else View.VISIBLE
+        notificationContainer.visibility = View.VISIBLE
+        loadNextItem()
+        musicPlayer?.resume()
+        scheduleSleepTimer()
     }
 
     fun nextTrack() {
@@ -983,6 +1015,8 @@ class ScreenController(
     }
 
     private fun handleError() {
+        if (blackOutMode) return
+
         mainScope.launch {
             delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
@@ -1002,7 +1036,9 @@ class ScreenController(
 
     override fun onVideoAlmostFinished() = fadeOutCurrentItem()
 
-    override fun onVideoPrepared() = fadeInNextItem()
+    override fun onVideoPrepared() {
+        if (!blackOutMode) fadeInNextItem()
+    }
 
     override fun onVideoError() = handleError()
 
@@ -1123,6 +1159,7 @@ class ScreenController(
 
     override fun onImagePrepared() {
         Timber.d("onImagePrepared")
+        if (blackOutMode) return
         currentMedia
             ?.takeIf { it.type == AerialMediaType.IMAGE }
             ?.let { updateMetadataOverlayData(it) }
