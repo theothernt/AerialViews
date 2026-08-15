@@ -97,6 +97,7 @@ class ScreenController(
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
+    private var explicitSkip = false
     private var canSkip = false
     private var isPaused = false
     private var pauseStartTime: Long = 0
@@ -551,13 +552,32 @@ class ScreenController(
                 pauseStartTime = 0
 
                 if (!blackOutMode) {
+                    val wasExplicitSkip = explicitSkip
                     val loadPreviousItem = previousItem
+                    explicitSkip = false
                     previousItem = false
-                    loadNextItem(loadPreviousItem)
+
+                    if (wasExplicitSkip) {
+                        loadNextItem(loadPreviousItem)
+                    } else if (GeneralPrefs.loopUntilSkipped && currentMedia != null) {
+                        replayCurrentItem()
+                    } else {
+                        loadNextItem(false)
+                    }
                 } else {
+                    explicitSkip = false
                     previousItem = false
                 }
             }.start()
+    }
+
+    private fun replayCurrentItem() {
+        val media = currentMedia
+        if (media != null) {
+            loadItem(media)
+        } else {
+            loadNextItem()
+        }
     }
 
     private fun showLoadingError() {
@@ -731,6 +751,7 @@ class ScreenController(
     }
 
     fun skipItem(previous: Boolean = false) {
+        explicitSkip = true
         previousItem = previous
         fadeOutCurrentItem()
     }
@@ -810,9 +831,9 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        if (videoViewBinding.root.isVisible) {
-            videoPlayer.toggleLooping()
-        }
+        GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
+        val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+        NotificationHelper.show(notificationContainer, message)
     }
 
     fun increaseBrightness() = changeBrightness(true)
@@ -904,6 +925,7 @@ class ScreenController(
             if (loadingView.isVisible) {
                 loadNextItem()
             } else {
+                explicitSkip = true
                 fadeOutCurrentItem()
             }
         }

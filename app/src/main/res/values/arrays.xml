@@ -1003,7 +1003,7 @@
     <string name="btn_blackout">Blackout screen, fade out media and overlays</string>
     <string name="btn_toggle_mute">Toggle mute/unmute audio</string>
     <string name="btn_toggle_pause">Pause/unpause video or photo timer</string>
-    <string name="btn_toggle_looping">Toggle looping for current video</string>
+    <string name="btn_toggle_looping">Toggle looping for current photo or video</string>
     <string-array name="button_action_entries" translatable="false">
         <item>@string/btn_ignore</item>
         <item>@string/btn_skip_next</item>

@@ -83,11 +83,7 @@ class VideoPlayerView
             player = exoPlayer
             player?.addListener(this)
 
-            if (GeneralPrefs.loopUntilSkipped) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-            } else {
-                player?.repeatMode = Player.REPEAT_MODE_OFF
-            }
+            player?.repeatMode = Player.REPEAT_MODE_OFF
 
             controllerAutoShow = false
             useController = false
@@ -117,38 +113,7 @@ class VideoPlayerView
             cancelVolumeFade()
         }
 
-        fun toggleLooping() {
-            if (isDestroyed) return
 
-            GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-
-            if (GeneralPrefs.loopUntilSkipped) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-            } else {
-                val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-                val isLengthLimited = maxVideoLength >= 10000
-                val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
-                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
-                    player?.repeatMode = Player.REPEAT_MODE_ALL
-                } else {
-                    player?.repeatMode = Player.REPEAT_MODE_OFF
-                }
-            }
-
-            setupAlmostFinishedRunnable()
-
-            // Traverse up to root view to find notification container
-            var viewGroup = parent as? ViewGroup
-            var notificationContainer: ViewGroup? = null
-            while (viewGroup != null && notificationContainer == null) {
-                notificationContainer = viewGroup.findViewById(R.id.notification_container)
-                viewGroup = viewGroup.parent as? ViewGroup
-            }
-            if (notificationContainer != null) {
-                val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
-                NotificationHelper.show(notificationContainer, message)
-            }
-        }
 
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
@@ -288,15 +253,13 @@ class VideoPlayerView
                 state.endPosition = result.second
 
                 // Dynamically set repeat mode based on whether it's a short video that should loop
-                if (!GeneralPrefs.loopUntilSkipped) {
-                    val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-                    val isLengthLimited = maxVideoLength >= 10000
-                    val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
-                    if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
-                        player?.repeatMode = Player.REPEAT_MODE_ALL
-                    } else {
-                        player?.repeatMode = Player.REPEAT_MODE_OFF
-                    }
+                val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+                val isLengthLimited = maxVideoLength >= 10000
+                val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
+                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                    player?.repeatMode = Player.REPEAT_MODE_ALL
+                } else {
+                    player?.repeatMode = Player.REPEAT_MODE_OFF
                 }
 
                 state.prepared = true
@@ -454,12 +417,8 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
-                if (GeneralPrefs.loopUntilSkipped) {
-                    Timber.i("The video will only finish when skipped manually")
-                } else {
-                    postDelayed(almostFinishedRunnable, 2 * 1000)
-                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
-                }
+                postDelayed(almostFinishedRunnable, 2 * 1000)
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
             }
 
@@ -501,7 +460,7 @@ class VideoPlayerView
                 )
             }
 
-            if (GeneralPrefs.loopUntilSkipped || (state.type == AerialMediaSource.RTSP && state.endPosition == 0L)) {
+            if (state.type == AerialMediaSource.RTSP && state.endPosition == 0L) {
                 Timber.i("The video will only finish when skipped manually")
             } else {
                 Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
