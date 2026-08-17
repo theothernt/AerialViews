@@ -26,7 +26,7 @@ leanback = "1.2.0"
 leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
-okhttp = "5.4.0"
+okhttp = "5.5.0"
 retrofit = "3.0.0"
 sardine-android = "0.0.3"
 
