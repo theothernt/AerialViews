@@ -43,7 +43,9 @@ class ImmichRepository(
     private var cachedServerMajorVersion: Int? = null
 
     /**
-     * Returns the major version number of the connected Immich server (e.g. 2 or 3).
+     * Returns the effective server version used internally for API routing.
+     * For Immich v1.106+ and all v3+ servers, this returns 3 so the v3 code
+     * paths are used. For earlier versions it returns the actual major version.
      * The result is cached after the first successful call.
      * Falls back to v2 behaviour on failure so existing users are unaffected.
      */
@@ -52,11 +54,15 @@ class ImmichRepository(
         return try {
             val response = immichClient.getServerVersion()
             if (response.isSuccessful) {
-                val major = response.body()?.major ?: 2
-                Timber.d("Immich server version: major=$major")
-                cachedServerMajorVersion = major
-                urlBuilder.setServerV3(major >= 3)
-                major
+                val serverVersion = response.body() ?: ServerVersionResponse()
+                val major = serverVersion.major
+                val minor = serverVersion.minor
+                val isV3 = major >= 3 || (major == 1 && minor >= 106)
+                val effectiveVersion = if (isV3) 3 else major
+                Timber.d("Immich server version: major=$major, minor=$minor, isV3=$isV3")
+                cachedServerMajorVersion = effectiveVersion
+                urlBuilder.setServerV3(isV3)
+                effectiveVersion
             } else {
                 Timber.w("Failed to fetch server version (${response.code()}), assuming v2")
                 cachedServerMajorVersion = 2
@@ -179,24 +185,35 @@ class ImmichRepository(
                                         password = prefs.password.takeIf { it.isNotEmpty() },
                                     )
 
-                                if (albumResponse.isSuccessful) {
-                                    val album = albumResponse.body()
-                                    if (album != null) {
-                                        Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                        return album.copy(
-                                            assets = album.assets.map { it.copy(albumName = album.name) },
-                                        )
-                                    } else {
-                                        Timber.e("Received null album from successful response")
-                                        return Album(
-                                            id = "shared-${shared.id}",
-                                            name = shared.description ?: "Shared Link",
-                                            description = "Album data not available",
-                                            assetCount = 0,
-                                            assets = emptyList(),
-                                        )
-                                    }
-                                } else {
+                                 if (albumResponse.isSuccessful) {
+                                     val album = albumResponse.body()
+                                     if (album != null) {
+                                         val albumAssets = album.assets
+                                          if (albumAssets.isEmpty()) {
+                                              Timber.w("Shared album ${album.name} returned no inline assets, falling back to search/metadata")
+                                              val fallbackAssets = fetchAlbumAssetsSharedV3(shared.album.id, shared.key, album.name)
+                                              Timber.d("Fallback fetched ${fallbackAssets.size} assets for shared album: ${album.name}")
+                                              return album.copy(
+                                                  assetCount = fallbackAssets.size,
+                                                  assets = fallbackAssets,
+                                              )
+                                          } else {
+                                             Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                             return album.copy(
+                                                 assets = album.assets.map { it.copy(albumName = album.name) },
+                                             )
+                                         }
+                                     } else {
+                                         Timber.e("Received null album from successful response")
+                                         return Album(
+                                             id = "shared-${shared.id}",
+                                             name = shared.description ?: "Shared Link",
+                                             description = "Album data not available",
+                                             assetCount = 0,
+                                             assets = emptyList(),
+                                         )
+                                     }
+                                 } else {
                                     val errorBody = albumResponse.errorBody()?.string()
                                     Timber.e("Failed to fetch album details. Code: ${albumResponse.code()}, Error: $errorBody")
                                     return Album(
@@ -370,15 +387,26 @@ class ImmichRepository(
                                 assets.forEach { asset ->
                                     albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
                                 }
+                        } else {
+                            // v2: assets are inline
+                            val albumAssets = album.assets
+                            if (albumAssets.isEmpty() && serverVersion < 3) {
+                                Timber.w("Album ${album.name} returned no inline assets on v2, falling back to search/metadata")
+                                val fallbackAssets = fetchAlbumAssetsV3(albumId, album.name)
+                                Timber.d("Fallback fetched ${fallbackAssets.size} assets for album: ${album.name}")
+                                allAssets.addAll(fallbackAssets)
+                                fallbackAssets.forEach { asset ->
+                                    albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                }
                             } else {
-                                // v2: assets are inline
                                 Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                val albumAssets = album.assets.map { it.copy(albumName = album.name) }
-                                allAssets.addAll(albumAssets)
-                                albumAssets.forEach { asset ->
+                                val mappedAssets = albumAssets.map { it.copy(albumName = album.name) }
+                                allAssets.addAll(mappedAssets)
+                                mappedAssets.forEach { asset ->
                                     albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
                                 }
                             }
+                        }
                         } else {
                             Timber.e("Received null album from successful response for album ID: $albumId")
                         }

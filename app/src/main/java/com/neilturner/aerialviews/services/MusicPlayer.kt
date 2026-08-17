@@ -23,6 +23,7 @@ class MusicPlayer(
         )
 
     var onMediaItemChanged: (() -> Unit)? = null
+    var onPlayingChanged: ((Boolean) -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context.applicationContext)
@@ -34,6 +35,10 @@ class MusicPlayer(
                 ) {
                     onMediaItemChanged?.invoke()
                 }
+
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    onPlayingChanged?.invoke(isPlaying)
+                }
             },
         )
         return player!!
@@ -41,16 +46,8 @@ class MusicPlayer(
 
     fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
 
-    // Support resume capability
-    fun seekToTrack(index: Int) {
-        if (index > 0 && index < playlist.size) {
-            player?.seekTo(index, 0L)
-            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $index")
-        }
-    }
-
     @OptIn(UnstableApi::class)
-    fun play() {
+    fun play(startTrackIndex: Int = 0) {
         val player =
             player ?: run {
                 Timber.w("MusicPlayer: play() called but player not created")
@@ -63,6 +60,11 @@ class MusicPlayer(
             player.addMediaSource(mediaSource)
         }
         player.prepare()
+
+        if (startTrackIndex in playlist.tracks.indices) {
+            player.seekTo(startTrackIndex, 0L)
+            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $startTrackIndex")
+        }
 
         // Apply repeat mode
         player.repeatMode =
@@ -88,6 +90,16 @@ class MusicPlayer(
             player?.pause()
         }
         Timber.i("MusicPlayer: pausing")
+    }
+
+    fun resume() {
+        val player = player ?: return
+        player.play()
+        volumeHelper.fadeIn(
+            durationMs = 500,
+            targetVolume = GeneralPrefs.videoVolume.toFloat() / 100,
+        )
+        Timber.i("MusicPlayer: resuming")
     }
 
     fun nextTrack() {

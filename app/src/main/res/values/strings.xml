@@ -329,6 +329,9 @@
     <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
     <string name="webdav_media_test_results">Test results</string>
 
+    <string name="webdav_media_validate_ssl_title">Validate SSL Certificates</string>
+    <string name="webdav_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+
     <!-- Main / Video Sources / Immich videos -->
     <string name="immich_media_enabled_title">Use Immich share media</string>
     <string name="immich_media_type_title">Choose media type</string>
@@ -511,6 +514,9 @@
     <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
     <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
 
+    <string name="nowplaying_keep_screen_on_title">Stop device from sleeping while music is playing</string>
+    <string name="nowplaying_keep_screen_on_summary">Prevent the screensaver from dimming or sleeping when background music is active</string>
+
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
     <!-- Main / Settings / Overlays / Sonos -->
@@ -681,6 +687,13 @@
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
     <string name="appearance_fade_corners_title">Corners to fade</string>
 
+    <string name="overlay_visibility_title">Overlay visibility</string>
+    <string name="overlay_visibility_always_visible">Always visible</string>
+    <string name="overlay_visibility_always_hidden">Always hidden</string>
+    <string name="overlay_visibility_hide_after">Hide after delay</string>
+    <string name="overlay_visibility_show_after">Show after delay</string>
+    <string name="overlay_visibility_delay_title">Delay</string>
+
     <string name="appearance_fade_in_title">Fade in</string>
     <string name="appearance_fade_out_title">Fade out</string>
 
@@ -711,6 +724,12 @@
 
     <string name="playlist_sleep_timer_title">Sleep timer</string>
     <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
+
+    <string name="category_scheduled_blackout">Scheduled blackout</string>
+    <string name="playlist_scheduled_blackout_enabled_title">Enable scheduled blackout</string>
+    <string name="playlist_scheduled_blackout_enabled_summary">Automatically turn screen black between start and end time</string>
+    <string name="playlist_scheduled_blackout_start_title">Start time</string>
+    <string name="playlist_scheduled_blackout_end_title">End time</string>
 
     <string name="playlist_sound_volume_title">Volume</string>
     <string name="playlist_sound_volume_summary">Choose a volume level for video audio or background music</string>
@@ -868,6 +887,9 @@
 
     <string name="advanced_locale_restart_app_title">Restart App</string>
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+
+    <string name="advanced_wifi_only_title">WiFi-only for streaming</string>
+    <string name="advanced_wifi_only_summary">Only stream videos from remote sources (Apple, Amazon, etc.) when connected to WiFi or Ethernet. Local and LAN sources are not affected.</string>
 
     <string name="advanced_log_capture_title">Enable log capture</string>
     <string name="advanced_log_capture_summary">Capture all app logs via a background service. Logs are saved when stopped.</string>

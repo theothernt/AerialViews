@@ -126,26 +126,14 @@ object DateHelper {
 
         try {
             val parsed = OffsetDateTime.parse(trimmedDate)
-            return Date.from(
-                if (parsedOffset != null) {
-                    parsed.toLocalDateTime().toInstant(parsedOffset)
-                } else {
-                    parsed.toInstant()
-                },
-            )
+            return Date.from(parsed.toInstant())
         } catch (_: Exception) {
             // Keep trying.
         }
 
         try {
             val parsed = ZonedDateTime.parse(trimmedDate)
-            return Date.from(
-                if (parsedOffset != null) {
-                    parsed.toLocalDateTime().toInstant(parsedOffset)
-                } else {
-                    parsed.toInstant()
-                },
-            )
+            return Date.from(parsed.toInstant())
         } catch (_: Exception) {
             // Keep trying.
         }

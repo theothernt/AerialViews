@@ -39,6 +39,7 @@ captures/
 # Agents
 .qwen/
 .mimocode/
+.kilo/
 
 # IntelliJ
 *.iml

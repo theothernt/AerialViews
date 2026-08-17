@@ -75,6 +75,14 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_network">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="wifi_only"
+                    app:title="@string/advanced_wifi_only_title"
+                    app:summary="@string/advanced_wifi_only_summary" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_log_capture">
                 <SwitchPreference
                     app:defaultValue="false"

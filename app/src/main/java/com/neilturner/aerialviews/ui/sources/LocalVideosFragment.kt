@@ -38,9 +38,6 @@ class LocalVideosFragment :
     private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
     private lateinit var requestAudioPermission: ActivityResultLauncher<String>
 
-    // Track previous selection to detect when music is added
-    private var previousMediaSelection: Set<String> = LocalMediaPrefs.mediaSelection
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -55,8 +52,13 @@ class LocalVideosFragment :
                 // Only disable if photo+video permission is missing
                 if (!PermissionHelper.isVideoImagePermissionGranted(permissions)) {
                     disableLocalMediaPreference()
+                } else if (
+                    android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
+                    MediaSelection.MUSIC in LocalMediaPrefs.mediaSelection &&
+                    !permissions.getOrDefault(Manifest.permission.READ_MEDIA_AUDIO, false)
+                ) {
+                    removeMusicFromSelection()
                 }
-                // Audio is optional — if it's missing, music simply won't play
             }
 
         requestAudioPermission =
@@ -77,6 +79,8 @@ class LocalVideosFragment :
             updateVolumeAndFolderSummary()
             findVolumeList()
         }
+
+        requestAudioPermissionIfMusicSelected()
     }
 
     override fun onDestroy() {
@@ -116,14 +120,8 @@ class LocalVideosFragment :
             updateVolumeAndFolderSummary()
         }
 
-        // Detect when music is added to the selection and request audio permission
         if (key == "local_media_selection") {
-            val current = LocalMediaPrefs.mediaSelection
-            val addedMusic = MediaSelection.MUSIC in current && MediaSelection.MUSIC !in previousMediaSelection
-            if (addedMusic && !PermissionHelper.hasAudioReadPermission(requireContext())) {
-                requestAudioPermissionForMusic()
-            }
-            previousMediaSelection = current
+            requestAudioPermissionIfMusicSelected()
         }
 
         updateEnabledOptions()
@@ -180,8 +178,7 @@ class LocalVideosFragment :
 
     private fun checkForMediaPermission() {
         if (PermissionHelper.hasVideoImagePermission(requireContext())) {
-            // If we already have photo+video permission, local media stays enabled.
-            // Audio is optional — music won't play without it but that's fine.
+            requestAudioPermissionIfMusicSelected()
             return
         }
 
@@ -194,6 +191,19 @@ class LocalVideosFragment :
             return
         }
         requestAudioPermission.launch(Manifest.permission.READ_MEDIA_AUDIO)
+    }
+
+    private fun requestAudioPermissionIfMusicSelected() {
+        if (
+            !LocalMediaPrefs.enabled ||
+            MediaSelection.MUSIC !in LocalMediaPrefs.mediaSelection ||
+            !PermissionHelper.hasVideoImagePermission(requireContext()) ||
+            PermissionHelper.hasAudioReadPermission(requireContext())
+        ) {
+            return
+        }
+
+        requestAudioPermissionForMusic()
     }
 
     // Kotpref's stringSetPref is read-only (val), so we modify SharedPreferences directly.

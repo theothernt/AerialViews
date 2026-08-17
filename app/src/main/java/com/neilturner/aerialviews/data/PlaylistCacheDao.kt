@@ -25,6 +25,13 @@ interface PlaylistCacheDao {
         offset: Int,
     ): List<CachedMediaEntity>
 
+    @Query("SELECT * FROM cached_media WHERE source NOT IN (:excludedSources) ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset")
+    suspend fun getMediaItemsChunkFiltered(
+        limit: Int,
+        offset: Int,
+        excludedSources: List<String>,
+    ): List<CachedMediaEntity>
+
     @Query("SELECT * FROM cached_music_tracks ORDER BY playlistOrder ASC")
     suspend fun getAllMusicTracksOrdered(): List<CachedMusicTrackEntity>
 

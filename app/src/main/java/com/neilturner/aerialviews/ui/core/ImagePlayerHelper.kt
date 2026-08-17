@@ -23,7 +23,11 @@ import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
+import com.neilturner.aerialviews.providers.webdav.defaultPortFor
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Credentials
@@ -102,7 +106,7 @@ internal object ImagePlayerHelper {
 
                     val credential = Credentials.basic(
                         NCMemoriesMediaPrefs.username,
-                        NCMemoriesMediaPrefs.password
+                        NCMemoriesMediaPrefs.password,
                     )
 
                     originalRequest
@@ -119,19 +123,57 @@ internal object ImagePlayerHelper {
         }
     }
 
+
+    private fun stripUserinfo(url: String): String {
+        val withoutScheme = url.substringAfter("://")
+        val atIndex = withoutScheme.indexOf('@')
+        if (atIndex == -1) return url
+        val hostAndPath = withoutScheme.substringAfter('@')
+        return "${url.substringBefore("://")}://$hostAndPath"
+    }
+
+    fun stripUserinfoFromUri(uri: Uri): Uri {
+        val url = uri.toString()
+        return Uri.parse(stripUserinfo(url))
+    }
+
     fun streamFromWebDavFile(uri: Uri): InputStream? {
-        val baseClient = buildOkHttpClient()
+        val baseClient = buildOkHttpClient(validateSsl = getWebDavValidateSslFromUri(uri), source = AerialMediaSource.WEBDAV)
         val okHttpClient = baseClient.newBuilder().build()
         val client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
-            client.setCredentials(userName, password)
-            return client.get(uri.toString())
+            client.setCredentials(userName, password, true)
+            val cleanUrl = stripUserinfo(uri.toString())
+            return client.get(cleanUrl)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
             FirebaseHelper.crashlyticsException(ex)
             return null
         }
+    }
+
+    private fun getWebDavValidateSslFromUri(uri: Uri): Boolean {
+        val host = uri.host?.lowercase() ?: return true
+        val port = if (uri.port == -1) null else uri.port
+
+        if (WebDavMediaPrefs.hostName.isNotBlank()) {
+            val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs.hostName) }.getOrNull()
+            if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
+                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
+                if (port == null || port == prefPort) return WebDavMediaPrefs.validateSsl
+            }
+        }
+
+        if (WebDavMediaPrefs2.hostName.isNotBlank()) {
+            val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs2.hostName) }.getOrNull()
+            if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
+                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs2.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
+                if (port == null || port == prefPort) return WebDavMediaPrefs2.validateSsl
+            }
+        }
+
+        return true
     }
 
     fun streamFromLocalFile(
@@ -177,7 +219,7 @@ internal object ImagePlayerHelper {
         try {
             val client = buildOkHttpClient(
                 validateSsl = ImmichMediaPrefs.validateSsl,
-                source = AerialMediaSource.IMMICH
+                source = AerialMediaSource.IMMICH,
             )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()
@@ -201,7 +243,7 @@ internal object ImagePlayerHelper {
         try {
             val client = buildOkHttpClient(
                 validateSsl = NCMemoriesMediaPrefs.validateSsl,
-                source = AerialMediaSource.NCMEMORIES
+                source = AerialMediaSource.NCMEMORIES,
             )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()
