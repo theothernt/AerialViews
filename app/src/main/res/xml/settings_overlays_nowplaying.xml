@@ -89,4 +89,30 @@
                     app:title="@string/nowplaying_keep_screen_on_title"
                     app:summary="@string/nowplaying_keep_screen_on_summary" />
         </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_sonos">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="sonos_enabled"
+                    app:title="@string/sonos_enabled_title"
+                    app:summary="@string/sonos_enabled_summary" />
+
+                <EditTextPreference
+                    app:key="sonos_ip_address"
+                    app:title="@string/sonos_ip_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dependency="sonos_enabled" />
+
+                <Preference
+                    app:key="sonos_discover"
+                    app:title="@string/sonos_discover_title"
+                    app:summary="@string/sonos_discover_summary"
+                    app:dependency="sonos_enabled" />
+
+                <Preference
+                    app:key="sonos_test"
+                    app:title="@string/sonos_test_title"
+                    app:summary="@string/sonos_test_default"
+                    app:dependency="sonos_enabled" />
+        </PreferenceCategory>
 </PreferenceScreen>
