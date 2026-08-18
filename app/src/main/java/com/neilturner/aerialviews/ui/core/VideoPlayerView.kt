@@ -183,7 +183,7 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
-            if (forcedMuted || !GeneralPrefs.playsVideoAudio) {
+            if (forcedMuted) {
                 applyMuteState()
                 return
             }
@@ -204,13 +204,6 @@ class VideoPlayerView
         }
 
         private fun applyMuteState() {
-            if (!GeneralPrefs.playsVideoAudio) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
-                exoPlayer.volume = 0f
-                isMuted = false
-                return
-            }
-
             val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
