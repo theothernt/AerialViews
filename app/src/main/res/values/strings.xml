@@ -856,6 +856,8 @@
     <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
     <string name="advanced_reduce_buffer_memory_title">Reduce playback buffers and memory usage</string>
     <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
+    <string name="advanced_mute_disables_audio_track_title">Disable audio track when muted</string>
+    <string name="advanced_mute_disables_audio_track_summary">Removes the audio track entirely when muted, for compatibility with soundbars and external equipment that ignore software volume</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
@@ -865,7 +867,7 @@
     <string name="advanced_locale_restart_app_title">Restart App</string>
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 
-    <string name="advanced_wifi_only_title">WiFi-only for streaming</string>
+    <string name="advanced_wifi_only_title">Stream media on WiFi-only</string>
     <string name="advanced_wifi_only_summary">Only stream videos from remote sources (Apple, Amazon, etc.) when connected to WiFi or Ethernet. Local and LAN sources are not affected.</string>
 
     <string name="advanced_log_capture_title">Enable log capture</string>

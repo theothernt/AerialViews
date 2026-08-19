@@ -47,6 +47,12 @@
                     app:key="reduce_buffer_memory"
                     app:summary="@string/advanced_reduce_buffer_memory_summary"
                     app:title="@string/advanced_reduce_buffer_memory_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="mute_disables_audio_track"
+                    app:summary="@string/advanced_mute_disables_audio_track_summary"
+                    app:title="@string/advanced_mute_disables_audio_track_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_animation">
@@ -75,7 +81,7 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_network">
+        <PreferenceCategory app:title="@string/category_phone_tablet">
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="wifi_only"
