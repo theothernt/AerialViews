@@ -15,7 +15,6 @@ class TimeListPreference
         attrs: AttributeSet? = null,
         defStyleAttr: Int = androidx.preference.R.attr.dialogPreferenceStyle,
     ) : ListPreference(context, attrs, defStyleAttr) {
-
         init {
             populateEntries()
         }

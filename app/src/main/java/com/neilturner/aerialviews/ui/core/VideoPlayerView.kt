@@ -20,9 +20,9 @@ import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFacto
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
+import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
-import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
@@ -112,8 +112,6 @@ class VideoPlayerView
             listener = null
             cancelVolumeFade()
         }
-
-
 
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video

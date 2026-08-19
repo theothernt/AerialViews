@@ -377,16 +377,17 @@ class ScreenController(
         }
     }
 
-    private fun parseLocalTime(timeStr: String): java.time.LocalTime? {
-        return try {
+    private fun parseLocalTime(timeStr: String): java.time.LocalTime? =
+        try {
             val parts = timeStr.split(":")
             if (parts.size == 2) {
                 java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
-            } else null
+            } else {
+                null
+            }
         } catch (e: Exception) {
             null
         }
-    }
 
     private fun setupMusicPlayer(
         musicPlaylist: MusicPlaylist?,
@@ -536,7 +537,9 @@ class ScreenController(
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
                     gradientTopView.alpha = 0f
                 }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
                     gradientBottomView.alpha = 0f
                 }
                 canShowOverlays = true
@@ -560,7 +563,9 @@ class ScreenController(
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
                     gradientTopView.alpha = 0f
                 }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
                     gradientBottomView.alpha = 0f
                 }
                 mainScope.launch {

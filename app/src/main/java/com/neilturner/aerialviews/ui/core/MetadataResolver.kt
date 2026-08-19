@@ -206,12 +206,11 @@ internal class MetadataResolver(
                     .trim()
                     .takeIf {
                         it.isNotBlank() &&
-                        (
-                            (media.source == AerialMediaSource.IMMICH) ||
-                            (media.source == AerialMediaSource.NCMEMORIES)
-                        )
-                    }
-                    ?.let {
+                            (
+                                (media.source == AerialMediaSource.IMMICH) ||
+                                    (media.source == AerialMediaSource.NCMEMORIES)
+                            )
+                    }?.let {
                         ResolvedMetadata(
                             text = it,
                             poi = emptyMap(),
@@ -226,19 +225,19 @@ internal class MetadataResolver(
                         // original filename is stored in short description, not URI
                         FileHelper.extractFilenameFromPath(media.metadata.shortDescription)
                     }
+
                     else -> {
                         media.uri.filenameWithoutExtension
                     }
-                }
-                .trim()
-                .takeIf { it.isNotBlank() }
-                ?.let {
-                    ResolvedMetadata(
-                        text = it,
-                        poi = emptyMap(),
-                        metadataType = MetadataType.STATIC,
-                    )
-                }
+                }.trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
             }
 
             "FOLDER_FILENAME" -> {
@@ -248,26 +247,26 @@ internal class MetadataResolver(
                         FileHelper.formatFolderAndFilenameFromPath(
                             media.metadata.shortDescription,
                             includeFilename = true,
-                            pathDepth = folderDepth
+                            pathDepth = folderDepth,
                         )
                     }
+
                     else -> {
                         FileHelper.formatFolderAndFilenameFromUri(
                             media.uri,
                             includeFilename = true,
-                            pathDepth = folderDepth
+                            pathDepth = folderDepth,
                         )
                     }
-                }
-                .trim()
-                .takeIf { it.isNotBlank() }
-                ?.let {
-                    ResolvedMetadata(
-                        text = it,
-                        poi = emptyMap(),
-                        metadataType = MetadataType.STATIC,
-                    )
-                }
+                }.trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
             }
 
             "FOLDER_ONLY" -> {
@@ -277,26 +276,26 @@ internal class MetadataResolver(
                         FileHelper.formatFolderAndFilenameFromPath(
                             media.metadata.shortDescription,
                             includeFilename = false,
-                            pathDepth = folderDepth
+                            pathDepth = folderDepth,
                         )
                     }
+
                     else -> {
                         FileHelper.formatFolderAndFilenameFromUri(
                             media.uri,
                             includeFilename = false,
-                            pathDepth = folderDepth
+                            pathDepth = folderDepth,
                         )
                     }
-                }
-                .trim()
-                .takeIf { it.isNotBlank() }
-                ?.let {
-                    ResolvedMetadata(
-                        text = it,
-                        poi = emptyMap(),
-                        metadataType = MetadataType.STATIC,
-                    )
-                }
+                }.trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
             }
 
             else -> {

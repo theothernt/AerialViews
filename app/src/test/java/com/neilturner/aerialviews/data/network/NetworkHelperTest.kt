@@ -40,7 +40,10 @@ internal class NetworkHelperTest {
         assertFalse(NetworkHelper.isOnWifiOrEthernet(context))
     }
 
-    private fun setupNetworkMock(hasWifi: Boolean, hasEthernet: Boolean) {
+    private fun setupNetworkMock(
+        hasWifi: Boolean,
+        hasEthernet: Boolean,
+    ) {
         val mockNetwork = mockk<android.net.Network>()
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetwork } returns mockNetwork

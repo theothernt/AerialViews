@@ -118,9 +118,10 @@ class ImmichVideosFragment :
             true
         }
 
-        val networkExceptionHandler = CoroutineExceptionHandler { _, exception ->
-            Timber.e(exception, "Unhandled network error")
-        }
+        val networkExceptionHandler =
+            CoroutineExceptionHandler { _, exception ->
+                Timber.e(exception, "Unhandled network error")
+            }
 
         findPreference<Preference>("immich_media_test_connection")?.setOnPreferenceClickListener {
             lifecycleScope.launch(networkExceptionHandler) { testImmichConnection() }

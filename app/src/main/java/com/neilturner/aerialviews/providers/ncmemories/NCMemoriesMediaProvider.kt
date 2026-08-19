@@ -138,10 +138,12 @@ class NCMemoriesMediaProvider(
                     if (prefs.includeFavorites != "DISABLED") {
                         val sourceName = prefs.favoritesName
                         val rawAssets =
-                            fetchOptionalImages(sourceName) { repository.getOptionalImages(
-                                imageSourceName = sourceName,
-                                count = prefs.includeFavorites.toIntOrNull()
-                            ) }
+                            fetchOptionalImages(sourceName) {
+                                repository.getOptionalImages(
+                                    imageSourceName = sourceName,
+                                    count = prefs.includeFavorites.toIntOrNull(),
+                                )
+                            }
                         mapper.filterImagesByMediaType(rawAssets)
                     } else {
                         emptyList()
@@ -153,10 +155,12 @@ class NCMemoriesMediaProvider(
                     if (prefs.includeRecent != "DISABLED") {
                         val sourceName = prefs.recentName
                         val rawAssets =
-                            fetchOptionalImages(sourceName) { repository.getOptionalImages(
-                                imageSourceName = sourceName,
-                                count = prefs.includeRecent.toIntOrNull()
-                            ) }
+                            fetchOptionalImages(sourceName) {
+                                repository.getOptionalImages(
+                                    imageSourceName = sourceName,
+                                    count = prefs.includeRecent.toIntOrNull(),
+                                )
+                            }
                         mapper.filterImagesByMediaType(rawAssets)
                     } else {
                         emptyList()

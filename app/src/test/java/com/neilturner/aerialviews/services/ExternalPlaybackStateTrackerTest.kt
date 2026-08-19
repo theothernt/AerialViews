@@ -56,6 +56,5 @@ internal class ExternalPlaybackStateTrackerTest {
     private fun session(
         packageName: String,
         state: Int,
-    ): MediaSessionPlayback =
-        MediaSessionPlayback(packageName = packageName, state = state)
+    ): MediaSessionPlayback = MediaSessionPlayback(packageName = packageName, state = state)
 }

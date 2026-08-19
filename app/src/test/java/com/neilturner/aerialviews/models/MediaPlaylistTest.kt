@@ -34,16 +34,17 @@ internal class MediaPlaylistTest {
         // Initial window of size 50 (items 0..49)
         val initialChunk = allMedia.subList(0, 50)
 
-        val playlist = MediaPlaylist(
-            initialVideos = initialChunk,
-            startPosition = -1,
-            size = totalItems,
-            windowOffset = 0,
-            fetchChunk = { offset, limit ->
-                val end = (offset + limit).coerceAtMost(totalItems)
-                if (offset < totalItems) allMedia.subList(offset, end) else emptyList()
-            },
-        )
+        val playlist =
+            MediaPlaylist(
+                initialVideos = initialChunk,
+                startPosition = -1,
+                size = totalItems,
+                windowOffset = 0,
+                fetchChunk = { offset, limit ->
+                    val end = (offset + limit).coerceAtMost(totalItems)
+                    if (offset < totalItems) allMedia.subList(offset, end) else emptyList()
+                },
+            )
 
         // Iterate through all 60 items
         for (i in 0 until totalItems) {
@@ -61,16 +62,17 @@ internal class MediaPlaylistTest {
         val totalItems = 60
         val allMedia = List(totalItems) { testMedia() }
 
-        val playlist = MediaPlaylist(
-            initialVideos = allMedia.subList(0, 50),
-            startPosition = 0,
-            size = totalItems,
-            windowOffset = 0,
-            fetchChunk = { offset, limit ->
-                val end = (offset + limit).coerceAtMost(totalItems)
-                if (offset < totalItems) allMedia.subList(offset, end) else emptyList()
-            },
-        )
+        val playlist =
+            MediaPlaylist(
+                initialVideos = allMedia.subList(0, 50),
+                startPosition = 0,
+                size = totalItems,
+                windowOffset = 0,
+                fetchChunk = { offset, limit ->
+                    val end = (offset + limit).coerceAtMost(totalItems)
+                    if (offset < totalItems) allMedia.subList(offset, end) else emptyList()
+                },
+            )
 
         val prevItem = playlist.previousItem()
         assertSame(allMedia[59], prevItem, "Expected previousItem from 0 to loop to item 59")

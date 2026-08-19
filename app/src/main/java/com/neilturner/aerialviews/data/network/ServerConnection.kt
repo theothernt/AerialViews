@@ -18,12 +18,14 @@ data class ServerConfig(
 )
 
 object UrlParser {
-    private val IPV4_PATTERN = Pattern.compile(
-        "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
-    )
-    private val HOSTNAME_PATTERN = Pattern.compile(
-        "^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$"
-    )
+    private val IPV4_PATTERN =
+        Pattern.compile(
+            "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+        )
+    private val HOSTNAME_PATTERN =
+        Pattern.compile(
+            "^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$",
+        )
 
     fun parseServerUrl(input: String): String {
         if (input.isBlank()) return ""
@@ -77,11 +79,10 @@ object UrlParser {
         }
     }
 
-    private fun isValidHost(host: String): Boolean {
-        return IPV4_PATTERN.matcher(host).matches() ||
+    private fun isValidHost(host: String): Boolean =
+        IPV4_PATTERN.matcher(host).matches() ||
             HOSTNAME_PATTERN.matcher(host).matches() ||
             host.equals("localhost", ignoreCase = true)
-    }
 }
 
 class SslHelper {
