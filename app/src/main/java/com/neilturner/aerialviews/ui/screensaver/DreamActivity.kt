@@ -28,16 +28,12 @@ class DreamActivity : DreamService() {
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
+                ScreenController(this, ::updateKeepScreenOn)
             } else {
                 val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
+                ScreenController(altContext, ::updateKeepScreenOn)
             }
         setContentView(screenController.view)
-
-        screenController.onMusicPlayingChanged = { isPlaying ->
-            updateKeepScreenOn(isPlaying)
-        }
 
         InputHelper.setupGestureListener(
             context = this,
@@ -108,8 +104,8 @@ class DreamActivity : DreamService() {
         }
     }
 
-    private fun updateKeepScreenOn(musicPlaying: Boolean) {
-        if (GeneralPrefs.keepScreenOnWhileMusicPlaying && musicPlaying) {
+    private fun updateKeepScreenOn(externalPlaybackActive: Boolean) {
+        if (GeneralPrefs.keepScreenOnWhileMusicPlaying && externalPlaybackActive) {
             window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         } else {
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

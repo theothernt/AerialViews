@@ -23,7 +23,6 @@ class MusicPlayer(
         )
 
     var onMediaItemChanged: (() -> Unit)? = null
-    var onPlayingChanged: ((Boolean) -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context.applicationContext)
@@ -34,10 +33,6 @@ class MusicPlayer(
                     reason: Int,
                 ) {
                     onMediaItemChanged?.invoke()
-                }
-
-                override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    onPlayingChanged?.invoke(isPlaying)
                 }
             },
         )

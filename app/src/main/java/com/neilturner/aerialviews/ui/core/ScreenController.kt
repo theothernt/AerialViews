@@ -76,6 +76,7 @@ enum class BlackOutSource {
 
 class ScreenController(
     val context: Context,
+    private val onExternalPlaybackChanged: (Boolean) -> Unit = {},
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
     private val mainScope = CoroutineScope(Dispatchers.Main)
@@ -112,8 +113,6 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-    var onMusicPlayingChanged: ((Boolean) -> Unit)? = null
-
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
@@ -258,7 +257,7 @@ class ScreenController(
             // Launch if we have permission
             // Used for a) Skip music tracks b) music info widget
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
-                nowPlayingService = NowPlayingService(context)
+                nowPlayingService = NowPlayingService(context, onExternalPlaybackChanged)
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
@@ -408,7 +407,6 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
-        musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
         if (blackOutMode) {
             musicPlayer?.pause()
