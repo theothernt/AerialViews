@@ -279,6 +279,7 @@ object GeneralPrefs : KotprefModel() {
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
+    var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")
