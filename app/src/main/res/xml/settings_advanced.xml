@@ -36,6 +36,15 @@
                     app:summary="@string/advanced_philips_dolby_vision_fix_summary"
                     app:title="@string/advanced_philips_dolby_vision_fix_title" />
 
+                <ListPreference
+                    app:defaultValue="@string/portrait_rotation_default"
+                    app:entries="@array/portrait_rotation_entries"
+                    app:entryValues="@array/portrait_rotation_values"
+                    app:key="portrait_video_rotation_degrees"
+                    app:summary="@string/advanced_portrait_rotation_summary"
+                    app:title="@string/advanced_portrait_rotation_title"
+                    app:useSimpleSummaryProvider="true" />
+
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="use_texture_view_for_video"

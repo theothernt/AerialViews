@@ -280,6 +280,10 @@ object GeneralPrefs : KotprefModel() {
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
     var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
+    var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
+
+    val portraitVideoRotationEnabled: Boolean
+        get() = portraitVideoRotationDegrees != "0"
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

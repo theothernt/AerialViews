@@ -1594,4 +1594,17 @@
         <item>COUNTRY</item>
     </string-array>
     <string name="overlay_metadata_photo_location_default" translatable="false">CITY_COUNTRY</string>
+    <string-array name="portrait_rotation_entries" translatable="false">
+        <item>Disabled</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
+    </string-array>
+    <string-array name="portrait_rotation_values" translatable="false">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+    <string name="portrait_rotation_default" translatable="false">0</string>
 </resources>
