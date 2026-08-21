@@ -58,9 +58,18 @@ class NowPlayingService(
         Timber.i("Setting up Now Playing session")
         sessionManager = context.getSystemService<MediaSessionManager>()
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
-        val controllers = sessionManager?.getActiveSessions(notificationListener)
+        val controllers = safeGetActiveSessions()
         logControllers("setupSession", controllers)
         updateActiveSession(controllers)
+    }
+
+    private fun safeGetActiveSessions(): MutableList<MediaController>? {
+        return try {
+            sessionManager?.getActiveSessions(notificationListener)
+        } catch (e: SecurityException) {
+            Timber.w(e, "Missing permission to access media sessions")
+            null
+        }
     }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
@@ -149,7 +158,7 @@ class NowPlayingService(
     }
 
     private fun refreshExternalPlaybackState(reason: String) {
-        val controllers = sessionManager?.getActiveSessions(notificationListener)
+        val controllers = safeGetActiveSessions()
         updateExternalPlaybackMonitoring(controllers)
         updateExternalPlaybackState(controllers, reason)
     }
@@ -162,8 +171,7 @@ class NowPlayingService(
             observedController.controller.unregisterCallback(observedController.callback)
         }
         val controllers =
-            sessionManager
-                ?.getActiveSessions(notificationListener)
+            safeGetActiveSessions()
                 ?.filterNot { it.sessionToken == sessionToken }
         updateExternalPlaybackMonitoring(controllers)
         updateExternalPlaybackState(controllers, "session destroyed for $packageName")
@@ -196,7 +204,7 @@ class NowPlayingService(
                 repeat(6) {
                     delay(500.milliseconds)
                     Timber.i("Delayed check for active sessions")
-                    val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                    val freshControllers = safeGetActiveSessions()
                     logControllers("delayedCheck[$it]", freshControllers)
                     updateActiveSession(freshControllers)
                 }
