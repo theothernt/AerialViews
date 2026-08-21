@@ -7,6 +7,7 @@ import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.VideoSize
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -117,6 +118,7 @@ class VideoPlayerView
             state = VideoState() // Reset params for each video
             state.type = media.source
             cancelVolumeFade()
+            resetRotation()
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -335,6 +337,66 @@ class VideoPlayerView
         override fun onPlayerErrorChanged(error: PlaybackException?) {
             super.onPlayerErrorChanged(error)
             error?.let { Timber.e(it) }
+        }
+
+        @Suppress("DEPRECATION")
+        @OptIn(UnstableApi::class)
+        override fun onVideoSizeChanged(videoSize: VideoSize) {
+            super.onVideoSizeChanged(videoSize)
+
+            val w = videoSize.width
+            val h = videoSize.height
+            val unapplied = videoSize.unappliedRotationDegrees
+            Timber.i("Video size: ${w}x${h}, unappliedRotationDegrees=$unapplied")
+
+            if (!GeneralPrefs.portraitVideoRotationEnabled) return
+
+            if (GeneralPrefs.useTextureViewForVideo) {
+                Timber.i("Portrait rotation fix: skipped (TextureView mode)")
+                return
+            }
+
+            // Portrait detection: taller than wide (before any rotation)
+            val isPortrait = h > w
+            if (!isPortrait) {
+                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x${h})")
+                resetRotation()
+                return
+            }
+
+            val degrees = GeneralPrefs.portraitVideoRotationDegrees.toFloatOrNull() ?: return
+            applyRotationFix(degrees)
+        }
+
+        private fun applyRotationFix(degrees: Float) {
+            post {
+                val containerW = width.toFloat()
+                val containerH = height.toFloat()
+                if (containerW == 0f || containerH == 0f) return@post
+
+                // After a 90°/270° rotation the view's layout axes are swapped,
+                // so scale by containerH/containerW to fill the screen width.
+                val scale =
+                    when (degrees) {
+                        90f, 270f -> containerH / containerW
+                        else -> 1f // 180° — aspect ratio unchanged, no scale needed
+                    }
+
+                Timber.i(
+                    "Portrait rotation fix: applying ${degrees}° rotation, scale=$scale " +
+                        "(container ${containerW.toInt()}x${containerH.toInt()})",
+                )
+
+                rotation = degrees
+                scaleX = scale
+                scaleY = scale
+            }
+        }
+
+        private fun resetRotation() {
+            rotation = 0f
+            scaleX = 1f
+            scaleY = 1f
         }
 
         private fun emitTrackMetadata() {
