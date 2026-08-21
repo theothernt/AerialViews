@@ -157,4 +157,57 @@ internal class UrlParserTest {
         val parsed3 = UrlParser.parseServerUrl("hTTp://example.com")
         assertEquals("http://example.com", parsed3)
     }
+
+    @Test
+    @DisplayName("Parses single-label hostname without protocol")
+    fun parsesSingleLabelHostnameWithoutProtocol() {
+        val parsed = UrlParser.parseServerUrl("augustus")
+        assertEquals("http://augustus", parsed)
+    }
+
+    @Test
+    @DisplayName("Parses single-label hostname with port")
+    fun parsesSingleLabelHostnameWithPort() {
+        val parsed = UrlParser.parseServerUrl("augustus:2283")
+        assertEquals("http://augustus:2283", parsed)
+    }
+
+    @Test
+    @DisplayName("Parses single-label hostname with http protocol and port")
+    fun parsesSingleLabelHostnameWithHttpAndPort() {
+        val parsed = UrlParser.parseServerUrl("http://augustus:2283")
+        assertEquals("http://augustus:2283", parsed)
+    }
+
+    @Test
+    @DisplayName("Parses single-label hostname with https protocol and port")
+    fun parsesSingleLabelHostnameWithHttpsAndPort() {
+        val parsed = UrlParser.parseServerUrl("https://augustus:2283")
+        assertEquals("https://augustus:2283", parsed)
+    }
+
+    @Test
+    @DisplayName("Parses single-label hostname with hyphen and port")
+    fun parsesSingleLabelHostnameWithHyphenAndPort() {
+        val parsed = UrlParser.parseServerUrl("my-server:8080")
+        assertEquals("http://my-server:8080", parsed)
+    }
+
+    @Test
+    @DisplayName("Parses single-label hostname with port and trailing slash")
+    fun parsesSingleLabelHostnameWithPortAndTrailingSlash() {
+        val parsed = UrlParser.parseServerUrl("http://augustus:2283/")
+        assertEquals("http://augustus:2283", parsed)
+    }
+
+    @Test
+    @DisplayName("Throws for invalid single-label hostnames starting or ending with hyphen")
+    fun throwsForInvalidSingleLabelHostnamesWithHyphenEdge() {
+        assertThrows(IllegalArgumentException::class.java) {
+            UrlParser.parseServerUrl("-augustus")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            UrlParser.parseServerUrl("augustus-")
+        }
+    }
 }

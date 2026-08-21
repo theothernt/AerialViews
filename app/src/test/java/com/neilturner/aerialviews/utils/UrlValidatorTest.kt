@@ -120,11 +120,17 @@ internal class UrlValidatorTest {
         assertTrue(UrlValidator.isValidUrl("https://example.com"))
         assertTrue(UrlValidator.isValidUrl("http://test.com"))
         assertTrue(UrlValidator.isValidUrl("https://mufb.lol/kiosk/artemis/test.csv"))
+        assertTrue(UrlValidator.isValidUrl("augustus"))
+        assertTrue(UrlValidator.isValidUrl("augustus:2283"))
+        assertTrue(UrlValidator.isValidUrl("http://augustus:2283"))
+        assertTrue(UrlValidator.isValidUrl("https://augustus:2283"))
     }
 
     @Test
     @DisplayName("isValidUrl returns false for invalid URLs")
     fun isValidUrlReturnsFalseForInvalidUrls() {
         assertEquals(false, UrlValidator.isValidUrl("not a url"))
+        assertEquals(false, UrlValidator.isValidUrl("123"))
+        assertEquals(false, UrlValidator.isValidUrl("-augustus"))
     }
 }

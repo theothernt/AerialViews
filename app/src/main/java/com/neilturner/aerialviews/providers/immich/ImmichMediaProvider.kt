@@ -25,9 +25,9 @@ class ImmichMediaProvider(
     override fun settingsHash(): String = prefs.settingsHash()
 
     private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
-    private val urlBuilder = ImmichUrlBuilder(serverUrl, prefs)
-    private val repository = ImmichRepository(prefs, urlBuilder)
-    private val mapper = ImmichAssetMapper(prefs, urlBuilder)
+    private val urlBuilder by lazy { ImmichUrlBuilder(serverUrl, prefs) }
+    private val repository by lazy { ImmichRepository(prefs, urlBuilder) }
+    private val mapper by lazy { ImmichAssetMapper(prefs, urlBuilder) }
 
     override suspend fun fetch(): ProviderFetchResult {
         val result = fetchImmichMedia()
@@ -106,6 +106,12 @@ class ImmichMediaProvider(
     private fun validateInput(): String? {
         if (prefs.url.isEmpty()) {
             return "Hostname and port not specified"
+        }
+
+        try {
+            UrlParser.parseServerUrl(prefs.url)
+        } catch (_: Exception) {
+            return "Invalid server URL"
         }
 
         if (prefs.authType == ImmichAuthType.SHARED_LINK) {
@@ -245,5 +251,10 @@ class ImmichMediaProvider(
         val recentCount: Int,
     )
 
-    suspend fun fetchAlbums(): Result<List<Album>> = repository.fetchAlbums()
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        try {
+            repository.fetchAlbums()
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }

@@ -26,6 +26,10 @@ object UrlParser {
         Pattern.compile(
             "^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$",
         )
+    private val SINGLE_LABEL_HOSTNAME_PATTERN =
+        Pattern.compile(
+            "^(?![0-9]+$)[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$",
+        )
 
     fun parseServerUrl(input: String): String {
         if (input.isBlank()) return ""
@@ -82,6 +86,7 @@ object UrlParser {
     private fun isValidHost(host: String): Boolean =
         IPV4_PATTERN.matcher(host).matches() ||
             HOSTNAME_PATTERN.matcher(host).matches() ||
+            SINGLE_LABEL_HOSTNAME_PATTERN.matcher(host).matches() ||
             host.equals("localhost", ignoreCase = true)
 }
 

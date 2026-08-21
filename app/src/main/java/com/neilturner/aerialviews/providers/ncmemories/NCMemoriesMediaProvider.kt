@@ -24,9 +24,9 @@ class NCMemoriesMediaProvider(
     override fun settingsHash(): String = prefs.settingsHash()
 
     private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
-    private val urlBuilder = NCMemoriesUrlBuilder(serverUrl, prefs)
-    private val repository = NCMemoriesRepository(prefs)
-    private val mapper = NCMemoriesImageMapper(prefs, urlBuilder)
+    private val urlBuilder by lazy { NCMemoriesUrlBuilder(serverUrl, prefs) }
+    private val repository by lazy { NCMemoriesRepository(prefs) }
+    private val mapper by lazy { NCMemoriesImageMapper(prefs, urlBuilder) }
 
     override suspend fun fetch(): ProviderFetchResult {
         val result = fetchAllMedia()
@@ -105,6 +105,12 @@ class NCMemoriesMediaProvider(
     private fun validateInput(): String? {
         if (prefs.url.isEmpty()) {
             return "Hostname and port not specified"
+        }
+
+        try {
+            UrlParser.parseServerUrl(prefs.url)
+        } catch (_: Exception) {
+            return "Invalid server URL"
         }
 
         if (prefs.username.isEmpty()) {
@@ -215,5 +221,10 @@ class NCMemoriesMediaProvider(
         return message
     }
 
-    suspend fun fetchAlbums(): Result<List<Album>> = repository.fetchAlbumList()
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        try {
+            repository.fetchAlbumList()
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }
