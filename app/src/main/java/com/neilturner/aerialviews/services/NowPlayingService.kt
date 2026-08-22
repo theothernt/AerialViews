@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.media.MediaMetadata
 import android.media.session.MediaController
-import android.media.session.MediaSession
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Bundle
@@ -24,7 +23,6 @@ import kotlin.time.Duration.Companion.milliseconds
 // Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
 class NowPlayingService(
     val context: Context,
-    private val onExternalPlaybackChanged: (Boolean) -> Unit = {},
 ) : MediaController.Callback(),
     MediaSessionManager.OnActiveSessionsChangedListener {
     private val notificationListener = ComponentName(context, NotificationService::class.java)
@@ -34,10 +32,6 @@ class NowPlayingService(
     private var metadata: MediaMetadata? = null
     private var active = false
     private var lastMusicEvent: MusicEvent? = null
-    private val externalPlaybackTracker =
-        ExternalPlaybackStateTracker(context.packageName, onExternalPlaybackChanged)
-    private val externalControllerCallbacks =
-        mutableMapOf<MediaSession.Token, ObservedController>()
     private val serviceJob = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + serviceJob)
     private var updateActiveSessionJob: Job? = null
@@ -73,9 +67,6 @@ class NowPlayingService(
     }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
-        updateExternalPlaybackMonitoring(controllers)
-        updateExternalPlaybackState(controllers, "active sessions updated")
-
         val selectedController = pickController(controllers)
         Timber.i(
             "updateActiveSession current=%s selected=%s",
@@ -126,72 +117,6 @@ class NowPlayingService(
         activeController?.unregisterCallback(this)
     }
 
-    private fun updateExternalPlaybackMonitoring(controllers: List<MediaController>?) {
-        val externalControllers = controllers.orEmpty().filter { it.packageName != context.packageName }
-        val externalTokens = externalControllers.mapTo(mutableSetOf()) { it.sessionToken }
-
-        externalControllerCallbacks
-            .filterKeys { it !in externalTokens }
-            .forEach { (token, observedController) ->
-                observedController.controller.unregisterCallback(observedController.callback)
-                externalControllerCallbacks.remove(token)
-            }
-
-        externalControllers.forEach { controller ->
-            if (controller.sessionToken in externalControllerCallbacks) return@forEach
-
-            val callback =
-                object : MediaController.Callback() {
-                    override fun onPlaybackStateChanged(state: PlaybackState?) {
-                        super.onPlaybackStateChanged(state)
-                        refreshExternalPlaybackState("playback changed for ${controller.packageName}")
-                    }
-
-                    override fun onSessionDestroyed() {
-                        super.onSessionDestroyed()
-                        onExternalSessionDestroyed(controller.sessionToken, controller.packageName)
-                    }
-                }
-            controller.registerCallback(callback)
-            externalControllerCallbacks[controller.sessionToken] = ObservedController(controller, callback)
-        }
-    }
-
-    private fun refreshExternalPlaybackState(reason: String) {
-        val controllers = safeGetActiveSessions()
-        updateExternalPlaybackMonitoring(controllers)
-        updateExternalPlaybackState(controllers, reason)
-    }
-
-    private fun onExternalSessionDestroyed(
-        sessionToken: MediaSession.Token,
-        packageName: String,
-    ) {
-        externalControllerCallbacks.remove(sessionToken)?.let { observedController ->
-            observedController.controller.unregisterCallback(observedController.callback)
-        }
-        val controllers =
-            safeGetActiveSessions()
-                ?.filterNot { it.sessionToken == sessionToken }
-        updateExternalPlaybackMonitoring(controllers)
-        updateExternalPlaybackState(controllers, "session destroyed for $packageName")
-    }
-
-    private fun updateExternalPlaybackState(
-        controllers: List<MediaController>?,
-        reason: String,
-    ) {
-        val sessions =
-            controllers.orEmpty().map { controller ->
-                MediaSessionPlayback(
-                    packageName = controller.packageName,
-                    state = controller.playbackState?.state ?: PlaybackState.STATE_NONE,
-                )
-            }
-        Timber.i("External playback state updated ($reason): $sessions")
-        externalPlaybackTracker.update(sessions)
-    }
-
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         Timber.i("onActiveSessionsChanged")
         logControllers("onActiveSessionsChanged", controllers)
@@ -237,7 +162,6 @@ class NowPlayingService(
         super.onPlaybackStateChanged(state)
         active = isActive()
         updateMetadata()
-        refreshExternalPlaybackState("selected controller playback changed")
     }
 
     override fun onSessionDestroyed() {
@@ -343,22 +267,16 @@ class NowPlayingService(
     fun stop() {
         serviceJob.cancel()
         unregisterCurrentController()
-        externalControllerCallbacks.values.forEach { observedController ->
-            observedController.controller.unregisterCallback(observedController.callback)
-        }
-        externalControllerCallbacks.clear()
         activeController = null
         metadata = null
         sessionManager?.removeOnActiveSessionsChangedListener(this)
     }
-
-    private data class ObservedController(
-        val controller: MediaController,
-        val callback: MediaController.Callback,
-    )
 }
 
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
-)
+) {
+    val isPlaying: Boolean
+        get() = artist.isNotBlank() || song.isNotBlank()
+}

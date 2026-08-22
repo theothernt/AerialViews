@@ -76,7 +76,6 @@ enum class BlackOutSource {
 
 class ScreenController(
     val context: Context,
-    private val onExternalPlaybackChanged: (Boolean) -> Unit = {},
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
     private val mainScope = CoroutineScope(Dispatchers.Main)
@@ -257,7 +256,7 @@ class ScreenController(
             // Launch if we have permission
             // Used for a) Skip music tracks b) music info widget
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
-                nowPlayingService = NowPlayingService(context, onExternalPlaybackChanged)
+                nowPlayingService = NowPlayingService(context)
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
