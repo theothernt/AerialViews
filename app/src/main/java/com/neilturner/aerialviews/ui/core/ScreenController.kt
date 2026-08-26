@@ -950,7 +950,7 @@ class ScreenController(
 
     fun toggleLooping() {
         GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-        val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+        val message = if (GeneralPrefs.loopUntilSkipped) resources.getString(R.string.playlist_loop_enabled) else resources.getString(R.string.playlist_loop_disabled)
         NotificationHelper.show(notificationContainer, message)
     }
 
@@ -986,7 +986,7 @@ class ScreenController(
         }
 
         // Show notification
-        NotificationHelper.show(notificationContainer, "Brightness: $newBrightness%")
+        NotificationHelper.show(notificationContainer, resources.getString(R.string.brightness_notification, newBrightness))
     }
 
     fun toggleMute() {
