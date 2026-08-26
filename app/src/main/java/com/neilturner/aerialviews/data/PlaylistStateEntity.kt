@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room3.Entity
+import androidx.room3.PrimaryKey
 
 @Entity(tableName = "playlist_state")
 data class PlaylistStateEntity(

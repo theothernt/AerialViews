@@ -47,6 +47,7 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
     var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
+    var keepScreenOnWhileMusicPlaying by booleanPref(false, "keep_screen_on_while_music_playing")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -161,7 +162,8 @@ object GeneralPrefs : KotprefModel() {
     var mediaFadeOutDuration by stringPref("800", "media_fade_out_duration")
 
     // Overlay Auto hide/reveal
-    var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+    var overlayVisibility by stringPref("ALWAYS_VISIBLE", "overlay_visibility")
+    var overlayVisibilityDelay by stringPref("4", "overlay_visibility_delay")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Per-corner fade settings (which corners should fade when auto-hide is enabled)
@@ -192,6 +194,9 @@ object GeneralPrefs : KotprefModel() {
     // Ignore system animation override
     var ignoreAnimationScale by booleanPref(true, "ignore_animation_scale")
 
+    // WiFi-only mode
+    var wifiOnly by booleanPref(false, "wifi_only")
+
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
     var localeScreensaver by stringPref("default", "locale_screensaver")
@@ -200,6 +205,9 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    var scheduledBlackoutEnabled by booleanPref(false, "scheduled_blackout_enabled")
+    var scheduledBlackoutStart by stringPref("22:00", "scheduled_blackout_start")
+    var scheduledBlackoutEnd by stringPref("08:00", "scheduled_blackout_end")
     var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
     val playlistTimeOfDayDayIncludes by stringSetPref("playlist_time_of_day_day_includes") {
         setOf("SUNRISE")
@@ -271,6 +279,11 @@ object GeneralPrefs : KotprefModel() {
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
+    var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
+    var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
+
+    val portraitVideoRotationEnabled: Boolean
+        get() = portraitVideoRotationDegrees != "0"
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

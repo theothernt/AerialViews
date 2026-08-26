@@ -83,9 +83,10 @@ class MediaPlaylist(
         if (fetchChunk == null) return
         val limit = 50
         try {
-            val freshData = kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) {
-                fetchChunk.invoke(newOffset, limit)
-            }
+            val freshData =
+                kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) {
+                    fetchChunk.invoke(newOffset, limit)
+                }
             synchronized(windowLock) {
                 windowOffset = newOffset
                 windowVideos.clear()

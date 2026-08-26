@@ -1,9 +1,9 @@
 package com.neilturner.aerialviews.data
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.Upsert
+import androidx.room3.Dao
+import androidx.room3.Query
+import androidx.room3.Transaction
+import androidx.room3.Upsert
 
 @Dao
 interface PlaylistCacheDao {
@@ -23,6 +23,13 @@ interface PlaylistCacheDao {
     suspend fun getMediaItemsChunk(
         limit: Int,
         offset: Int,
+    ): List<CachedMediaEntity>
+
+    @Query("SELECT * FROM cached_media WHERE source NOT IN (:excludedSources) ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset")
+    suspend fun getMediaItemsChunkFiltered(
+        limit: Int,
+        offset: Int,
+        excludedSources: List<String>,
     ): List<CachedMediaEntity>
 
     @Query("SELECT * FROM cached_music_tracks ORDER BY playlistOrder ASC")

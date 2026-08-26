@@ -933,6 +933,36 @@
     </string-array>
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
 
+    <!-- Overlay visibility mode -->
+    <string-array name="overlay_visibility_entries" translatable="false">
+        <item>@string/overlay_visibility_always_visible</item>
+        <item>@string/overlay_visibility_always_hidden</item>
+        <item>@string/overlay_visibility_hide_after</item>
+        <item>@string/overlay_visibility_show_after</item>
+    </string-array>
+    <string-array name="overlay_visibility_values" translatable="false">
+        <item>ALWAYS_VISIBLE</item>
+        <item>ALWAYS_HIDDEN</item>
+        <item>HIDE_AFTER_DELAY</item>
+        <item>SHOW_AFTER_DELAY</item>
+    </string-array>
+
+    <!-- Overlay visibility delay -->
+    <string-array name="overlay_visibility_delay_entries" translatable="false">
+        <item>@string/overlay_hide_2s</item>
+        <item>@string/overlay_hide_4s</item>
+        <item>@string/overlay_hide_6s</item>
+        <item>@string/overlay_hide_8s</item>
+        <item>@string/overlay_hide_10s</item>
+    </string-array>
+    <string-array name="overlay_visibility_delay_values" translatable="false">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+
     <!-- Overlay reveal timeout -->
     <string name="overlay_reveal_2s">2 seconds</string>
     <string name="overlay_reveal_4s">4 seconds*</string>
@@ -973,7 +1003,7 @@
     <string name="btn_blackout">Blackout screen, fade out media and overlays</string>
     <string name="btn_toggle_mute">Toggle mute/unmute audio</string>
     <string name="btn_toggle_pause">Pause/unpause video or photo timer</string>
-    <string name="btn_toggle_looping">Toggle looping for current video</string>
+    <string name="btn_toggle_looping">Toggle looping for current photo or video</string>
     <string-array name="button_action_entries" translatable="false">
         <item>@string/btn_ignore</item>
         <item>@string/btn_skip_next</item>
@@ -1564,4 +1594,17 @@
         <item>COUNTRY</item>
     </string-array>
     <string name="overlay_metadata_photo_location_default" translatable="false">CITY_COUNTRY</string>
+    <string-array name="portrait_rotation_entries" translatable="false">
+        <item>Disabled</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
+    </string-array>
+    <string-array name="portrait_rotation_values" translatable="false">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+    <string name="portrait_rotation_default" translatable="false">0</string>
 </resources>

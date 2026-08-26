@@ -63,7 +63,7 @@ class NCMemoriesRepository(
                                     credential = credential,
                                     clusterId = album.clusterId,
                                     vid = getTypeFilter(),
-                                )
+                                ),
                             )
                         }
                     }
@@ -85,10 +85,13 @@ class NCMemoriesRepository(
                                 client.getImages(
                                     credential = credential,
                                     clusterId = albumDaysResponse.first.clusterId,
-                                    dayIds = albumDaysResponse.second.body()?.map { it.dayId }
-                                        ?.joinToString(",") ?: "",
+                                    dayIds =
+                                        albumDaysResponse.second
+                                            .body()
+                                            ?.map { it.dayId }
+                                            ?.joinToString(",") ?: "",
                                     vid = getTypeFilter(),
-                                )
+                                ),
                             )
                         }
                     }
@@ -108,7 +111,7 @@ class NCMemoriesRepository(
                     if (response.isSuccessful) {
                         val albumImages = response.body()
                         if (albumImages != null) {
-                            Timber.d("Successfully fetched album: ${albumName}, images: ${albumImages.size}")
+                            Timber.d("Successfully fetched album: $albumName, images: ${albumImages.size}")
                             // Count completed albums
                             albumsWithImages.add(albumName)
 
@@ -117,7 +120,8 @@ class NCMemoriesRepository(
 
                             // Save album name for image ID lookup
                             albumImages.forEach { image ->
-                                albumNamesByImageId.getOrPut(image.fileId) { mutableSetOf() }
+                                albumNamesByImageId
+                                    .getOrPut(image.fileId) { mutableSetOf() }
                                     .add(albumName)
                             }
                         } else {
@@ -154,19 +158,21 @@ class NCMemoriesRepository(
                         }
                 Timber.d(
                     "Combined ${allImages.size} images from $fullAlbumsCount found albums " +
-                            "(${selectedAlbumIds.size} selected): ${uniqueImages.size} unique images remain",
+                        "(${selectedAlbumIds.size} selected): ${uniqueImages.size} unique images remain",
                 )
 
                 // fetch EXIF image info
                 // skip if just testing connection
-                val uniqueImagesFull = when(prefs.isTestConnection) {
-                    false -> {
-                        fetchExifInfo(uniqueImages)
+                val uniqueImagesFull =
+                    when (prefs.isTestConnection) {
+                        false -> {
+                            fetchExifInfo(uniqueImages)
+                        }
+
+                        true -> {
+                            uniqueImages
+                        }
                     }
-                    true -> {
-                        uniqueImages
-                    }
-                }
 
                 // Return a combined album with unique images
                 return@coroutineScope uniqueImagesFull
@@ -184,26 +190,31 @@ class NCMemoriesRepository(
             else -> null
         }
 
-    suspend fun getOptionalImages(imageSourceName: String, count: Int?): List<Image> =
+    suspend fun getOptionalImages(
+        imageSourceName: String,
+        count: Int?,
+    ): List<Image> =
         coroutineScope {
             try {
                 count ?: return@coroutineScope emptyList()
                 Timber.d("Fetching $count $imageSourceName images")
 
                 // define header value for favorites
-                val fav = when(imageSourceName) {
-                    prefs.favoritesName -> 1
-                    else -> null
-                }
+                val fav =
+                    when (imageSourceName) {
+                        prefs.favoritesName -> 1
+                        else -> null
+                    }
 
                 // fetch days for image source
-                val daysResponseDeferred = async {
-                    client.getDays(
-                        credential = credential,
-                        fav = fav,
-                        vid = getTypeFilter(),
-                    )
-                }
+                val daysResponseDeferred =
+                    async {
+                        client.getDays(
+                            credential = credential,
+                            fav = fav,
+                            vid = getTypeFilter(),
+                        )
+                    }
 
                 val daysResponse = daysResponseDeferred.await()
                 if (daysResponse.isSuccessful) {
@@ -216,16 +227,18 @@ class NCMemoriesRepository(
                     // fetch images from days
                     Timber.d("Attempting to fetch ${allDays.size} $imageSourceName days")
 
-                    val allImagesResponseDeferred = async {
-                        client.getImages(
-                            credential = credential,
-                            dayIds = allDays
-                                .map { it.dayId }
-                                .joinToString(","),
-                            fav = fav,
-                            vid = getTypeFilter(),
-                        )
-                    }
+                    val allImagesResponseDeferred =
+                        async {
+                            client.getImages(
+                                credential = credential,
+                                dayIds =
+                                    allDays
+                                        .map { it.dayId }
+                                        .joinToString(","),
+                                fav = fav,
+                                vid = getTypeFilter(),
+                            )
+                        }
 
                     val allImagesResponse = allImagesResponseDeferred.await()
                     if (allImagesResponse.isSuccessful) {
@@ -235,27 +248,32 @@ class NCMemoriesRepository(
                             throw Exception("No images found in $imageSourceName")
                         }
 
-                        val limitedImages = allImages
-                            .take(count)
-                            .map { it.copy(albumName = imageSourceName) }
+                        val limitedImages =
+                            allImages
+                                .take(count)
+                                .map { it.copy(albumName = imageSourceName) }
 
                         // fetch EXIF image info
                         // skip if just testing connection
-                        val limitedImagesFull = when(prefs.isTestConnection) {
-                            false -> {
-                                fetchExifInfo(limitedImages)
+                        val limitedImagesFull =
+                            when (prefs.isTestConnection) {
+                                false -> {
+                                    fetchExifInfo(limitedImages)
+                                }
+
+                                true -> {
+                                    limitedImages
+                                }
                             }
-                            true -> {
-                                limitedImages
-                            }
-                        }
 
                         Timber.d("Successfully fetched ${limitedImagesFull.size} $imageSourceName images (from ${allImages.size} total)")
                         return@coroutineScope limitedImagesFull
                     } else {
                         val errorBody = allImagesResponse.errorBody()?.string()
                         Timber.e("Failed to fetch $imageSourceName images from days. Code: ${allImagesResponse.code()}, Error: $errorBody")
-                        throw Exception("Failed to fetch $imageSourceName images from days: ${allImagesResponse.code()} - ${allImagesResponse.message()}")
+                        throw Exception(
+                            "Failed to fetch $imageSourceName images from days: ${allImagesResponse.code()} - ${allImagesResponse.message()}",
+                        )
                     }
                 } else {
                     val errorBody = daysResponse.errorBody()?.string()
@@ -279,8 +297,8 @@ class NCMemoriesRepository(
                             image,
                             client.getFullImageInfo(
                                 credential = credential,
-                                fileId = image.fileId
-                            )
+                                fileId = image.fileId,
+                            ),
                         )
                     }
                 }
@@ -351,7 +369,8 @@ class NCMemoriesRepository(
                 val albumListQuery = albumListQueryDeferred.await()
                 if (albumListQuery.isSuccessful) {
                     val serverAlbumList = albumListQuery.body() ?: emptyList()
-                    val selectedAlbumList = if (!serverAlbumList.isEmpty()) {
+                    val selectedAlbumList =
+                        if (!serverAlbumList.isEmpty()) {
                             serverAlbumList.filter { it.albumId.toString() in selectedAlbumIDs }
                         } else {
                             emptyList()

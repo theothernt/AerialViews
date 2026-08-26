@@ -18,5 +18,5 @@ enum class ButtonType {
     BLACK_OUT_MODE, // Hide overlays + video, black screen
     TOGGLE_MUTE, // Toggle audio mute/unmute
     TOGGLE_PAUSE, // Pause/unpause video or photo timer
-    TOGGLE_LOOPING, // Toggle looping for current video
+    TOGGLE_LOOPING, // Toggle looping for current photo or video
 }

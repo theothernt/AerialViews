@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Bundle
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
@@ -38,8 +39,8 @@ import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -61,6 +62,7 @@ class MediaService(
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
+        val wifiOnly: Boolean = false,
     ) {
         companion object {
             fun fromPreferences() =
@@ -74,6 +76,7 @@ class MediaService(
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
+                    wifiOnly = GeneralPrefs.wifiOnly,
                 )
         }
     }
@@ -119,6 +122,9 @@ class MediaService(
     suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
             val settingsHash = hashFn?.invoke() ?: buildCompositeHash()
+            val networkType = NetworkHelper.getNetworkType(context)
+            val filterRemote = config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)
+            Timber.i("MediaService: Network: $networkType | WiFi-only mode: ${config.wifiOnly} | Filtering remote sources: $filterRemote")
             val cacheRepo =
                 if (config.playlistCache) {
                     com.neilturner.aerialviews.data
@@ -129,7 +135,7 @@ class MediaService(
 
             if (config.playlistCache) {
                 if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
-                    val cached = cacheRepo.getCachedPlaylist()
+                    val cached = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
                     if (cached != null) {
                         onStatus(LoadingStatus.RESUMING)
                         Timber.i("MediaService: USING CACHED PLAYLIST")
@@ -267,7 +273,7 @@ class MediaService(
                     shuffleEnabled = config.shuffleVideos,
                 )
 
-                val cachedResult = cacheRepo.getCachedPlaylist()
+                val cachedResult = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
                 if (cachedResult != null) {
                     Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
                     return@withContext cachedResult
@@ -278,11 +284,32 @@ class MediaService(
             }
 
             // Cache disabled or cache read-back failed: all items in memory, no DB
+            if (filterRemote) {
+                val before = filteredMedia.size
+                filteredMedia = filteredMedia.filter { it.source !in remoteSources }
+                Timber.i("MediaService: WiFi-only filter removed ${before - filteredMedia.size} remote items (in-memory path)")
+            }
+
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,
             )
         }
+
+    companion object {
+        private val remoteSources =
+            setOf(
+                AerialMediaSource.APPLE,
+                AerialMediaSource.AMAZON,
+                AerialMediaSource.COMM1,
+                AerialMediaSource.COMM2,
+                AerialMediaSource.CUSTOM,
+                AerialMediaSource.RTSP,
+                AerialMediaSource.HLS,
+                AerialMediaSource.IMMICH,
+                AerialMediaSource.NCMEMORIES,
+            )
+    }
 
     private fun trackMediaUsage(media: List<AerialMedia>) {
         // Count distinct sources
@@ -308,9 +335,15 @@ class MediaService(
     private fun generalizeCount(count: Int): String =
         when {
             count == 0 -> "0"
+
             count < 10 -> "<10"
-            count < 100 -> "${(count / 10) * 10}"  // Round to nearest 10
-            count < 1000 -> "${(count / 100) * 100}"  // Round to nearest 100
-            else -> "${(count / 1000) * 1000}"  // Round to nearest 1000
+
+            count < 100 -> "${(count / 10) * 10}"
+
+            // Round to nearest 10
+            count < 1000 -> "${(count / 100) * 100}"
+
+            // Round to nearest 100
+            else -> "${(count / 1000) * 1000}" // Round to nearest 1000
         }
 }

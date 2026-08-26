@@ -190,7 +190,7 @@ class NCMemoriesVideosFragment :
         DialogHelper.showOnMain(
             requireContext(),
             getString(R.string.ncmemories_media_test_results),
-            message
+            message,
         )
     }
 
@@ -203,7 +203,8 @@ class NCMemoriesVideosFragment :
             )
         progressDialog.show()
 
-        val allCredentialsPresent = NCMemoriesMediaPrefs.url.isNotEmpty() &&
+        val allCredentialsPresent =
+            NCMemoriesMediaPrefs.url.isNotEmpty() &&
                 NCMemoriesMediaPrefs.username.isNotEmpty() &&
                 NCMemoriesMediaPrefs.password.isNotEmpty()
 

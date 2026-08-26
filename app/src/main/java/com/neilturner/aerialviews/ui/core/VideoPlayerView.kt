@@ -7,6 +7,7 @@ import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.VideoSize
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -20,9 +21,9 @@ import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFacto
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
+import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
-import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
@@ -83,11 +84,7 @@ class VideoPlayerView
             player = exoPlayer
             player?.addListener(this)
 
-            if (GeneralPrefs.loopUntilSkipped) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-            } else {
-                player?.repeatMode = Player.REPEAT_MODE_OFF
-            }
+            player?.repeatMode = Player.REPEAT_MODE_OFF
 
             controllerAutoShow = false
             useController = false
@@ -117,43 +114,11 @@ class VideoPlayerView
             cancelVolumeFade()
         }
 
-        fun toggleLooping() {
-            if (isDestroyed) return
-
-            GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-
-            if (GeneralPrefs.loopUntilSkipped) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL
-            } else {
-                val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-                val isLengthLimited = maxVideoLength >= 10000
-                val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
-                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
-                    player?.repeatMode = Player.REPEAT_MODE_ALL
-                } else {
-                    player?.repeatMode = Player.REPEAT_MODE_OFF
-                }
-            }
-
-            setupAlmostFinishedRunnable()
-
-            // Traverse up to root view to find notification container
-            var viewGroup = parent as? ViewGroup
-            var notificationContainer: ViewGroup? = null
-            while (viewGroup != null && notificationContainer == null) {
-                notificationContainer = viewGroup.findViewById(R.id.notification_container)
-                viewGroup = viewGroup.parent as? ViewGroup
-            }
-            if (notificationContainer != null) {
-                val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
-                NotificationHelper.show(notificationContainer, message)
-            }
-        }
-
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
             state.type = media.source
             cancelVolumeFade()
+            resetRotation()
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -183,16 +148,20 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
-            if (forcedMuted || !GeneralPrefs.playsVideoAudio) {
+            if (forcedMuted) {
                 applyMuteState()
                 return
             }
             if (isMuted) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                if (GeneralPrefs.muteDisablesAudioTrack) {
+                    VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
                 isMuted = false
             } else {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                if (GeneralPrefs.muteDisablesAudioTrack) {
+                    VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                }
                 exoPlayer.volume = 0f
                 isMuted = true
             }
@@ -204,19 +173,16 @@ class VideoPlayerView
         }
 
         private fun applyMuteState() {
-            if (!GeneralPrefs.playsVideoAudio) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
-                exoPlayer.volume = 0f
-                isMuted = false
-                return
-            }
-
             val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                if (GeneralPrefs.muteDisablesAudioTrack) {
+                    VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                }
                 exoPlayer.volume = 0f
             } else {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                if (GeneralPrefs.muteDisablesAudioTrack) {
+                    VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
             isMuted = shouldMute && !forcedMuted
@@ -288,15 +254,13 @@ class VideoPlayerView
                 state.endPosition = result.second
 
                 // Dynamically set repeat mode based on whether it's a short video that should loop
-                if (!GeneralPrefs.loopUntilSkipped) {
-                    val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-                    val isLengthLimited = maxVideoLength >= 10000
-                    val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
-                    if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
-                        player?.repeatMode = Player.REPEAT_MODE_ALL
-                    } else {
-                        player?.repeatMode = Player.REPEAT_MODE_OFF
-                    }
+                val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+                val isLengthLimited = maxVideoLength >= 10000
+                val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
+                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                    player?.repeatMode = Player.REPEAT_MODE_ALL
+                } else {
+                    player?.repeatMode = Player.REPEAT_MODE_OFF
                 }
 
                 state.prepared = true
@@ -373,6 +337,66 @@ class VideoPlayerView
         override fun onPlayerErrorChanged(error: PlaybackException?) {
             super.onPlayerErrorChanged(error)
             error?.let { Timber.e(it) }
+        }
+
+        @Suppress("DEPRECATION")
+        @OptIn(UnstableApi::class)
+        override fun onVideoSizeChanged(videoSize: VideoSize) {
+            super.onVideoSizeChanged(videoSize)
+
+            val w = videoSize.width
+            val h = videoSize.height
+            val unapplied = videoSize.unappliedRotationDegrees
+            Timber.i("Video size: ${w}x${h}, unappliedRotationDegrees=$unapplied")
+
+            if (!GeneralPrefs.portraitVideoRotationEnabled) return
+
+            if (GeneralPrefs.useTextureViewForVideo) {
+                Timber.i("Portrait rotation fix: skipped (TextureView mode)")
+                return
+            }
+
+            // Portrait detection: taller than wide (before any rotation)
+            val isPortrait = h > w
+            if (!isPortrait) {
+                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x${h})")
+                resetRotation()
+                return
+            }
+
+            val degrees = GeneralPrefs.portraitVideoRotationDegrees.toFloatOrNull() ?: return
+            applyRotationFix(degrees)
+        }
+
+        private fun applyRotationFix(degrees: Float) {
+            post {
+                val containerW = width.toFloat()
+                val containerH = height.toFloat()
+                if (containerW == 0f || containerH == 0f) return@post
+
+                // After a 90°/270° rotation the view's layout axes are swapped,
+                // so scale by containerH/containerW to fill the screen width.
+                val scale =
+                    when (degrees) {
+                        90f, 270f -> containerH / containerW
+                        else -> 1f // 180° — aspect ratio unchanged, no scale needed
+                    }
+
+                Timber.i(
+                    "Portrait rotation fix: applying ${degrees}° rotation, scale=$scale " +
+                        "(container ${containerW.toInt()}x${containerH.toInt()})",
+                )
+
+                rotation = degrees
+                scaleX = scale
+                scaleY = scale
+            }
+        }
+
+        private fun resetRotation() {
+            rotation = 0f
+            scaleX = 1f
+            scaleY = 1f
         }
 
         private fun emitTrackMetadata() {
@@ -454,12 +478,8 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
-                if (GeneralPrefs.loopUntilSkipped) {
-                    Timber.i("The video will only finish when skipped manually")
-                } else {
-                    postDelayed(almostFinishedRunnable, 2 * 1000)
-                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
-                }
+                postDelayed(almostFinishedRunnable, 2 * 1000)
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
             }
 
@@ -501,7 +521,7 @@ class VideoPlayerView
                 )
             }
 
-            if (GeneralPrefs.loopUntilSkipped || (state.type == AerialMediaSource.RTSP && state.endPosition == 0L)) {
+            if (state.type == AerialMediaSource.RTSP && state.endPosition == 0L) {
                 Timber.i("The video will only finish when skipped manually")
             } else {
                 Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")

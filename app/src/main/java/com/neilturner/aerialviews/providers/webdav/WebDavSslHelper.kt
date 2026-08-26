@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.providers.webdav
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -10,14 +11,23 @@ import javax.net.ssl.X509TrustManager
 
 internal object WebDavSslHelper {
     fun createOkHttpClient(validateSsl: Boolean): OkHttpClient {
-        return if (validateSsl) {
-            OkHttpClient.Builder().build()
-        } else {
-            createTrustAllClient()
-        }
+        val builder =
+            if (validateSsl) {
+                OkHttpClient.Builder()
+            } else {
+                createTrustAllClientBuilder()
+            }
+
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            }
+        builder.addInterceptor(logging)
+
+        return builder.build()
     }
 
-    private fun createTrustAllClient(): OkHttpClient {
+    private fun createTrustAllClientBuilder(): OkHttpClient.Builder {
         val trustAllCerts =
             arrayOf<TrustManager>(
                 object : X509TrustManager {
@@ -43,13 +53,13 @@ internal object WebDavSslHelper {
                     init(null, trustAllCerts, SecureRandom())
                 }
 
-            OkHttpClient.Builder()
+            OkHttpClient
+                .Builder()
                 .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
                 .hostnameVerifier { _, _ -> true }
-                .build()
         } catch (e: Exception) {
             Timber.e(e, "Error setting up SSL: ${e.message}")
-            OkHttpClient.Builder().build()
+            OkHttpClient.Builder()
         }
     }
 }

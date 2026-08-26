@@ -276,6 +276,8 @@ object InputHelper {
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
             controller?.blackOutMode == true &&
+            action != ButtonType.EXIT &&
+            action != ButtonType.EXIT_TO_SETTINGS &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
             // Timber.i("Action: toggleBlackOutMode")

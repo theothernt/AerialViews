@@ -51,7 +51,7 @@ internal object ImagePlayerHelper {
 
     fun buildOkHttpClient(
         validateSsl: Boolean = true,
-        source: AerialMediaSource? = null
+        source: AerialMediaSource? = null,
     ): OkHttpClient {
         val serverConfig = ServerConfig("", validateSsl)
         val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
@@ -67,16 +67,11 @@ internal object ImagePlayerHelper {
                         builder.addInterceptor(NCMemoriesAuthInterceptor())
                     }
 
-                    AerialMediaSource.WEBDAV -> {
-                        builder.addInterceptor(WebDavAuthInterceptor())
-                    }
-
                     else -> {
                         // no additional headers
                     }
                 }
-            }
-            .build()
+            }.build()
     }
 
     internal class ImmichApiKeyInterceptor : Interceptor {
@@ -108,44 +103,19 @@ internal object ImagePlayerHelper {
                 if (NCMemoriesMediaPrefs.enabled) {
                     Timber.d("Adding Nextcloud Memories headers")
 
-                    val credential = Credentials.basic(
-                        NCMemoriesMediaPrefs.username,
-                        NCMemoriesMediaPrefs.password,
-                    )
+                    val credential =
+                        Credentials.basic(
+                            NCMemoriesMediaPrefs.username,
+                            NCMemoriesMediaPrefs.password,
+                        )
 
                     originalRequest
                         .newBuilder()
                         .addHeader("Authorization", credential)
                         .addHeader("OCS-APIRequest", "true")
                         .build()
-                }
-                else {
+                } else {
                     Timber.d("Skipping Nextcloud Memories request headers")
-                    originalRequest
-                }
-            return chain.proceed(newRequest)
-        }
-    }
-
-    internal class WebDavAuthInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val originalRequest = chain.request()
-            val newRequest =
-                if (WebDavMediaPrefs2.enabled && WebDavMediaPrefs2.userName.isNotEmpty()) {
-                    Timber.d("Adding WebDAV Authorization header")
-
-                    val credential = Credentials.basic(
-                        WebDavMediaPrefs2.userName,
-                        WebDavMediaPrefs2.password,
-                    )
-
-                    originalRequest
-                        .newBuilder()
-                        .addHeader("Authorization", credential)
-                        .build()
-                }
-                else {
-                    Timber.d("Skipping WebDAV Authorization header")
                     originalRequest
                 }
             return chain.proceed(newRequest)
@@ -171,7 +141,7 @@ internal object ImagePlayerHelper {
         val client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
-            client.setCredentials(userName, password)
+            client.setCredentials(userName, password, true)
             val cleanUrl = stripUserinfo(uri.toString())
             return client.get(cleanUrl)
         } catch (ex: Exception) {
@@ -188,7 +158,8 @@ internal object ImagePlayerHelper {
         if (WebDavMediaPrefs.hostName.isNotBlank()) {
             val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs.hostName) }.getOrNull()
             if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
-                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
+                val prefPort =
+                    parsed.port ?: defaultPortFor(WebDavMediaPrefs.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
                 if (port == null || port == prefPort) return WebDavMediaPrefs.validateSsl
             }
         }
@@ -196,7 +167,8 @@ internal object ImagePlayerHelper {
         if (WebDavMediaPrefs2.hostName.isNotBlank()) {
             val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs2.hostName) }.getOrNull()
             if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
-                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs2.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
+                val prefPort =
+                    parsed.port ?: defaultPortFor(WebDavMediaPrefs2.scheme ?: com.neilturner.aerialviews.models.enums.SchemeType.HTTP)
                 if (port == null || port == prefPort) return WebDavMediaPrefs2.validateSsl
             }
         }
@@ -245,10 +217,11 @@ internal object ImagePlayerHelper {
 
     fun streamFromImmichFile(uri: Uri): InputStream? =
         try {
-            val client = buildOkHttpClient(
-                validateSsl = ImmichMediaPrefs.validateSsl,
-                source = AerialMediaSource.IMMICH,
-            )
+            val client =
+                buildOkHttpClient(
+                    validateSsl = ImmichMediaPrefs.validateSsl,
+                    source = AerialMediaSource.IMMICH,
+                )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) {
@@ -269,10 +242,11 @@ internal object ImagePlayerHelper {
 
     fun streamFromNCMemoriesFile(uri: Uri): InputStream? =
         try {
-            val client = buildOkHttpClient(
-                validateSsl = NCMemoriesMediaPrefs.validateSsl,
-                source = AerialMediaSource.NCMEMORIES,
-            )
+            val client =
+                buildOkHttpClient(
+                    validateSsl = NCMemoriesMediaPrefs.validateSsl,
+                    source = AerialMediaSource.NCMEMORIES,
+                )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) {
