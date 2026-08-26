@@ -85,19 +85,13 @@ class NCMemoriesRepository(
                 val albumImagesResponsesDeferred =
                     albumDaysSuccess.map { albumDaysResponse ->
                         async {
-                            Pair(
-                                albumDaysResponse.first.name,
-                                client.getImages(
-                                    credential = credential,
+                            val albumImages =
+                                fetchImagesByDayIds(
+                                    dayIds = albumDaysResponse.second.body()?.map { it.dayId } ?: emptyList(),
                                     clusterId = albumDaysResponse.first.clusterId,
-                                    dayIds =
-                                        albumDaysResponse.second
-                                            .body()
-                                            ?.map { it.dayId }
-                                            ?.joinToString(",") ?: "",
                                     vid = getTypeFilter(),
-                                ),
-                            )
+                                )
+                            Pair(albumDaysResponse.first.name, albumImages)
                         }
                     }
                 val albumImagesResponses = albumImagesResponsesDeferred.awaitAll()
@@ -110,32 +104,24 @@ class NCMemoriesRepository(
 
                 for (albumImagesResponse in albumImagesResponses) {
                     val albumName = albumImagesResponse.first
-                    val response = albumImagesResponse.second
-                    Timber.d("Completed API request for album $albumName - URL: ${response.raw().request.url}")
+                    val albumImages = albumImagesResponse.second
 
-                    if (response.isSuccessful) {
-                        val albumImages = response.body()
-                        if (albumImages != null) {
-                            Timber.d("Successfully fetched album: $albumName, images: ${albumImages.size}")
-                            // Count completed albums
-                            albumsWithImages.add(albumName)
+                    if (albumImages.isNotEmpty()) {
+                        Timber.d("Successfully fetched album: $albumName, images: ${albumImages.size}")
+                        // Count completed albums
+                        albumsWithImages.add(albumName)
 
-                            // Add album images to combined list
-                            allImages.addAll(albumImages.map { it.copy(albumName = albumName) })
+                        // Add album images to combined list
+                        allImages.addAll(albumImages.map { it.copy(albumName = albumName) })
 
-                            // Save album name for image ID lookup
-                            albumImages.forEach { image ->
-                                albumNamesByImageId
-                                    .getOrPut(image.fileId) { mutableSetOf() }
-                                    .add(albumName)
-                            }
-                        } else {
-                            Timber.e("Received empty image list from successful days response for album: $albumName")
+                        // Save album name for image ID lookup
+                        albumImages.forEach { image ->
+                            albumNamesByImageId
+                                .getOrPut(image.fileId) { mutableSetOf() }
+                                .add(albumName)
                         }
                     } else {
-                        val errorBody = response.errorBody()?.string()
-                        Timber.e("Failed to fetch images in $albumName. Code: ${response.code()}, Error: $errorBody")
-                        // Continue with other albums instead of failing completely
+                        Timber.e("Received empty image list for album: $albumName")
                     }
                 }
 
@@ -232,54 +218,37 @@ class NCMemoriesRepository(
                     // fetch images from days
                     Timber.d("Attempting to fetch ${allDays.size} $imageSourceName days")
 
-                    val allImagesResponseDeferred =
-                        async {
-                            client.getImages(
-                                credential = credential,
-                                dayIds =
-                                    allDays
-                                        .map { it.dayId }
-                                        .joinToString(","),
-                                fav = fav,
-                                vid = getTypeFilter(),
-                            )
-                        }
+                    val allImages =
+                        fetchImagesByDayIds(
+                            dayIds = allDays.map { it.dayId },
+                            fav = fav,
+                            vid = getTypeFilter(),
+                        )
 
-                    val allImagesResponse = allImagesResponseDeferred.await()
-                    if (allImagesResponse.isSuccessful) {
-                        val allImages = allImagesResponse.body() ?: emptyList()
+                    if (allImages.isEmpty()) {
+                        throw Exception("No images found in $imageSourceName")
+                    }
 
-                        if (allImages.isEmpty()) {
-                            throw Exception("No images found in $imageSourceName")
-                        }
+                    val limitedImages =
+                        allImages
+                            .take(count)
+                            .map { it.copy(albumName = imageSourceName) }
 
-                        val limitedImages =
-                            allImages
-                                .take(count)
-                                .map { it.copy(albumName = imageSourceName) }
-
-                        // fetch EXIF image info
-                        // skip if just testing connection
-                        val limitedImagesFull =
-                            when (prefs.isTestConnection) {
-                                false -> {
-                                    fetchExifInfo(limitedImages)
-                                }
-
-                                true -> {
-                                    limitedImages
-                                }
+                    // fetch EXIF image info
+                    // skip if just testing connection
+                    val limitedImagesFull =
+                        when (prefs.isTestConnection) {
+                            false -> {
+                                fetchExifInfo(limitedImages)
                             }
 
-                        Timber.d("Successfully fetched ${limitedImagesFull.size} $imageSourceName images (from ${allImages.size} total)")
-                        return@coroutineScope limitedImagesFull
-                    } else {
-                        val errorBody = allImagesResponse.errorBody()?.string()
-                        Timber.e("Failed to fetch $imageSourceName images from days. Code: ${allImagesResponse.code()}, Error: $errorBody")
-                        throw Exception(
-                            "Failed to fetch $imageSourceName images from days: ${allImagesResponse.code()} - ${allImagesResponse.message()}",
-                        )
-                    }
+                            true -> {
+                                limitedImages
+                            }
+                        }
+
+                    Timber.d("Successfully fetched ${limitedImagesFull.size} $imageSourceName images (from ${allImages.size} total)")
+                    return@coroutineScope limitedImagesFull
                 } else {
                     val errorBody = daysResponse.errorBody()?.string()
                     Timber.e("Failed to fetch $imageSourceName days. Code: ${daysResponse.code()}, Error: $errorBody")
