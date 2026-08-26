@@ -5,7 +5,7 @@ import com.neilturner.aerialviews.data.network.ServerConfig
 import com.neilturner.aerialviews.data.network.SslHelper
 import com.neilturner.aerialviews.data.network.UrlParser
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
-import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
+import com.neilturner.aerialviews.models.prefs.NCMemoriesRepositoryPrefs
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,31 +18,35 @@ import kotlin.collections.joinToString
 import kotlin.collections.map
 
 class NCMemoriesRepository(
-    private val prefs: NCMemoriesMediaPrefs,
+    private val prefs: NCMemoriesRepositoryPrefs,
+    private val apiOverride: NCMemoriesApi? = null,
 ) {
-    lateinit var server: String
-    lateinit var credential: String
+    var server: String = ""
+    var credential: String = ""
+
+    init {
+        server = UrlParser.parseServerUrl(prefs.url)
+        credential = Credentials.basic(prefs.username, prefs.password)
+    }
 
     private companion object {
         const val DAY_IDS_BATCH_SIZE = 100
     }
 
     private val client by lazy {
+        apiOverride ?: run {
+            val serverConfig = ServerConfig(server, prefs.validateSsl)
+            val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
+            Timber.i("Connecting to $server")
 
-        server = UrlParser.parseServerUrl(prefs.url)
-        credential = Credentials.basic(prefs.username, prefs.password)
-
-        val serverConfig = ServerConfig(server, prefs.validateSsl)
-        val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
-        Timber.i("Connecting to $server")
-
-        Retrofit
-            .Builder()
-            .baseUrl(server)
-            .client(okHttpClient)
-            .addConverterFactory(buildSerializer())
-            .build()
-            .create(NCMemoriesApi::class.java)
+            Retrofit
+                .Builder()
+                .baseUrl(server)
+                .client(okHttpClient)
+                .addConverterFactory(buildSerializer())
+                .build()
+                .create(NCMemoriesApi::class.java)
+        }
     }
 
     suspend fun getSelectedAlbums(): List<Image> =
@@ -260,7 +264,7 @@ class NCMemoriesRepository(
             }
         }
 
-    private suspend fun fetchExifInfo(images: List<Image>): List<Image> =
+    internal suspend fun fetchExifInfo(images: List<Image>): List<Image> =
         coroutineScope {
             val imagesWithExif = mutableListOf<Image>()
             val semaphore = Semaphore(2)
@@ -320,7 +324,7 @@ class NCMemoriesRepository(
             return@coroutineScope imagesWithExif
         }
 
-    private suspend fun fetchImagesByDayIds(
+    internal suspend fun fetchImagesByDayIds(
         dayIds: List<Int>,
         clusterId: String? = null,
         fav: Int? = null,
@@ -391,7 +395,7 @@ class NCMemoriesRepository(
             }
         }
 
-    suspend fun fetchClusterNames(selectedAlbumIDs: MutableSet<String>): List<Album> =
+    suspend fun fetchClusterNames(selectedAlbumIDs: Set<String>): List<Album> =
         coroutineScope {
             try {
                 val albumListQueryDeferred = async { client.getAlbumList(credential) }
