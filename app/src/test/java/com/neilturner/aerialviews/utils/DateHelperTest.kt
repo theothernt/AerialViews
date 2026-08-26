@@ -208,6 +208,43 @@ internal class DateHelperTest {
         assertNull(result)
     }
 
+    // ─── Formatter timezone regression (TimeZone.getTimeZone overload bug) ────
+    // These tests catch the silent GMT fallback in TimeZone.getTimeZone(String)
+    // when given a "+HH:mm" offset string. The formatter must use the correct
+    // offset or the displayed hour will be wrong.
+
+    @Test
+    @DisplayName("Formatter should use EXIF offset, not silently fall back to GMT (positive offset)")
+    fun testFormatterUsesPositiveOffset() {
+        // EXIF local time 00:30 at +02:00. The Instant is 2025-01-14T22:30:00Z.
+        // A formatter silently in GMT would render "22:30" (the previous UTC hour).
+        // The correct formatter at +02:00 must render "00:30".
+        val result =
+            DateHelper.formatExifDate(
+                date = "2025:01:15 00:30:00",
+                offset = "+02:00",
+                type = DateType.CUSTOM,
+                custom = "HH:mm",
+            )
+        assertEquals("00:30", result)
+    }
+
+    @Test
+    @DisplayName("Formatter should use EXIF offset, not silently fall back to GMT (negative offset)")
+    fun testFormatterUsesNegativeOffset() {
+        // EXIF local time 03:00 at -05:00. The Instant is 2025-01-15T08:00:00Z.
+        // A formatter silently in GMT would render "08:00".
+        // The correct formatter at -05:00 must render "03:00".
+        val result =
+            DateHelper.formatExifDate(
+                date = "2025:01:15 03:00:00",
+                offset = "-05:00",
+                type = DateType.CUSTOM,
+                custom = "HH:mm",
+            )
+        assertEquals("03:00", result)
+    }
+
     // ─── Original regression tests ────────────────────────────────────────────
 
     @Test
