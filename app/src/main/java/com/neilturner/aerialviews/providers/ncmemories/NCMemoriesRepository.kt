@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Semaphore
 import kotlinx.serialization.json.Json
 import okhttp3.Credentials
 import retrofit2.Retrofit
@@ -21,6 +22,10 @@ class NCMemoriesRepository(
 ) {
     lateinit var server: String
     lateinit var credential: String
+
+    private companion object {
+        const val DAY_IDS_BATCH_SIZE = 100
+    }
 
     private val client by lazy {
 
@@ -289,45 +294,101 @@ class NCMemoriesRepository(
     private suspend fun fetchExifInfo(images: List<Image>): List<Image> =
         coroutineScope {
             val imagesWithExif = mutableListOf<Image>()
+            val semaphore = Semaphore(2)
 
-            val imageInfoDeferreds =
+            val imageInfoDeferred =
                 images.map { image ->
                     async {
-                        Pair(
-                            image,
-                            client.getFullImageInfo(
+                        semaphore.acquire()
+                        try {
+                            val response = client.getFullImageInfo(
                                 credential = credential,
                                 fileId = image.fileId,
-                            ),
-                        )
+                            )
+                            Pair(image, Result.success(response))
+                        } catch (e: Exception) {
+                            Timber.e(e, "Exception while fetching EXIF for image ${image.fileId}")
+                            Pair(image, Result.failure(e))
+                        } finally {
+                            semaphore.release()
+                        }
                     }
                 }
 
-            val imageInfoResponses = imageInfoDeferreds.awaitAll()
+            val imageInfoResponses = imageInfoDeferred.awaitAll()
 
             for (imageInfoResponsePair in imageInfoResponses) {
-                val imageId = imageInfoResponsePair.first.fileId
-                val albumName = imageInfoResponsePair.first.albumName
-                val imageInfoResponse = imageInfoResponsePair.second
-                Timber.d("API Request for image $imageId - URL: ${imageInfoResponse.raw().request.url}")
+                val image = imageInfoResponsePair.first
+                val result = imageInfoResponsePair.second
 
-                if (imageInfoResponse.isSuccessful) {
-                    val exifResponse = imageInfoResponse.body()
-                    if (exifResponse != null) {
-                        Timber.d("Successfully fetched image EXIF: ${exifResponse.baseName}")
+                result.fold(
+                    onSuccess = { response ->
+                        Timber.d("API Request for image ${image.fileId} - URL: ${response.raw().request.url}")
 
-                        // reapply album name after EXIF request
-                        imagesWithExif.add(exifResponse.copy(albumName = albumName))
-                    } else {
-                        Timber.e("Received null image from successful response for image ID: $imageId")
-                    }
-                } else {
-                    val errorBody = imageInfoResponse.errorBody()?.string()
-                    Timber.e("Failed to fetch image info $imageId. Code: ${imageInfoResponse.code()}, Error: $errorBody")
-                    // Continue with other images
-                }
+                        if (response.isSuccessful) {
+                            val exifResponse = response.body()
+                            if (exifResponse != null) {
+                                Timber.d("Successfully fetched image EXIF: ${exifResponse.baseName}")
+
+                                // reapply album name after EXIF request
+                                imagesWithExif.add(exifResponse.copy(albumName = image.albumName))
+                            } else {
+                                Timber.e("Received null image from successful response for image ID: ${image.fileId}")
+                                imagesWithExif.add(image)
+                            }
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Timber.e("Failed to fetch image info ${image.fileId}. Code: ${response.code()}, Error: $errorBody")
+                            imagesWithExif.add(image)
+                        }
+                    },
+                    onFailure = { e ->
+                        Timber.e(e, "Failed to fetch EXIF for image ${image.fileId}")
+                        imagesWithExif.add(image)
+                    },
+                )
             }
             return@coroutineScope imagesWithExif
+        }
+
+    private suspend fun fetchImagesByDayIds(
+        dayIds: List<Int>,
+        clusterId: String? = null,
+        fav: Int? = null,
+        vid: Int? = null,
+    ): List<Image> =
+        coroutineScope {
+            if (dayIds.isEmpty()) return@coroutineScope emptyList()
+
+            val batches = dayIds.chunked(DAY_IDS_BATCH_SIZE)
+            Timber.d("Fetching images for ${dayIds.size} days in ${batches.size} batches of max $DAY_IDS_BATCH_SIZE")
+
+            val responses =
+                batches.map { batch ->
+                    async {
+                        client.getImages(
+                            credential = credential,
+                            dayIds = batch.joinToString(","),
+                            clusterId = clusterId,
+                            fav = fav,
+                            vid = vid,
+                        )
+                    }
+                }.awaitAll()
+
+            val allImages = mutableListOf<Image>()
+            for (response in responses) {
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        allImages.addAll(body)
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Timber.e("Failed to fetch images for day batch. Code: ${response.code()}, Error: $errorBody")
+                }
+            }
+            return@coroutineScope allImages
         }
 
     suspend fun fetchAlbumList(): Result<List<Album>> =
