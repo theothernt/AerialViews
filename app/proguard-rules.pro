@@ -8,21 +8,33 @@
 # Firebase Crashlytics
  -keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
 
-# Kotlin Serialization
--keepclassmembers class ** {
+# Kotlinx Serialization
+-keepattributes *Annotation*, InnerClasses, Signature, Exceptions
+-keepclassmembers class * {
+    @kotlinx.serialization.SerialName <fields>;
+}
+-keepnames @kotlinx.serialization.Serializable class * { *; }
+-if class * {
+    @kotlinx.serialization.Serializable class *;
+}
+-keepclassmembers class <1> {
     *** Companion;
-}
--keepnames class ** {
-    @kotlinx.serialization.Serializable *;
-}
--keepclassmembers class ** {
     *** serializer(...);
 }
 
-# Keep our Data Models (Retrofit/Room/Serialization)
--keep class com.neilturner.aerialviews.models.** { *; }
--keep class com.neilturner.aerialviews.data.** { *; }
--keep class com.neilturner.aerialviews.providers.** { *; }
+# Enums (Used by Kotpref enum preferences and Serialization)
+-keepclassmembers enum com.neilturner.aerialviews.models.enums.** {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+    **[] $VALUES;
+    public static final <fields>;
+}
+
+# Retrofit (ImmichApi, NCMemoriesApi, CustomFeedApi, WeatherApi)
+-keepattributes RuntimeVisible*Annotations, RuntimeInvisible*Annotations
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
 
 # Sardine Android / XmlPullParser / Simple XML
 -keep class org.xmlpull.v1.** { *; }
