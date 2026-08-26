@@ -178,13 +178,16 @@ class NCMemoriesVideosFragment :
 
         // skip EXIF queries for quick response
         NCMemoriesMediaPrefs.isTestConnection = true
-        val provider = NCMemoriesMediaProvider(requireContext(), NCMemoriesMediaPrefs)
         val message =
-            when (val result = provider.fetch()) {
-                is ProviderFetchResult.Success -> result.summary
-                is ProviderFetchResult.Error -> result.message
+            try {
+                val provider = NCMemoriesMediaProvider(requireContext(), NCMemoriesMediaPrefs)
+                when (val result = provider.fetch()) {
+                    is ProviderFetchResult.Success -> result.summary
+                    is ProviderFetchResult.Error -> result.message
+                }
+            } finally {
+                NCMemoriesMediaPrefs.isTestConnection = false
             }
-        NCMemoriesMediaPrefs.isTestConnection = false
 
         progressDialog.dismiss()
         DialogHelper.showOnMain(
