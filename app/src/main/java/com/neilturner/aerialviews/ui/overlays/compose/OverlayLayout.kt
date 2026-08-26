@@ -35,7 +35,13 @@ fun OverlayLayout(
     modifier: Modifier = Modifier,
 ) {
     val prefs = GeneralPrefs
-    val autoHideValue = prefs.overlayAutoHide.toLongOrNull() ?: -1L
+    val autoHideValue =
+        when (prefs.overlayVisibility) {
+            "ALWAYS_VISIBLE" -> -1L
+            "ALWAYS_HIDDEN" -> 0L
+            "HIDE_AFTER_DELAY", "SHOW_AFTER_DELAY" -> prefs.overlayVisibilityDelay.toLongOrNull() ?: -1L
+            else -> -1L
+        }
     val revealTimeout = prefs.overlayRevealTimeout.toLongOrNull() ?: 4L
     val fadeDuration = prefs.overlayFadeInDuration.toLongOrNull() ?: 600L
     val fadeOutDuration = prefs.overlayFadeOutDuration.toLongOrNull() ?: 600L

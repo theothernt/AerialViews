@@ -147,10 +147,7 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
-        if (resumeIndex > 0) {
-            musicPlayer?.seekToTrack(resumeIndex)
-        }
-        musicPlayer?.play()
+        musicPlayer?.play(resumeIndex)
         Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
 
@@ -312,7 +309,9 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        videoPlayer.toggleLooping()
+        GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
+        val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     fun increaseBrightness() = changeBrightness(true)
