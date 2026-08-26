@@ -11,7 +11,8 @@ constraintlayout = "2.2.2"
 appcompat = "1.8.0"
 exifinterface = "1.4.2"
 desugar-jdk-libs = "2.1.5"
-room = "3.0.1"
+
+room3 = "3.0.1"
 sqlite = "2.7.0"
 
 firebase-bom = "34.18.0"
@@ -66,8 +67,8 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
-room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room" }
-room3-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room" }
+room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3" }
+room3-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room3" }
 sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "sqlite" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
@@ -135,7 +136,6 @@ kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logging"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
-room = ["room3-runtime"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

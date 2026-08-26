@@ -187,7 +187,7 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.ktor)
-    implementation(libs.bundles.room)
+    implementation(libs.room3.runtime)
     ksp(libs.room3.compiler)
     implementation(libs.sqlite.framework)
     implementation(libs.bundles.exoplayer)
