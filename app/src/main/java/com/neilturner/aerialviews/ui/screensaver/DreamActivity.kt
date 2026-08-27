@@ -19,6 +19,7 @@ import timber.log.Timber
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
     private val eventsReceiver = EventsReceiver()
+    private var musicSubscribed = false
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -45,6 +46,19 @@ class DreamActivity : DreamService() {
             controller = screenController,
             exit = ::altWakeUp,
         )
+
+        if (!musicSubscribed) {
+            eventsReceiver.subscribe<MusicEvent> { event ->
+                updateKeepScreenOn(event.isPlaying)
+            }
+            musicSubscribed = true
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        eventsReceiver.unsubscribe()
+        musicSubscribed = false
+        super.onDetachedFromWindow()
     }
 
     override fun onWakeUp() {
@@ -58,9 +72,6 @@ class DreamActivity : DreamService() {
     override fun onDreamingStarted() {
         super.onDreamingStarted()
         FirebaseHelper.analyticsScreenView("Screensaver", this)
-        eventsReceiver.subscribe<MusicEvent> { event ->
-            updateKeepScreenOn(event.isPlaying)
-        }
         // Start playback, etc
     }
 
@@ -105,7 +116,6 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
-        eventsReceiver.unsubscribe()
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
