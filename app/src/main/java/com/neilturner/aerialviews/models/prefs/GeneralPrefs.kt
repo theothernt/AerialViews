@@ -47,7 +47,6 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
     var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
-    var keepScreenOnWhileMusicPlaying by booleanPref(false, "keep_screen_on_while_music_playing")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")

@@ -6,20 +6,15 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.WindowManager
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
-    private val eventsReceiver = EventsReceiver()
-    private var musicSubscribed = false
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -46,19 +41,6 @@ class DreamActivity : DreamService() {
             controller = screenController,
             exit = ::altWakeUp,
         )
-
-        if (!musicSubscribed) {
-            eventsReceiver.subscribe<MusicEvent> { event ->
-                updateKeepScreenOn(event.isPlaying)
-            }
-            musicSubscribed = true
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        eventsReceiver.unsubscribe()
-        musicSubscribed = false
-        super.onDetachedFromWindow()
     }
 
     override fun onWakeUp() {
@@ -116,20 +98,9 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
             screenController.stop()
-        }
-    }
-
-    private fun updateKeepScreenOn(isMusicPlaying: Boolean) {
-        if (GeneralPrefs.keepScreenOnWhileMusicPlaying && isMusicPlaying) {
-            Timber.i("Keep screen on")
-            window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            Timber.i("DON'T Keep screen on")
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
 }
