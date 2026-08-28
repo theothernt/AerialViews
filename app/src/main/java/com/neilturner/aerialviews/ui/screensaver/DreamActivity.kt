@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.view.WindowManager
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
@@ -25,6 +24,11 @@ class DreamActivity : DreamService() {
 
         // Hide system UI on phones
         hideSystemUI(window)
+
+        if (this::screenController.isInitialized) {
+            Timber.d("onAttachedToWindow called again with an active screenController — releasing it first")
+            screenController.stop()
+        }
 
         // Start playback, etc
         screenController =
@@ -97,10 +101,19 @@ class DreamActivity : DreamService() {
         }
 
     override fun onDreamingStopped() {
-        super.onDreamingStopped()
+        Timber.d("onDreamingStopped")
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+        super.onDreamingStopped()
+    }
+
+    override fun onDetachedFromWindow() {
+        Timber.d("onDetachedFromWindow")
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+        super.onDetachedFromWindow()
     }
 }
