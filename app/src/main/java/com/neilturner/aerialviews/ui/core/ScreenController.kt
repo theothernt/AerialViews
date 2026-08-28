@@ -393,17 +393,20 @@ class ScreenController(
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
+
+        videoPlayer.setForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
