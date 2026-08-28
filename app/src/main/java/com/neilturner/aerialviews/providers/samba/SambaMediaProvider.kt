@@ -79,9 +79,7 @@ class SambaMediaProvider(
     }
 
     override suspend fun fetchMusic(): List<MusicTrack> {
-        Timber.i("SambaMediaProvider.fetchMusic: starting music fetch, musicEnabled=${prefs.musicEnabled}, hostName='${prefs.hostName}', shareName='${prefs.shareName}'")
         if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.shareName.isEmpty()) {
-            Timber.w("SambaMediaProvider.fetchMusic: music fetch skipped - musicEnabled=${prefs.musicEnabled}, hostName empty=${prefs.hostName.isEmpty()}, shareName empty=${prefs.shareName.isEmpty()}")
             return emptyList()
         }
 
@@ -95,33 +93,10 @@ class SambaMediaProvider(
                 }
 
             val (shareName, path) = shareNameAndPath
-            Timber.i("SambaMediaProvider.fetchMusic: parsed shareName='$shareName', path='$path'")
-
-            // Use findAllSambaFiles to get ALL files, not just videos/images
             val allFiles = findAllSambaFiles(shareName, path)
-            Timber.i("SambaMediaProvider.fetchMusic: total files found=${allFiles.size}")
 
-            // Log all files for debugging
-            allFiles.forEachIndexed { index, fileInfo ->
-                val filename = fileInfo.first
-                val isAudio = FileHelper.isSupportedAudioType(filename)
-                val extension = filename.substringAfterLast('.', "(none)")
-                Timber.d("SambaMediaProvider.fetchMusic: file[$index]='$filename', extension='$extension', isAudio=$isAudio")
-            }
-
-            val audioFiles = allFiles.filter { FileHelper.isSupportedAudioType(it.first) }
-            Timber.i("SambaMediaProvider.fetchMusic: audio files found=${audioFiles.size} out of ${allFiles.size} total")
-
-            // Log rejected files for debugging
-            val rejectedFiles = allFiles.filter { !FileHelper.isSupportedAudioType(it.first) }
-            if (rejectedFiles.isNotEmpty()) {
-                Timber.d("SambaMediaProvider.fetchMusic: rejected ${rejectedFiles.size} non-audio files:")
-                rejectedFiles.forEach { fileInfo ->
-                    Timber.d("  - '${fileInfo.first}'")
-                }
-            }
-
-            audioFiles
+            allFiles
+                .filter { FileHelper.isSupportedAudioType(it.first) }
                 .sortedByDescending { it.second }
                 .map { fileInfo ->
                     val filename = fileInfo.first
@@ -131,8 +106,6 @@ class SambaMediaProvider(
                     val uri =
                         "smb://$usernamePassword${prefs.hostName}/$shareName/$filename?domain=$domain&enc=${prefs.enableEncryption}&dialects=$dialectsEncoded"
                             .toUri()
-
-                    Timber.d("SambaMediaProvider.fetchMusic: creating MusicTrack for '$filename' -> uri='$uri'")
 
                     MusicTrack(
                         uri = uri,
@@ -151,7 +124,6 @@ class SambaMediaProvider(
         path: String,
     ): List<Pair<String, Long>> =
         withContext(Dispatchers.IO) {
-            // SMB Config
             val config: SmbConfig
             try {
                 config = SambaHelper.buildSmbConfig(prefs)
@@ -160,7 +132,6 @@ class SambaMediaProvider(
                 return@withContext emptyList()
             }
 
-            // SMB Client
             val smbClient = SMBClient(config)
             val connection: Connection
             try {
@@ -170,7 +141,6 @@ class SambaMediaProvider(
                 return@withContext emptyList()
             }
 
-            // SMB Auth + session
             val session: Session?
             try {
                 val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
@@ -418,43 +388,24 @@ class SambaMediaProvider(
         path: String,
     ): List<Pair<String, Long>> {
         val files = mutableListOf<Pair<String, Long>>()
-        val items = share.list(path)
-        Timber.d("SambaMediaProvider.listFiles: listing path='$path', items found=${items.size}")
-
-        items.forEach { item ->
+        share.list(path).forEach { item ->
             val isFolder =
                 EnumWithValue.EnumUtils.isSet(
                     item.fileAttributes,
                     FileAttributes.FILE_ATTRIBUTE_DIRECTORY,
                 )
 
-            // Debug logging for each item
-            val rawFileName = item.fileName
-            val fullPath = "$path/$rawFileName"
-            val isHidden = FileHelper.isDotOrHiddenFile(rawFileName)
-            Timber.v("SambaMediaProvider.listFiles: item='$rawFileName', fullPath='$fullPath', isFolder=$isFolder, isHidden=$isHidden, fileAttributes=${item.fileAttributes}")
-
-            if (isHidden) {
-                Timber.d("SambaMediaProvider.listFiles: skipping hidden file '$rawFileName'")
+            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
                 return@forEach
             }
 
             if (isFolder && prefs.searchSubfolders) {
-                Timber.d("SambaMediaProvider.listFiles: recursing into folder '$fullPath'")
-                files.addAll(listFilesAndFoldersRecursively(share, fullPath))
+                files.addAll(listFilesAndFoldersRecursively(share, "$path/${item.fileName}"))
             } else if (!isFolder) {
                 val creationTime = item.creationTime.toEpochMillis()
-                files.add(Pair(fullPath, creationTime))
-
-                // Check if this looks like an audio file for debugging
-                val extension = rawFileName.substringAfterLast('.', "(none)")
-                val isAudio = FileHelper.isSupportedAudioType(fullPath)
-                if (extension.lowercase() in listOf("mp3", "flac", "ogg", "wav", "m4a", "aac", "wma", "opus")) {
-                    Timber.d("SambaMediaProvider.listFiles: potential audio file found: '$fullPath', extension='$extension', isAudio=$isAudio, fileNameLength=${rawFileName.length}, rawBytes=${rawFileName.toByteArray().contentToString()}")
-                }
+                files.add(Pair("$path/${item.fileName}", creationTime))
             }
         }
-        Timber.d("SambaMediaProvider.listFiles: returning ${files.size} files from path='$path'")
         return files
     }
 }
