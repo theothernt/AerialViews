@@ -283,22 +283,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumIds = listOf(albumId),
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching shared album assets (v3, page $page)")
                 break
             }
         }
@@ -317,22 +322,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumIds = listOf(albumId),
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getAlbumAssets(apiKey = apiKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getAlbumAssets(apiKey = apiKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching album assets (v3, page $page)")
                 break
             }
         }
