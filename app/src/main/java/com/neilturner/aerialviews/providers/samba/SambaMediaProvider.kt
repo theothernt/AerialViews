@@ -79,7 +79,9 @@ class SambaMediaProvider(
     }
 
     override suspend fun fetchMusic(): List<MusicTrack> {
+        Timber.i("SambaMediaProvider.fetchMusic: starting music fetch, musicEnabled=${prefs.musicEnabled}, hostName='${prefs.hostName}', shareName='${prefs.shareName}'")
         if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.shareName.isEmpty()) {
+            Timber.w("SambaMediaProvider.fetchMusic: music fetch skipped - musicEnabled=${prefs.musicEnabled}, hostName empty=${prefs.hostName.isEmpty()}, shareName empty=${prefs.shareName.isEmpty()}")
             return emptyList()
         }
 
@@ -93,10 +95,33 @@ class SambaMediaProvider(
                 }
 
             val (shareName, path) = shareNameAndPath
-            val files = findSambaFiles(shareName, path).first
+            Timber.i("SambaMediaProvider.fetchMusic: parsed shareName='$shareName', path='$path'")
 
-            files
-                .filter { FileHelper.isSupportedAudioType(it.first) }
+            // Use findAllSambaFiles to get ALL files, not just videos/images
+            val allFiles = findAllSambaFiles(shareName, path)
+            Timber.i("SambaMediaProvider.fetchMusic: total files found=${allFiles.size}")
+
+            // Log all files for debugging
+            allFiles.forEachIndexed { index, fileInfo ->
+                val filename = fileInfo.first
+                val isAudio = FileHelper.isSupportedAudioType(filename)
+                val extension = filename.substringAfterLast('.', "(none)")
+                Timber.d("SambaMediaProvider.fetchMusic: file[$index]='$filename', extension='$extension', isAudio=$isAudio")
+            }
+
+            val audioFiles = allFiles.filter { FileHelper.isSupportedAudioType(it.first) }
+            Timber.i("SambaMediaProvider.fetchMusic: audio files found=${audioFiles.size} out of ${allFiles.size} total")
+
+            // Log rejected files for debugging
+            val rejectedFiles = allFiles.filter { !FileHelper.isSupportedAudioType(it.first) }
+            if (rejectedFiles.isNotEmpty()) {
+                Timber.d("SambaMediaProvider.fetchMusic: rejected ${rejectedFiles.size} non-audio files:")
+                rejectedFiles.forEach { fileInfo ->
+                    Timber.d("  - '${fileInfo.first}'")
+                }
+            }
+
+            audioFiles
                 .sortedByDescending { it.second }
                 .map { fileInfo ->
                     val filename = fileInfo.first
@@ -107,6 +132,8 @@ class SambaMediaProvider(
                         "smb://$usernamePassword${prefs.hostName}/$shareName/$filename?domain=$domain&enc=${prefs.enableEncryption}&dialects=$dialectsEncoded"
                             .toUri()
 
+                    Timber.d("SambaMediaProvider.fetchMusic: creating MusicTrack for '$filename' -> uri='$uri'")
+
                     MusicTrack(
                         uri = uri,
                         source = AerialMediaSource.SAMBA,
@@ -114,6 +141,59 @@ class SambaMediaProvider(
                 }
         }
     }
+
+    /**
+     * Returns ALL files from the SMB share (not filtered by type).
+     * Used by fetchMusic() to get all files for audio filtering.
+     */
+    private suspend fun findAllSambaFiles(
+        shareName: String,
+        path: String,
+    ): List<Pair<String, Long>> =
+        withContext(Dispatchers.IO) {
+            // SMB Config
+            val config: SmbConfig
+            try {
+                config = SambaHelper.buildSmbConfig(prefs)
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to create SMB config")
+                return@withContext emptyList()
+            }
+
+            // SMB Client
+            val smbClient = SMBClient(config)
+            val connection: Connection
+            try {
+                connection = smbClient.connect(prefs.hostName)
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to connect")
+                return@withContext emptyList()
+            }
+
+            // SMB Auth + session
+            val session: Session?
+            try {
+                val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
+                session = connection.authenticate(authContext)
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: authentication failed")
+                return@withContext emptyList()
+            }
+
+            val share: DiskShare
+            try {
+                share = session?.connectShare(shareName) as DiskShare
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: unable to connect to share")
+                return@withContext emptyList()
+            }
+
+            val files = listFilesAndFoldersRecursively(share, path)
+            connection.close()
+            smbClient.close()
+
+            return@withContext files
+        }
 
     override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
@@ -273,6 +353,17 @@ class SambaMediaProvider(
                 )
             }
             images = selected.size - videos
+
+            // Only pick music
+            var music = 0
+            if (prefs.musicEnabled) {
+                val musicFiles = files.filter { item ->
+                    FileHelper.isSupportedAudioType(item.first)
+                }
+                selected.addAll(musicFiles)
+                music = musicFiles.size
+            }
+
             excluded = files.size - selected.size
 
             var message =
@@ -296,9 +387,15 @@ class SambaMediaProvider(
                     images.toString(),
                 ) + "\n"
             }
+            if (prefs.musicEnabled) {
+                message += String.format(
+                    res.getString(R.string.samba_media_test_summary5),
+                    music.toString(),
+                ) + "\n"
+            }
             message +=
                 String.format(
-                    res.getString(R.string.samba_media_test_summary5),
+                    res.getString(R.string.samba_media_test_summary6),
                     selected.size.toString(),
                 )
             return@withContext Pair(selected, message)
@@ -321,24 +418,43 @@ class SambaMediaProvider(
         path: String,
     ): List<Pair<String, Long>> {
         val files = mutableListOf<Pair<String, Long>>()
-        share.list(path).forEach { item ->
+        val items = share.list(path)
+        Timber.d("SambaMediaProvider.listFiles: listing path='$path', items found=${items.size}")
+
+        items.forEach { item ->
             val isFolder =
                 EnumWithValue.EnumUtils.isSet(
                     item.fileAttributes,
                     FileAttributes.FILE_ATTRIBUTE_DIRECTORY,
                 )
 
-            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
+            // Debug logging for each item
+            val rawFileName = item.fileName
+            val fullPath = "$path/$rawFileName"
+            val isHidden = FileHelper.isDotOrHiddenFile(rawFileName)
+            Timber.v("SambaMediaProvider.listFiles: item='$rawFileName', fullPath='$fullPath', isFolder=$isFolder, isHidden=$isHidden, fileAttributes=${item.fileAttributes}")
+
+            if (isHidden) {
+                Timber.d("SambaMediaProvider.listFiles: skipping hidden file '$rawFileName'")
                 return@forEach
             }
 
             if (isFolder && prefs.searchSubfolders) {
-                files.addAll(listFilesAndFoldersRecursively(share, "$path/${item.fileName}"))
+                Timber.d("SambaMediaProvider.listFiles: recursing into folder '$fullPath'")
+                files.addAll(listFilesAndFoldersRecursively(share, fullPath))
             } else if (!isFolder) {
                 val creationTime = item.creationTime.toEpochMillis()
-                files.add(Pair("$path/${item.fileName}", creationTime))
+                files.add(Pair(fullPath, creationTime))
+
+                // Check if this looks like an audio file for debugging
+                val extension = rawFileName.substringAfterLast('.', "(none)")
+                val isAudio = FileHelper.isSupportedAudioType(fullPath)
+                if (extension.lowercase() in listOf("mp3", "flac", "ogg", "wav", "m4a", "aac", "wma", "opus")) {
+                    Timber.d("SambaMediaProvider.listFiles: potential audio file found: '$fullPath', extension='$extension', isAudio=$isAudio, fileNameLength=${rawFileName.length}, rawBytes=${rawFileName.toByteArray().contentToString()}")
+                }
             }
         }
+        Timber.d("SambaMediaProvider.listFiles: returning ${files.size} files from path='$path'")
         return files
     }
 }

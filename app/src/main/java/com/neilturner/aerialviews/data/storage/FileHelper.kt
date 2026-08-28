@@ -58,8 +58,11 @@ object FileHelper {
             filename.endsWith(".mkv", true) ||
             filename.endsWith(".ts", true)
 
-    fun isSupportedAudioType(filename: String): Boolean =
-        filename.endsWith(".mp3", true) ||
+    fun isSupportedAudioType(filename: String): Boolean {
+        // Debug logging for diagnosing format detection issues
+        val lowercaseName = filename.lowercase()
+        val extension = filename.substringAfterLast('.', "(none)")
+        val result = filename.endsWith(".mp3", true) ||
             filename.endsWith(".flac", true) ||
             filename.endsWith(".ogg", true) ||
             filename.endsWith(".wav", true) ||
@@ -67,6 +70,14 @@ object FileHelper {
             filename.endsWith(".aac", true) ||
             filename.endsWith(".wma", true) ||
             filename.endsWith(".opus", true)
+
+        // Log all audio type checks for troubleshooting
+        if (extension.lowercase() in listOf("mp3", "flac", "ogg", "wav", "m4a", "aac", "wma", "opus")) {
+            Timber.d("FileHelper.isSupportedAudioType: filename='$filename', extension='$extension', lowercase='$lowercaseName', result=$result")
+        }
+
+        return result
+    }
 
     fun isSupportedImageType(filename: String): Boolean {
         if (filename.endsWith(".avif", true) &&

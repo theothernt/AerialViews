@@ -46,18 +46,23 @@ internal object MediaServiceHelper {
         providers
             .filter { it.enabled }
             .parallelForEach {
+                Timber.d("buildProviderContent: processing provider ${it.type}, enabled=${it.enabled}")
                 try {
                     it.prepare()
                     when (val result = it.fetch()) {
                         is ProviderFetchResult.Success -> media.addAll(result.media)
                         is ProviderFetchResult.Error -> Timber.w("Provider ${it.type} returned error: ${result.message}")
                     }
-                    tracks.addAll(it.fetchMusic())
+                    Timber.d("buildProviderContent: calling fetchMusic() for provider ${it.type}")
+                    val musicTracks = it.fetchMusic()
+                    Timber.d("buildProviderContent: fetchMusic() returned ${musicTracks.size} tracks for provider ${it.type}")
+                    tracks.addAll(musicTracks)
                 } catch (ex: Exception) {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")
                     // FirebaseHelper.logExceptionIfRecent(ex)
                 }
             }
+        Timber.i("buildProviderContent: total media=${media.size}, total tracks=${tracks.size}")
         return Pair(media, tracks)
     }
 

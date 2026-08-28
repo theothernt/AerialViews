@@ -280,7 +280,8 @@
     <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
     <string name="samba_media_test_summary3">Videos found: %1$s</string>
     <string name="samba_media_test_summary4">Photos found: %1$s</string>
-    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
+    <string name="samba_media_test_summary5">Music found: %1$s</string>
+    <string name="samba_media_test_summary6">Selected for playback: %1$s</string>
 
     <string name="samba_media_wol_title">Wake on LAN settings</string>
     <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
