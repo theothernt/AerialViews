@@ -327,9 +327,10 @@ class SambaMediaProvider(
             // Only pick music
             var music = 0
             if (prefs.musicEnabled) {
-                val musicFiles = files.filter { item ->
-                    FileHelper.isSupportedAudioType(item.first)
-                }
+                val musicFiles =
+                    files.filter { item ->
+                        FileHelper.isSupportedAudioType(item.first)
+                    }
                 selected.addAll(musicFiles)
                 music = musicFiles.size
             }

@@ -8,11 +8,9 @@ import org.junit.jupiter.api.Test
 
 @DisplayName("FileHelper Audio Type Detection Tests")
 internal class FileHelperAudioTypeTest {
-
     @Nested
     @DisplayName("Supported Audio Formats")
     inner class SupportedFormats {
-
         @Test
         @DisplayName("Should detect MP3 files")
         fun testMp3Files() {
@@ -78,7 +76,6 @@ internal class FileHelperAudioTypeTest {
     @Nested
     @DisplayName("Unsupported Formats")
     inner class UnsupportedFormats {
-
         @Test
         @DisplayName("Should reject video files")
         fun testVideoFiles() {
@@ -114,7 +111,6 @@ internal class FileHelperAudioTypeTest {
     @Nested
     @DisplayName("Edge Cases")
     inner class EdgeCases {
-
         @Test
         @DisplayName("Should handle paths with spaces")
         fun testPathsWithSpaces() {

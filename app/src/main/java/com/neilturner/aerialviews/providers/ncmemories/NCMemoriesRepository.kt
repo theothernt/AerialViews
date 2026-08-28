@@ -274,10 +274,11 @@ class NCMemoriesRepository(
                     async {
                         semaphore.acquire()
                         try {
-                            val response = client.getFullImageInfo(
-                                credential = credential,
-                                fileId = image.fileId,
-                            )
+                            val response =
+                                client.getFullImageInfo(
+                                    credential = credential,
+                                    fileId = image.fileId,
+                                )
                             Pair(image, Result.success(response))
                         } catch (e: Exception) {
                             Timber.e(e, "Exception while fetching EXIF for image ${image.fileId}")
@@ -337,17 +338,18 @@ class NCMemoriesRepository(
             Timber.d("Fetching images for ${dayIds.size} days in ${batches.size} batches of max $DAY_IDS_BATCH_SIZE")
 
             val responses =
-                batches.map { batch ->
-                    async {
-                        client.getImages(
-                            credential = credential,
-                            dayIds = batch.joinToString(","),
-                            clusterId = clusterId,
-                            fav = fav,
-                            vid = vid,
-                        )
-                    }
-                }.awaitAll()
+                batches
+                    .map { batch ->
+                        async {
+                            client.getImages(
+                                credential = credential,
+                                dayIds = batch.joinToString(","),
+                                clusterId = clusterId,
+                                fav = fav,
+                                vid = vid,
+                            )
+                        }
+                    }.awaitAll()
 
             val allImages = mutableListOf<Image>()
             for (response in responses) {

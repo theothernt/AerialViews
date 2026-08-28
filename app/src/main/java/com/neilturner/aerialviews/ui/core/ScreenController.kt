@@ -953,7 +953,14 @@ class ScreenController(
 
     fun toggleLooping() {
         GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-        val message = if (GeneralPrefs.loopUntilSkipped) resources.getString(R.string.playlist_loop_enabled) else resources.getString(R.string.playlist_loop_disabled)
+        val message =
+            if (GeneralPrefs.loopUntilSkipped) {
+                resources.getString(
+                    R.string.playlist_loop_enabled,
+                )
+            } else {
+                resources.getString(R.string.playlist_loop_disabled)
+            }
         NotificationHelper.show(notificationContainer, message)
     }
 

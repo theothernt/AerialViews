@@ -344,7 +344,7 @@ class VideoPlayerView
             val w = videoSize.width
             val h = videoSize.height
             val unapplied = videoSize.unappliedRotationDegrees
-            Timber.i("Video size: ${w}x${h}, unappliedRotationDegrees=$unapplied")
+            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=$unapplied")
 
             if (!GeneralPrefs.portraitVideoRotationEnabled) return
 
@@ -356,7 +356,7 @@ class VideoPlayerView
             // Portrait detection: taller than wide (before any rotation)
             val isPortrait = h > w
             if (!isPortrait) {
-                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x${h})")
+                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x$h)")
                 resetRotation()
                 return
             }
@@ -380,7 +380,7 @@ class VideoPlayerView
                     }
 
                 Timber.i(
-                    "Portrait rotation fix: applying ${degrees}° rotation, scale=$scale " +
+                    "Portrait rotation fix: applying $degrees° rotation, scale=$scale " +
                         "(container ${containerW.toInt()}x${containerH.toInt()})",
                 )
 
