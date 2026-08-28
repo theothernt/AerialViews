@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -21,7 +20,6 @@ import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFacto
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
-import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
@@ -30,7 +28,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -378,8 +375,8 @@ class VideoPlayerView
                 // so scale by containerH/containerW to fill the screen width.
                 val scale =
                     when (degrees) {
-                        90f, 270f -> containerH / containerW
-                        else -> 1f // 180° — aspect ratio unchanged, no scale needed
+                        90f, 270f -> containerW / containerH
+                        else -> 1f
                     }
 
                 Timber.i(
