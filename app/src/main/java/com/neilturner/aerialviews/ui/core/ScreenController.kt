@@ -572,14 +572,35 @@ class ScreenController(
                 }
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
-                    overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                    val overlaysToFade = overlayHelper.getOverlaysToFade()
+                    overlaysToFade.forEachIndexed { index, view ->
+                        val animator =
+                            view
+                                .animate()
+                                .alpha(1f)
+                                .setStartDelay(0)
+                                .setDuration(overlayFadeIn)
+                        if (index == overlaysToFade.lastIndex) {
+                            animator.withEndAction { canShowOverlays = true }
+                        }
+                        animator.start()
+                    }
                     if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                        gradientTopView.alpha = 1f
+                        gradientTopView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
                     if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                        gradientBottomView.alpha = 1f
+                        gradientBottomView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
-                    canShowOverlays = true
                 }
             }
         }
