@@ -107,6 +107,7 @@ class ScreenController(
     private var explicitSkip = false
     private var canSkip = false
     private var isPaused = false
+    private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
@@ -659,7 +660,7 @@ class ScreenController(
 
                     if (wasExplicitSkip) {
                         loadNextItem(loadPreviousItem)
-                    } else if (GeneralPrefs.loopUntilSkipped && currentMedia != null) {
+                    } else if (loopUntilSkipped && currentMedia != null) {
                         replayCurrentItem()
                     } else {
                         loadNextItem(false)
@@ -973,9 +974,9 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
+        loopUntilSkipped = !loopUntilSkipped
         val message =
-            if (GeneralPrefs.loopUntilSkipped) {
+            if (loopUntilSkipped) {
                 resources.getString(
                     R.string.playlist_loop_enabled,
                 )
