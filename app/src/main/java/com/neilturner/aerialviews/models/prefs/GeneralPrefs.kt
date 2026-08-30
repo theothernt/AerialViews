@@ -271,6 +271,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
+    var exitOnMouseMovement by booleanPref(false, "exit_on_mouse_movement")
     var seekInterval by stringPref("10", "seek_interval") // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")

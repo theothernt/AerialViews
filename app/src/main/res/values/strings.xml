@@ -833,6 +833,8 @@
     <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to blackout mode will wake from it</string>
 
     <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
+    <string name="dpad_exit_on_mouse_movement_title">Exit when mouse is moved</string>
+    <string name="dpad_exit_on_mouse_movement_summary">Exits the screensaver when a connected mouse is moved</string>
 
     <!-- Main / Settings / Advanced -->
     <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>

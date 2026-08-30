@@ -38,5 +38,11 @@
                     app:key="seek_interval"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_seek_interval_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="exit_on_mouse_movement"
+                    app:summary="@string/dpad_exit_on_mouse_movement_summary"
+                    app:title="@string/dpad_exit_on_mouse_movement_title" />
         </PreferenceCategory>
 </PreferenceScreen>
