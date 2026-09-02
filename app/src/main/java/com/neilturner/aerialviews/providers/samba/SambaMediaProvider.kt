@@ -153,7 +153,7 @@ class SambaMediaProvider(
 
             val share: DiskShare
             try {
-                share = session?.connectShare(shareName) as DiskShare
+                share = session.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
                 Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: unable to connect to share")
                 connection.close()
@@ -305,7 +305,7 @@ class SambaMediaProvider(
 
             val share: DiskShare
             try {
-                share = session?.connectShare(shareName) as DiskShare
+                share = session.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
                 Timber.e(ex)
                 activeConnection.close()
