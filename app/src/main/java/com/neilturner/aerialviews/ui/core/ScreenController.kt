@@ -107,6 +107,7 @@ class ScreenController(
     private var explicitSkip = false
     private var canSkip = false
     private var isPaused = false
+    private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
@@ -393,17 +394,20 @@ class ScreenController(
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
+
+        videoPlayer.setForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
@@ -569,14 +573,35 @@ class ScreenController(
                 }
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
-                    overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                    val overlaysToFade = overlayHelper.getOverlaysToFade()
+                    overlaysToFade.forEachIndexed { index, view ->
+                        val animator =
+                            view
+                                .animate()
+                                .alpha(1f)
+                                .setStartDelay(0)
+                                .setDuration(overlayFadeIn)
+                        if (index == overlaysToFade.lastIndex) {
+                            animator.withEndAction { canShowOverlays = true }
+                        }
+                        animator.start()
+                    }
                     if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                        gradientTopView.alpha = 1f
+                        gradientTopView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
                     if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                        gradientBottomView.alpha = 1f
+                        gradientBottomView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
-                    canShowOverlays = true
                 }
             }
         }
@@ -635,7 +660,7 @@ class ScreenController(
 
                     if (wasExplicitSkip) {
                         loadNextItem(loadPreviousItem)
-                    } else if (GeneralPrefs.loopUntilSkipped && currentMedia != null) {
+                    } else if (loopUntilSkipped && currentMedia != null) {
                         replayCurrentItem()
                     } else {
                         loadNextItem(false)
@@ -949,8 +974,15 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-        val message = if (GeneralPrefs.loopUntilSkipped) resources.getString(R.string.playlist_loop_enabled) else resources.getString(R.string.playlist_loop_disabled)
+        loopUntilSkipped = !loopUntilSkipped
+        val message =
+            if (loopUntilSkipped) {
+                resources.getString(
+                    R.string.playlist_loop_enabled,
+                )
+            } else {
+                resources.getString(R.string.playlist_loop_disabled)
+            }
         NotificationHelper.show(notificationContainer, message)
     }
 

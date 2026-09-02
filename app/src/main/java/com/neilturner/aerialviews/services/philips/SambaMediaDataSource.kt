@@ -35,9 +35,16 @@ class SambaMediaDataSource(
         val (shareName, path) = SambaHelper.parseShareAndPathName(uri)
 
         smbClient = com.hierynomus.smbj.SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
-        val connection = smbClient.connect(hostName)
-        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-        val session = connection.authenticate(authContext)
+        val initialConnection = smbClient.connect(hostName)
+        val (connection, session) =
+            SambaHelper.authenticate(
+                smbClient = smbClient,
+                connection = initialConnection,
+                hostName = hostName,
+                userName = userName,
+                password = password,
+                domainName = domainName,
+            )
         val share = session.connectShare(shareName) as com.hierynomus.smbj.share.DiskShare
 
         val shareAccess = hashSetOf<SMB2ShareAccess>()

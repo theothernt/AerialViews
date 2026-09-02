@@ -93,9 +93,9 @@ class SambaMediaProvider(
                 }
 
             val (shareName, path) = shareNameAndPath
-            val files = findSambaFiles(shareName, path).first
+            val allFiles = findAllSambaFiles(shareName, path)
 
-            files
+            allFiles
                 .filter { FileHelper.isSupportedAudioType(it.first) }
                 .sortedByDescending { it.second }
                 .map { fileInfo ->
@@ -114,6 +114,59 @@ class SambaMediaProvider(
                 }
         }
     }
+
+    /**
+     * Returns ALL files from the SMB share (not filtered by type).
+     * Used by fetchMusic() to get all files for audio filtering.
+     */
+    private suspend fun findAllSambaFiles(
+        shareName: String,
+        path: String,
+    ): List<Pair<String, Long>> =
+        withContext(Dispatchers.IO) {
+            val config: SmbConfig
+            try {
+                config = SambaHelper.buildSmbConfig(prefs)
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to create SMB config")
+                return@withContext emptyList()
+            }
+
+            val smbClient = SMBClient(config)
+            val connection: Connection
+            val session: Session?
+            try {
+                val (conn, sess) =
+                    SambaHelper.connectAndAuthenticate(
+                        smbClient = smbClient,
+                        hostName = prefs.hostName,
+                        userName = prefs.userName,
+                        password = prefs.password,
+                        domainName = prefs.domainName,
+                    )
+                connection = conn
+                session = sess
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to connect or authenticate")
+                return@withContext emptyList()
+            }
+
+            val share: DiskShare
+            try {
+                share = session.connectShare(shareName) as DiskShare
+            } catch (ex: Exception) {
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: unable to connect to share")
+                connection.close()
+                smbClient.close()
+                return@withContext emptyList()
+            }
+
+            val files = listFilesAndFoldersRecursively(share, path)
+            connection.close()
+            smbClient.close()
+
+            return@withContext files
+        }
 
     override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
@@ -228,10 +281,20 @@ class SambaMediaProvider(
             }
 
             // SMB Auth + session
+            val activeConnection: Connection
             val session: Session?
             try {
-                val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
-                session = connection.authenticate(authContext)
+                val (conn, sess) =
+                    SambaHelper.authenticate(
+                        smbClient = smbClient,
+                        connection = connection,
+                        hostName = prefs.hostName,
+                        userName = prefs.userName,
+                        password = prefs.password,
+                        domainName = prefs.domainName,
+                    )
+                activeConnection = conn
+                session = sess
             } catch (ex: Exception) {
                 Timber.e(ex)
                 return@withContext Pair(
@@ -242,16 +305,18 @@ class SambaMediaProvider(
 
             val share: DiskShare
             try {
-                share = session?.connectShare(shareName) as DiskShare
+                share = session.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
                 Timber.e(ex)
+                activeConnection.close()
+                smbClient.close()
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
                 )
             }
             val files = listFilesAndFoldersRecursively(share, path)
-            connection.close()
+            activeConnection.close()
             smbClient.close()
 
             // Only pick videos
@@ -273,6 +338,18 @@ class SambaMediaProvider(
                 )
             }
             images = selected.size - videos
+
+            // Only pick music
+            var music = 0
+            if (prefs.musicEnabled) {
+                val musicFiles =
+                    files.filter { item ->
+                        FileHelper.isSupportedAudioType(item.first)
+                    }
+                selected.addAll(musicFiles)
+                music = musicFiles.size
+            }
+
             excluded = files.size - selected.size
 
             var message =
@@ -296,9 +373,15 @@ class SambaMediaProvider(
                     images.toString(),
                 ) + "\n"
             }
+            if (prefs.musicEnabled) {
+                message += String.format(
+                    res.getString(R.string.samba_media_test_summary5),
+                    music.toString(),
+                ) + "\n"
+            }
             message +=
                 String.format(
-                    res.getString(R.string.samba_media_test_summary5),
+                    res.getString(R.string.samba_media_test_summary6),
                     selected.size.toString(),
                 )
             return@withContext Pair(selected, message)

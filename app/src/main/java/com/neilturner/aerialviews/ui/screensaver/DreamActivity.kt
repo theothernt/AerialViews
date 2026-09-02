@@ -4,21 +4,16 @@ import android.annotation.SuppressLint
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
-import android.view.WindowManager
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
-    private val eventsReceiver = EventsReceiver()
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -29,6 +24,11 @@ class DreamActivity : DreamService() {
 
         // Hide system UI on phones
         hideSystemUI(window)
+
+        if (this::screenController.isInitialized) {
+            Timber.d("onAttachedToWindow called again with an active screenController — releasing it first")
+            screenController.stop()
+        }
 
         // Start playback, etc
         screenController =
@@ -58,9 +58,6 @@ class DreamActivity : DreamService() {
     override fun onDreamingStarted() {
         super.onDreamingStarted()
         FirebaseHelper.analyticsScreenView("Screensaver", this)
-        eventsReceiver.subscribe<MusicEvent> { event ->
-            updateKeepScreenOn(event.isPlaying)
-        }
         // Start playback, etc
     }
 
@@ -104,22 +101,19 @@ class DreamActivity : DreamService() {
         }
 
     override fun onDreamingStopped() {
-        super.onDreamingStopped()
-        eventsReceiver.unsubscribe()
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        Timber.d("onDreamingStopped")
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+        super.onDreamingStopped()
     }
 
-    private fun updateKeepScreenOn(isMusicPlaying: Boolean) {
-        if (GeneralPrefs.keepScreenOnWhileMusicPlaying && isMusicPlaying) {
-            Timber.i("Keep screen on")
-            window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        } else {
-            Timber.i("DON'T Keep screen on")
-            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    override fun onDetachedFromWindow() {
+        Timber.d("onDetachedFromWindow")
+        if (this::screenController.isInitialized) {
+            screenController.stop()
         }
+        super.onDetachedFromWindow()
     }
 }

@@ -267,10 +267,10 @@ internal object ImagePlayerHelper {
 
     fun streamFromSambaFile(uri: Uri): InputStream? {
         val startTime = System.currentTimeMillis()
-        val (hostName, shareName, path, authContext, config) = parseSambaParams(uri)
+        val (hostName, shareName, path, userName, password, domainName, config) = parseSambaParams(uri)
         val smbClient = SMBClient(config)
         return try {
-            val (session, share) = connectSamba(smbClient, hostName, shareName, authContext)
+            val (session, share) = connectSamba(smbClient, hostName, shareName, userName, password, domainName)
             val openStartTime = System.currentTimeMillis()
             val file =
                 share.openFile(
@@ -308,7 +308,9 @@ internal object ImagePlayerHelper {
         val hostName: String,
         val shareName: String,
         val path: String,
-        val authContext: AuthenticationContext,
+        val userName: String,
+        val password: String,
+        val domainName: String,
         val config: com.hierynomus.smbj.SmbConfig,
     )
 
@@ -326,19 +328,28 @@ internal object ImagePlayerHelper {
                 .toSet()
         val (shareName, path) = SambaHelper.parseShareAndPathName(uri)
         val config = SambaHelper.buildSmbConfig(useEncryption, smbDialects)
-        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-        return SambaParams(hostName, shareName, path, authContext, config)
+        return SambaParams(hostName, shareName, path, userName, password, domainName, config)
     }
 
     private fun connectSamba(
         smbClient: SMBClient,
         hostName: String,
         shareName: String,
-        authContext: AuthenticationContext,
+        userName: String,
+        password: String,
+        domainName: String,
     ): Pair<Session, DiskShare> {
         val connectStartTime = System.currentTimeMillis()
-        val connection = smbClient.connect(hostName)
-        val session = connection.authenticate(authContext)
+        val initialConnection = smbClient.connect(hostName)
+        val (connection, session) =
+            SambaHelper.authenticate(
+                smbClient = smbClient,
+                connection = initialConnection,
+                hostName = hostName,
+                userName = userName,
+                password = password,
+                domainName = domainName,
+            )
         val share = session.connectShare(shareName) as DiskShare
         Timber.d("SAMBA: Connected and authenticated in ${System.currentTimeMillis() - connectStartTime}ms")
         return Pair(session, share)

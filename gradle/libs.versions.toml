@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.2"
+agp = "9.4.0"
 kotlin = "2.4.10"
 kotlin-serialization = "1.11.0"
 google-services = "4.5.0"
@@ -36,7 +36,7 @@ smbj = "0.13.0"
 media3-exoplayer = "1.11.0"
 flowbus = "1.1"
 kotpref = "2.13.2"
-coil3 = "3.6.0"
+coil3 = "3.6.1"
 timber = "5.0.1"
 slf4j = "2.0.18"
 

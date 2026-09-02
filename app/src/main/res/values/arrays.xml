@@ -934,6 +934,10 @@
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
 
     <!-- Overlay visibility mode -->
+    <string name="overlay_visibility_always_visible">Always visible</string>
+    <string name="overlay_visibility_always_hidden">Always hidden</string>
+    <string name="overlay_visibility_hide_after">Hide after delay</string>
+    <string name="overlay_visibility_show_after">Show after delay</string>
     <string-array name="overlay_visibility_entries" translatable="false">
         <item>@string/overlay_visibility_always_visible</item>
         <item>@string/overlay_visibility_always_hidden</item>
@@ -945,22 +949,6 @@
         <item>ALWAYS_HIDDEN</item>
         <item>HIDE_AFTER_DELAY</item>
         <item>SHOW_AFTER_DELAY</item>
-    </string-array>
-
-    <!-- Overlay visibility delay -->
-    <string-array name="overlay_visibility_delay_entries" translatable="false">
-        <item>@string/overlay_hide_2s</item>
-        <item>@string/overlay_hide_4s</item>
-        <item>@string/overlay_hide_6s</item>
-        <item>@string/overlay_hide_8s</item>
-        <item>@string/overlay_hide_10s</item>
-    </string-array>
-    <string-array name="overlay_visibility_delay_values" translatable="false">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
-        <item>10</item>
     </string-array>
 
     <!-- Overlay reveal timeout -->

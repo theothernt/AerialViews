@@ -57,14 +57,13 @@ class NowPlayingService(
         updateActiveSession(controllers)
     }
 
-    private fun safeGetActiveSessions(): MutableList<MediaController>? {
-        return try {
+    private fun safeGetActiveSessions(): MutableList<MediaController>? =
+        try {
             sessionManager?.getActiveSessions(notificationListener)
         } catch (e: SecurityException) {
             Timber.w(e, "Missing permission to access media sessions")
             null
         }
-    }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
         val selectedController = pickController(controllers)
@@ -180,13 +179,12 @@ class NowPlayingService(
         }
         active = isActive()
         val musicEvent =
-            if (active) {
-                val song = metadata?.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
-                val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
-                MusicEvent(artist, song, isPlaying = true)
-            } else {
-                MusicEvent(isPlaying = false)
-            }
+            metadata
+                ?.let {
+                    val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+                    val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+                    MusicEvent(artist, song)
+                }.takeIf { active } ?: MusicEvent()
 
         if (musicEvent == lastMusicEvent) {
             Timber.i("updateMetadata - unchanged event: $musicEvent")
@@ -277,5 +275,7 @@ class NowPlayingService(
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
-    val isPlaying: Boolean = false,
-)
+) {
+    val isPlaying: Boolean
+        get() = artist.isNotBlank() || song.isNotBlank()
+}

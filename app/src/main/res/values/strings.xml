@@ -280,7 +280,8 @@
     <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
     <string name="samba_media_test_summary3">Videos found: %1$s</string>
     <string name="samba_media_test_summary4">Photos found: %1$s</string>
-    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
+    <string name="samba_media_test_summary5">Music found: %1$s</string>
+    <string name="samba_media_test_summary6">Selected for playback: %1$s</string>
 
     <string name="samba_media_wol_title">Wake on LAN settings</string>
     <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
@@ -660,18 +661,14 @@
     <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
 
     <!-- Main / Settings / Appearance / Animations -->
-    <string name="appearance_auto_hide_options_title">Auto hide options</string>
+    <string name="appearance_auto_hide_options_title">Auto show/hide options</string>
     <string name="appearance_auto_hide_options_summary">Configure when and how overlays are automatically hidden</string>
     <string name="appearance_auto_hide_title">Auto hide overlays</string>
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
     <string name="appearance_fade_corners_title">Corners to fade</string>
 
     <string name="overlay_visibility_title">Overlay visibility</string>
-    <string name="overlay_visibility_always_visible">Always visible</string>
-    <string name="overlay_visibility_always_hidden">Always hidden</string>
-    <string name="overlay_visibility_hide_after">Hide after delay</string>
-    <string name="overlay_visibility_show_after">Show after delay</string>
-    <string name="overlay_visibility_delay_title">Delay</string>
+    <string name="overlay_visibility_delay_title">Show/Hide Delay</string>
 
     <string name="appearance_fade_in_title">Fade in</string>
     <string name="appearance_fade_out_title">Fade out</string>
