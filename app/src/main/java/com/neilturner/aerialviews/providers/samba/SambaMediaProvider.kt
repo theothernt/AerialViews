@@ -134,19 +134,20 @@ class SambaMediaProvider(
 
             val smbClient = SMBClient(config)
             val connection: Connection
-            try {
-                connection = smbClient.connect(prefs.hostName)
-            } catch (ex: Exception) {
-                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to connect")
-                return@withContext emptyList()
-            }
-
             val session: Session?
             try {
-                val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
-                session = connection.authenticate(authContext)
+                val (conn, sess) =
+                    SambaHelper.connectAndAuthenticate(
+                        smbClient = smbClient,
+                        hostName = prefs.hostName,
+                        userName = prefs.userName,
+                        password = prefs.password,
+                        domainName = prefs.domainName,
+                    )
+                connection = conn
+                session = sess
             } catch (ex: Exception) {
-                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: authentication failed")
+                Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: failed to connect or authenticate")
                 return@withContext emptyList()
             }
 
@@ -155,6 +156,8 @@ class SambaMediaProvider(
                 share = session?.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
                 Timber.e(ex, "SambaMediaProvider.findAllSambaFiles: unable to connect to share")
+                connection.close()
+                smbClient.close()
                 return@withContext emptyList()
             }
 
@@ -278,10 +281,20 @@ class SambaMediaProvider(
             }
 
             // SMB Auth + session
+            val activeConnection: Connection
             val session: Session?
             try {
-                val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
-                session = connection.authenticate(authContext)
+                val (conn, sess) =
+                    SambaHelper.authenticate(
+                        smbClient = smbClient,
+                        connection = connection,
+                        hostName = prefs.hostName,
+                        userName = prefs.userName,
+                        password = prefs.password,
+                        domainName = prefs.domainName,
+                    )
+                activeConnection = conn
+                session = sess
             } catch (ex: Exception) {
                 Timber.e(ex)
                 return@withContext Pair(
@@ -295,13 +308,15 @@ class SambaMediaProvider(
                 share = session?.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
                 Timber.e(ex)
+                activeConnection.close()
+                smbClient.close()
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
                 )
             }
             val files = listFilesAndFoldersRecursively(share, path)
-            connection.close()
+            activeConnection.close()
             smbClient.close()
 
             // Only pick videos
