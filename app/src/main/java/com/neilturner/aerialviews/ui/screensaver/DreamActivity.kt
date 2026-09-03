@@ -92,13 +92,18 @@ class DreamActivity : DreamService() {
         }
     }
 
-    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
-        try {
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (InputHelper.handleGenericMotionEvent(event, ::altWakeUp)) {
+            return true
+        }
+
+        return try {
             super.dispatchGenericMotionEvent(event)
         } catch (e: SecurityException) {
             // Ignore the restricted setting access error
             false
         }
+    }
 
     override fun onDreamingStopped() {
         Timber.d("onDreamingStopped")
