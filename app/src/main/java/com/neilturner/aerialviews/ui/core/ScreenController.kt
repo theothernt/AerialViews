@@ -113,7 +113,7 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-    private val videoViewBinding: VideoViewBinding
+    private lateinit var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -643,7 +643,7 @@ class ScreenController(
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
-                videoViewBinding.videoPlayer.stop()
+                // Let setVideo() replace the source without forcing a Realtek codec teardown.
 
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
@@ -1072,6 +1072,8 @@ class ScreenController(
     private fun handleError() {
         if (blackOutMode) return
 
+        recreateVideoPlayer()
+
         mainScope.launch {
             delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
@@ -1081,6 +1083,22 @@ class ScreenController(
                 fadeOutCurrentItem()
             }
         }
+    }
+
+    private fun recreateVideoPlayer() {
+        val oldRoot = videoViewBinding.root
+        val videoParent = oldRoot.parent as? ViewGroup ?: return
+        val index = videoParent.indexOfChild(oldRoot)
+        videoPlayer.release()
+        videoParent.removeView(oldRoot)
+
+        val layoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        videoParent.addView(replacement, index)
+        videoViewBinding = VideoViewBinding.bind(replacement)
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
     }
 
     private fun handlePlaybackSpeedChanged() {
