@@ -42,7 +42,7 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
         Player.Listener {
-        private val exoPlayer: ExoPlayer
+        private lateinit var exoPlayer: ExoPlayer
         private var state = VideoState()
 
         private var listener: OnVideoPlayerEventListener? = null
@@ -76,16 +76,24 @@ class VideoPlayerView
 
         init {
             // Use applicationContext to prevent activity context leaks
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
-
-            player = exoPlayer
-            player?.addListener(this)
-
-            player?.repeatMode = Player.REPEAT_MODE_OFF
+            replacePlayer(context)
 
             controllerAutoShow = false
             useController = false
             resizeMode = VideoPlayerHelper.getResizeMode(GeneralPrefs.videoScale)
+        }
+
+        private fun replacePlayer(context: Context) {
+            if (::exoPlayer.isInitialized) {
+                player = null
+                exoPlayer.setVideoSurface(null)
+                exoPlayer.release()
+            }
+
+            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
+            player = exoPlayer
+            player?.addListener(this)
+            player?.repeatMode = Player.REPEAT_MODE_OFF
         }
 
         fun release() {
@@ -328,7 +336,8 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.crashlyticsException(error.cause)
 
-            post(onErrorRunnable)
+            // Allow the TV's asynchronous codec and graphic buffers to finish releasing.
+            postDelayed(onErrorRunnable, 5_000)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {

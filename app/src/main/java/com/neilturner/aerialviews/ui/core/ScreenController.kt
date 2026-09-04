@@ -643,7 +643,7 @@ class ScreenController(
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
-                videoViewBinding.videoPlayer.stop()
+                // Let setVideo() replace the source without forcing a Realtek codec teardown.
 
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
@@ -1072,6 +1072,8 @@ class ScreenController(
     private fun handleError() {
         if (blackOutMode) return
 
+        recreateVideoPlayer()
+
         mainScope.launch {
             delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
@@ -1081,6 +1083,19 @@ class ScreenController(
                 fadeOutCurrentItem()
             }
         }
+    }
+
+    private fun recreateVideoPlayer() {
+        val videoContainer = videoViewBinding.root as ViewGroup
+        videoPlayer.release()
+        videoContainer.removeAllViews()
+
+        val layoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoContainer, false)
+        videoContainer.addView(replacement)
+        videoPlayer = VideoViewBinding.bind(replacement).videoPlayer
+        videoPlayer.setOnPlayerListener(this)
     }
 
     private fun handlePlaybackSpeedChanged() {
