@@ -90,7 +90,7 @@ class VideoPlayerView
                 exoPlayer.release()
             }
 
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context.applicationContext, GeneralPrefs)
             player = exoPlayer
             player?.addListener(this)
             player?.repeatMode = Player.REPEAT_MODE_OFF
@@ -336,8 +336,7 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.crashlyticsException(error.cause)
 
-            // Allow the TV's asynchronous codec and graphic buffers to finish releasing.
-            postDelayed(onErrorRunnable, 5_000)
+            post(onErrorRunnable)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {

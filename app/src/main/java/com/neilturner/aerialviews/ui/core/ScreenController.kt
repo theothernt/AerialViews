@@ -113,7 +113,7 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-    private val videoViewBinding: VideoViewBinding
+    private lateinit var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -1086,15 +1086,18 @@ class ScreenController(
     }
 
     private fun recreateVideoPlayer() {
-        val videoContainer = videoViewBinding.root as ViewGroup
+        val oldRoot = videoViewBinding.root
+        val videoParent = oldRoot.parent as? ViewGroup ?: return
+        val index = videoParent.indexOfChild(oldRoot)
         videoPlayer.release()
-        videoContainer.removeAllViews()
+        videoParent.removeView(oldRoot)
 
         val layoutRes =
             if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
-        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoContainer, false)
-        videoContainer.addView(replacement)
-        videoPlayer = VideoViewBinding.bind(replacement).videoPlayer
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        videoParent.addView(replacement, index)
+        videoViewBinding = VideoViewBinding.bind(replacement)
+        videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
     }
 
