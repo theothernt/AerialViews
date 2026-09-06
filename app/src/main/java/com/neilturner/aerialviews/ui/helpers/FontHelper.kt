@@ -28,6 +28,8 @@ object FontHelper {
             try {
                 if (typeface == "open-sans") {
                     ResourcesCompat.getFont(context, R.font.opensans)
+                } else if (typeface == "google-sans") {
+                    ResourcesCompat.getFont(context, R.font.googlesans)
                 } else {
                     Typeface.create("san-serif", Typeface.NORMAL)
                 }
