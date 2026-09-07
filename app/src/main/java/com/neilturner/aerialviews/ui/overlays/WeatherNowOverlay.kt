@@ -170,6 +170,7 @@ class WeatherNowOverlay
                         val textView =
                             TextView(context).apply {
                                 text = item.text
+                                includeFontPadding = false
                             }
                         TextViewCompat.setTextAppearance(textView, R.style.OverlayText)
 
@@ -188,6 +189,8 @@ class WeatherNowOverlay
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                         textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                        val textViewOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textView.textSize)
+                        textView.setPadding(0, textViewOffset, 0, -textViewOffset)
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")

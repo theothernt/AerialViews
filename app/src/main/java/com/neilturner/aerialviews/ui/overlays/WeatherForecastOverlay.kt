@@ -145,10 +145,13 @@ class WeatherForecastOverlay
                 TextView(context).apply {
                     text = day.dayName
                     gravity = Gravity.CENTER
+                    includeFontPadding = false
                 }
             TextViewCompat.setTextAppearance(dayLabel, R.style.OverlayText)
             dayLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * dayLabelSizeRatio)
             dayLabel.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            val dayLabelOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, dayLabel.textSize)
+            dayLabel.setPadding(0, dayLabelOffset, 0, -dayLabelOffset)
             dayLabel.setTextColor(Color.argb(dayLabelAlpha, 255, 255, 255))
             val labelParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             labelParams.bottomMargin = elementMargin
@@ -179,10 +182,13 @@ class WeatherForecastOverlay
                 TextView(context).apply {
                     text = day.tempHigh
                     gravity = Gravity.CENTER
+                    includeFontPadding = false
                 }
             TextViewCompat.setTextAppearance(highTemp, R.style.OverlayText)
             highTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * tempSizeRatio)
             highTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            val highTempOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, highTemp.textSize)
+            highTemp.setPadding(0, highTempOffset, 0, -highTempOffset)
             highTemp.setTextColor(Color.argb(highTempAlpha, 255, 255, 255))
             tempContainer.addView(highTemp)
 
@@ -197,10 +203,13 @@ class WeatherForecastOverlay
                 TextView(context).apply {
                     text = day.tempLow
                     gravity = Gravity.CENTER
+                    includeFontPadding = false
                 }
             TextViewCompat.setTextAppearance(lowTemp, R.style.OverlayText)
             lowTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * tempSizeRatio)
             lowTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            val lowTempOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, lowTemp.textSize)
+            lowTemp.setPadding(0, lowTempOffset, 0, -lowTempOffset)
             lowTemp.setTextColor(Color.argb(lowTempAlpha, 255, 255, 255))
             tempContainer.addView(lowTemp)
 

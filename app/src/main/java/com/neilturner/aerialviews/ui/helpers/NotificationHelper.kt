@@ -34,6 +34,9 @@ object NotificationHelper {
                 text = message
                 setTextColor(Color.BLACK)
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, 400)
+                includeFontPadding = false
+                val offset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textSize)
+                setPadding(0, offset, 0, -offset)
                 setBackgroundResource(R.drawable.bg_notification)
                 gravity = Gravity.CENTER
             }
