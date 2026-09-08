@@ -14,7 +14,7 @@ class MediaPlaylist(
     private val fetchChunk: (suspend (offset: Int, limit: Int) -> List<AerialMedia>)? = null,
 ) {
     private var position = startPosition
-    private var _hasReachedEnd = false
+    private var hasReachedEnd = false
 
     private val windowVideos = initialVideos.toMutableList()
     private val windowLock = Any()
@@ -24,7 +24,7 @@ class MediaPlaylist(
 
     fun nextItem(): AerialMedia {
         position = calculateNext(++position)
-        if (position == 0 && size > 0) _hasReachedEnd = true
+        if (position == 0 && size > 0) hasReachedEnd = true
 
         Timber.v("MediaPlaylist: nextItem() -> pos $position / $size (window: ${windowVideos.size})")
         checkAndRefillWindow()

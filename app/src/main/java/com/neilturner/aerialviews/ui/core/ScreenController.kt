@@ -496,6 +496,8 @@ class ScreenController(
     private fun fadeInNextItem() {
         if (blackOutMode) return
 
+        savePlaybackPosition()
+
         canShowOverlays = false
         var startDelay: Long = 0
         val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
@@ -801,12 +803,12 @@ class ScreenController(
                 playlist.nextItem()
             }
         loadItem(media)
-        savePlaybackPosition()
     }
 
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
+                Timber.d("PlaylistCache: Saving playback position: ${playlist.currentPosition}")
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
             }
         }
