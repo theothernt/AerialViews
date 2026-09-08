@@ -113,7 +113,7 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-    private val videoViewBinding: VideoViewBinding
+    private var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -288,6 +288,11 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                if (mediaResult.isFromCache) {
+                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
+                    delay(CACHE_RESUME_DELAY.milliseconds)
+                    if (isStopped || blackOutMode) return@launch
+                }
                 loadNextItem()
                 scheduleSleepTimer()
                 scheduleScheduledBlackout()
@@ -499,6 +504,8 @@ class ScreenController(
     private fun fadeInNextItem() {
         if (blackOutMode) return
 
+        savePlaybackPosition()
+
         canShowOverlays = false
         var startDelay: Long = 0
         val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
@@ -646,7 +653,7 @@ class ScreenController(
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
-                videoViewBinding.videoPlayer.stop()
+                // Let setVideo() replace the source without forcing a Realtek codec teardown.
 
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
@@ -804,12 +811,12 @@ class ScreenController(
                 playlist.nextItem()
             }
         loadItem(media)
-        savePlaybackPosition()
     }
 
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
+                Timber.d("PlaylistCache: Saving playback position: ${playlist.currentPosition}")
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
             }
         }
@@ -1075,6 +1082,8 @@ class ScreenController(
     private fun handleError() {
         if (blackOutMode) return
 
+        recreateVideoPlayer()
+
         mainScope.launch {
             delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
@@ -1084,6 +1093,22 @@ class ScreenController(
                 fadeOutCurrentItem()
             }
         }
+    }
+
+    private fun recreateVideoPlayer() {
+        val oldRoot = videoViewBinding.root
+        val videoParent = oldRoot.parent as? ViewGroup ?: return
+        val index = videoParent.indexOfChild(oldRoot)
+        videoPlayer.release()
+        videoParent.removeView(oldRoot)
+
+        val layoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        videoParent.addView(replacement, index)
+        videoViewBinding = VideoViewBinding.bind(replacement)
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
     }
 
     private fun handlePlaybackSpeedChanged() {
@@ -1264,5 +1289,6 @@ class ScreenController(
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
+        const val CACHE_RESUME_DELAY: Long = 2000 // Delay before starting playback when restoring from cache
     }
 }
