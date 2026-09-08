@@ -777,6 +777,7 @@
     <string name="playlist_cache_enable_title">Enable playlist cache</string>
 
     <string name="playlist_cache_interval_title">Refresh interval</string>
+    <string name="playlist_cache_resume_title">Resume behaviour</string>
     <string name="playlist_cache_clear_title">Clear cache now</string>
     <string name="playlist_cache_clear_summary">Forces a new playlist to be built on next start</string>
 

@@ -445,6 +445,17 @@
         <item>4</item>
     </string-array>
 
+    <string name="playlist_cache_resume_next">Play next playlist item</string>
+    <string name="playlist_cache_resume_same">Play same playlist item</string>
+    <string-array name="playlist_cache_resume_entries" translatable="false">
+        <item>@string/playlist_cache_resume_next</item>
+        <item>@string/playlist_cache_resume_same</item>
+    </string-array>
+    <string-array name="playlist_cache_resume_values" translatable="false">
+        <item>next</item>
+        <item>same</item>
+    </string-array>
+
     <!-- Text sizes -->
     <string-array name="text_size_entries" translatable="false">
         <item>72sp</item>
