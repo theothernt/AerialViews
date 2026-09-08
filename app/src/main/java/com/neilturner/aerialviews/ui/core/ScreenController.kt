@@ -285,6 +285,11 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                if (mediaResult.isFromCache) {
+                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
+                    delay(CACHE_RESUME_DELAY.milliseconds)
+                    if (isStopped || blackOutMode) return@launch
+                }
                 loadNextItem()
                 scheduleSleepTimer()
                 scheduleScheduledBlackout()
@@ -1281,5 +1286,6 @@ class ScreenController(
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
+        const val CACHE_RESUME_DELAY: Long = 2000 // Delay before starting playback when restoring from cache
     }
 }

@@ -166,6 +166,7 @@ class PlaylistCacheRepository(
                     ),
                 musicPlaylist = musicPlaylist,
                 musicResumeIndex = state.musicTrackIndex,
+                isFromCache = true,
             )
         }
 
