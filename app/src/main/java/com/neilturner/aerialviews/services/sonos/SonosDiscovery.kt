@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.services.sonos
 
 import android.content.Context
 import android.net.wifi.WifiManager
@@ -10,18 +10,20 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import timber.log.Timber
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.net.URL
-import java.util.concurrent.TimeUnit
 
+// Finds Sonos speakers on the local network using SSDP (UPnP discovery)
 object SonosDiscovery {
-    data class SonosDevice(val ip: String, val name: String, val model: String)
+    data class SonosDevice(
+        val ip: String,
+        val name: String,
+        val model: String,
+    )
 
     fun discoverFlow(
         context: Context,
@@ -59,7 +61,7 @@ object SonosDiscovery {
                             val response = String(packet.data, 0, packet.length)
 
                             val location = extractHeader(response, "LOCATION") ?: continue
-                            if (!location.contains(":1400")) continue
+                            if (!location.contains(":${SonosClient.PORT}")) continue
 
                             val ip =
                                 try {
@@ -103,35 +105,9 @@ object SonosDiscovery {
 
     private fun fetchDeviceInfo(ip: String): SonosDevice? =
         runCatching {
-            val client =
-                OkHttpClient
-                    .Builder()
-                    .connectTimeout(3, TimeUnit.SECONDS)
-                    .readTimeout(3, TimeUnit.SECONDS)
-                    .build()
-            val xml =
-                client
-                    .newCall(Request.Builder().url("http://$ip:1400/xml/device_description.xml").build())
-                    .execute()
-                    .use { it.body?.string().orEmpty() }
-
-            if (!xml.contains("ZonePlayer") && !xml.contains("Sonos")) return@runCatching null
-
-            val name = extractXmlTag(xml, "friendlyName") ?: ip
-            val model = extractXmlTag(xml, "modelName") ?: ""
-            SonosDevice(ip, name, model)
+            SonosClient.deviceInfo(ip)?.let { SonosDevice(ip, it.name, it.model) }
         }.getOrElse { e ->
             Timber.w("SonosDiscovery: failed to fetch info for $ip: ${e.message}")
             null
         }
-
-    private fun extractXmlTag(
-        xml: String,
-        tag: String,
-    ): String? {
-        val start = xml.indexOf("<$tag>").takeIf { it >= 0 } ?: return null
-        val contentStart = start + tag.length + 2
-        val end = xml.indexOf("</$tag>", contentStart).takeIf { it >= 0 } ?: return null
-        return xml.substring(contentStart, end).trim().takeIf { it.isNotEmpty() }
-    }
 }

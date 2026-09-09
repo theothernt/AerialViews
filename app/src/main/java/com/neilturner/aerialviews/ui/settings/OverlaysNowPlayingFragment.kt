@@ -23,20 +23,16 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SonosPrefs
+import com.neilturner.aerialviews.services.sonos.SonosClient
+import com.neilturner.aerialviews.services.sonos.SonosDiscovery
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.SonosDiscovery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class OverlaysNowPlayingFragment :
     MenuStateFragment(),
@@ -156,12 +152,14 @@ class OverlaysNowPlayingFragment :
                 SonosDiscovery.discoverFlow(ctx).collect { device ->
                     if (!isAdded) return@collect
                     discoveredDevices.add(device)
-                    devicesLayout.addView(buildDeviceItem(ctx, device) {
-                        SonosPrefs.ipAddress = device.ip
-                        findPreference<EditTextPreference>("sonos_ip_address")?.text = device.ip
-                        discoverPref.summary = getString(R.string.sonos_discover_selected, device.name)
-                        dialog.dismiss()
-                    })
+                    devicesLayout.addView(
+                        buildDeviceItem(ctx, device) {
+                            SonosPrefs.ipAddress = device.ip
+                            findPreference<EditTextPreference>("sonos_ip_address")?.text = device.ip
+                            discoverPref.summary = getString(R.string.sonos_discover_selected, device.name)
+                            dialog.dismiss()
+                        },
+                    )
                 }
                 if (!isAdded) return@launch
                 spinnerRow.visibility = View.GONE
@@ -178,9 +176,10 @@ class OverlaysNowPlayingFragment :
         onClick: () -> Unit,
     ): View {
         val selBg =
-            TypedValue().also {
-                ctx.theme.resolveAttribute(android.R.attr.selectableItemBackground, it, true)
-            }.resourceId
+            TypedValue()
+                .also {
+                    ctx.theme.resolveAttribute(android.R.attr.selectableItemBackground, it, true)
+                }.resourceId
         return LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
             isFocusable = true
@@ -217,83 +216,49 @@ class OverlaysNowPlayingFragment :
 
         testPref.summary = getString(R.string.sonos_test_testing)
 
-        val notSonosMsg = getString(R.string.sonos_test_not_sonos)
-        val nothingPlayingMsg = getString(R.string.sonos_test_nothing_playing)
-        val pausedMsg = getString(R.string.sonos_test_paused)
-        val stoppedMsg = getString(R.string.sonos_test_stopped)
-
         lifecycleScope.launch {
-            val (success, message) = withContext(Dispatchers.IO) {
-                val tcpError = checkTcpPort(ip, 1400)
-                if (tcpError != null) return@withContext false to tcpError
-
-                runCatching {
-                    val client =
-                        OkHttpClient
-                            .Builder()
-                            .connectTimeout(4, TimeUnit.SECONDS)
-                            .readTimeout(4, TimeUnit.SECONDS)
-                            .build()
-
-                    val descXml =
-                        client
-                            .newCall(Request.Builder().url("http://$ip:1400/xml/device_description.xml").build())
-                            .execute()
-                            .use { it.body?.string().orEmpty() }
-
-                    if (!descXml.contains("ZonePlayer") && !descXml.contains("Sonos")) {
-                        return@runCatching false to notSonosMsg
-                    }
-
-                    val name = extractTag(descXml, "friendlyName") ?: ip
-                    val model = extractTag(descXml, "modelName")?.let { " ($it)" }.orEmpty()
-
-                    val transportEnvelope = """<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetTransportInfo xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID></u:GetTransportInfo></s:Body></s:Envelope>"""
-                    val transportXml =
-                        client
-                            .newCall(
-                                Request.Builder()
-                                    .url("http://$ip:1400/MediaRenderer/AVTransport/Control")
-                                    .post(transportEnvelope.toRequestBody("text/xml; charset=\"utf-8\"".toMediaType()))
-                                    .addHeader("SOAPACTION", "\"urn:schemas-upnp-org:service:AVTransport:1#GetTransportInfo\"")
-                                    .build(),
-                            ).execute()
-                            .use { it.body?.string().orEmpty() }
-                    val state = extractTag(transportXml, "CurrentTransportState") ?: "UNKNOWN"
-
-                    val statusLine =
-                        when (state) {
-                            "PLAYING" -> {
-                                val posEnvelope = """<?xml version="1.0"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetPositionInfo xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID></u:GetPositionInfo></s:Body></s:Envelope>"""
-                                val trackXml =
-                                    client
-                                        .newCall(
-                                            Request.Builder()
-                                                .url("http://$ip:1400/MediaRenderer/AVTransport/Control")
-                                                .post(posEnvelope.toRequestBody("text/xml; charset=\"utf-8\"".toMediaType()))
-                                                .addHeader("SOAPACTION", "\"urn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo\"")
-                                                .build(),
-                                        ).execute()
-                                        .use { it.body?.string().orEmpty() }
-                                val didl = extractTag(trackXml, "TrackMetaData")?.let { unescapeXml(it) }.orEmpty()
-                                val title = extractTag(didl, "dc:title").orEmpty()
-                                val artist = (extractTag(didl, "upnp:artist") ?: extractTag(didl, "dc:creator")).orEmpty()
-                                when {
-                                    title.isNotBlank() && artist.isNotBlank() -> "▶  $artist — $title"
-                                    title.isNotBlank() -> "▶  $title"
-                                    else -> "▶  $nothingPlayingMsg"
-                                }
-                            }
-                            "PAUSED_PLAYBACK" -> "⏸  $pausedMsg"
-                            "STOPPED" -> "⏹  $stoppedMsg"
-                            else -> state
-                        }
-
-                    true to "$name$model\n$statusLine"
-                }.getOrElse { e -> false to "Error: ${e.message}" }
-            }
-            testPref.summary = if (success) okSummary(message) else errorSummary(message)
+            val result = withContext(Dispatchers.IO) { SonosClient.probe(ip) }
+            if (!isAdded) return@launch
+            testPref.summary =
+                when (result) {
+                    is SonosClient.ProbeResult.Unreachable -> errorSummary(result.message)
+                    is SonosClient.ProbeResult.NotSonos -> errorSummary(getString(R.string.sonos_test_not_sonos))
+                    is SonosClient.ProbeResult.Error -> errorSummary("Error: ${result.message}")
+                    is SonosClient.ProbeResult.Connected -> okSummary(describeConnection(result))
+                }
         }
+    }
+
+    private fun describeConnection(result: SonosClient.ProbeResult.Connected): String {
+        val model =
+            result.device.model
+                .takeIf { it.isNotBlank() }
+                ?.let { " ($it)" }
+                .orEmpty()
+        val track = result.track
+        val statusLine =
+            when (result.transportState) {
+                SonosClient.STATE_PLAYING -> {
+                    when {
+                        track != null && track.title.isNotBlank() && track.artist.isNotBlank() -> "▶  ${track.artist} — ${track.title}"
+                        track != null && track.title.isNotBlank() -> "▶  ${track.title}"
+                        else -> "▶  ${getString(R.string.sonos_test_nothing_playing)}"
+                    }
+                }
+
+                SonosClient.STATE_PAUSED -> {
+                    "⏸  ${getString(R.string.sonos_test_paused)}"
+                }
+
+                SonosClient.STATE_STOPPED -> {
+                    "⏹  ${getString(R.string.sonos_test_stopped)}"
+                }
+
+                else -> {
+                    result.transportState
+                }
+            }
+        return "${result.device.name}$model\n$statusLine"
     }
 
     private fun okSummary(text: String): SpannableString =
@@ -305,36 +270,6 @@ class OverlaysNowPlayingFragment :
         SpannableString(text).apply {
             setSpan(ForegroundColorSpan(Color.parseColor("#F44336")), 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-
-    private fun checkTcpPort(ip: String, port: Int): String? {
-        return try {
-            java.net.Socket().use { socket ->
-                socket.connect(java.net.InetSocketAddress(ip, port), 4000)
-            }
-            null
-        } catch (e: java.net.ConnectException) {
-            "Cannot reach $ip:$port — check:\n• WiFi isolation (AP isolation) on your router\n• IP address is correct\n• Sonos is powered on"
-        } catch (e: java.net.SocketTimeoutException) {
-            "Timeout connecting to $ip:$port — device unreachable or blocked by router"
-        } catch (e: Exception) {
-            "Connection failed: ${e.message}"
-        }
-    }
-
-    private fun extractTag(xml: String, tag: String): String? {
-        val start = (xml.indexOf("<$tag>").takeIf { it >= 0 } ?: xml.indexOf("<$tag ").takeIf { it >= 0 }) ?: return null
-        val contentStart = xml.indexOf('>', start) + 1
-        val end = xml.indexOf("</$tag>", contentStart).takeIf { it >= 0 } ?: return null
-        return xml.substring(contentStart, end).trim().takeIf { it.isNotEmpty() }
-    }
-
-    private fun unescapeXml(text: String) =
-        text
-            .replace("&lt;", "<")
-            .replace("&gt;", ">")
-            .replace("&quot;", "\"")
-            .replace("&apos;", "'")
-            .replace("&amp;", "&")
 
     private fun openNotificationSettings() {
         try {

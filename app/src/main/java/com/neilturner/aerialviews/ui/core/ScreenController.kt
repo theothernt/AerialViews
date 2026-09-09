@@ -26,13 +26,13 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.SonosPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MusicPlayer
-import com.neilturner.aerialviews.models.prefs.SonosPrefs
 import com.neilturner.aerialviews.services.NowPlayingService
-import com.neilturner.aerialviews.services.SonosService
+import com.neilturner.aerialviews.services.sonos.SonosService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.controls.ProgressBar
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
@@ -265,7 +265,7 @@ class ScreenController(
 
             if (SonosPrefs.enabled && SonosPrefs.ipAddress.isNotEmpty()) {
                 if (PermissionHelper.hasLocalNetworkPermission(context)) {
-                    sonosService = SonosService().also { it.start() }
+                    sonosService = SonosService(SonosPrefs.ipAddress, SonosPrefs.pollInterval).also { it.start() }
                 } else {
                     Timber.w("SonosService not started: ACCESS_LOCAL_NETWORK permission not granted")
                 }
