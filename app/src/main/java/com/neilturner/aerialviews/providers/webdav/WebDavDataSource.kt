@@ -21,7 +21,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
-class WebDavDataSource(private val validateSsl: Boolean = true) : BaseDataSource(true) {
+class WebDavDataSource(
+    private val validateSsl: Boolean = true,
+) : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
 
     private var client: OkHttpSardine? = null
@@ -139,7 +141,9 @@ class WebDavDataSource(private val validateSsl: Boolean = true) : BaseDataSource
     }
 }
 
-class WebDavDataSourceFactory(private val validateSsl: Boolean = true) : DataSource.Factory {
+class WebDavDataSourceFactory(
+    private val validateSsl: Boolean = true,
+) : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource = WebDavDataSource(validateSsl)
 }

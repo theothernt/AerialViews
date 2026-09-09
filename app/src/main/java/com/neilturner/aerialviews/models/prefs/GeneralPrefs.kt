@@ -47,7 +47,6 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
     var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
-    var keepScreenOnWhileMusicPlaying by booleanPref(false, "keep_screen_on_while_music_playing")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -219,6 +218,7 @@ object GeneralPrefs : KotprefModel() {
     // Playlist Cache
     var playlistCache by booleanPref(false, "playlist_cache")
     var playlistCacheRefresh by stringPref("-1", "playlist_cache_refresh")
+    var playlistCacheResumeBehaviour by stringPref("next", "playlist_cache_resume_behaviour")
 
     // Playlist - Videos
     var playlistAudioMode by nullableEnumValuePref(PlaylistAudioMode.VIDEO_MUTED, "playlist_audio_mode")
@@ -272,6 +272,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
+    var exitOnMouseMovement by booleanPref(false, "exit_on_mouse_movement")
     var seekInterval by stringPref("10", "seek_interval") // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
@@ -279,6 +280,11 @@ object GeneralPrefs : KotprefModel() {
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
+    var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
+    var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
+
+    val portraitVideoRotationEnabled: Boolean
+        get() = portraitVideoRotationDegrees != "0"
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

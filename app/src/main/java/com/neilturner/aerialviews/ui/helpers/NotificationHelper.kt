@@ -39,13 +39,14 @@ object NotificationHelper {
             }
 
         val params =
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-            ).apply {
-                gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                bottomMargin = (BOTTOM_MARGIN_DP * context.resources.displayMetrics.density).toInt()
-            }
+            FrameLayout
+                .LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                ).apply {
+                    gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                    bottomMargin = (BOTTOM_MARGIN_DP * context.resources.displayMetrics.density).toInt()
+                }
 
         view.addView(textView, view.childCount, params)
         currentTextView = textView
@@ -53,7 +54,8 @@ object NotificationHelper {
 
         // Fade in
         textView.alpha = 0f
-        textView.animate()
+        textView
+            .animate()
             .alpha(1f)
             .setDuration(FADE_DURATION_MS)
             .start()
@@ -61,7 +63,8 @@ object NotificationHelper {
         // Auto-dismiss after duration
         dismissRunnable =
             Runnable {
-                textView.animate()
+                textView
+                    .animate()
                     .alpha(0f)
                     .setDuration(FADE_DURATION_MS)
                     .withEndAction {
@@ -70,8 +73,7 @@ object NotificationHelper {
                             currentTextView = null
                             currentContainer = null
                         }
-                    }
-                    .start()
+                    }.start()
             }
         handler.postDelayed(dismissRunnable!!, duration)
     }

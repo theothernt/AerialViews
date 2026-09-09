@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package com.neilturner.aerialviews.ui.core
 
 import androidx.annotation.OptIn

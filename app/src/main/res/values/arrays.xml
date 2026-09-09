@@ -445,6 +445,17 @@
         <item>4</item>
     </string-array>
 
+    <string name="playlist_cache_resume_next">Play next playlist item</string>
+    <string name="playlist_cache_resume_same">Play same playlist item</string>
+    <string-array name="playlist_cache_resume_entries" translatable="false">
+        <item>@string/playlist_cache_resume_next</item>
+        <item>@string/playlist_cache_resume_same</item>
+    </string-array>
+    <string-array name="playlist_cache_resume_values" translatable="false">
+        <item>next</item>
+        <item>same</item>
+    </string-array>
+
     <!-- Text sizes -->
     <string-array name="text_size_entries" translatable="false">
         <item>72sp</item>
@@ -934,6 +945,10 @@
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
 
     <!-- Overlay visibility mode -->
+    <string name="overlay_visibility_always_visible">Always visible</string>
+    <string name="overlay_visibility_always_hidden">Always hidden</string>
+    <string name="overlay_visibility_hide_after">Hide after delay</string>
+    <string name="overlay_visibility_show_after">Show after delay</string>
     <string-array name="overlay_visibility_entries" translatable="false">
         <item>@string/overlay_visibility_always_visible</item>
         <item>@string/overlay_visibility_always_hidden</item>
@@ -945,22 +960,6 @@
         <item>ALWAYS_HIDDEN</item>
         <item>HIDE_AFTER_DELAY</item>
         <item>SHOW_AFTER_DELAY</item>
-    </string-array>
-
-    <!-- Overlay visibility delay -->
-    <string-array name="overlay_visibility_delay_entries" translatable="false">
-        <item>@string/overlay_hide_2s</item>
-        <item>@string/overlay_hide_4s</item>
-        <item>@string/overlay_hide_6s</item>
-        <item>@string/overlay_hide_8s</item>
-        <item>@string/overlay_hide_10s</item>
-    </string-array>
-    <string-array name="overlay_visibility_delay_values" translatable="false">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
-        <item>10</item>
     </string-array>
 
     <!-- Overlay reveal timeout -->
@@ -1003,7 +1002,7 @@
     <string name="btn_blackout">Blackout screen, fade out media and overlays</string>
     <string name="btn_toggle_mute">Toggle mute/unmute audio</string>
     <string name="btn_toggle_pause">Pause/unpause video or photo timer</string>
-    <string name="btn_toggle_looping">Toggle looping for current video</string>
+    <string name="btn_toggle_looping">Toggle looping for current photo or video</string>
     <string-array name="button_action_entries" translatable="false">
         <item>@string/btn_ignore</item>
         <item>@string/btn_skip_next</item>
@@ -1594,4 +1593,17 @@
         <item>COUNTRY</item>
     </string-array>
     <string name="overlay_metadata_photo_location_default" translatable="false">CITY_COUNTRY</string>
+    <string-array name="portrait_rotation_entries" translatable="false">
+        <item>Disabled</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
+    </string-array>
+    <string-array name="portrait_rotation_values" translatable="false">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+    <string name="portrait_rotation_default" translatable="false">0</string>
 </resources>

@@ -185,35 +185,37 @@ class ImmichRepository(
                                         password = prefs.password.takeIf { it.isNotEmpty() },
                                     )
 
-                                 if (albumResponse.isSuccessful) {
-                                     val album = albumResponse.body()
-                                     if (album != null) {
-                                         val albumAssets = album.assets
-                                          if (albumAssets.isEmpty()) {
-                                              Timber.w("Shared album ${album.name} returned no inline assets, falling back to search/metadata")
-                                              val fallbackAssets = fetchAlbumAssetsSharedV3(shared.album.id, shared.key, album.name)
-                                              Timber.d("Fallback fetched ${fallbackAssets.size} assets for shared album: ${album.name}")
-                                              return album.copy(
-                                                  assetCount = fallbackAssets.size,
-                                                  assets = fallbackAssets,
-                                              )
-                                          } else {
-                                             Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                             return album.copy(
-                                                 assets = album.assets.map { it.copy(albumName = album.name) },
-                                             )
-                                         }
-                                     } else {
-                                         Timber.e("Received null album from successful response")
-                                         return Album(
-                                             id = "shared-${shared.id}",
-                                             name = shared.description ?: "Shared Link",
-                                             description = "Album data not available",
-                                             assetCount = 0,
-                                             assets = emptyList(),
-                                         )
-                                     }
-                                 } else {
+                                if (albumResponse.isSuccessful) {
+                                    val album = albumResponse.body()
+                                    if (album != null) {
+                                        val albumAssets = album.assets
+                                        if (albumAssets.isEmpty()) {
+                                            Timber.w(
+                                                "Shared album ${album.name} returned no inline assets, falling back to search/metadata",
+                                            )
+                                            val fallbackAssets = fetchAlbumAssetsSharedV3(shared.album.id, shared.key, album.name)
+                                            Timber.d("Fallback fetched ${fallbackAssets.size} assets for shared album: ${album.name}")
+                                            return album.copy(
+                                                assetCount = fallbackAssets.size,
+                                                assets = fallbackAssets,
+                                            )
+                                        } else {
+                                            Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                            return album.copy(
+                                                assets = album.assets.map { it.copy(albumName = album.name) },
+                                            )
+                                        }
+                                    } else {
+                                        Timber.e("Received null album from successful response")
+                                        return Album(
+                                            id = "shared-${shared.id}",
+                                            name = shared.description ?: "Shared Link",
+                                            description = "Album data not available",
+                                            assetCount = 0,
+                                            assets = emptyList(),
+                                        )
+                                    }
+                                } else {
                                     val errorBody = albumResponse.errorBody()?.string()
                                     Timber.e("Failed to fetch album details. Code: ${albumResponse.code()}, Error: $errorBody")
                                     return Album(
@@ -281,22 +283,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumIds = listOf(albumId),
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching shared album assets (v3, page $page)")
                 break
             }
         }
@@ -315,22 +322,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumIds = listOf(albumId),
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getAlbumAssets(apiKey = apiKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getAlbumAssets(apiKey = apiKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching album assets (v3, page $page)")
                 break
             }
         }
@@ -387,26 +399,26 @@ class ImmichRepository(
                                 assets.forEach { asset ->
                                     albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
                                 }
-                        } else {
-                            // v2: assets are inline
-                            val albumAssets = album.assets
-                            if (albumAssets.isEmpty() && serverVersion < 3) {
-                                Timber.w("Album ${album.name} returned no inline assets on v2, falling back to search/metadata")
-                                val fallbackAssets = fetchAlbumAssetsV3(albumId, album.name)
-                                Timber.d("Fallback fetched ${fallbackAssets.size} assets for album: ${album.name}")
-                                allAssets.addAll(fallbackAssets)
-                                fallbackAssets.forEach { asset ->
-                                    albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
-                                }
                             } else {
-                                Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                val mappedAssets = albumAssets.map { it.copy(albumName = album.name) }
-                                allAssets.addAll(mappedAssets)
-                                mappedAssets.forEach { asset ->
-                                    albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                // v2: assets are inline
+                                val albumAssets = album.assets
+                                if (albumAssets.isEmpty() && serverVersion < 3) {
+                                    Timber.w("Album ${album.name} returned no inline assets on v2, falling back to search/metadata")
+                                    val fallbackAssets = fetchAlbumAssetsV3(albumId, album.name)
+                                    Timber.d("Fallback fetched ${fallbackAssets.size} assets for album: ${album.name}")
+                                    allAssets.addAll(fallbackAssets)
+                                    fallbackAssets.forEach { asset ->
+                                        albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                    }
+                                } else {
+                                    Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                    val mappedAssets = albumAssets.map { it.copy(albumName = album.name) }
+                                    allAssets.addAll(mappedAssets)
+                                    mappedAssets.forEach { asset ->
+                                        albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                    }
                                 }
                             }
-                        }
                         } else {
                             Timber.e("Received null album from successful response for album ID: $albumId")
                         }

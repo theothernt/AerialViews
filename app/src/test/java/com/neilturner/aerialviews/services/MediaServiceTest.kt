@@ -36,7 +36,10 @@ internal class MediaServiceTest {
         mockkObject(FirebaseHelper)
         every { FirebaseHelper.analyticsEvent(any(), any()) } returns Unit
         mockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
-        every { com.neilturner.aerialviews.data.network.NetworkHelper.isOnWifiOrEthernet(any()) } returns false
+        every {
+            com.neilturner.aerialviews.data.network.NetworkHelper
+                .isOnWifiOrEthernet(any())
+        } returns false
     }
 
     @AfterEach

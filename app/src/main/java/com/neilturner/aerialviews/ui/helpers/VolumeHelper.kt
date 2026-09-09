@@ -15,6 +15,7 @@ class VolumeHelper(
     private val setVolume: (Float) -> Unit,
 ) {
     private var animator: ValueAnimator? = null
+    private var isCancelled = false
 
     /**
      * Fades volume from 0 → [targetVolume] over [durationMs].
@@ -25,6 +26,7 @@ class VolumeHelper(
         targetVolume: Float = 1f,
     ) {
         cancel()
+        isCancelled = false
         if (durationMs <= 0L) {
             setVolume(targetVolume)
             return
@@ -47,6 +49,7 @@ class VolumeHelper(
         onComplete: (() -> Unit)? = null,
     ) {
         cancel()
+        isCancelled = false
         val startVolume = getVolume()
         if (startVolume <= 0f || durationMs <= 0L) {
             setVolume(0f)
@@ -61,7 +64,9 @@ class VolumeHelper(
                     object : android.animation.AnimatorListenerAdapter() {
                         override fun onAnimationEnd(animation: android.animation.Animator) {
                             animator = null
-                            onComplete?.invoke()
+                            if (!isCancelled) {
+                                onComplete?.invoke()
+                            }
                         }
                     },
                 )
@@ -70,6 +75,7 @@ class VolumeHelper(
     }
 
     fun cancel() {
+        isCancelled = true
         animator?.cancel()
         animator = null
     }

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Bundle
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
@@ -38,9 +39,8 @@ import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
-import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -335,9 +335,15 @@ class MediaService(
     private fun generalizeCount(count: Int): String =
         when {
             count == 0 -> "0"
+
             count < 10 -> "<10"
-            count < 100 -> "${(count / 10) * 10}"  // Round to nearest 10
-            count < 1000 -> "${(count / 100) * 100}"  // Round to nearest 100
-            else -> "${(count / 1000) * 1000}"  // Round to nearest 1000
+
+            count < 100 -> "${(count / 10) * 10}"
+
+            // Round to nearest 10
+            count < 1000 -> "${(count / 100) * 100}"
+
+            // Round to nearest 100
+            else -> "${(count / 1000) * 1000}" // Round to nearest 1000
         }
 }

@@ -237,7 +237,8 @@ class CustomFeedProvider(
                         if (csvItems.isNotEmpty()) {
                             validCsvUrls.add(url)
                             Timber.i(
-                                "%snull", "Found ${csvItems.size} media items in CSV: $url. " +
+                                "%snull",
+                                "Found ${csvItems.size} media items in CSV: $url. " +
                                     "Videos: ${csvItems.count { it.type == AerialMediaType.VIDEO }}, ",
                             )
                         } else {
@@ -328,7 +329,8 @@ class CustomFeedProvider(
                 .joinToString(",")
         prefs.urlsCache = allValidUrls
         Timber.i(
-            "%snull", "Custom feed valid URL cache updated. Entries: ${validEntriesUrls.size}, " +
+            "%snull",
+            "Custom feed valid URL cache updated. Entries: ${validEntriesUrls.size}, " +
                 "RTSP: ${validRtspUrls.size}, HLS: ${validHlsUrls.size}, CSV: ${validCsvUrls.size}, ",
         )
 
@@ -589,7 +591,8 @@ class CustomFeedProvider(
                 )
                 val items = CustomFeedCsvParser.parse(body)
                 Timber.i(
-                    "%snull", "Custom feed CSV parse result for $url: items=${items.size}, " +
+                    "%snull",
+                    "Custom feed CSV parse result for $url: items=${items.size}, " +
                         "videos=${items.count { it.type == AerialMediaType.VIDEO }}, ",
                 )
                 items.take(5).forEachIndexed { index, item ->

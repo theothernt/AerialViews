@@ -136,6 +136,7 @@ internal class WebDavMediaProviderTest {
             override var password: String = ""
             override var searchSubfolders: Boolean = searchSubfolders
             override var validateSsl: Boolean = validateSsl
+
             override fun settingsHash(): String = "test"
         }
 

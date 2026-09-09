@@ -11,15 +11,17 @@ import javax.net.ssl.X509TrustManager
 
 internal object WebDavSslHelper {
     fun createOkHttpClient(validateSsl: Boolean): OkHttpClient {
-        val builder = if (validateSsl) {
-            OkHttpClient.Builder()
-        } else {
-            createTrustAllClientBuilder()
-        }
+        val builder =
+            if (validateSsl) {
+                OkHttpClient.Builder()
+            } else {
+                createTrustAllClientBuilder()
+            }
 
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
-        }
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            }
         builder.addInterceptor(logging)
 
         return builder.build()
@@ -51,7 +53,8 @@ internal object WebDavSslHelper {
                     init(null, trustAllCerts, SecureRandom())
                 }
 
-            OkHttpClient.Builder()
+            OkHttpClient
+                .Builder()
                 .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
                 .hostnameVerifier { _, _ -> true }
         } catch (e: Exception) {

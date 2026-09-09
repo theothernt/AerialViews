@@ -17,7 +17,11 @@ import org.junit.jupiter.api.Test
 
 internal class CustomFeedPhotoTest {
     // Mirrors the production JsonHelper configuration used to parse custom feeds
-    private val json = Json { ignoreUnknownKeys = true; isLenient = true }
+    private val json =
+        Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
 
     @Test
     fun `parses photos array with urls and title, ignoring unknown fields`() {

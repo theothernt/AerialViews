@@ -103,6 +103,4 @@ class NCMemoriesImageMapper(
             description = exifInfo?.description,
         )
     }
-
-
 }

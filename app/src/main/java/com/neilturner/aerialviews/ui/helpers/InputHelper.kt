@@ -1,7 +1,9 @@
 package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
+import android.view.InputDevice
 import android.view.KeyEvent
+import android.view.MotionEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -11,6 +13,20 @@ import timber.log.Timber
 object InputHelper {
     private var previousEvent: KeyEvent? = null
     private var longPressEvent = false
+
+    fun handleGenericMotionEvent(
+        event: MotionEvent,
+        exit: (shouldExit: Boolean) -> Unit,
+    ): Boolean {
+        if (GeneralPrefs.exitOnMouseMovement &&
+            event.actionMasked == MotionEvent.ACTION_HOVER_MOVE &&
+            event.isFromSource(InputDevice.SOURCE_MOUSE)
+        ) {
+            exit(true)
+            return true
+        }
+        return false
+    }
 
     fun handleKeyEvent(
         event: KeyEvent,

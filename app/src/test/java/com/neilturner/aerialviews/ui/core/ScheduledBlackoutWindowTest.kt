@@ -1,9 +1,9 @@
 package com.neilturner.aerialviews.ui.core
 
-import java.time.LocalTime
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.time.LocalTime
 
 internal class ScheduledBlackoutWindowTest {
     @Test

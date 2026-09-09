@@ -621,9 +621,11 @@ class MigrationHelper(
             "-1" -> {
                 prefs.edit { putString("overlay_visibility", "ALWAYS_VISIBLE") }
             }
+
             "0" -> {
                 prefs.edit { putString("overlay_visibility", "ALWAYS_HIDDEN") }
             }
+
             else -> {
                 val delay = autoHideValue.toIntOrNull()
                 if (delay != null && delay in 2..10) {

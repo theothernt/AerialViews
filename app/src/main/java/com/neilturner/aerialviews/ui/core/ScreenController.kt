@@ -107,16 +107,16 @@ class ScreenController(
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
+    private var explicitSkip = false
     private var canSkip = false
     private var isPaused = false
+    private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-    var onMusicPlayingChanged: ((Boolean) -> Unit)? = null
-
-    private val videoViewBinding: VideoViewBinding
+    private var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -296,6 +296,11 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                if (mediaResult.isFromCache) {
+                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
+                    delay(CACHE_RESUME_DELAY.milliseconds)
+                    if (isStopped || blackOutMode) return@launch
+                }
                 loadNextItem()
                 scheduleSleepTimer()
                 scheduleScheduledBlackout()
@@ -388,37 +393,40 @@ class ScreenController(
         }
     }
 
-    private fun parseLocalTime(timeStr: String): java.time.LocalTime? {
-        return try {
+    private fun parseLocalTime(timeStr: String): java.time.LocalTime? =
+        try {
             val parts = timeStr.split(":")
             if (parts.size == 2) {
                 java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
-            } else null
+            } else {
+                null
+            }
         } catch (e: Exception) {
             null
         }
-    }
 
     private fun setupMusicPlayer(
         musicPlaylist: MusicPlaylist?,
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
+        videoPlayer.setForcedMute(true)
+
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
-        musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
         if (blackOutMode) {
             musicPlayer?.pause()
@@ -504,6 +512,8 @@ class ScreenController(
     private fun fadeInNextItem() {
         if (blackOutMode) return
 
+        savePlaybackPosition()
+
         canShowOverlays = false
         var startDelay: Long = 0
         val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
@@ -548,7 +558,9 @@ class ScreenController(
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
                     gradientTopView.alpha = 0f
                 }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
                     gradientBottomView.alpha = 0f
                 }
                 canShowOverlays = true
@@ -572,19 +584,42 @@ class ScreenController(
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
                     gradientTopView.alpha = 0f
                 }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
                     gradientBottomView.alpha = 0f
                 }
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
-                    overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                    val overlaysToFade = overlayHelper.getOverlaysToFade()
+                    overlaysToFade.forEachIndexed { index, view ->
+                        val animator =
+                            view
+                                .animate()
+                                .alpha(1f)
+                                .setStartDelay(0)
+                                .setDuration(overlayFadeIn)
+                        if (index == overlaysToFade.lastIndex) {
+                            animator.withEndAction { canShowOverlays = true }
+                        }
+                        animator.start()
+                    }
                     if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                        gradientTopView.alpha = 1f
+                        gradientTopView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
                     if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                        gradientBottomView.alpha = 1f
+                        gradientBottomView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
                     }
-                    canShowOverlays = true
                 }
             }
         }
@@ -626,7 +661,7 @@ class ScreenController(
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
-                videoViewBinding.videoPlayer.stop()
+                // Let setVideo() replace the source without forcing a Realtek codec teardown.
 
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
@@ -636,13 +671,32 @@ class ScreenController(
                 pauseStartTime = 0
 
                 if (!blackOutMode) {
+                    val wasExplicitSkip = explicitSkip
                     val loadPreviousItem = previousItem
+                    explicitSkip = false
                     previousItem = false
-                    loadNextItem(loadPreviousItem)
+
+                    if (wasExplicitSkip) {
+                        loadNextItem(loadPreviousItem)
+                    } else if (loopUntilSkipped && currentMedia != null) {
+                        replayCurrentItem()
+                    } else {
+                        loadNextItem(false)
+                    }
                 } else {
+                    explicitSkip = false
                     previousItem = false
                 }
             }.start()
+    }
+
+    private fun replayCurrentItem() {
+        val media = currentMedia
+        if (media != null) {
+            loadItem(media)
+        } else {
+            loadNextItem()
+        }
     }
 
     private fun showLoadingError() {
@@ -765,12 +819,12 @@ class ScreenController(
                 playlist.nextItem()
             }
         loadItem(media)
-        savePlaybackPosition()
     }
 
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
+                Timber.d("PlaylistCache: Saving playback position: ${playlist.currentPosition}")
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
             }
         }
@@ -818,6 +872,7 @@ class ScreenController(
     }
 
     fun skipItem(previous: Boolean = false) {
+        explicitSkip = true
         previousItem = previous
         fadeOutCurrentItem()
     }
@@ -938,9 +993,16 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        if (videoViewBinding.root.isVisible) {
-            videoPlayer.toggleLooping()
-        }
+        loopUntilSkipped = !loopUntilSkipped
+        val message =
+            if (loopUntilSkipped) {
+                resources.getString(
+                    R.string.playlist_loop_enabled,
+                )
+            } else {
+                resources.getString(R.string.playlist_loop_disabled)
+            }
+        NotificationHelper.show(notificationContainer, message)
     }
 
     fun increaseBrightness() = changeBrightness(true)
@@ -975,7 +1037,7 @@ class ScreenController(
         }
 
         // Show notification
-        NotificationHelper.show(notificationContainer, "Brightness: $newBrightness%")
+        NotificationHelper.show(notificationContainer, resources.getString(R.string.brightness_notification, newBrightness))
     }
 
     fun toggleMute() {
@@ -1029,14 +1091,33 @@ class ScreenController(
     private fun handleError() {
         if (blackOutMode) return
 
+        recreateVideoPlayer()
+
         mainScope.launch {
             delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
                 loadNextItem()
             } else {
+                explicitSkip = true
                 fadeOutCurrentItem()
             }
         }
+    }
+
+    private fun recreateVideoPlayer() {
+        val oldRoot = videoViewBinding.root
+        val videoParent = oldRoot.parent as? ViewGroup ?: return
+        val index = videoParent.indexOfChild(oldRoot)
+        videoPlayer.release()
+        videoParent.removeView(oldRoot)
+
+        val layoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        videoParent.addView(replacement, index)
+        videoViewBinding = VideoViewBinding.bind(replacement)
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
     }
 
     private fun handlePlaybackSpeedChanged() {
@@ -1217,5 +1298,6 @@ class ScreenController(
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
+        const val CACHE_RESUME_DELAY: Long = 2000 // Delay before starting playback when restoring from cache
     }
 }

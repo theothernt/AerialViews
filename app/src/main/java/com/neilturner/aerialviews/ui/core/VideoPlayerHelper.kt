@@ -7,7 +7,6 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -18,17 +17,15 @@ import androidx.media3.exoplayer.trackselection.DefaultTrackSelector.Parameters
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.AspectRatioFrameLayout
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.SchemeType
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
-import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.immich.ImmichDataSourceFactory
 import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesDataSourceFactory
 import com.neilturner.aerialviews.providers.samba.SambaDataSourceFactory
 import com.neilturner.aerialviews.providers.webdav.WebDavDataSourceFactory
@@ -36,7 +33,6 @@ import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
 import com.neilturner.aerialviews.providers.webdav.defaultPortFor
 import com.neilturner.aerialviews.services.philips.CustomRendererFactory
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
@@ -189,37 +185,13 @@ object VideoPlayerHelper {
         }
 
         AerialMediaSource.IMMICH -> {
-            val dataSourceFactory =
-                DefaultHttpDataSource
-                    .Factory()
-                    .setAllowCrossProtocolRedirects(true)
-                    .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-                    .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-
-            // Add necessary headers for Immich
-            if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
-                dataSourceFactory.setDefaultRequestProperties(
-                    mapOf("X-API-Key" to ImmichMediaPrefs.apiKey),
-                )
-            }
-
-            // If SSL validation is disabled, we need to set the appropriate flags
-            if (!ImmichMediaPrefs.validateSsl) {
-                System.setProperty("javax.net.ssl.trustAll", "true")
-            }
-
             Timber.d("Setting up Immich media source with URI: ${mediaItem.localConfiguration?.uri}")
             ProgressiveMediaSource
-                .Factory(dataSourceFactory)
+                .Factory(ImmichDataSourceFactory())
                 .createMediaSource(mediaItem)
         }
 
         AerialMediaSource.NCMEMORIES -> {
-            // If SSL validation is disabled, we need to set the appropriate flags
-            if (!NCMemoriesMediaPrefs.validateSsl) {
-                System.setProperty("javax.net.ssl.trustAll", "true")
-            }
-
             Timber.d("Setting up Nextcloud Memories media source with URI: ${mediaItem.localConfiguration?.uri}")
             ProgressiveMediaSource
                 .Factory(NCMemoriesDataSourceFactory())

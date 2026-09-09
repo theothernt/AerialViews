@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
         targetSdk = 37
-        versionCode = 139
+        versionCode = 145
         versionName = "1.8.5"
-        betaVersion = "-beta2"
+        betaVersion = "-beta9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -187,8 +187,9 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.ktor)
-    implementation(libs.bundles.room)
-    ksp(libs.room.compiler)
+    implementation(libs.room3.runtime)
+    ksp(libs.room3.compiler)
+    implementation(libs.sqlite.framework)
     implementation(libs.bundles.exoplayer)
     implementation(libs.media3.container)
     implementation(libs.sardine.android)

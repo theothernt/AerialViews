@@ -13,8 +13,8 @@
 
                 <ListPreference
                     app:defaultValue="4"
-                    app:entries="@array/overlay_visibility_delay_entries"
-                    app:entryValues="@array/overlay_visibility_delay_values"
+                    app:entries="@array/overlay_reveal_timeout_entries"
+                    app:entryValues="@array/overlay_reveal_timeout_values"
                     app:key="overlay_visibility_delay"
                     app:title="@string/overlay_visibility_delay_title"
                     app:useSimpleSummaryProvider="true" />

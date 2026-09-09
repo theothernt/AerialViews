@@ -33,7 +33,7 @@ interface NCMemoriesApi {
         @Query("albums") clusterId: String? = null,
         @Query("fav") fav: Int? = null,
         @Query("vid") vid: Int? = null,
-        ): Response<List<Image>>
+    ): Response<List<Image>>
 
     @Headers("OCS-APIRequest: true")
     @GET("/apps/memories/api/image/info/{fileid}")

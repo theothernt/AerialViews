@@ -1,17 +1,18 @@
 package com.neilturner.aerialviews.data
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room3.ColumnTypeConverters
+import androidx.room3.Database
+import androidx.room3.Room
+import androidx.room3.RoomDatabase
+import androidx.sqlite.driver.AndroidSQLiteDriver
 
 @Database(
     entities = [CachedMediaEntity::class, CachedMusicTrackEntity::class, PlaylistStateEntity::class],
     version = 1,
     exportSchema = true,
 )
-@TypeConverters(Converters::class)
+@ColumnTypeConverters(Converters::class)
 abstract class AerialDatabase : RoomDatabase() {
     abstract fun playlistCacheDao(): PlaylistCacheDao
 
@@ -37,6 +38,7 @@ abstract class AerialDatabase : RoomDatabase() {
                                 AerialDatabase::class.java,
                                 DATABASE_NAME,
                             ).fallbackToDestructiveMigration(dropAllTables = true)
+                            .setDriver(AndroidSQLiteDriver())
                             .build()
                     db = created
                     created

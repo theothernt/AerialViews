@@ -10,7 +10,9 @@ import timber.log.Timber
 import java.io.IOException
 import java.util.EnumSet
 
-class SambaMediaDataSource(uriString: String) : MediaDataSource() {
+class SambaMediaDataSource(
+    uriString: String,
+) : MediaDataSource() {
     private val smbClient: com.hierynomus.smbj.SMBClient
     private val remoteFile: com.hierynomus.smbj.share.File
     private val inputStream: java.io.InputStream
@@ -33,9 +35,16 @@ class SambaMediaDataSource(uriString: String) : MediaDataSource() {
         val (shareName, path) = SambaHelper.parseShareAndPathName(uri)
 
         smbClient = com.hierynomus.smbj.SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
-        val connection = smbClient.connect(hostName)
-        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-        val session = connection.authenticate(authContext)
+        val initialConnection = smbClient.connect(hostName)
+        val (connection, session) =
+            SambaHelper.authenticate(
+                smbClient = smbClient,
+                connection = initialConnection,
+                hostName = hostName,
+                userName = userName,
+                password = password,
+                domainName = domainName,
+            )
         val share = session.connectShare(shareName) as com.hierynomus.smbj.share.DiskShare
 
         val shareAccess = hashSetOf<SMB2ShareAccess>()
@@ -54,7 +63,12 @@ class SambaMediaDataSource(uriString: String) : MediaDataSource() {
         Timber.i("SambaMediaDataSource: opened $hostName/$shareName/$path")
     }
 
-    override fun readAt(position: Long, buffer: ByteArray, offset: Int, size: Int): Int {
+    override fun readAt(
+        position: Long,
+        buffer: ByteArray,
+        offset: Int,
+        size: Int,
+    ): Int {
         if (position > currentPosition) {
             var remaining = position - currentPosition
             while (remaining > 0) {

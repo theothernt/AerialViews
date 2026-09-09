@@ -16,6 +16,7 @@ import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.min
+
 @SuppressLint("UnsafeOptInUsageError")
 class NCMemoriesDataSource : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
@@ -23,8 +24,8 @@ class NCMemoriesDataSource : BaseDataSource(true) {
         SslHelper().createOkHttpClient(
             ServerConfig(
                 "",
-                NCMemoriesMediaPrefs.validateSsl
-            )
+                NCMemoriesMediaPrefs.validateSsl,
+            ),
         )
     private var inputStream: InputStream? = null
     private var bytesRemaining: Long = 0
@@ -40,10 +41,11 @@ class NCMemoriesDataSource : BaseDataSource(true) {
 
         transferInitializing(dataSpec)
 
-        val credential = Credentials.basic(
-            NCMemoriesMediaPrefs.username,
-            NCMemoriesMediaPrefs.password
-        )
+        val credential =
+            Credentials.basic(
+                NCMemoriesMediaPrefs.username,
+                NCMemoriesMediaPrefs.password,
+            )
 
         val request =
             Request

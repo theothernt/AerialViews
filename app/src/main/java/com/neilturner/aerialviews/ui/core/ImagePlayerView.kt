@@ -1,9 +1,9 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.net.Uri
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
@@ -132,7 +132,7 @@ class ImagePlayerView : FrameLayout {
             if (
                 (media.source == AerialMediaSource.IMMICH) ||
                 (media.source == AerialMediaSource.NCMEMORIES)
-                ) {
+            ) {
                 loadImage(media, baseStream)
                 return@launch
             }
@@ -147,11 +147,11 @@ class ImagePlayerView : FrameLayout {
             try {
                 val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
                 val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
-if (headerLength <= 0) {
-                     stream.close()
-                     loadImage(media, stripCredentialsForCoil(media))
-                     return@launch
-                 }
+                if (headerLength <= 0) {
+                    stream.close()
+                    loadImage(media, stripCredentialsForCoil(media))
+                    return@launch
+                }
                 stream.unread(headerBytes, 0, headerLength)
 
                 val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
@@ -288,17 +288,17 @@ if (headerLength <= 0) {
         val displayedHeight = imageHeight * scale
         val epsilon = 0.5f
 
-return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
-     }
+        return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
+    }
 
-     private fun stripCredentialsForCoil(media: AerialMedia): Uri {
-         if (media.source != AerialMediaSource.WEBDAV) {
-             return media.uri
-         }
-         return ImagePlayerHelper.stripUserinfoFromUri(media.uri)
-     }
+    private fun stripCredentialsForCoil(media: AerialMedia): Uri {
+        if (media.source != AerialMediaSource.WEBDAV) {
+            return media.uri
+        }
+        return ImagePlayerHelper.stripUserinfoFromUri(media.uri)
+    }
 
-     companion object {
+    companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
 

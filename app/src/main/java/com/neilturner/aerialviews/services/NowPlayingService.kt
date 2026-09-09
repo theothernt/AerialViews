@@ -53,10 +53,18 @@ class NowPlayingService(
         Timber.i("Setting up Now Playing session")
         sessionManager = context.getSystemService<MediaSessionManager>()
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
-        val controllers = sessionManager?.getActiveSessions(notificationListener)
+        val controllers = safeGetActiveSessions()
         logControllers("setupSession", controllers)
         updateActiveSession(controllers)
     }
+
+    private fun safeGetActiveSessions(): MutableList<MediaController>? =
+        try {
+            sessionManager?.getActiveSessions(notificationListener)
+        } catch (e: SecurityException) {
+            Timber.w(e, "Missing permission to access media sessions")
+            null
+        }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
         val selectedController = pickController(controllers)
@@ -121,7 +129,7 @@ class NowPlayingService(
                 repeat(6) {
                     delay(500.milliseconds)
                     Timber.i("Delayed check for active sessions")
-                    val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                    val freshControllers = safeGetActiveSessions()
                     logControllers("delayedCheck[$it]", freshControllers)
                     updateActiveSession(freshControllers)
                 }
@@ -269,4 +277,7 @@ data class MusicEvent(
     val artist: String = "",
     val song: String = "",
     val albumArt: Bitmap? = null,
-)
+) {
+    val isPlaying: Boolean
+        get() = artist.isNotBlank() || song.isNotBlank()
+}
