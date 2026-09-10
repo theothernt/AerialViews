@@ -219,5 +219,7 @@ class MessageOverlay : AppCompatTextView {
 
     private fun applyTextWeight(weightValue: Int) {
         typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weightValue)
+        val offset = FontHelper.getFontVerticalOffset(context, prefs.fontTypeface, textSize)
+        setPadding(0, offset, 0, -offset)
     }
 }
