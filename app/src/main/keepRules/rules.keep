@@ -1,9 +1,6 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Add project specific keep rules here.
+# Files with .keep extension placed in src/<variant>/keepRules are automatically
+# detected and applied by the Android Gradle Plugin (AGP 9.3+).
 
 # Firebase Crashlytics
  -keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
@@ -25,6 +22,7 @@
 -keep class com.neilturner.aerialviews.providers.** { *; }
 
 # Sardine Android / XmlPullParser / Simple XML
+-dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
 -keep class javax.xml.namespace.QName { *; }

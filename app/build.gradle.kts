@@ -73,14 +73,13 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
             // isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            optimization {
+                enable = true
+            }
 
             val openWeather = keyProps.getProperty("openWeather", "")
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")

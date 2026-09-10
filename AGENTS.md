@@ -15,7 +15,7 @@ Instructions for AI coding agents working on the Aerial Views project.
 
 ## Flavors & build types
 - Flavor dimension `version`; flavors: `github`, `beta` (default), `googleplay`, `googleplaybeta`, `amazon`, `fdroid`.
-- Build types: `debug` (applicationIdSuffix `.debug`, minify off, LeakCanary on) and `release` (R8 + resource shrinking, `proguard-rules.pro`).
+- Build types: `debug` (applicationIdSuffix `.debug`, minify off, LeakCanary on) and `release` (R8 + resource shrinking, `rules.keep`).
 - Use the **beta** flavor for local development and verification. Debug variant = `betaDebug`; release variant = `betaRelease`.
 
 ## Build commands (prefix with `:app`)
