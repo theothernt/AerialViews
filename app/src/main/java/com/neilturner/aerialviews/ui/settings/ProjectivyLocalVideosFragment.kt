@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.content.edit
 
 class ProjectivyLocalVideosFragment :
     MenuStateFragment(),
@@ -152,9 +153,9 @@ class ProjectivyLocalVideosFragment :
         if (MediaSelection.MUSIC in current) {
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
             ProjectivyLocalMediaPrefs.preferences
-                .edit()
-                .putStringSet("projectivy_local_media_selection", updated)
-                .apply()
+                .edit {
+	                putStringSet("projectivy_local_media_selection", updated)
+                }
             updateMediaSelectionSummary()
         }
     }

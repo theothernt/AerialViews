@@ -7,12 +7,8 @@ import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.data.network.SambaHelper
-import com.neilturner.aerialviews.models.enums.SchemeType
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Headers
-import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException

@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.core
 import android.content.Context
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
+import androidx.core.net.toUri
 import coil3.decode.Decoder
 import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
@@ -12,7 +13,6 @@ import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
@@ -132,7 +132,7 @@ internal object ImagePlayerHelper {
 
     fun stripUserinfoFromUri(uri: Uri): Uri {
         val url = uri.toString()
-        return Uri.parse(stripUserinfo(url))
+        return stripUserinfo(url).toUri()
     }
 
     fun streamFromWebDavFile(uri: Uri): InputStream? {

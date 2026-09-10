@@ -402,7 +402,7 @@ class ImmichRepository(
                             } else {
                                 // v2: assets are inline
                                 val albumAssets = album.assets
-                                if (albumAssets.isEmpty() && serverVersion < 3) {
+                                if (albumAssets.isEmpty()) {
                                     Timber.w("Album ${album.name} returned no inline assets on v2, falling back to search/metadata")
                                     val fallbackAssets = fetchAlbumAssetsV3(albumId, album.name)
                                     Timber.d("Fallback fetched ${fallbackAssets.size} assets for album: ${album.name}")

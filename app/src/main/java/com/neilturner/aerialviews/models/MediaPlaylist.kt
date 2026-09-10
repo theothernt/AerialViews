@@ -4,6 +4,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class MediaPlaylist(
@@ -81,7 +82,7 @@ class MediaPlaylist(
         val limit = 50
         try {
             val freshData =
-                kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) {
+                runBlocking(Dispatchers.IO) {
                     fetchChunk.invoke(newOffset, limit)
                 }
             synchronized(windowLock) {

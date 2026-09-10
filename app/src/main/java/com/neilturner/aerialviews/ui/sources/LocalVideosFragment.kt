@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.content.edit
 
 class LocalVideosFragment :
     MenuStateFragment(),
@@ -212,9 +213,9 @@ class LocalVideosFragment :
         if (MediaSelection.MUSIC in current) {
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
             LocalMediaPrefs.preferences
-                .edit()
-                .putStringSet("local_media_selection", updated)
-                .apply()
+                .edit {
+	                putStringSet("local_media_selection", updated)
+                }
             updateMediaSelectionSummary()
         }
     }
