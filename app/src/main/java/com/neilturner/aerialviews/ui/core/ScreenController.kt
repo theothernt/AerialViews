@@ -205,6 +205,9 @@ class ScreenController(
             loadingText.apply {
                 textSize = GeneralPrefs.loadingTextSize.toFloat()
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
+                includeFontPadding = false
+                val offset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textSize)
+                setPadding(0, offset, 0, -offset)
             }
         } else {
             loadingContainer.visibility = View.INVISIBLE

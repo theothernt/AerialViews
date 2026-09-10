@@ -81,6 +81,9 @@ class NowPlayingOverlay
         ) {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
             textView.typeface = FontHelper.getTypeface(context, font, weight)
+            textView.includeFontPadding = false
+            val offset = FontHelper.getFontVerticalOffset(context, font, textView.textSize)
+            textView.setPadding(0, offset, 0, -offset)
             val marginPx = context.resources.getDimensionPixelSize(R.dimen.screen_border_padding)
             val screenWidth = context.resources.displayMetrics.widthPixels
             textView.maxWidth = screenWidth - marginPx * 2

@@ -29,6 +29,28 @@ class OverlayHelper(
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
+    /**
+     * Applies the selected font typeface, disables font padding, and compensates
+     * for inter-font metric differences (e.g. Google Sans vs Open Sans) via
+     * padding so text renders at a consistent vertical position.
+     */
+    private fun applyFontToTextView(
+        view: TextView,
+        textSizeSp: Float,
+        weight: String,
+    ) {
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
+        view.typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weight)
+        view.includeFontPadding = false
+        val offset =
+            FontHelper.getFontVerticalOffset(
+                context,
+                prefs.fontTypeface,
+                view.textSize,
+            )
+        view.setPadding(0, offset, 0, -offset)
+    }
+
     // Get overlays by corner position
     // Overlay indices: 0-1 = Bottom Left, 2-3 = Bottom Right, 4-5 = Top Left, 6-7 = Top Right
     fun getBottomLeftOverlays(): List<View> = listOfNotNull(overlays.getOrNull(0), overlays.getOrNull(1))
@@ -197,40 +219,35 @@ class OverlayHelper(
         when (overlay) {
             OverlayType.CLOCK -> {
                 ClockOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.clockWeight)
+                    applyFontToTextView(this, prefs.clockSize.toFloat(), prefs.clockWeight)
                 }
             }
 
             OverlayType.METADATA1 -> {
                 MetadataOverlay(context).apply {
                     type = overlay
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata1Size.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata1Weight)
+                    applyFontToTextView(this, prefs.overlayMetadata1Size.toFloat(), prefs.overlayMetadata1Weight)
                 }
             }
 
             OverlayType.METADATA2 -> {
                 MetadataOverlay(context).apply {
                     type = overlay
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata2Size.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata2Weight)
+                    applyFontToTextView(this, prefs.overlayMetadata2Size.toFloat(), prefs.overlayMetadata2Weight)
                 }
             }
 
             OverlayType.METADATA3 -> {
                 MetadataOverlay(context).apply {
                     type = overlay
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata3Size.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata3Weight)
+                    applyFontToTextView(this, prefs.overlayMetadata3Size.toFloat(), prefs.overlayMetadata3Weight)
                 }
             }
 
             OverlayType.METADATA4 -> {
                 MetadataOverlay(context).apply {
                     type = overlay
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata4Size.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata4Weight)
+                    applyFontToTextView(this, prefs.overlayMetadata4Size.toFloat(), prefs.overlayMetadata4Weight)
                 }
             }
 
@@ -272,15 +289,13 @@ class OverlayHelper(
 
             OverlayType.DATE -> {
                 DateOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
+                    applyFontToTextView(this, prefs.dateSize.toFloat(), prefs.dateWeight)
                 }
             }
 
             OverlayType.MESSAGE1 -> {
                 MessageOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    applyFontToTextView(this, prefs.messageSize.toFloat(), prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine1)
                 }
@@ -288,8 +303,7 @@ class OverlayHelper(
 
             OverlayType.MESSAGE2 -> {
                 MessageOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    applyFontToTextView(this, prefs.messageSize.toFloat(), prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine2)
                 }
@@ -297,8 +311,7 @@ class OverlayHelper(
 
             OverlayType.MESSAGE3 -> {
                 MessageOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    applyFontToTextView(this, prefs.messageSize.toFloat(), prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine3)
                 }
@@ -306,8 +319,7 @@ class OverlayHelper(
 
             OverlayType.MESSAGE4 -> {
                 MessageOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    applyFontToTextView(this, prefs.messageSize.toFloat(), prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine4)
                 }
@@ -315,8 +327,7 @@ class OverlayHelper(
 
             OverlayType.COUNTDOWN -> {
                 CountdownOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.countdownSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.countdownWeight)
+                    applyFontToTextView(this, prefs.countdownSize.toFloat(), prefs.countdownWeight)
                     type = overlay
                 }
             }
