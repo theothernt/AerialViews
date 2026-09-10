@@ -490,7 +490,7 @@
     <string name="text_size_default" translatable="false">18</string>
 
     <!-- Font selection -->
-    <string name="font_open_sans">Open Sans</string>
+    <string name="font_open_sans">Open Sans*</string>
     <string name="font_google_sans">Google Sans</string>
     <string name="font_roboto">Roboto</string>
     <string-array name="text_font_entries" translatable="false">
