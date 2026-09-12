@@ -203,12 +203,16 @@
     <string-array name="custom_feed_quality_entries" translatable="false">
         <item>1080p H.264</item>
         <item>1080p HEVC</item>
+        <item>1080p HDR</item>
         <item>4K HEVC</item>
+        <item>4K HDR</item>
     </string-array>
     <string-array name="custom_feed_quality_values" translatable="false">
         <item>VIDEO_1080_H264</item>
         <item>VIDEO_1080_SDR</item>
+        <item>VIDEO_1080_HDR</item>
         <item>VIDEO_4K_SDR</item>
+        <item>VIDEO_4K_HDR</item>
     </string-array>
     <string name="custom_feed_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
