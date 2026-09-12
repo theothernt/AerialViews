@@ -26,4 +26,5 @@ data class CachedMediaEntity(
     val exifState: String?,
     val exifCountry: String?,
     val exifDescription: String?,
+    val audioUri: String? = null,
 )
