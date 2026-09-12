@@ -9,7 +9,7 @@ import androidx.sqlite.driver.AndroidSQLiteDriver
 
 @Database(
     entities = [CachedMediaEntity::class, CachedMusicTrackEntity::class, PlaylistStateEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 @ColumnTypeConverters(Converters::class)
