@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -30,7 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.content.edit
 
 class LocalVideosFragment :
     MenuStateFragment(),
@@ -214,7 +214,7 @@ class LocalVideosFragment :
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
             LocalMediaPrefs.preferences
                 .edit {
-	                putStringSet("local_media_selection", updated)
+                    putStringSet("local_media_selection", updated)
                 }
             updateMediaSelectionSummary()
         }

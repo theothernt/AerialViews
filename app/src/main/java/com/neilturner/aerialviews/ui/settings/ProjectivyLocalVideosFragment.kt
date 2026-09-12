@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
@@ -25,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.content.edit
 
 class ProjectivyLocalVideosFragment :
     MenuStateFragment(),
@@ -154,7 +154,7 @@ class ProjectivyLocalVideosFragment :
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
             ProjectivyLocalMediaPrefs.preferences
                 .edit {
-	                putStringSet("projectivy_local_media_selection", updated)
+                    putStringSet("projectivy_local_media_selection", updated)
                 }
             updateMediaSelectionSummary()
         }

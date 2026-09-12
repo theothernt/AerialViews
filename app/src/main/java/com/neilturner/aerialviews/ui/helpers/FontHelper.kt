@@ -29,17 +29,19 @@ object FontHelper {
     ): Typeface {
         val font =
             try {
-	            when (typeface) {
-		            "open-sans" -> {
-			            ResourcesCompat.getFont(context, R.font.opensans)
-		            }
-		            "google-sans" -> {
-			            ResourcesCompat.getFont(context, R.font.googlesans)
-		            }
-		            else -> {
-			            Typeface.create("san-serif", Typeface.NORMAL)
-		            }
-	            }
+                when (typeface) {
+                    "open-sans" -> {
+                        ResourcesCompat.getFont(context, R.font.opensans)
+                    }
+
+                    "google-sans" -> {
+                        ResourcesCompat.getFont(context, R.font.googlesans)
+                    }
+
+                    else -> {
+                        Typeface.create("san-serif", Typeface.NORMAL)
+                    }
+                }
             } catch (ex: Exception) {
                 Timber.e(ex)
                 Typeface.create("san-serif", Typeface.NORMAL)
