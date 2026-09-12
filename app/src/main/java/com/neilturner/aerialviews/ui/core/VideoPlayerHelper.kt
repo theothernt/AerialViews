@@ -155,6 +155,7 @@ object VideoPlayerHelper {
         context: Context,
         player: ExoPlayer,
         media: AerialMedia,
+        includeSeparateAudio: Boolean = true,
     ) {
         val video = createMediaSource(context, MediaItem.fromUri(media.uri), media.source)
         val audioUri = media.audioUri
@@ -162,7 +163,7 @@ object VideoPlayerHelper {
         // Only fetch the extra stream when video audio is the chosen mode, as the
         // muted and background music modes would download it just to silence it
         val mediaSource =
-            if (audioUri == null || !GeneralPrefs.playsVideoAudio) {
+            if (audioUri == null || !includeSeparateAudio || !GeneralPrefs.playsVideoAudio) {
                 video
             } else {
                 Timber.i("Using MergingMediaSource to combine video and audio streams: $audioUri")
