@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.data
 
 import android.content.Context
+import androidx.room3.AutoMigration
 import androidx.room3.ColumnTypeConverters
 import androidx.room3.Database
 import androidx.room3.Room
@@ -11,6 +12,7 @@ import androidx.sqlite.driver.AndroidSQLiteDriver
     entities = [CachedMediaEntity::class, CachedMusicTrackEntity::class, PlaylistStateEntity::class],
     version = 2,
     exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
 )
 @ColumnTypeConverters(Converters::class)
 abstract class AerialDatabase : RoomDatabase() {
