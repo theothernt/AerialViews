@@ -26,11 +26,13 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.SonosPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MusicPlayer
 import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.sonos.SonosService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.controls.ProgressBar
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
@@ -85,6 +87,7 @@ class ScreenController(
     private var isStopped = false
 
     private var nowPlayingService: NowPlayingService? = null
+    private var sonosService: SonosService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
     private var musicPlayer: MusicPlayer? = null
@@ -261,6 +264,14 @@ class ScreenController(
             // Used for a) Skip music tracks b) music info widget
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context)
+            }
+
+            if (SonosPrefs.enabled && SonosPrefs.ipAddress.isNotEmpty()) {
+                if (PermissionHelper.hasLocalNetworkPermission(context)) {
+                    sonosService = SonosService(SonosPrefs.ipAddress, SonosPrefs.pollInterval).also { it.start() }
+                } else {
+                    Timber.w("SonosService not started: ACCESS_LOCAL_NETWORK permission not granted")
+                }
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
@@ -852,6 +863,7 @@ class ScreenController(
         imagePlayer.release()
         ktorServer?.stop()
         nowPlayingService?.stop()
+        sonosService?.stop()
         weatherService?.stop()
         musicPlayer?.pause()
         musicPlayer?.release()

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.ComponentName
 import android.content.Context
+import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
@@ -275,6 +276,7 @@ class NowPlayingService(
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
+    val albumArt: Bitmap? = null,
 ) {
     val isPlaying: Boolean
         get() = artist.isNotBlank() || song.isNotBlank()
