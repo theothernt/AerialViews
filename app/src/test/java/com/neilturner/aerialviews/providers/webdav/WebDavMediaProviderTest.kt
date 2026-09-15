@@ -2,13 +2,17 @@ package com.neilturner.aerialviews.providers.webdav
 
 import android.content.Context
 import android.content.res.Resources
+import android.net.Uri
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.SchemeType
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
@@ -64,7 +68,8 @@ internal class WebDavMediaProviderTest {
                         FakeWebDavListingClient(
                             responses =
                                 mapOf(
-                                    "http://example.com/media" to listOf(WebDavResourceInfo("media", isDirectory = true)),
+                                    "http://example.com/media" to
+                                        listOf(WebDavResourceInfo("media", displayName = "Media", isDirectory = true)),
                                 ),
                         )
                     },
@@ -93,9 +98,14 @@ internal class WebDavMediaProviderTest {
                                 mapOf(
                                     "http://example.com/media" to
                                         listOf(
-                                            WebDavResourceInfo("media", isDirectory = true),
-                                            WebDavResourceInfo("notes.txt", isDirectory = false, modifiedTimeMs = 10),
-                                            WebDavResourceInfo("child", isDirectory = true),
+                                            WebDavResourceInfo("media", displayName = "Media", isDirectory = true),
+                                            WebDavResourceInfo(
+                                                "notes.txt",
+                                                displayName = "Notes",
+                                                isDirectory = false,
+                                                modifiedTimeMs = 10,
+                                            ),
+                                            WebDavResourceInfo("child", displayName = "Child", isDirectory = true),
                                         ),
                                 ),
                             perUrlFailures =
@@ -115,6 +125,60 @@ internal class WebDavMediaProviderTest {
                 success.summary,
             )
         }
+
+    @Test
+    fun `propagates display name to media title`() {
+        mockkStatic(Uri::class)
+        try {
+            every { Uri.parse(any()) } returns mockk(relaxed = true)
+            runTest {
+                val provider =
+                    WebDavMediaProvider(
+                        context = context,
+                        prefs = fakePrefs(hostName = "example.com", pathName = "/media"),
+                        clientFactory = {
+                            FakeWebDavListingClient(
+                                responses =
+                                    mapOf(
+                                        "http://example.com/media" to
+                                            listOf(
+                                                WebDavResourceInfo(
+                                                    "root",
+                                                    displayName = "Root",
+                                                    isDirectory = true,
+                                                ),
+                                                WebDavResourceInfo(
+                                                    "photo.jpg",
+                                                    displayName = "My Vacation Photo",
+                                                    isDirectory = false,
+                                                    modifiedTimeMs = 10,
+                                                ),
+                                                WebDavResourceInfo(
+                                                    "vid.mp4",
+                                                    displayName = "My Video",
+                                                    isDirectory = false,
+                                                    modifiedTimeMs = 5,
+                                                ),
+                                            ),
+                                    ),
+                            )
+                        },
+                    )
+
+                val result = provider.fetch()
+
+                val success = assertInstanceOf(ProviderFetchResult.Success::class.java, result)
+                val photos = success.media.filter { it.type == AerialMediaType.IMAGE }
+                assertEquals(1, photos.size)
+                assertEquals("My Vacation Photo", photos.first().metadata.title)
+                val videos = success.media.filter { it.type == AerialMediaType.VIDEO }
+                assertEquals(1, videos.size)
+                assertEquals("My Video", videos.first().metadata.title)
+            }
+        } finally {
+            unmockkStatic(Uri::class)
+        }
+    }
 
     private fun fakePrefs(
         hostName: String,

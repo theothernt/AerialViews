@@ -47,7 +47,7 @@ internal sealed interface WebDavConnectionTestResult {
     ) : WebDavConnectionTestResult
 
     data class SuccessSummary(
-        val files: List<String>,
+        val files: List<Pair<String, String?>>,
         val summary: String,
     ) : WebDavConnectionTestResult
 }
