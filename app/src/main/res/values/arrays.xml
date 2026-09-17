@@ -494,13 +494,13 @@
     <string name="font_google_sans" translatable="false">Google Sans*</string>
     <string name="font_roboto" translatable="false">Roboto</string>
     <string-array name="text_font_entries" translatable="false">
-        <item>@string/font_open_sans</item>
         <item>@string/font_google_sans</item>
+        <item>@string/font_open_sans</item>
         <item>@string/font_roboto</item>
     </string-array>
     <string-array name="text_font_values" translatable="false">
-        <item>open-sans</item>
         <item>google-sans</item>
+        <item>open-sans</item>
         <item>sans-serif</item>
     </string-array>
     <string name="text_font_default" translatable="false">google-sans</string>
