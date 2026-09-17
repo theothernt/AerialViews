@@ -685,6 +685,7 @@ The app supports the "community" video format, which is a JSON file (typically n
       "timeOfDay": "sunset",
       "url-1080-SDR": "https://example.com/videos/sunset_1080p.mp4",
       "url-4K-SDR": "https://example.com/videos/sunset_4k.mp4",
+      "url-audio": "https://example.com/videos/sunset_audio.m4a",
       "pointsOfInterest": {
         "0": "The setting sun",
         "30": "Palm trees swaying in the breeze"
@@ -693,6 +694,8 @@ The app supports the "community" video format, which is a JSON file (typically n
   ]
 }
 ```
+
+The optional `url-audio` field is intended for DASH-style videos from some external providers, where the video and audio streams are encoded seperately. 
 
 Another example [can be found on GitHub](https://github.com/AerialScreensaver/AerialCommunity/blob/master/entries.json).
 

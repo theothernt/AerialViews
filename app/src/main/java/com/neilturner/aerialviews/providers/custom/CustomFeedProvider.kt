@@ -489,6 +489,7 @@ class CustomFeedProvider(
                                         timeOfDay = TimeOfDay.UNKNOWN,
                                         scene = SceneType.UNKNOWN,
                                     ),
+                                audioUri = asset.audioUri(),
                             ),
                         )
                     }
