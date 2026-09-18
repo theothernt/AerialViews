@@ -282,6 +282,7 @@ object GeneralPrefs : KotprefModel() {
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
     var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
     var alwaysProvideAudioTrack by booleanPref(false, "always_provide_audio_track")
+    var runAsActivity by booleanPref(false, "run_as_activity")
     var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
 
     val portraitVideoRotationEnabled: Boolean

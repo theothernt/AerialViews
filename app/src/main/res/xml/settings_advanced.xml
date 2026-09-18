@@ -68,6 +68,12 @@
                     app:key="always_provide_audio_track"
                     app:summary="@string/advanced_always_provide_audio_track_summary"
                     app:title="@string/advanced_always_provide_audio_track_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="run_as_activity"
+                    app:summary="@string/advanced_run_as_activity_summary"
+                    app:title="@string/advanced_run_as_activity_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_animation">
