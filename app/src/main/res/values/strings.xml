@@ -865,6 +865,8 @@
     <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
     <string name="advanced_mute_disables_audio_track_title">Disable audio track when muted</string>
     <string name="advanced_mute_disables_audio_track_summary">Removes the audio track entirely when muted, for compatibility with soundbars and external equipment that ignore software volume</string>
+    <string name="advanced_always_provide_audio_track_title">Always provide an audio track</string>
+    <string name="advanced_always_provide_audio_track_summary">Adds a silent audio track to videos that have none, so tunneling can be used. Helps on TVs that show their own burn-in screensaver over the top</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
