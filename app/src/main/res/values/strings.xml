@@ -697,6 +697,8 @@
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
     <string name="playlist_audio_mode_title">Audio mode</string>
     <string name="playlist_audio_mode_summary">Choose whether to mute videos, play video audio, or play background music</string>
+    <string name="playlist_music_repeat_title">Loop background music</string>
+    <string name="playlist_music_repeat_summary">Repeat the background music playlist when it ends</string>
 
     <string name="playlist_sleep_timer_title">Sleep timer</string>
     <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>

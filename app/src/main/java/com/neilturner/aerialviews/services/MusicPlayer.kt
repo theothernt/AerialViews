@@ -47,7 +47,7 @@ class MusicPlayer(
                             ?.uri
                             ?.toString() ?: "unknown"
                     FirebaseHelper.crashlyticsLogMessage(
-                        "MusicPlayer: background music playback error on track $trackIndex ($trackUri)"
+                        "MusicPlayer: background music playback error on track $trackIndex ($trackUri)",
                     )
                     FirebaseHelper.crashlyticsException(error.cause)
                     Timber.e(error, "MusicPlayer: background music playback error")
