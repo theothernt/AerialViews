@@ -20,7 +20,6 @@ firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
-gradle-doctor = "0.12.1"
 kotlinter-gradle = "5.7.0"
 leakcanary = "3.0-alpha-8"
 
@@ -148,7 +147,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
-gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
