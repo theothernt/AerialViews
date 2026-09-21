@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import androidx.annotation.OptIn
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -9,6 +10,7 @@ import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
 class MusicPlayer(
@@ -23,6 +25,7 @@ class MusicPlayer(
         )
 
     var onMediaItemChanged: (() -> Unit)? = null
+    var onPlayerError: (() -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context.applicationContext)
@@ -33,6 +36,22 @@ class MusicPlayer(
                     reason: Int,
                 ) {
                     onMediaItemChanged?.invoke()
+                }
+
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                    val trackIndex = player?.currentMediaItemIndex ?: -1
+                    val trackUri =
+                        playlist.tracks
+                            .getOrNull(trackIndex)
+                            ?.uri
+                            ?.toString() ?: "unknown"
+                    FirebaseHelper.crashlyticsLogMessage(
+                        "MusicPlayer: background music playback error on track $trackIndex ($trackUri)"
+                    )
+                    FirebaseHelper.crashlyticsException(error.cause)
+                    Timber.e(error, "MusicPlayer: background music playback error")
+                    onPlayerError?.invoke()
                 }
             },
         )

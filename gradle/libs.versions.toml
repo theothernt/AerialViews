@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.2"
+agp = "9.4.1"
 kotlin = "2.4.20"
 kotlin-serialization = "1.11.0"
 google-services = "4.5.0"
@@ -19,8 +19,7 @@ firebase-bom = "34.19.0"
 firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
-ktor = "3.5.2"
-gradle-doctor = "0.12.1"
+ktor = "3.6.0"
 kotlinter-gradle = "5.7.0"
 leakcanary = "3.0-alpha-8"
 
@@ -36,7 +35,7 @@ smbj = "0.13.0"
 media3-exoplayer = "1.11.1"
 flowbus = "1.1"
 kotpref = "2.13.2"
-coil3 = "3.6.2"
+coil3 = "3.6.3"
 timber = "5.0.1"
 slf4j = "2.0.19"
 
@@ -148,7 +147,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
-gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
