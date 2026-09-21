@@ -20,14 +20,22 @@
   <string name="advanced_log_capture_saved_title">יומני רישום נשמרו</string>
   <string name="advanced_log_capture_summary">לכידת כל יומני האפליקציה באמצעות שירות רקע. יומני האפליקציה נשמרים לאחר עצירה.</string>
   <string name="advanced_log_capture_title">הפעלת לכידת יומנים</string>
+  <string name="advanced_mute_disables_audio_track_summary">מסיר את רצועת האודיו לחלוטין כאשר היא מושתקת, לצורך תאימות עם סאונדברים וציוד חיצוני שמתעלמים מעוצמת קול תוכנה</string>
+  <string name="advanced_mute_disables_audio_track_title">השבתת רצועת שמע כאשר מושתק</string>
   <string name="advanced_philips_dolby_vision_fix_summary">תיקון ניגון דולבי וויז׳ן על מספר טלוויזיות פיליפס ישנות</string>
   <string name="advanced_philips_dolby_vision_fix_title">השתמש במנתח מדיית וידאו חלופית</string>
+  <string name="advanced_portrait_rotation_summary">סובב ידנית סרטוני וידאו לאורך כדי לתקן את כיוונם. חל רק בעת שימוש ב-SurfaceView. שימושי למכשירים עם באגים בקושחה.</string>
+  <string name="advanced_portrait_rotation_title">תיקון סיבוב וידאו לאורך</string>
+  <string name="advanced_reduce_buffer_memory_summary">משתמש במאגרי הפעלה קטנים יותר שיכולים להפחית את ניצול הזיכרון אך עשויים להגביר את אחסון המאגר ברשתות איטיות יותר</string>
+  <string name="advanced_reduce_buffer_memory_title">הפחתת זיכרון זיכרון עם זיכרון מאגר (buffers)</string>
   <string name="advanced_refresh_rate_switching_summary">שנה את קצב הרענון של התצוגה כך שיתאים לקצב פריימים של הווידאו</string>
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
   <string name="advanced_save_logs_summary">הפסק את הלכידה ושמור את קובץ היומן בתיקיית המסמכים</string>
   <string name="advanced_save_logs_title">שמירת יומני רישום</string>
   <string name="advanced_use_texture_view_summary">השתמש ב-TextureView במקום ב-SurfaceView לצורך עיבוד וידאו</string>
   <string name="advanced_use_texture_view_title">השתמש ב-TextureView עבור וידאו</string>
+  <string name="advanced_wifi_only_summary">הזרמת סרטונים רק ממקורות מרוחקים (אפל, אמזון וכו\') כאשר מחוברים ל-WiFi או Ethernet. מקורות מקומיים ו-LAN אינם מושפעים.</string>
+  <string name="advanced_wifi_only_title">הזרמת מדיה דרך WiFi בלבד</string>
   <string name="advanced_wol_enable_summary">שלח חבילת Wake on LAN לפני שליפת מדיה</string>
   <string name="advanced_wol_enable_title">הפעלת התעוררות ברשת מקומית (WoL)</string>
   <string name="advanced_wol_mac_error">פורמט כתובת MAC לא חוקי</string>
@@ -156,6 +164,7 @@
   <string name="apple_videos_enabled">השתמש בסרטוני אפל</string>
   <string name="apple_videos_scene_type_title">סוגי סצנות</string>
   <string name="apple_videos_time_of_day_title">שעה ביום</string>
+  <string name="brightness_notification">בְּהִירוּת: %1$s%%</string>
   <string name="button_cancel">ביטל</string>
   <string name="button_export">ייצא</string>
   <string name="button_import">ייבא</string>
@@ -178,6 +187,7 @@
   <string name="capabilities_permission_denied">נדחה</string>
   <string name="capabilities_permission_granted">מאושר</string>
   <string name="capabilities_permission_internet">אינטרנט: %1$s</string>
+  <string name="capabilities_permission_local_network">גישה לרשת מקומית (Samba, WebDAV, Immich): %1$s</string>
   <string name="capabilities_permission_media_images">גישה מקומית (תמונות): %1$s</string>
   <string name="capabilities_permission_media_video">גישה מקומית (וידאו): %1$s</string>
   <string name="capabilities_permission_notification_access">גישה להודעה (מידע מופעל כעת): %1$s</string>
@@ -254,6 +264,7 @@
   <string name="category_remote_streaming">סטרימינג מרחוק</string>
   <string name="category_samba_options">אפשרויות Samba/SMB</string>
   <string name="category_scaling">שינוי גודל</string>
+  <string name="category_scheduled_blackout">הפסקת חשמל מתוזמנת</string>
   <string name="category_server_details">פרטי שרת ומשתמש</string>
   <string name="category_server_details_and_credentials">פרטי שרת ומשתמש</string>
   <string name="category_settings">הגדרות</string>
@@ -298,6 +309,8 @@
   <string name="dpad_button_right_title">כיוון ישמינה</string>
   <string name="dpad_button_up_title">כיוון למעלה</string>
   <string name="dpad_double_tap_title">הקשה כפולה</string>
+  <string name="dpad_exit_on_mouse_movement_summary">יציאה משומר המסך בעת הזזת עכבר מחובר</string>
+  <string name="dpad_exit_on_mouse_movement_title">יציאה בעת הזזת העכבר</string>
   <string name="dpad_long_press_title">לחיצה ארוכה</string>
   <string name="dpad_music_permission_summary">נדרשת הרשאה נוספת כדי לדלג לסרטון הבא/קודם</string>
   <string name="dpad_music_permission_title">הרשאת בקרת מוסיקה</string>
@@ -401,7 +414,34 @@
   <string name="location_selection_title">בחר מיקום</string>
   <string name="location_unknown">לא ידוע</string>
   <string name="message_media_searching">מחפש מדיה...</string>
+  <string name="ncmemories_media_enabled_title">השתמש במדיה של Nextcloud Memories</string>
+  <string name="ncmemories_media_favorites_name">מועדפים</string>
+  <string name="ncmemories_media_fetch_albums_error">שגיאה בשליפת אלבומים</string>
+  <string name="ncmemories_media_include_favorites_title">כלול תמונות וסרטונים מועדפים</string>
+  <string name="ncmemories_media_include_recent_title">כלול תמונות וסרטונים אחרונים</string>
+  <string name="ncmemories_media_no_albums">לא נמצאו אלבומים</string>
+  <string name="ncmemories_media_no_albums_message">לא נמצאו אלבומים בחשבון Nextcloud Memories שלך. ודא שיצרת לפחות אלבום אחד.</string>
+  <string name="ncmemories_media_password_summary">סיסמת אפליקציה (מועדפת) או סיסמת משתמש (לא מומלצת)</string>
+  <string name="ncmemories_media_password_title">סיסמה</string>
+  <string name="ncmemories_media_recent_name">אחרונים</string>
+  <string name="ncmemories_media_select_album">בחר אלבום</string>
+  <string name="ncmemories_media_select_albums">בחר אלבומים</string>
+  <string name="ncmemories_media_select_albums_summary">לא נבחרו אלבומים</string>
+  <string name="ncmemories_media_selected_album">אלבום נבחר: %1$s</string>
+  <string name="ncmemories_media_selected_albums">נבחרו %1$d אלבומים</string>
+  <string name="ncmemories_media_test_connection">בדוק את הגדרות החיבור</string>
+  <string name="ncmemories_media_test_results">תוצאות מבחן</string>
+  <string name="ncmemories_media_type_title">בחר סוג מדיה</string>
+  <string name="ncmemories_media_url_invalid">כתובת ה-URL של האתר לא תקינה</string>
+  <string name="ncmemories_media_url_summary">הזן כתובת URL של השרת (לדוגמה, https://192.168.1.2)</string>
+  <string name="ncmemories_media_url_title">כתובת URL של שרת</string>
+  <string name="ncmemories_media_username_summary">שם משתמש או דוא\"ל</string>
+  <string name="ncmemories_media_username_title">שם משתמש</string>
+  <string name="ncmemories_media_validate_ssl_summary">השבת רק אם אתה משתמש באישורים בחתימה עצמית</string>
+  <string name="ncmemories_media_validate_ssl_title">אמת תעודות SSL</string>
   <string name="none_selected">אף אחד לא נבחר</string>
+  <string name="nowplaying_keep_screen_on_summary">מנע מעמעום או שינוי מצב שינה של שומר המסך כאשר מוזיקת ​​רקע פעילה</string>
+  <string name="nowplaying_keep_screen_on_title">עצירת המכשיר ממצב שינה בזמן השמעת מוזיקה</string>
   <string name="nowplaying_line1_title">שורה 1</string>
   <string name="nowplaying_line2_title">שורה 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">תכונה זו אינה זמינה בגרסאות ישנות יותר של אנדרואיד טיוי</string>
@@ -422,6 +462,8 @@
   <string name="overlay_metadata_video_location_title">פורמט מיקום</string>
   <string name="overlay_metadata_videos_summary">בחירה וסדר מחדש של מידע המוצגים עבור סרטונים</string>
   <string name="overlay_metadata_videos_title">מידע של ​​וידאו</string>
+  <string name="overlay_visibility_delay_title">עיכוב</string>
+  <string name="overlay_visibility_title">נראות שכבת-על</string>
   <string name="playlist_audio_mode_summary">בחרו אם להשתיק סרטונים, להשמיע אודיו מהווידאו או להשמיע מוזיקת ​​רקע</string>
   <string name="playlist_audio_mode_title">מצב שמע</string>
   <string name="playlist_auto_time_of_day_summary">הפעל רק סרטונים התואמים את השעה הנוכחית ביום (בוקר/יום או לילה/שקיעה)</string>
@@ -435,6 +477,7 @@
   <string name="playlist_cache_expired">(פג תוקף)</string>
   <string name="playlist_cache_expires">תפוגה:</string>
   <string name="playlist_cache_interval_title">מרווח רענון</string>
+  <string name="playlist_cache_resume_title">שחזור התנהגות</string>
   <string name="playlist_cache_status_active">%1$d פריטי מדיה, %2$d רצועות מוזיקה,</string>
   <string name="playlist_cache_status_empty">אין נתוני מטמון</string>
   <string name="playlist_cache_status_expiry_d">%1$d יום/ים</string>
@@ -448,6 +491,8 @@
   <string name="playlist_ignore_unmatched_videos_summary">דלג על סרטונים שאינם מזוהים כסרטוני אפל או קהילה</string>
   <string name="playlist_ignore_unmatched_videos_title">התעלם מסרטונים שאינם של אפל, ושאינם קהילתיים</string>
   <string name="playlist_limit_longer_videos_title">סרטונים ארוכים יותר</string>
+  <string name="playlist_loop_disabled">לולאה מושבתת</string>
+  <string name="playlist_loop_enabled">לולאה מופעלת</string>
   <string name="playlist_loop_short_videos_summary">סרטונים קצרים יועברו בלולאה כדי לעמוד במגבלת הזמן, אם מוגדרת
  (לדוגמה, סרטון של 30 שניות עם הגבלה של 2 דקות יעבור 4 פעמים בלולאה)</string>
   <string name="playlist_loop_short_videos_title">סרטונים קצרים</string>
@@ -465,6 +510,10 @@
   <string name="playlist_random_start_position_title">עמדת התחלה אקראית</string>
   <string name="playlist_remove_duplicates_summary">הסר סרטונים ותמונות כפולים מרשימת ההשמעה על סמך שם הקובץ בלבד</string>
   <string name="playlist_remove_duplicates_title">הסר כפילויות סרטונים ותמונות</string>
+  <string name="playlist_scheduled_blackout_enabled_summary">השחר את המסך באופן אוטומטי בין שעת ההתחלה לשעת הסיום</string>
+  <string name="playlist_scheduled_blackout_enabled_title">הפעלת הפסקת חשמל מתוזמנת</string>
+  <string name="playlist_scheduled_blackout_end_title">שעת סיום</string>
+  <string name="playlist_scheduled_blackout_start_title">שעת התחלה</string>
   <string name="playlist_set_location_summary">מיקום נוכחי: %1$s</string>
   <string name="playlist_set_location_title">הגדר מיקום</string>
   <string name="playlist_shuffle_summary">סדר רנדומאלי של סרטונים ותמונות</string>
@@ -502,6 +551,7 @@
   <string name="samba_media_test_summary3">סרטונים שנמצאו: %1$s</string>
   <string name="samba_media_test_summary4">תמונות שנמצאו: %1$s</string>
   <string name="samba_media_test_summary5">נבחר לניגון: %1$s</string>
+  <string name="samba_media_test_summary6">נבחר לניגון: %1$s</string>
   <string name="samba_media_type_title">בחר סוג מדיה</string>
   <string name="samba_media_wol_summary">הערת השרת בעת ניסיון לשלוף מדיה</string>
   <string name="samba_media_wol_title">הגדרות התעוררות ברשת מקומית (WoL)</string>
@@ -584,6 +634,8 @@
   <string name="sources_immich_title">שרת Immich</string>
   <string name="sources_local_summary">הפעל סרטונים ותמונות ישירות מהמכשיר שלך או מאחסון USB מחובר</string>
   <string name="sources_local_title">אחסון מקומי או USB</string>
+  <string name="sources_ncmemories_summary">הפעל סרטונים ותמונות משרת Nextcloud Memories</string>
+  <string name="sources_ncmemories_title">שרת Nextcloud Memories</string>
   <string name="sources_samba_summary">הפעל סרטונים ותמונות משיתוף רשת מקומית במחשב או בהתקן NAS</string>
   <string name="sources_samba_title">שיתוף SMB/Samba</string>
   <string name="sources_webdav_summary">הפעל סרטונים ותמונות המאוחסנים בשרת WebDAV באופן מקומי או מרחוק</string>
@@ -634,4 +686,6 @@
   <string name="webdav_media_type_title">בחר סוג מדיה</string>
   <string name="webdav_media_username_summary">לא מוגדר. אופציונלי</string>
   <string name="webdav_media_username_title">שם משתמש</string>
+  <string name="webdav_media_validate_ssl_summary">השבת רק אם אתה משתמש באישורים בחתימה עצמית</string>
+  <string name="webdav_media_validate_ssl_title">אמת תעודות SSL</string>
 </resources>

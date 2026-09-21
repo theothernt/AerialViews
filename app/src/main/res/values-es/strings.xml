@@ -20,14 +20,22 @@
   <string name="advanced_log_capture_saved_title">Registros guardados</string>
   <string name="advanced_log_capture_summary">Captura todos los registros de la aplicación mediante un servicio en segundo plano. Los registros se guardan al detenerse la aplicación.</string>
   <string name="advanced_log_capture_title">Habilitar la captura de registros</string>
+  <string name="advanced_mute_disables_audio_track_summary">Elimina por completo la pista de audio cuando está silenciada, para garantizar la compatibilidad con barras de sonido y equipos externos que ignoran el control de volumen del software.</string>
+  <string name="advanced_mute_disables_audio_track_title">Desactivar la pista de audio cuando esté silenciada.</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Corrige la reproducción de Dolby Vision en algunos televisores Philips viejos</string>
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
+  <string name="advanced_portrait_rotation_summary">Gira manualmente los vídeos en modo vertical para corregir su orientación. Solo se aplica al usar SurfaceView. Útil para dispositivos con errores de firmware.</string>
+  <string name="advanced_portrait_rotation_title">Corrección de la rotación de vídeo en modo vertical</string>
+  <string name="advanced_reduce_buffer_memory_summary">Utiliza búferes de reproducción más pequeños, lo que puede reducir el uso de memoria, pero puede aumentar el almacenamiento en búfer en redes más lentas.</string>
+  <string name="advanced_reduce_buffer_memory_title">Reduzca los búferes de reproducción y el uso de memoria.</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
   <string name="advanced_save_logs_summary">Detenga la captura y guarde el archivo de registro en la carpeta Documentos.</string>
   <string name="advanced_save_logs_title">Guardar registros</string>
   <string name="advanced_use_texture_view_summary">Utilice TextureView en lugar de SurfaceView para la renderización de vídeo.</string>
   <string name="advanced_use_texture_view_title">Utilice TextureView para vídeo.</string>
+  <string name="advanced_wifi_only_summary">Solo se permite la reproducción de vídeos desde fuentes remotas (Apple, Amazon, etc.) cuando se está conectado a Wi-Fi o Ethernet. Las fuentes locales y de red local no se ven afectadas.</string>
+  <string name="advanced_wifi_only_title">Transmite contenido multimedia solo por WiFi.</string>
   <string name="advanced_wol_enable_summary">Enviar un paquete Wake on LAN antes de obtener el medio</string>
   <string name="advanced_wol_enable_title">Activar Wake on LAN</string>
   <string name="advanced_wol_mac_error">Formato de dirección MAC no válido</string>
@@ -156,6 +164,7 @@
   <string name="apple_videos_enabled">Usar vídeos de Apple</string>
   <string name="apple_videos_scene_type_title">Tipos de escena</string>
   <string name="apple_videos_time_of_day_title">Hora del día</string>
+  <string name="brightness_notification">Brillo: %1$s%%</string>
   <string name="button_cancel">Cancelar</string>
   <string name="button_export">Exportar</string>
   <string name="button_import">Importar</string>
@@ -178,6 +187,7 @@
   <string name="capabilities_permission_denied">Denegado</string>
   <string name="capabilities_permission_granted">Concedido</string>
   <string name="capabilities_permission_internet">Internet: %1$s</string>
+  <string name="capabilities_permission_local_network">Acceso a la red local (Samba, WebDAV, Immich): %1$s</string>
   <string name="capabilities_permission_media_images">Acceso local (Imágenes): %1$s</string>
   <string name="capabilities_permission_media_video">Acceso local (Vídeos): %1$s</string>
   <string name="capabilities_permission_notification_access">Acceso a notificaciones (información de reproducción en curso): %1$s</string>
@@ -254,6 +264,7 @@
   <string name="category_remote_streaming">Transmisión remota</string>
   <string name="category_samba_options">Opciones de Samba/SMB</string>
   <string name="category_scaling">Escalado</string>
+  <string name="category_scheduled_blackout">Apagón programado</string>
   <string name="category_server_details">Detalles y credenciales del servidor</string>
   <string name="category_server_details_and_credentials">Detalles y credenciales del servidor</string>
   <string name="category_settings">Ajustes</string>
@@ -298,6 +309,8 @@
   <string name="dpad_button_right_title">Dirección hacia derecha</string>
   <string name="dpad_button_up_title">Dirección hacia arriba</string>
   <string name="dpad_double_tap_title">Tocar dos veces</string>
+  <string name="dpad_exit_on_mouse_movement_summary">Sale del protector de pantalla cuando se mueve un ratón conectado.</string>
+  <string name="dpad_exit_on_mouse_movement_title">Salir cuando se mueva el ratón.</string>
   <string name="dpad_long_press_title">Mantener presionado</string>
   <string name="dpad_music_permission_summary">Se requiere permiso adicional para saltar a la pista siguiente/anterior</string>
   <string name="dpad_music_permission_title">Permiso de control de música</string>
@@ -401,7 +414,34 @@
   <string name="location_selection_title">Seleccione una ubicación</string>
   <string name="location_unknown">Desconocido</string>
   <string name="message_media_searching">Buscando medios...</string>
+  <string name="ncmemories_media_enabled_title">Utilizar los medios de Nextcloud Memories</string>
+  <string name="ncmemories_media_favorites_name">Favoritos</string>
+  <string name="ncmemories_media_fetch_albums_error">Error al obtener álbumes</string>
+  <string name="ncmemories_media_include_favorites_title">Incluye tus fotos y vídeos favoritos.</string>
+  <string name="ncmemories_media_include_recent_title">Incluir fotos y videos recientes</string>
+  <string name="ncmemories_media_no_albums">No se han encontrado álbumes</string>
+  <string name="ncmemories_media_no_albums_message">No se encontraron álbumes en tu cuenta de Nextcloud Memories. Asegúrate de haber creado al menos un álbum.</string>
+  <string name="ncmemories_media_password_summary">Contraseña de la aplicación (preferible) o contraseña de usuario (no recomendada)</string>
+  <string name="ncmemories_media_password_title">Contraseña</string>
+  <string name="ncmemories_media_recent_name">Reciente</string>
+  <string name="ncmemories_media_select_album">Seleccionar álbum</string>
+  <string name="ncmemories_media_select_albums">Seleccionar álbumes</string>
+  <string name="ncmemories_media_select_albums_summary">No hay álbumes seleccionados</string>
+  <string name="ncmemories_media_selected_album">Álbum seleccionado: %1$s</string>
+  <string name="ncmemories_media_selected_albums">%1$d álbumes seleccionados</string>
+  <string name="ncmemories_media_test_connection">Ajustes de conexión de prueba</string>
+  <string name="ncmemories_media_test_results">Resultados de las pruebas</string>
+  <string name="ncmemories_media_type_title">Elija el tipo de medio</string>
+  <string name="ncmemories_media_url_invalid">URL de servidor no válida</string>
+  <string name="ncmemories_media_url_summary">Introduzca la URL del servidor (por ejemplo, https://192.168.1.2)</string>
+  <string name="ncmemories_media_url_title">URL del servidor</string>
+  <string name="ncmemories_media_username_summary">Nombre de usuario o correo electrónico</string>
+  <string name="ncmemories_media_username_title">Usuario</string>
+  <string name="ncmemories_media_validate_ssl_summary">Desactivar sólo si se utilizan certificados autofirmados</string>
+  <string name="ncmemories_media_validate_ssl_title">Validar certificados SSL</string>
   <string name="none_selected">Ninguno seleccionado</string>
+  <string name="nowplaying_keep_screen_on_summary">Evita que el protector de pantalla se atenúe o entre en modo de suspensión cuando haya música de fondo activa.</string>
+  <string name="nowplaying_keep_screen_on_title">Evita que el dispositivo entre en modo de suspensión mientras se reproduce música.</string>
   <string name="nowplaying_line1_title">Línea 1</string>
   <string name="nowplaying_line2_title">Línea 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Esta función no está disponible en versiones anteriores de Android TV</string>
@@ -422,6 +462,8 @@
   <string name="overlay_metadata_video_location_title">Formato de ubicación</string>
   <string name="overlay_metadata_videos_summary">Seleccione y reordene los metadatos que se muestran para los vídeos.</string>
   <string name="overlay_metadata_videos_title">metadatos del vídeo</string>
+  <string name="overlay_visibility_delay_title">Demora</string>
+  <string name="overlay_visibility_title">Visibilidad de superposición</string>
   <string name="playlist_audio_mode_summary">Elige si quieres silenciar los vídeos, reproducir el audio del vídeo o reproducir música de fondo.</string>
   <string name="playlist_audio_mode_title">Modo de audio</string>
   <string name="playlist_auto_time_of_day_summary">Reproducir únicamente vídeos que coincidan con la hora actual del día (mañana/día o noche/puesta de sol).</string>
@@ -435,6 +477,7 @@
   <string name="playlist_cache_expired">(Venció)</string>
   <string name="playlist_cache_expires">Caduca:</string>
   <string name="playlist_cache_interval_title">Intervalo de actualización</string>
+  <string name="playlist_cache_resume_title">Reanudar el comportamiento</string>
   <string name="playlist_cache_status_active">%1$d elementos de medios, %2$d pistas musicales,</string>
   <string name="playlist_cache_status_empty">No hay datos en caché</string>
   <string name="playlist_cache_status_expiry_d">%1$d días)</string>
@@ -448,6 +491,8 @@
   <string name="playlist_ignore_unmatched_videos_summary">Omitir vídeos que no figuran en ninguna lista de vídeos de Apple</string>
   <string name="playlist_ignore_unmatched_videos_title">Ignorar vídeos no reconocidos o que no sean de Apple</string>
   <string name="playlist_limit_longer_videos_title">Vídeos más largos</string>
+  <string name="playlist_loop_disabled">Bucle desactivado</string>
+  <string name="playlist_loop_enabled">Bucle habilitado</string>
   <string name="playlist_loop_short_videos_summary">Los vídeos cortos se reproducirán en bucle para cumplir el límite de tiempo, si se ha establecido
 (por ejemplo, un vídeo de 30 segundos con un límite de 2 minutos se reproducirá 4 veces)</string>
   <string name="playlist_loop_short_videos_title">Videos cortos</string>
@@ -465,6 +510,10 @@
   <string name="playlist_random_start_position_title">Posición de inicio aleatoria</string>
   <string name="playlist_remove_duplicates_summary">Eliminar vídeos duplicados de la lista de reproducción basándose únicamente en el nombre del archivo</string>
   <string name="playlist_remove_duplicates_title">Eliminar vídeos duplicados</string>
+  <string name="playlist_scheduled_blackout_enabled_summary">Apagar automáticamente la pantalla entre la hora de inicio y la hora de finalización.</string>
+  <string name="playlist_scheduled_blackout_enabled_title">Habilitar apagón programado</string>
+  <string name="playlist_scheduled_blackout_end_title">Fin de los tiempos</string>
+  <string name="playlist_scheduled_blackout_start_title">Hora de inicio</string>
   <string name="playlist_set_location_summary">Ubicación actual: %1$s</string>
   <string name="playlist_set_location_title">Establecer ubicación</string>
   <string name="playlist_shuffle_summary">Orden aleatorio de los vídeos e imágenes</string>
@@ -502,6 +551,7 @@
   <string name="samba_media_test_summary3">Vídeos encontrados: %1$s</string>
   <string name="samba_media_test_summary4">Fotos encontradas: %1$s</string>
   <string name="samba_media_test_summary5">Seleccionado para reproducción: %1$s</string>
+  <string name="samba_media_test_summary6">Seleccionado para reproducción: %1$s</string>
   <string name="samba_media_type_title">Elija el tipo de medio</string>
   <string name="samba_media_wol_summary">Activar el servidor al intentar obtener medios</string>
   <string name="samba_media_wol_title">Configuración de Wake on LAN</string>
@@ -583,6 +633,8 @@
   <string name="sources_immich_title">Servidor Immich</string>
   <string name="sources_local_summary">Reproduce vídeos directamente desde tu dispositivo o un almacenamiento USB conectado</string>
   <string name="sources_local_title">Almacenamiento Local o USB</string>
+  <string name="sources_ncmemories_summary">Reproduce vídeos y fotos desde un servidor de Nextcloud Memories.</string>
+  <string name="sources_ncmemories_title">Servidor Nextcloud Memories</string>
   <string name="sources_samba_summary">Reproduce vídeos compartidos desde una red local en una PC o un dispostivo NAS</string>
   <string name="sources_samba_title">Compartido por SMB/Samba</string>
   <string name="sources_webdav_summary">Reproduce vídeos almacenados en un servidor WebDAV local o remoto</string>
@@ -633,4 +685,6 @@
   <string name="webdav_media_type_title">Elija el tipo de medio</string>
   <string name="webdav_media_username_summary">No establecido. Opcional</string>
   <string name="webdav_media_username_title">Usuario</string>
+  <string name="webdav_media_validate_ssl_summary">Desactivar sólo si se utilizan certificados autofirmados</string>
+  <string name="webdav_media_validate_ssl_title">Validar certificados SSL</string>
 </resources>

@@ -124,6 +124,15 @@
   <string name="media_music">מוסיקה</string>
   <string name="media_photos">תמונות</string>
   <string name="media_videos">סרטונים</string>
+  <string name="ncmemories_img_original">מקורי</string>
+  <string name="ncmemories_img_preview">תצוגה מקדימה</string>
+  <string name="ncmemories_include_100">100 תמונות</string>
+  <string name="ncmemories_include_200">200 תמונות</string>
+  <string name="ncmemories_include_300">300 תמונות</string>
+  <string name="ncmemories_include_400">400 תמונות</string>
+  <string name="ncmemories_include_disabled">נָכֶה</string>
+  <string name="ncmemories_vid_original">מקורי</string>
+  <string name="ncmemories_vid_transcoded">קידוד מומר</string>
   <string name="nowplaying_artist">אמן</string>
   <string name="nowplaying_artist_song">אמן · שיר</string>
   <string name="nowplaying_disabled">נָכֶה</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 שניות*</string>
   <string name="overlay_reveal_6s">6 שניות</string>
   <string name="overlay_reveal_8s">8 שניות</string>
+  <string name="overlay_visibility_always_hidden">תמיד מוסתר</string>
+  <string name="overlay_visibility_always_visible">תמיד גלוי</string>
+  <string name="overlay_visibility_hide_after">הסתר לאחר עיכוב</string>
+  <string name="overlay_visibility_show_after">הצג לאחר עיכוב</string>
   <string name="photo_scale_fill_crop">מילוי עם חיתוך*</string>
   <string name="photo_scale_no_crop">שינוי קנה מידה ללא חיתוך</string>
   <string name="playlist_cache_refresh_1_week">כל שבוע</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">כל 3 שבועות</string>
   <string name="playlist_cache_refresh_4_weeks">כל 4 שבועות</string>
   <string name="playlist_cache_refresh_all">כאשר כל המדיה נצפתה</string>
+  <string name="playlist_cache_resume_next">הפעל את פריט רשימת ההשמעה הבא</string>
+  <string name="playlist_cache_resume_same">הפעלת אותו פריט ברשימת השמעה</string>
   <string name="progressbar_loc_bottom">תחתית המסך</string>
   <string name="progressbar_loc_disabled">נָכֶה</string>
   <string name="progressbar_loc_top">החלק העליון של המסך</string>

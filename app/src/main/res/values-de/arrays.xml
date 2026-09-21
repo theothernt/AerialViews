@@ -123,6 +123,15 @@
   <string name="media_music">Musik</string>
   <string name="media_photos">Fotos</string>
   <string name="media_videos">Videos</string>
+  <string name="ncmemories_img_original">Original</string>
+  <string name="ncmemories_img_preview">Vorschau</string>
+  <string name="ncmemories_include_100">100 Fotos</string>
+  <string name="ncmemories_include_200">200 Fotos</string>
+  <string name="ncmemories_include_300">300 Fotos</string>
+  <string name="ncmemories_include_400">400 Fotos</string>
+  <string name="ncmemories_include_disabled">Deaktiviert</string>
+  <string name="ncmemories_vid_original">Original</string>
+  <string name="ncmemories_vid_transcoded">Transkodiert</string>
   <string name="nowplaying_artist">Interpret</string>
   <string name="nowplaying_artist_song">Interpret · Lied</string>
   <string name="nowplaying_disabled">Deaktiviert</string>
@@ -162,6 +171,10 @@
   <string name="overlay_reveal_4s">4 Sekunden*</string>
   <string name="overlay_reveal_6s">6 Sekunden</string>
   <string name="overlay_reveal_8s">8 Sekunden</string>
+  <string name="overlay_visibility_always_hidden">Immer ausgeblendet</string>
+  <string name="overlay_visibility_always_visible">Immer sichtbar</string>
+  <string name="overlay_visibility_hide_after">Nach Verzögerung ausblenden</string>
+  <string name="overlay_visibility_show_after">Nach Verzögerung anzeigen</string>
   <string name="photo_scale_fill_crop">Mit Ernte füllen*</string>
   <string name="photo_scale_no_crop">Skalieren ohne Zuschneiden</string>
   <string name="playlist_cache_refresh_1_week">Jede Woche</string>
@@ -169,6 +182,8 @@
   <string name="playlist_cache_refresh_3_weeks">Alle 3 Wochen</string>
   <string name="playlist_cache_refresh_4_weeks">Alle 4 Wochen</string>
   <string name="playlist_cache_refresh_all">Wenn alle Medien betrachtet</string>
+  <string name="playlist_cache_resume_next">Nächsten Eintrag in der Playlist abspielen</string>
+  <string name="playlist_cache_resume_same">Spiele denselben Playlist-Eintrag ab</string>
   <string name="progressbar_loc_bottom">Unterer Bildschirmrand</string>
   <string name="progressbar_loc_disabled">Deaktiviert</string>
   <string name="progressbar_loc_top">Oberer Bildschirmrand</string>

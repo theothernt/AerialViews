@@ -20,14 +20,22 @@
   <string name="advanced_log_capture_saved_title">保存的日志</string>
   <string name="advanced_log_capture_summary">通过后台服务捕获所有应用程序日志。日志会在停止时保存。</string>
   <string name="advanced_log_capture_title">启用日志捕获</string>
+  <string name="advanced_mute_disables_audio_track_summary">在静音时完全移除音频轨道，以确保与忽略软件音量的 soundbar 和外部设备兼容</string>
+  <string name="advanced_mute_disables_audio_track_title">静音时禁用音频轨道</string>
   <string name="advanced_philips_dolby_vision_fix_summary">修复某些旧款飞利浦电视的杜比视界播放问题</string>
   <string name="advanced_philips_dolby_vision_fix_title">使用备用 MediaCodec 解析</string>
+  <string name="advanced_portrait_rotation_summary">手动旋转竖屏视频以纠正其方向。仅在使用 SurfaceView 时适用。对于存在固件缺陷的设备，此功能非常有用。</string>
+  <string name="advanced_portrait_rotation_title">竖屏视频旋转问题修复</string>
+  <string name="advanced_reduce_buffer_memory_summary">使用较小的播放缓冲区，这可以减少内存占用，但在网速较慢的情况下可能会增加缓冲量</string>
+  <string name="advanced_reduce_buffer_memory_title">减少播放缓冲区和内存占用</string>
   <string name="advanced_refresh_rate_switching_summary">更改显示器的刷新率以匹配视频帧速率</string>
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
   <string name="advanced_save_logs_summary">停止捕捉并将日志文件保存到文档文件夹中</string>
   <string name="advanced_save_logs_title">保存日志</string>
   <string name="advanced_use_texture_view_summary">使用 TextureView 代替 SurfaceView 进行视频渲染</string>
   <string name="advanced_use_texture_view_title">使用纹理视图观看视频</string>
+  <string name="advanced_wifi_only_summary">仅在连接到 Wi-Fi 或以太网时，才从远程来源（Apple、Amazon 等）流式传输视频。本地和局域网来源不受影响。</string>
+  <string name="advanced_wifi_only_title">仅通过 Wi-Fi 流媒体播放</string>
   <string name="advanced_wol_enable_summary">获取介质前发送 \"唤醒局域网 \"数据包</string>
   <string name="advanced_wol_enable_title">启用局域网唤醒</string>
   <string name="advanced_wol_mac_error">MAC 地址格式无效</string>
@@ -156,6 +164,7 @@
   <string name="apple_videos_enabled">使用 Apple 视频</string>
   <string name="apple_videos_scene_type_title">场景</string>
   <string name="apple_videos_time_of_day_title">时段</string>
+  <string name="brightness_notification">亮度： %1$s%%</string>
   <string name="button_cancel">取消</string>
   <string name="button_export">导出</string>
   <string name="button_import">导入</string>
@@ -178,6 +187,7 @@
   <string name="capabilities_permission_denied">拒绝</string>
   <string name="capabilities_permission_granted">允许</string>
   <string name="capabilities_permission_internet">互联网：%1$s</string>
+  <string name="capabilities_permission_local_network">局域网访问（Samba、WebDAV、Immich）： %1$s</string>
   <string name="capabilities_permission_media_images">本地访问权限（图片）：%1$s</string>
   <string name="capabilities_permission_media_video">本地访问权限（视频）：%1$s</string>
   <string name="capabilities_permission_notification_access">通知使用权（正在播放信息）： %1$s</string>
@@ -254,6 +264,7 @@
   <string name="category_remote_streaming">在线流媒体</string>
   <string name="category_samba_options">Samba/SMB 选项</string>
   <string name="category_scaling">缩放</string>
+  <string name="category_scheduled_blackout">计划性停电</string>
   <string name="category_server_details">服务器详细信息和凭据</string>
   <string name="category_server_details_and_credentials">服务器详细信息和凭据</string>
   <string name="category_settings">设置</string>
@@ -298,6 +309,8 @@
   <string name="dpad_button_right_title">右键 ➡️</string>
   <string name="dpad_button_up_title">上键 ⬆️</string>
   <string name="dpad_double_tap_title">双击</string>
+  <string name="dpad_exit_on_mouse_movement_summary">当连接的鼠标移动时，退出屏幕保护程序</string>
+  <string name="dpad_exit_on_mouse_movement_title">移动鼠标时退出</string>
   <string name="dpad_long_press_title">长按</string>
   <string name="dpad_music_permission_summary">跳至下一首/上一首需要额外权限</string>
   <string name="dpad_music_permission_title">音乐控制权限</string>
@@ -401,7 +414,34 @@
   <string name="location_selection_title">选择地点</string>
   <string name="location_unknown">未知</string>
   <string name="message_media_searching">搜索媒体...</string>
+  <string name="ncmemories_media_enabled_title">使用 Nextcloud Memories 媒体</string>
+  <string name="ncmemories_media_favorites_name">收藏夹</string>
+  <string name="ncmemories_media_fetch_albums_error">获取相册时出错</string>
+  <string name="ncmemories_media_include_favorites_title">添加喜爱的照片和视频</string>
+  <string name="ncmemories_media_include_recent_title">请附上最近的照片和视频</string>
+  <string name="ncmemories_media_no_albums">未找到相册</string>
+  <string name="ncmemories_media_no_albums_message">在您的 Nextcloud Memories 账户中未找到任何相册。请确保您至少创建了一个相册。</string>
+  <string name="ncmemories_media_password_summary">应用密码（推荐）或用户密码（不推荐）</string>
+  <string name="ncmemories_media_password_title">密码</string>
+  <string name="ncmemories_media_recent_name">最近</string>
+  <string name="ncmemories_media_select_album">选择相册</string>
+  <string name="ncmemories_media_select_albums">选择相册</string>
+  <string name="ncmemories_media_select_albums_summary">未选择任何相册</string>
+  <string name="ncmemories_media_selected_album">已选相册：%1$s</string>
+  <string name="ncmemories_media_selected_albums">已选 %1$d 个相册</string>
+  <string name="ncmemories_media_test_connection">测试连接设置</string>
+  <string name="ncmemories_media_test_results">测试结果</string>
+  <string name="ncmemories_media_type_title">选择媒体类型</string>
+  <string name="ncmemories_media_url_invalid">服务器 URL 无效</string>
+  <string name="ncmemories_media_url_summary">请输入服务器网址（例如：https://192.168.1.2）</string>
+  <string name="ncmemories_media_url_title">服务器 URL</string>
+  <string name="ncmemories_media_username_summary">用户名或电子邮箱</string>
+  <string name="ncmemories_media_username_title">用户名</string>
+  <string name="ncmemories_media_validate_ssl_summary">仅在使用自签名证书时禁用</string>
+  <string name="ncmemories_media_validate_ssl_title">验证 SSL 证书</string>
   <string name="none_selected">全不选</string>
+  <string name="nowplaying_keep_screen_on_summary">当背景音乐正在播放时，防止屏幕保护程序调暗屏幕或进入睡眠状态</string>
+  <string name="nowplaying_keep_screen_on_title">在播放音乐时防止设备进入休眠状态</string>
   <string name="nowplaying_line1_title">第 1 行</string>
   <string name="nowplaying_line2_title">第 2 行</string>
   <string name="nowplaying_permission_legacy_notice_summary">旧版本的安卓电视无法使用此功能</string>
@@ -422,6 +462,8 @@
   <string name="overlay_metadata_video_location_title">地点格式</string>
   <string name="overlay_metadata_videos_summary">选择视频元数据并重新排序</string>
   <string name="overlay_metadata_videos_title">视频元数据</string>
+  <string name="overlay_visibility_delay_title">延迟</string>
+  <string name="overlay_visibility_title">叠加层可见性</string>
   <string name="playlist_audio_mode_summary">选择是否将视频静音、播放视频音频或播放背景音乐。</string>
   <string name="playlist_audio_mode_title">音频模式</string>
   <string name="playlist_auto_time_of_day_summary">只播放与当前时间（早晨/白天或夜晚/日落）相匹配的视频</string>
@@ -435,6 +477,7 @@
   <string name="playlist_cache_expired">（已到期）</string>
   <string name="playlist_cache_expires">到期日：</string>
   <string name="playlist_cache_interval_title">刷新间隔</string>
+  <string name="playlist_cache_resume_title">恢复行为</string>
   <string name="playlist_cache_status_active">%1$d 媒体项目 %2$d 音乐曲目，</string>
   <string name="playlist_cache_status_empty">无缓存数据</string>
   <string name="playlist_cache_status_expiry_d">%1$d 天）</string>
@@ -448,6 +491,8 @@
   <string name="playlist_ignore_unmatched_videos_summary">跳过未识别为 Apple 或社区视频的视频</string>
   <string name="playlist_ignore_unmatched_videos_title">忽略非 Apple、非社区视频</string>
   <string name="playlist_limit_longer_videos_title">较长的视频</string>
+  <string name="playlist_loop_disabled">循环已禁用</string>
+  <string name="playlist_loop_enabled">已启用循环</string>
   <string name="playlist_loop_short_videos_summary">若设置了时长，短视频将循环播放以补足时间。
 (例如，一段 30 秒的视频设为播放 2 分钟，将循环 4 次）</string>
   <string name="playlist_loop_short_videos_title">短视频</string>
@@ -465,6 +510,10 @@
   <string name="playlist_random_start_position_title">随机启动位置</string>
   <string name="playlist_remove_duplicates_summary">仅根据文件名从播放列表中删除重复的视频和照片</string>
   <string name="playlist_remove_duplicates_title">删除重复视频和照片</string>
+  <string name="playlist_scheduled_blackout_enabled_summary">在开始时间和结束时间之间自动将屏幕变黑</string>
+  <string name="playlist_scheduled_blackout_enabled_title">启用定时停电</string>
+  <string name="playlist_scheduled_blackout_end_title">结束时间</string>
+  <string name="playlist_scheduled_blackout_start_title">开始时间</string>
   <string name="playlist_set_location_summary">当前位置： %1$s</string>
   <string name="playlist_set_location_title">设置位置</string>
   <string name="playlist_shuffle_summary">随机调整视频和照片的顺序</string>
@@ -502,6 +551,7 @@
   <string name="samba_media_test_summary3">视频数量：%1$s</string>
   <string name="samba_media_test_summary4">照片数量：%1$s</string>
   <string name="samba_media_test_summary5">待播放项目：%1$s</string>
+  <string name="samba_media_test_summary6">待播放项目：%1$s</string>
   <string name="samba_media_type_title">选择媒体类型</string>
   <string name="samba_media_wol_summary">尝试获取媒体时唤醒服务器</string>
   <string name="samba_media_wol_title">局域网唤醒设置</string>
@@ -584,6 +634,8 @@
   <string name="sources_immich_title">Immich 服务器</string>
   <string name="sources_local_summary">从本地存储或 USB 存储播放视频和照片</string>
   <string name="sources_local_title">本地或 USB 存储</string>
+  <string name="sources_ncmemories_summary">播放来自 Nextcloud Memories 服务器的视频和照片</string>
+  <string name="sources_ncmemories_title">Nextcloud Memories 服务器</string>
   <string name="sources_samba_summary">从局域网共享的 PC 或 NAS 设备播放视频和照片</string>
   <string name="sources_samba_title">SMB/Samba 共享</string>
   <string name="sources_webdav_summary">从本地或远程 WebDAV 服务器播放视频和照片</string>
@@ -634,4 +686,6 @@
   <string name="webdav_media_type_title">选择媒体类型</string>
   <string name="webdav_media_username_summary">未设置（可选）</string>
   <string name="webdav_media_username_title">用户名</string>
+  <string name="webdav_media_validate_ssl_summary">仅在使用自签名证书时禁用</string>
+  <string name="webdav_media_validate_ssl_title">验证 SSL 证书</string>
 </resources>

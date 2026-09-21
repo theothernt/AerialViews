@@ -124,6 +124,15 @@
   <string name="media_music">音乐</string>
   <string name="media_photos">照片</string>
   <string name="media_videos">视频</string>
+  <string name="ncmemories_img_original">原创</string>
+  <string name="ncmemories_img_preview">预览</string>
+  <string name="ncmemories_include_100">100 张照片</string>
+  <string name="ncmemories_include_200">200 张照片</string>
+  <string name="ncmemories_include_300">300 张照片</string>
+  <string name="ncmemories_include_400">400 张照片</string>
+  <string name="ncmemories_include_disabled">禁用</string>
+  <string name="ncmemories_vid_original">原创</string>
+  <string name="ncmemories_vid_transcoded">转码</string>
   <string name="nowplaying_artist">艺术家</string>
   <string name="nowplaying_artist_song">艺术家 - 歌曲</string>
   <string name="nowplaying_disabled">禁用</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 秒*</string>
   <string name="overlay_reveal_6s">6 秒钟</string>
   <string name="overlay_reveal_8s">8 秒钟</string>
+  <string name="overlay_visibility_always_hidden">始终隐藏</string>
+  <string name="overlay_visibility_always_visible">始终可见</string>
+  <string name="overlay_visibility_hide_after">延迟后隐藏</string>
+  <string name="overlay_visibility_show_after">延迟后播出</string>
   <string name="photo_scale_fill_crop">缩放填充*</string>
   <string name="photo_scale_no_crop">缩放适应</string>
   <string name="playlist_cache_refresh_1_week">每周</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">每3周</string>
   <string name="playlist_cache_refresh_4_weeks">每 4 周</string>
   <string name="playlist_cache_refresh_all">当所有媒体观看</string>
+  <string name="playlist_cache_resume_next">播放下一个播放列表项目</string>
+  <string name="playlist_cache_resume_same">播放同一播放列表中的项目</string>
   <string name="progressbar_loc_bottom">屏幕底部</string>
   <string name="progressbar_loc_disabled">禁用</string>
   <string name="progressbar_loc_top">屏幕顶部</string>

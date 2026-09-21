@@ -124,6 +124,15 @@
   <string name="media_music">Musica</string>
   <string name="media_photos">Foto</string>
   <string name="media_videos">Video</string>
+  <string name="ncmemories_img_original">Originale</string>
+  <string name="ncmemories_img_preview">Anteprima</string>
+  <string name="ncmemories_include_100">100 foto</string>
+  <string name="ncmemories_include_200">200 foto</string>
+  <string name="ncmemories_include_300">300 foto</string>
+  <string name="ncmemories_include_400">400 foto</string>
+  <string name="ncmemories_include_disabled">Disabilitato</string>
+  <string name="ncmemories_vid_original">Originale</string>
+  <string name="ncmemories_vid_transcoded">Transcodificato</string>
   <string name="nowplaying_artist">Artista</string>
   <string name="nowplaying_artist_song">Artista · Canzone</string>
   <string name="nowplaying_disabled">Disabilitato</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 secondi*</string>
   <string name="overlay_reveal_6s">6 secondi</string>
   <string name="overlay_reveal_8s">8 secondi</string>
+  <string name="overlay_visibility_always_hidden">Sempre nascosto</string>
+  <string name="overlay_visibility_always_visible">Sempre visibile</string>
+  <string name="overlay_visibility_hide_after">Nascondi dopo il ritardo</string>
+  <string name="overlay_visibility_show_after">Mostra dopo il ritardo</string>
   <string name="photo_scale_fill_crop">Riempire con il raccolto*</string>
   <string name="photo_scale_no_crop">Scala senza ritaglio</string>
   <string name="playlist_cache_refresh_1_week">Ogni settimana</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">Ogni 3 settimane</string>
   <string name="playlist_cache_refresh_4_weeks">Ogni 4 settimane</string>
   <string name="playlist_cache_refresh_all">Quando tutti i media hanno visto</string>
+  <string name="playlist_cache_resume_next">Riproduci il prossimo elemento della playlist</string>
+  <string name="playlist_cache_resume_same">Riproduci lo stesso elemento della playlist</string>
   <string name="progressbar_loc_bottom">Parte inferiore dello schermo</string>
   <string name="progressbar_loc_disabled">Disabilitato</string>
   <string name="progressbar_loc_top">Parte superiore dello schermo</string>
