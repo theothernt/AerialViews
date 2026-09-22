@@ -11,6 +11,7 @@ import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.rtsp.RtspMediaSource
+import androidx.media3.exoplayer.source.MergingMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector.Parameters
@@ -154,8 +155,23 @@ object VideoPlayerHelper {
         context: Context,
         player: ExoPlayer,
         media: AerialMedia,
+        includeSeparateAudio: Boolean = true,
     ) {
-        player.setMediaSource(createMediaSource(context, MediaItem.fromUri(media.uri), media.source))
+        val video = createMediaSource(context, MediaItem.fromUri(media.uri), media.source)
+        val audioUri = media.audioUri
+
+        // Only fetch the extra stream when video audio is the chosen mode, as the
+        // muted and background music modes would download it just to silence it
+        val mediaSource =
+            if (audioUri == null || !includeSeparateAudio || !GeneralPrefs.playsVideoAudio) {
+                video
+            } else {
+                Timber.i("Using MergingMediaSource to combine video and audio streams: $audioUri")
+                val audio = createMediaSource(context, MediaItem.fromUri(audioUri), media.source)
+                MergingMediaSource(video, audio)
+            }
+
+        player.setMediaSource(mediaSource)
     }
 
     @OptIn(UnstableApi::class)
