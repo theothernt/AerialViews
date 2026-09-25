@@ -10,11 +10,14 @@ import kotlin.enums.enumEntries
 @Serializable
 class Comm1Video : AbstractVideo() {
     override fun uriAtQuality(quality: VideoQuality?): Uri {
+        // Not every entry in a feed has an HDR rendition, so selecting HDR falls back to SDR at the same size
         val url =
             when (quality) {
                 VideoQuality.VIDEO_1080_SDR -> video1080sdr
                 VideoQuality.VIDEO_4K_SDR -> video4ksdr
                 VideoQuality.VIDEO_1080_H264 -> video1080h264
+                VideoQuality.VIDEO_1080_HDR -> video1080hdr?.takeIf { it.isNotBlank() } ?: video1080sdr
+                VideoQuality.VIDEO_4K_HDR -> video4khdr?.takeIf { it.isNotBlank() } ?: video4ksdr
                 else -> video1080h264
             }.toString()
         return url.toUri()
