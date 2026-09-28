@@ -242,6 +242,11 @@ class SambaMediaProvider(
                 item.type = AerialMediaType.VIDEO
             } else if (FileHelper.isSupportedImageType(filename)) {
                 item.type = AerialMediaType.IMAGE
+            } else {
+                // Never add untyped media - AerialMedia defaults to VIDEO, so an audio or otherwise
+                // unrecognised file would otherwise be queued as a black-screen video.
+                Timber.w("SambaMediaProvider: skipping unsupported file: $filename")
+                return@forEach
             }
             item.source = AerialMediaSource.SAMBA
             media.add(item)
@@ -339,16 +344,16 @@ class SambaMediaProvider(
             }
             images = selected.size - videos
 
-            // Only pick music
-            var music = 0
-            if (prefs.musicEnabled) {
-                val musicFiles =
-                    files.filter { item ->
-                        FileHelper.isSupportedAudioType(item.first)
-                    }
-                selected.addAll(musicFiles)
-                music = musicFiles.size
-            }
+            // Music is intentionally NOT added to `selected`. Audio files are fetched separately by
+            // fetchMusic() via findAllSambaFiles() and played as background music, never as slideshow
+            // media. Adding them here would leave each one with the default AerialMediaType.VIDEO and
+            // turn every track into a black-screen playback attempt. Counted here for the summary only.
+            val music =
+                if (prefs.musicEnabled) {
+                    files.count { item -> FileHelper.isSupportedAudioType(item.first) }
+                } else {
+                    0
+                }
 
             excluded = files.size - selected.size
 
