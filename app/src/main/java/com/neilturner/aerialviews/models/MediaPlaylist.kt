@@ -4,6 +4,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class MediaPlaylist(
@@ -14,7 +15,7 @@ class MediaPlaylist(
     private val fetchChunk: (suspend (offset: Int, limit: Int) -> List<AerialMedia>)? = null,
 ) {
     private var position = startPosition
-    private var _hasReachedEnd = false
+    private var hasReachedEnd = false
     var onPositionChanged: ((Int) -> Unit)? = null
 
     private val windowVideos = initialVideos.toMutableList()
@@ -26,7 +27,7 @@ class MediaPlaylist(
     fun nextItem(): AerialMedia {
         position = calculateNext(++position)
         onPositionChanged?.invoke(position)
-        if (position == 0 && size > 0) _hasReachedEnd = true
+        if (position == 0 && size > 0) hasReachedEnd = true
 
         Timber.v("MediaPlaylist: nextItem() -> pos $position / $size (window: ${windowVideos.size})")
         checkAndRefillWindow()
@@ -84,7 +85,7 @@ class MediaPlaylist(
         val limit = 50
         try {
             val freshData =
-                kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) {
+                runBlocking(Dispatchers.IO) {
                     fetchChunk.invoke(newOffset, limit)
                 }
             synchronized(windowLock) {

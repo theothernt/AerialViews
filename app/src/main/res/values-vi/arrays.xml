@@ -124,6 +124,15 @@
   <string name="media_music">Âm nhạc</string>
   <string name="media_photos">Hình ảnh</string>
   <string name="media_videos">Video</string>
+  <string name="ncmemories_img_original">Nguyên bản</string>
+  <string name="ncmemories_img_preview">Xem trước</string>
+  <string name="ncmemories_include_100">100 ảnh</string>
+  <string name="ncmemories_include_200">200 ảnh</string>
+  <string name="ncmemories_include_300">300 ảnh</string>
+  <string name="ncmemories_include_400">400 ảnh</string>
+  <string name="ncmemories_include_disabled">Vô hiệu</string>
+  <string name="ncmemories_vid_original">Nguyên bản</string>
+  <string name="ncmemories_vid_transcoded">Đã chuyển mã</string>
   <string name="nowplaying_artist">Nghệ sĩ</string>
   <string name="nowplaying_artist_song">Nghệ sĩ · Bài hát</string>
   <string name="nowplaying_disabled">Vô hiệu</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 giây*</string>
   <string name="overlay_reveal_6s">6 giây</string>
   <string name="overlay_reveal_8s">8 giây</string>
+  <string name="overlay_visibility_always_hidden">Luôn ẩn</string>
+  <string name="overlay_visibility_always_visible">Luôn hiển thị</string>
+  <string name="overlay_visibility_hide_after">Ẩn sau khi trì hoãn</string>
+  <string name="overlay_visibility_show_after">Hiển thị sau khi trì hoãn</string>
   <string name="photo_scale_fill_crop">Cắt xén để lắp đầy*</string>
   <string name="photo_scale_no_crop">Tỷ lệ không cắt xén</string>
   <string name="playlist_cache_refresh_1_week">Mỗi tuần</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">Mỗi 3 tuần</string>
   <string name="playlist_cache_refresh_4_weeks">Mỗi 4 tuần</string>
   <string name="playlist_cache_refresh_all">Khi đã xem tất cả đa phương tiện</string>
+  <string name="playlist_cache_resume_next">Phát mục tiếp theo trong danh sách phát</string>
+  <string name="playlist_cache_resume_same">Phát cùng một mục trong danh sách phát</string>
   <string name="progressbar_loc_bottom">Dưới cùng của màn hình</string>
   <string name="progressbar_loc_disabled">Vô hiệu</string>
   <string name="progressbar_loc_top">Trên cùng của màn hình</string>

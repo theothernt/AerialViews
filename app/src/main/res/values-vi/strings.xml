@@ -20,14 +20,22 @@
   <string name="advanced_log_capture_saved_title">Nhật ký đã được lưu</string>
   <string name="advanced_log_capture_summary">Ghi tất cả nhật ký ứng dụng thông qua một dịch vụ chạy ngầm. Nhật ký sẽ được lưu lại khi ứng dụng dừng hoạt động.</string>
   <string name="advanced_log_capture_title">Bật tính năng ghi nhật ký</string>
+  <string name="advanced_mute_disables_audio_track_summary">Loại bỏ hoàn toàn bản nhạc khi tắt tiếng, để tương thích với loa soundbar và các thiết bị ngoại vi không phụ thuộc vào âm lượng phần mềm.</string>
+  <string name="advanced_mute_disables_audio_track_title">Tắt bản nhạc khi đang ở chế độ tắt tiếng.</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Khắc phục sự cố phát lại Dolby Vision trên một số TV Philips đời cũ</string>
   <string name="advanced_philips_dolby_vision_fix_title">Sử dụng phương pháp phân tích MediaCodec thay thế</string>
+  <string name="advanced_portrait_rotation_summary">Xoay thủ công các video dọc để điều chỉnh hướng. Chỉ áp dụng khi sử dụng SurfaceView. Hữu ích cho các thiết bị có lỗi phần mềm.</string>
+  <string name="advanced_portrait_rotation_title">Sửa lỗi xoay video dọc</string>
+  <string name="advanced_reduce_buffer_memory_summary">Sử dụng bộ đệm phát lại nhỏ hơn, có thể giảm mức sử dụng bộ nhớ nhưng có thể làm tăng hiện tượng gián đoạn phát lại trên các mạng chậm hơn.</string>
+  <string name="advanced_reduce_buffer_memory_title">Giảm bộ đệm phát lại và mức sử dụng bộ nhớ.</string>
   <string name="advanced_refresh_rate_switching_summary">Thay đổi tốc độ làm mới của màn hình sao cho phù hợp với tốc độ khung hình của video</string>
   <string name="advanced_refresh_rate_switching_title">Tự động chuyển đổi tốc độ làm mới</string>
   <string name="advanced_save_logs_summary">Dừng quá trình ghi và lưu tệp nhật ký vào thư mục Documents</string>
   <string name="advanced_save_logs_title">Lưu nhật ký</string>
   <string name="advanced_use_texture_view_summary">Sử dụng TextureView thay vì SurfaceView để kết xuất video</string>
   <string name="advanced_use_texture_view_title">Sử dụng TextureView cho video</string>
+  <string name="advanced_wifi_only_summary">Chỉ phát video từ các nguồn từ xa (Apple, Amazon, v.v.) khi được kết nối với WiFi hoặc Ethernet. Các nguồn cục bộ và mạng LAN không bị ảnh hưởng.</string>
+  <string name="advanced_wifi_only_title">Phát trực tuyến đa phương tiện chỉ qua WiFi</string>
   <string name="advanced_wol_enable_summary">Gửi gói tin Wake on LAN trước khi tải phương tiện</string>
   <string name="advanced_wol_enable_title">Bật Wake on LAN</string>
   <string name="advanced_wol_mac_error">Định dạng địa chỉ MAC không hợp lệ</string>
@@ -156,6 +164,7 @@
   <string name="apple_videos_enabled">Sử dụng video của Apple</string>
   <string name="apple_videos_scene_type_title">Loại cảnh</string>
   <string name="apple_videos_time_of_day_title">Thời gian trong ngày</string>
+  <string name="brightness_notification">Độ sáng: %1$s%%</string>
   <string name="button_cancel">Hủy</string>
   <string name="button_export">Xuất</string>
   <string name="button_import">Nhập</string>
@@ -178,6 +187,7 @@
   <string name="capabilities_permission_denied">Từ chối</string>
   <string name="capabilities_permission_granted">Cho phép</string>
   <string name="capabilities_permission_internet">Kết nối mạng: %1$s</string>
+  <string name="capabilities_permission_local_network">Truy cập mạng cục bộ (Samba, WebDAV, Immich): %1$s</string>
   <string name="capabilities_permission_media_images">Truy cập cục bộ (Hình ảnh): %1$s</string>
   <string name="capabilities_permission_media_video">Truy cập cục bộ (Video): %1$s</string>
   <string name="capabilities_permission_notification_access">Quyền truy cập thông báo (Thông tin đang phát): %1$s</string>
@@ -254,6 +264,7 @@
   <string name="category_remote_streaming">Truyền phát từ xa</string>
   <string name="category_samba_options">Tùy chọn Samba/SMB</string>
   <string name="category_scaling">Tỷ lệ</string>
+  <string name="category_scheduled_blackout">Sự cố mất điện theo lịch trình</string>
   <string name="category_server_details">Thông tin máy chủ</string>
   <string name="category_server_details_and_credentials">Thông tin máy chủ và thông tin đăng nhập</string>
   <string name="category_settings">Cài đặt</string>
@@ -298,6 +309,8 @@
   <string name="dpad_button_right_title">Hướng phải</string>
   <string name="dpad_button_up_title">Hướng lên</string>
   <string name="dpad_double_tap_title">Nhấn đúp</string>
+  <string name="dpad_exit_on_mouse_movement_summary">Thoát khỏi trình bảo vệ màn hình khi di chuyển chuột được kết nối.</string>
+  <string name="dpad_exit_on_mouse_movement_title">Thoát khi di chuột</string>
   <string name="dpad_long_press_title">Nhấn giữ</string>
   <string name="dpad_music_permission_summary">Cần có sự cho phép bổ sung để chuyển đến bài hát tiếp theo/trước đó.</string>
   <string name="dpad_music_permission_title">Quyền điều khiển âm nhạc</string>
@@ -401,7 +414,34 @@
   <string name="location_selection_title">Chọn vị trí</string>
   <string name="location_unknown">Không rõ</string>
   <string name="message_media_searching">Đang tìm kiếm đa phương tiện…</string>
+  <string name="ncmemories_media_enabled_title">Sử dụng phương tiện Nextcloud Memories</string>
+  <string name="ncmemories_media_favorites_name">Mục yêu thích</string>
+  <string name="ncmemories_media_fetch_albums_error">Lỗi khi tải bộ sưu tập</string>
+  <string name="ncmemories_media_include_favorites_title">Bao gồm những bức ảnh và video yêu thích.</string>
+  <string name="ncmemories_media_include_recent_title">Bao gồm cả ảnh và video gần đây.</string>
+  <string name="ncmemories_media_no_albums">Không tìm thấy bộ sưu tập nào</string>
+  <string name="ncmemories_media_no_albums_message">Không tìm thấy album nào trong tài khoản Nextcloud Memories của bạn. Vui lòng đảm bảo bạn đã tạo ít nhất một album.</string>
+  <string name="ncmemories_media_password_summary">Mật khẩu ứng dụng (được khuyến nghị) hoặc mật khẩu người dùng (không được khuyến nghị)</string>
+  <string name="ncmemories_media_password_title">Mật khẩu</string>
+  <string name="ncmemories_media_recent_name">Gần đây</string>
+  <string name="ncmemories_media_select_album">Chọn Bộ sưu tập</string>
+  <string name="ncmemories_media_select_albums">Chọn Bộ sưu tập</string>
+  <string name="ncmemories_media_select_albums_summary">Chưa có bộ sưu tập nào được chọn</string>
+  <string name="ncmemories_media_selected_album">Bộ sưu tập đã chọn: %1$s</string>
+  <string name="ncmemories_media_selected_albums">%1$d bộ súu tập được chọn</string>
+  <string name="ncmemories_media_test_connection">Kiểm tra cài đặt kết nối</string>
+  <string name="ncmemories_media_test_results">Kết quả kiểm tra</string>
+  <string name="ncmemories_media_type_title">Chọn loại phương tiện</string>
+  <string name="ncmemories_media_url_invalid">URL máy chủ không hợp lệ</string>
+  <string name="ncmemories_media_url_summary">Nhập URL máy chủ (ví dụ: https://192.168.1.2)</string>
+  <string name="ncmemories_media_url_title">URL máy chủ</string>
+  <string name="ncmemories_media_username_summary">Tên người dùng hoặc địa chỉ email</string>
+  <string name="ncmemories_media_username_title">Tên người dùng</string>
+  <string name="ncmemories_media_validate_ssl_summary">Chỉ vô hiệu hóa nếu sử dụng chứng chỉ tự ký</string>
+  <string name="ncmemories_media_validate_ssl_title">Xác thực chứng chỉ SSL</string>
   <string name="none_selected">Không có mục nào được chọn</string>
+  <string name="nowplaying_keep_screen_on_summary">Ngăn trình bảo vệ màn hình bị mờ hoặc tắt khi nhạc nền đang phát.</string>
+  <string name="nowplaying_keep_screen_on_title">Ngăn thiết bị chuyển sang chế độ ngủ khi đang phát nhạc.</string>
   <string name="nowplaying_line1_title">Dòng 1</string>
   <string name="nowplaying_line2_title">Dòng 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Tính năng này không khả dụng trên các phiên bản Android TV cũ hơn</string>
@@ -422,6 +462,8 @@
   <string name="overlay_metadata_video_location_title">Định dạng vị trí</string>
   <string name="overlay_metadata_videos_summary">Chọn và sắp xếp lại siêu dữ liệu hiển thị cho video</string>
   <string name="overlay_metadata_videos_title">Siêu dữ liệu video</string>
+  <string name="overlay_visibility_delay_title">Trì hoãn</string>
+  <string name="overlay_visibility_title">Khả năng hiển thị lớp phủ</string>
   <string name="playlist_audio_mode_summary">Chọn chế độ tắt tiếng video, phát âm thanh video hoặc phát nhạc nền</string>
   <string name="playlist_audio_mode_title">Chế độ âm thanh</string>
   <string name="playlist_auto_time_of_day_summary">Chỉ phát các video phù hợp với thời gian hiện tại trong ngày (buổi sáng/ngày hoặc tối/hoàng hôn).</string>
@@ -435,6 +477,7 @@
   <string name="playlist_cache_expired">(Hết hạn)</string>
   <string name="playlist_cache_expires">Hết hạn:</string>
   <string name="playlist_cache_interval_title">Khoảng thời gian làm mới</string>
+  <string name="playlist_cache_resume_title">Tiếp tục hành vi</string>
   <string name="playlist_cache_status_active">%1$d đa phương tiện, %2$d bản nhạc</string>
   <string name="playlist_cache_status_empty">Không có dữ liệu bộ nhớ đệm</string>
   <string name="playlist_cache_status_expiry_d">%1$d ngày</string>
@@ -448,6 +491,8 @@
   <string name="playlist_ignore_unmatched_videos_summary">Bỏ qua các video không được nhận dạng là video của Apple hoặc video cộng đồng</string>
   <string name="playlist_ignore_unmatched_videos_title">Bỏ qua các video không phải của Apple và không phải do cộng đồng tạo ra</string>
   <string name="playlist_limit_longer_videos_title">Video dài</string>
+  <string name="playlist_loop_disabled">Chế độ lặp bị vô hiệu hóa</string>
+  <string name="playlist_loop_enabled">Chế độ lặp được bật</string>
   <string name="playlist_loop_short_videos_summary">Các video ngắn sẽ được phát lặp lại để đáp ứng giới hạn thời gian, nếu có.
 (Ví dụ: một video dài 30 giây với giới hạn thời lượng 2 phút sẽ lặp lại 4 lần)</string>
   <string name="playlist_loop_short_videos_title">Video ngắn</string>
@@ -465,6 +510,10 @@
   <string name="playlist_random_start_position_title">Vị trí bắt đầu ngẫu nhiên</string>
   <string name="playlist_remove_duplicates_summary">Xóa các video và ảnh trùng lặp khỏi danh sách phát chỉ dựa trên tên tệp</string>
   <string name="playlist_remove_duplicates_title">Xóa các video và ảnh trùng lặp</string>
+  <string name="playlist_scheduled_blackout_enabled_summary">Màn hình tự động chuyển sang màu đen giữa thời gian bắt đầu và kết thúc.</string>
+  <string name="playlist_scheduled_blackout_enabled_title">Bật tính năng tắt nguồn theo lịch trình</string>
+  <string name="playlist_scheduled_blackout_end_title">Thời điểm kết thúc</string>
+  <string name="playlist_scheduled_blackout_start_title">Thời gian bắt đầu</string>
   <string name="playlist_set_location_summary">Vị trí hiện tại: %1$s</string>
   <string name="playlist_set_location_title">Đặt vị trí</string>
   <string name="playlist_shuffle_summary">Sắp xếp ngẫu nhiên thứ tự video &amp; ảnh</string>
@@ -502,6 +551,7 @@
   <string name="samba_media_test_summary3">Video: %1$s</string>
   <string name="samba_media_test_summary4">Ảnh: %1$s</string>
   <string name="samba_media_test_summary5">Đã chọn để phát: %1$s</string>
+  <string name="samba_media_test_summary6">Đã chọn để phát: %1$s</string>
   <string name="samba_media_type_title">Chọn loại phương tiện</string>
   <string name="samba_media_wol_summary">Đánh thức máy chủ khi cố gắng tải phương tiện</string>
   <string name="samba_media_wol_title">Cài đặt Wake on LAN</string>
@@ -584,6 +634,8 @@ Vui lòng truy cập trang web Aerial Views để biết thêm chi tiết</strin
   <string name="sources_immich_title">Máy chủ Immich</string>
   <string name="sources_local_summary">Phát video &amp; ảnh trực tiếp từ thiết bị hoặc thiết bị lưu trữ USB được kết nối</string>
   <string name="sources_local_title">Lưu trữ cục bộ hoặc USB</string>
+  <string name="sources_ncmemories_summary">Phát video và ảnh từ máy chủ Nextcloud Memories.</string>
+  <string name="sources_ncmemories_title">Máy chủ Nextcloud Memories</string>
   <string name="sources_samba_summary">Phát video &amp; ảnh từ thư mục chia sẻ mạng cục bộ trên máy tính hoặc thiết bị NAS</string>
   <string name="sources_samba_title">Chia sẻ SMB/Samba</string>
   <string name="sources_webdav_summary">Phát video &amp; ảnh được lưu trữ trên máy chủ WebDAV cục bộ hoặc từ xa</string>
@@ -634,4 +686,6 @@ Vui lòng truy cập trang web Aerial Views để biết thêm chi tiết</strin
   <string name="webdav_media_type_title">Chọn loại phương tiện</string>
   <string name="webdav_media_username_summary">Chưa được thiết lập. Tùy chọn</string>
   <string name="webdav_media_username_title">Tên người dùng</string>
+  <string name="webdav_media_validate_ssl_summary">Chỉ vô hiệu hóa nếu sử dụng chứng chỉ tự ký</string>
+  <string name="webdav_media_validate_ssl_title">Xác thực chứng chỉ SSL</string>
 </resources>

@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverScreen
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import org.koin.android.ext.android.getKoin
 import org.koin.core.parameter.parametersOf
+import timber.log.Timber
 
 class DreamActivity : DreamServiceCompat() {
     private lateinit var screenController: com.neilturner.aerialviews.ui.core.ScreenController
@@ -27,6 +28,11 @@ class DreamActivity : DreamServiceCompat() {
         isInteractive = true
 
         hideSystemUI(window)
+
+        if (this::screenController.isInitialized) {
+            Timber.d("onAttachedToWindow called again with an active screenController — releasing it first")
+            screenController.stop()
+        }
 
         viewModel = koinViewModel()
 
@@ -112,19 +118,33 @@ class DreamActivity : DreamServiceCompat() {
         }
     }
 
-    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
-        try {
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (InputHelper.handleGenericMotionEvent(event, ::altWakeUp)) {
+            return true
+        }
+
+        return try {
             super.dispatchGenericMotionEvent(event)
         } catch (e: SecurityException) {
             false
         }
+    }
 
     override fun onDreamingStopped() {
+        Timber.d("onDreamingStopped")
         super.onDreamingStopped()
         viewModel.stopOverlayEventBridge()
         viewModel.stopServices()
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        Timber.d("onDetachedFromWindow")
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+        super.onDetachedFromWindow()
     }
 }

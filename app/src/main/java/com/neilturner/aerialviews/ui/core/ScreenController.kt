@@ -31,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 class ScreenController(
     val context: Context,
@@ -118,6 +119,11 @@ class ScreenController(
             }
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                if (mediaResult.isFromCache) {
+                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
+                    delay(CACHE_RESUME_DELAY.milliseconds)
+                    if (isStopped || blackOutMode) return@launch
+                }
                 loadNextItem()
             } else {
                 val errorText = resources.getString(R.string.loading_error)
@@ -133,17 +139,20 @@ class ScreenController(
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
+
+        videoPlayer.setForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
@@ -213,7 +222,7 @@ class ScreenController(
         mainScope.launch {
             delay(fadeOutDuration)
 
-            videoPlayer.stop()
+            // Let setVideo() replace the source without forcing a Realtek codec teardown.
             imagePlayer.stop()
 
             isPaused = false
@@ -310,7 +319,12 @@ class ScreenController(
 
     fun toggleLooping() {
         GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
-        val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+        val message =
+            if (GeneralPrefs.loopUntilSkipped) {
+                resources.getString(R.string.playlist_loop_enabled)
+            } else {
+                resources.getString(R.string.playlist_loop_disabled)
+            }
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
@@ -334,7 +348,7 @@ class ScreenController(
         GeneralPrefs.videoBrightness = newBrightness
 
         mainScope.launch {
-            ToastHelper.show(context, "Brightness: $newBrightness%")
+            ToastHelper.show(context, resources.getString(R.string.brightness_notification, newBrightness))
         }
     }
 
@@ -367,6 +381,8 @@ class ScreenController(
     }
 
     private fun handleError() {
+        if (blackOutMode) return
+
         mainScope.launch {
             delay(ERROR_DELAY)
             loadNextItem()
@@ -409,5 +425,6 @@ class ScreenController(
 
     companion object {
         const val ERROR_DELAY: Long = 2000
+        const val CACHE_RESUME_DELAY: Long = 1000 // Delay before starting playback when restoring from cache
     }
 }

@@ -1,7 +1,17 @@
 package com.neilturner.aerialviews.utils
 
+import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.auth.AuthenticationContext
+import com.hierynomus.smbj.connection.Connection
+import com.hierynomus.smbj.session.Session
 import com.neilturner.aerialviews.data.network.SambaHelper
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -428,6 +438,270 @@ internal class SambaHelperTest {
             assertEquals("my pass", password)
             assertEquals("Share", shareName)
             assertEquals("path/file.txt", path)
+        }
+    }
+
+    @Nested
+    @DisplayName("buildAuthContext Tests")
+    inner class BuildAuthContextTests {
+        @Test
+        @DisplayName("Should return anonymous auth context when username and password are empty")
+        fun testAnonymousAuthContextEmpty() {
+            val authContext = SambaHelper.buildAuthContext("", "", "WORKGROUP")
+
+            assertTrue(authContext.isAnonymous)
+            assertFalse(authContext.isGuest)
+            assertEquals("", authContext.username)
+            assertEquals(0, authContext.password.size)
+        }
+
+        @Test
+        @DisplayName("Should return anonymous auth context when username and password are whitespace")
+        fun testAnonymousAuthContextWhitespace() {
+            val authContext = SambaHelper.buildAuthContext("   ", "   ", "WORKGROUP")
+
+            assertTrue(authContext.isAnonymous)
+            assertFalse(authContext.isGuest)
+            assertEquals("", authContext.username)
+        }
+
+        @Test
+        @DisplayName("Should return guest auth context when username is guest lowercase")
+        fun testGuestAuthContext() {
+            val authContext = SambaHelper.buildAuthContext("guest", "", "WORKGROUP")
+
+            assertTrue(authContext.isGuest)
+            assertFalse(authContext.isAnonymous)
+            assertEquals("Guest", authContext.username)
+        }
+
+        @Test
+        @DisplayName("Should return guest auth context when username is GUEST uppercase")
+        fun testGuestAuthContextUppercase() {
+            val authContext = SambaHelper.buildAuthContext("GUEST", "", "WORKGROUP")
+
+            assertTrue(authContext.isGuest)
+            assertFalse(authContext.isAnonymous)
+            assertEquals("Guest", authContext.username)
+        }
+
+        @Test
+        @DisplayName("Should return guest auth context when username has surrounding whitespace")
+        fun testGuestAuthContextWhitespace() {
+            val authContext = SambaHelper.buildAuthContext("  guest  ", "", "WORKGROUP")
+
+            assertTrue(authContext.isGuest)
+            assertFalse(authContext.isAnonymous)
+            assertEquals("Guest", authContext.username)
+        }
+
+        @Test
+        @DisplayName("Should return standard auth context when single character username workaround is used")
+        fun testSingleCharacterUsernameWorkaround() {
+            val authContext = SambaHelper.buildAuthContext("a", "", "WORKGROUP")
+
+            assertFalse(authContext.isAnonymous)
+            assertFalse(authContext.isGuest)
+            assertEquals("a", authContext.username)
+            assertEquals(0, authContext.password.size)
+            assertEquals("WORKGROUP", authContext.domain)
+        }
+
+        @Test
+        @DisplayName("Should return standard auth context with trimmed username and domain for normal credentials")
+        fun testStandardCredentials() {
+            val authContext = SambaHelper.buildAuthContext("  myuser  ", "secretPass", "  MYDOMAIN  ")
+
+            assertFalse(authContext.isAnonymous)
+            assertFalse(authContext.isGuest)
+            assertEquals("myuser", authContext.username)
+            assertArrayEquals("secretPass".toCharArray(), authContext.password)
+            assertEquals("MYDOMAIN", authContext.domain)
+        }
+    }
+
+    @Nested
+    @DisplayName("authenticate Tests")
+    inner class AuthenticateTests {
+        @Test
+        @DisplayName("Should authenticate anonymously when username and password are empty and server succeeds")
+        fun testAuthenticateAnonymousSuccess() {
+            val smbClient = mockk<SMBClient>()
+            val connection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { connection.authenticate(match { it.isAnonymous }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = connection,
+                    hostName = "server.local",
+                    userName = "",
+                    password = "",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(connection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { connection.authenticate(match { it.isAnonymous }) }
+            verify(exactly = 0) { smbClient.connect(any()) }
+        }
+
+        @Test
+        @DisplayName("Should fallback to guest authentication when anonymous authentication fails")
+        fun testAuthenticateAnonymousFallbackToGuest() {
+            val smbClient = mockk<SMBClient>()
+            val initialConnection = mockk<Connection>(relaxed = true)
+            val fallbackConnection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { initialConnection.authenticate(match { it.isAnonymous }) } throws RuntimeException("STATUS_ACCESS_DENIED")
+            every { smbClient.connect("server.local") } returns fallbackConnection
+            every { fallbackConnection.authenticate(match { it.isGuest }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = initialConnection,
+                    hostName = "server.local",
+                    userName = "",
+                    password = "",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(fallbackConnection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { initialConnection.authenticate(match { it.isAnonymous }) }
+            verify(exactly = 1) { initialConnection.close() }
+            verify(exactly = 1) { smbClient.connect("server.local") }
+            verify(exactly = 1) { fallbackConnection.authenticate(match { it.isGuest }) }
+        }
+
+        @Test
+        @DisplayName("Should fallback to guest when username and password are whitespace and anonymous fails")
+        fun testAuthenticateWhitespaceFallbackToGuest() {
+            val smbClient = mockk<SMBClient>()
+            val initialConnection = mockk<Connection>(relaxed = true)
+            val fallbackConnection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { initialConnection.authenticate(match { it.isAnonymous }) } throws RuntimeException("STATUS_LOGON_FAILURE")
+            every { smbClient.connect("nas.local") } returns fallbackConnection
+            every { fallbackConnection.authenticate(match { it.isGuest }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = initialConnection,
+                    hostName = "nas.local",
+                    userName = "   ",
+                    password = "   ",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(fallbackConnection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { initialConnection.authenticate(match { it.isAnonymous }) }
+            verify(exactly = 1) { fallbackConnection.authenticate(match { it.isGuest }) }
+        }
+
+        @Test
+        @DisplayName("Should authenticate directly with guest when username is guest")
+        fun testAuthenticateGuestDirect() {
+            val smbClient = mockk<SMBClient>()
+            val connection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { connection.authenticate(match { it.isGuest }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = connection,
+                    hostName = "server.local",
+                    userName = "guest",
+                    password = "",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(connection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { connection.authenticate(match { it.isGuest }) }
+            verify(exactly = 0) { smbClient.connect(any()) }
+        }
+
+        @Test
+        @DisplayName("Should authenticate with standard credentials when non-empty username is provided")
+        fun testAuthenticateStandardCredentials() {
+            val smbClient = mockk<SMBClient>()
+            val connection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { connection.authenticate(match { it.username == "myuser" }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = connection,
+                    hostName = "server.local",
+                    userName = "myuser",
+                    password = "mypassword",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(connection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { connection.authenticate(match { it.username == "myuser" }) }
+            verify(exactly = 0) { smbClient.connect(any()) }
+        }
+
+        @Test
+        @DisplayName("Should rethrow exception when both anonymous and guest authentication fail")
+        fun testAuthenticateBothFailThrows() {
+            val smbClient = mockk<SMBClient>()
+            val initialConnection = mockk<Connection>(relaxed = true)
+            val fallbackConnection = mockk<Connection>()
+
+            every { initialConnection.authenticate(match { it.isAnonymous }) } throws RuntimeException("STATUS_ACCESS_DENIED")
+            every { smbClient.connect("server.local") } returns fallbackConnection
+            every { fallbackConnection.authenticate(match { it.isGuest }) } throws RuntimeException("STATUS_LOGON_FAILURE")
+
+            assertThrows(RuntimeException::class.java) {
+                SambaHelper.authenticate(
+                    smbClient = smbClient,
+                    connection = initialConnection,
+                    hostName = "server.local",
+                    userName = "",
+                    password = "",
+                    domainName = "WORKGROUP",
+                )
+            }
+        }
+
+        @Test
+        @DisplayName("connectAndAuthenticate should connect and authenticate successfully")
+        fun testConnectAndAuthenticate() {
+            val smbClient = mockk<SMBClient>()
+            val connection = mockk<Connection>()
+            val session = mockk<Session>()
+
+            every { smbClient.connect("server.local") } returns connection
+            every { connection.authenticate(match { it.username == "user1" }) } returns session
+
+            val (activeConnection, activeSession) =
+                SambaHelper.connectAndAuthenticate(
+                    smbClient = smbClient,
+                    hostName = "server.local",
+                    userName = "user1",
+                    password = "pass",
+                    domainName = "WORKGROUP",
+                )
+
+            assertEquals(connection, activeConnection)
+            assertEquals(session, activeSession)
+            verify(exactly = 1) { smbClient.connect("server.local") }
+            verify(exactly = 1) { connection.authenticate(match { it.username == "user1" }) }
         }
     }
 }

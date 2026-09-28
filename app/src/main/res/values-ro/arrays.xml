@@ -123,6 +123,15 @@
   <string name="media_music">Muzică</string>
   <string name="media_photos">Fotografii</string>
   <string name="media_videos">Videoclipuri</string>
+  <string name="ncmemories_img_original">Original</string>
+  <string name="ncmemories_img_preview">Previzualizare</string>
+  <string name="ncmemories_include_100">100 fotografii</string>
+  <string name="ncmemories_include_200">200 fotografii</string>
+  <string name="ncmemories_include_300">300 fotografii</string>
+  <string name="ncmemories_include_400">400 fotografii</string>
+  <string name="ncmemories_include_disabled">Dezactivat</string>
+  <string name="ncmemories_vid_original">Original</string>
+  <string name="ncmemories_vid_transcoded">Transcodat</string>
   <string name="nowplaying_artist">Artist</string>
   <string name="nowplaying_artist_song">Artist · Melodie</string>
   <string name="nowplaying_disabled">Dezactivat</string>
@@ -162,6 +171,10 @@
   <string name="overlay_reveal_4s">4 secunde*</string>
   <string name="overlay_reveal_6s">6 secunde</string>
   <string name="overlay_reveal_8s">8 secunde</string>
+  <string name="overlay_visibility_always_hidden">Întotdeauna ascuns</string>
+  <string name="overlay_visibility_always_visible">Întotdeauna vizibil</string>
+  <string name="overlay_visibility_hide_after">Ascunde după întârziere</string>
+  <string name="overlay_visibility_show_after">Afișare după întârziere</string>
   <string name="photo_scale_fill_crop">Umplere prin decupare*</string>
   <string name="photo_scale_no_crop">Scalare fără decupare</string>
   <string name="playlist_cache_refresh_1_week">În fiecare săptămână</string>
@@ -169,6 +182,8 @@
   <string name="playlist_cache_refresh_3_weeks">La fiecare 3 săptămâni</string>
   <string name="playlist_cache_refresh_4_weeks">La fiecare 4 săptămâni</string>
   <string name="playlist_cache_refresh_all">Când toate elementele media au fost vizionate</string>
+  <string name="playlist_cache_resume_next">Redă următorul element din playlist</string>
+  <string name="playlist_cache_resume_same">Redă același element din playlist</string>
   <string name="progressbar_loc_bottom">Partea de jos a ecranului</string>
   <string name="progressbar_loc_disabled">Dezactivat</string>
   <string name="progressbar_loc_top">Partea de sus a ecranului</string>

@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
+import android.os.Build
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
 import timber.log.Timber
@@ -59,7 +60,7 @@ object DateHelper {
                     .getDateInstance(DateFormat.FULL)
                     .apply {
                         if (parsedOffset != null) {
-                            timeZone = TimeZone.getTimeZone(parsedOffset)
+                            timeZone = zoneOffsetToTimeZone(parsedOffset)
                         }
                     }.format(parsedDate)
             }
@@ -69,7 +70,7 @@ object DateHelper {
                     .getDateInstance(DateFormat.SHORT)
                     .apply {
                         if (parsedOffset != null) {
-                            timeZone = TimeZone.getTimeZone(parsedOffset)
+                            timeZone = zoneOffsetToTimeZone(parsedOffset)
                         }
                     }.format(parsedDate)
             }
@@ -80,7 +81,7 @@ object DateHelper {
                     SimpleDateFormat(pattern, Locale.getDefault())
                         .apply {
                             if (parsedOffset != null) {
-                                timeZone = TimeZone.getTimeZone(parsedOffset)
+                                timeZone = zoneOffsetToTimeZone(parsedOffset)
                             }
                         }.format(parsedDate)
                 } catch (_: Exception) {
@@ -157,6 +158,23 @@ object DateHelper {
             return null
         }
     }
+
+    /**
+     * Converts a [ZoneOffset] to a [TimeZone], correctly handling offset-based IDs.
+     *
+     * [TimeZone.getTimeZone] with a plain [String] does not recognise `+HH:mm` format and
+     * silently returns GMT. On API 26+ we use the [ZoneId] overload which handles it properly.
+     * On older API levels we fall back to the `GMT±HH:MM` prefix form that the legacy overload
+     * does understand.
+     */
+    private fun zoneOffsetToTimeZone(offset: ZoneOffset): TimeZone =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            TimeZone.getTimeZone(offset as ZoneId)
+        } else {
+            // ZoneOffset.toString() returns "+HH:MM:SS" or "+HH:MM"; prepend "GMT" so the
+            // legacy TimeZone.getTimeZone(String) recognises it.
+            TimeZone.getTimeZone("GMT${offset.id}")
+        }
 
     private fun parseZoneOffset(offset: String?): ZoneOffset? {
         if (offset.isNullOrBlank()) {

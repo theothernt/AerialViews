@@ -123,6 +123,15 @@
   <string name="media_music">Müzik</string>
   <string name="media_photos">Fotoğraflar</string>
   <string name="media_videos">Videolar</string>
+  <string name="ncmemories_img_original">Orijinal</string>
+  <string name="ncmemories_img_preview">Önizleme</string>
+  <string name="ncmemories_include_100">100 fotoğraf</string>
+  <string name="ncmemories_include_200">200 fotoğraf</string>
+  <string name="ncmemories_include_300">300 fotoğraf</string>
+  <string name="ncmemories_include_400">400 fotoğraf</string>
+  <string name="ncmemories_include_disabled">Engelli</string>
+  <string name="ncmemories_vid_original">Orijinal</string>
+  <string name="ncmemories_vid_transcoded">Dönüştürülmüş</string>
   <string name="nowplaying_artist">Sanatçı</string>
   <string name="nowplaying_artist_song">Sanatçı · Şarkı</string>
   <string name="nowplaying_disabled">Engelli</string>
@@ -162,6 +171,10 @@
   <string name="overlay_reveal_4s">4 saniye*</string>
   <string name="overlay_reveal_6s">6 saniye</string>
   <string name="overlay_reveal_8s">8 saniye</string>
+  <string name="overlay_visibility_always_hidden">Her zaman gizli</string>
+  <string name="overlay_visibility_always_visible">Her zaman görünür</string>
+  <string name="overlay_visibility_hide_after">Gecikmeden sonra gizle</string>
+  <string name="overlay_visibility_show_after">Gecikmeli gösterim</string>
   <string name="photo_scale_fill_crop">Kırpma ile doldurun*</string>
   <string name="photo_scale_no_crop">Kırpmadan ölçekle</string>
   <string name="playlist_cache_refresh_1_week">Her hafta</string>
@@ -169,6 +182,8 @@
   <string name="playlist_cache_refresh_3_weeks">Her 3 haftada bir</string>
   <string name="playlist_cache_refresh_4_weeks">Her 4 haftada bir</string>
   <string name="playlist_cache_refresh_all">Tüm medya görüntülendiğinde</string>
+  <string name="playlist_cache_resume_next">Sonraki oynatma listesi öğesini oynat</string>
+  <string name="playlist_cache_resume_same">Aynı çalma listesi öğesini oynatın</string>
   <string name="progressbar_loc_bottom">Ekranın alt kısmı</string>
   <string name="progressbar_loc_disabled">Engelli</string>
   <string name="progressbar_loc_top">Ekranın üst kısmı</string>

@@ -57,14 +57,13 @@ class NowPlayingService(
         updateActiveSession(controllers)
     }
 
-    private fun safeGetActiveSessions(): MutableList<MediaController>? {
-        return try {
+    private fun safeGetActiveSessions(): MutableList<MediaController>? =
+        try {
             sessionManager?.getActiveSessions(notificationListener)
         } catch (e: SecurityException) {
             Timber.w(e, "Missing permission to access media sessions")
             null
         }
-    }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
         val selectedController = pickController(controllers)

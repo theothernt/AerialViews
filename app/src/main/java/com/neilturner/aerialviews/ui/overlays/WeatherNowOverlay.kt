@@ -36,6 +36,10 @@ class WeatherNowOverlay
         private val itemMargin = 16 // dp between text items
         private val iconScale = 1.3f // multiplier relative to text height
 
+        // Extra top padding to give room for superscript-like characters such
+        // as the degree symbol (°) when includeFontPadding is false.
+        private val superscriptExtraPaddingDp = 2f
+
         private var font = ""
         private var size = 0f
         private var weight = ""
@@ -170,6 +174,7 @@ class WeatherNowOverlay
                         val textView =
                             TextView(context).apply {
                                 text = item.text
+                                includeFontPadding = false
                             }
                         TextViewCompat.setTextAppearance(textView, R.style.OverlayText)
 
@@ -188,6 +193,9 @@ class WeatherNowOverlay
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                         textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                        val textViewOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textView.textSize)
+                        val superscriptExtraPx = (superscriptExtraPaddingDp * resources.displayMetrics.density).toInt()
+                        textView.setPadding(0, textViewOffset + superscriptExtraPx, 0, -(textViewOffset + superscriptExtraPx))
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")

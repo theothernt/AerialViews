@@ -20,14 +20,22 @@
   <string name="advanced_log_capture_saved_title">Журнали збережено</string>
   <string name="advanced_log_capture_summary">Записувати всі журнали програм через фонову службу. Журнали зберігаються після зупинки.</string>
   <string name="advanced_log_capture_title">Увімкнути запис журналу</string>
+  <string name="advanced_mute_disables_audio_track_summary">Повністю видаляє звукову доріжку при вимкненні звуку для забезпечення сумісності зі звуковими панелями та зовнішнім обладнанням, яке не враховує програмні налаштування гучності</string>
+  <string name="advanced_mute_disables_audio_track_title">Вимкнути звукову доріжку, коли звук вимкнено</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Виправлення відтворення Dolby Vision на деяких старих телевізорах Philips</string>
   <string name="advanced_philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
+  <string name="advanced_portrait_rotation_summary">Ручне обертання відео у вертикальному форматі для виправлення їх орієнтації. Діє лише під час використання SurfaceView. Корисно для пристроїв із помилками в прошивці.</string>
+  <string name="advanced_portrait_rotation_title">Виправлення повороту відео в портретному режимі</string>
+  <string name="advanced_reduce_buffer_memory_summary">Використовує менші буфери відтворення, що дозволяє зменшити споживання пам’яті, але може призвести до збільшення часу буферизації в мережах з низькою швидкістю</string>
+  <string name="advanced_reduce_buffer_memory_title">Зменшення буферів відтворення та використання пам\'яті</string>
   <string name="advanced_refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
   <string name="advanced_save_logs_summary">Зупинити запис і зберегти файл журналу в папці «Документи»</string>
   <string name="advanced_save_logs_title">Збереження журналів</string>
   <string name="advanced_use_texture_view_summary">Використовуйте TextureView замість SurfaceView для рендерингу відео</string>
   <string name="advanced_use_texture_view_title">Використовуйте TextureView для відео</string>
+  <string name="advanced_wifi_only_summary">Відтворювати відео з віддалених джерел (Apple, Amazon тощо) слід лише під час підключення до Wi-Fi або Ethernet. Це не стосується локальних джерел та джерел у локальній мережі.</string>
+  <string name="advanced_wifi_only_title">Трансляція медіафайлів виключно через Wi-Fi</string>
   <string name="advanced_wol_enable_summary">Надіслати пакет Wake on LAN перед отриманням медіафайлів</string>
   <string name="advanced_wol_enable_title">Увімкнути функцію пробудження по локальній мережі</string>
   <string name="advanced_wol_mac_error">Недійсний формат MAC-адреси</string>
@@ -156,6 +164,7 @@
   <string name="apple_videos_enabled">Використовуйте відео Apple</string>
   <string name="apple_videos_scene_type_title">Типи сцен</string>
   <string name="apple_videos_time_of_day_title">Час доби</string>
+  <string name="brightness_notification">Яскравість: %1$s%%</string>
   <string name="button_cancel">Скасування</string>
   <string name="button_export">Експорт</string>
   <string name="button_import">Імпорт</string>
@@ -178,6 +187,7 @@
   <string name="capabilities_permission_denied">Відмовлено</string>
   <string name="capabilities_permission_granted">Надано</string>
   <string name="capabilities_permission_internet">Інтернет: %1$s</string>
+  <string name="capabilities_permission_local_network">Доступ до локальної мережі (Samba, WebDAV, Immich): %1$s</string>
   <string name="capabilities_permission_media_images">Локальний доступ (зображення): %1$s</string>
   <string name="capabilities_permission_media_video">Локальний доступ (відео): %1$s</string>
   <string name="capabilities_permission_notification_access">Доступ до сповіщень (інформація про відтворення): %1$s</string>
@@ -254,6 +264,7 @@
   <string name="category_remote_streaming">Віддалена потокова передача</string>
   <string name="category_samba_options">Samba/SMB налаштування</string>
   <string name="category_scaling">Масштабування</string>
+  <string name="category_scheduled_blackout">Заплановане відключення електроенергії</string>
   <string name="category_server_details">Відомості про сервер і облікові дані</string>
   <string name="category_server_details_and_credentials">Відомості про сервер і облікові дані</string>
   <string name="category_settings">Налаштування</string>
@@ -298,6 +309,8 @@
   <string name="dpad_button_right_title">Напрямок вправо</string>
   <string name="dpad_button_up_title">Напрямок вгору</string>
   <string name="dpad_double_tap_title">Подвійне натискання</string>
+  <string name="dpad_exit_on_mouse_movement_summary">Виходить із режиму заставки при русі підключеної миші</string>
+  <string name="dpad_exit_on_mouse_movement_title">Вихід при переміщенні миші</string>
   <string name="dpad_long_press_title">Тривале натискання</string>
   <string name="dpad_music_permission_summary">Для переходу до наступного/попереднього треку потрібен додатковий дозвіл</string>
   <string name="dpad_music_permission_title">Дозвіл на керування музикою</string>
@@ -401,7 +414,34 @@
   <string name="location_selection_title">Виберіть місцезнаходження</string>
   <string name="location_unknown">Невідомо</string>
   <string name="message_media_searching">Пошук медіа…</string>
+  <string name="ncmemories_media_enabled_title">Використовуйте медіафайли Nextcloud Memories</string>
+  <string name="ncmemories_media_favorites_name">Вибране</string>
+  <string name="ncmemories_media_fetch_albums_error">Помилка отримання альбомів</string>
+  <string name="ncmemories_media_include_favorites_title">Додайте улюблені фотографії та відео</string>
+  <string name="ncmemories_media_include_recent_title">Додайте свіжі фотографії та відео</string>
+  <string name="ncmemories_media_no_albums">Альбоми не знайдено</string>
+  <string name="ncmemories_media_no_albums_message">У вашому обліковому записі Nextcloud Memories не знайдено жодного альбому. Переконайтеся, що ви створили хоча б один альбом.</string>
+  <string name="ncmemories_media_password_summary">Пароль додатка (бажано) або пароль користувача (не рекомендується)</string>
+  <string name="ncmemories_media_password_title">Пароль</string>
+  <string name="ncmemories_media_recent_name">Останні</string>
+  <string name="ncmemories_media_select_album">Виберіть альбом</string>
+  <string name="ncmemories_media_select_albums">Вибрати альбоми</string>
+  <string name="ncmemories_media_select_albums_summary">Не вибрано альбомів</string>
+  <string name="ncmemories_media_selected_album">Вибраний альбом: %1$s</string>
+  <string name="ncmemories_media_selected_albums">Вибрано %1$d альбомів</string>
+  <string name="ncmemories_media_test_connection">Протестувати налаштування підключення</string>
+  <string name="ncmemories_media_test_results">Результати випробувань</string>
+  <string name="ncmemories_media_type_title">Виберіть тип носія</string>
+  <string name="ncmemories_media_url_invalid">Недійсна URL-адреса сервера</string>
+  <string name="ncmemories_media_url_summary">Введіть URL-адресу сервера (наприклад, https://192.168.1.2)</string>
+  <string name="ncmemories_media_url_title">URL-адреса сервера</string>
+  <string name="ncmemories_media_username_summary">Ім\'я користувача або електронна пошта</string>
+  <string name="ncmemories_media_username_title">"Ім\'я користувача"</string>
+  <string name="ncmemories_media_validate_ssl_summary">Вимкнути, лише якщо використовуються самопідписані сертифікати</string>
+  <string name="ncmemories_media_validate_ssl_title">Перевірте SSL сертифікати</string>
   <string name="none_selected">Нічого не вибрано</string>
+  <string name="nowplaying_keep_screen_on_summary">Запобігати затемненню екрану або переходу в режим сну під час відтворення фонової музики</string>
+  <string name="nowplaying_keep_screen_on_title">Запобігати переходу пристрою в режим сну під час відтворення музики</string>
   <string name="nowplaying_line1_title">Лінія 1</string>
   <string name="nowplaying_line2_title">Лінія 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Ця функція недоступна у старих версіях Android TV</string>
@@ -422,6 +462,8 @@
   <string name="overlay_metadata_video_location_title">Формат місцезнаходження</string>
   <string name="overlay_metadata_videos_summary">Вибір та зміна порядку метаданих, що відображаються для відео</string>
   <string name="overlay_metadata_videos_title">Метадані відео</string>
+  <string name="overlay_visibility_delay_title">Затримка</string>
+  <string name="overlay_visibility_title">Видимість накладення</string>
   <string name="playlist_audio_mode_summary">Виберіть, чи вимкнути звук відео, відтворити аудіо відео чи відтворити фонову музику</string>
   <string name="playlist_audio_mode_title">Аудіорежим</string>
   <string name="playlist_auto_time_of_day_summary">Відтворювати тільки відео, відповідне поточному часу доби (ранок/день або вечір/захід сонця)</string>
@@ -435,6 +477,7 @@
   <string name="playlist_cache_expired">(Закінчився)</string>
   <string name="playlist_cache_expires">Закінчується:</string>
   <string name="playlist_cache_interval_title">Інтервал оновлення</string>
+  <string name="playlist_cache_resume_title">Відновлення роботи</string>
   <string name="playlist_cache_status_active">%1$d медіаматеріали, %2$d музичні треки,</string>
   <string name="playlist_cache_status_empty">Немає даних кешу</string>
   <string name="playlist_cache_status_expiry_d">%1$d день(дні)</string>
@@ -448,6 +491,8 @@
   <string name="playlist_ignore_unmatched_videos_summary">Пропустити відео, не зазначені в жодному відеоманіфесті Apple</string>
   <string name="playlist_ignore_unmatched_videos_title">Ігнорувати відео не Apple в локальному сховищі або в локальній мережі</string>
   <string name="playlist_limit_longer_videos_title">Довші відео</string>
+  <string name="playlist_loop_disabled">Повторне відтворення вимкнено</string>
+  <string name="playlist_loop_enabled">Увімкнено циклічне відтворення</string>
   <string name="playlist_loop_short_videos_summary">Короткі відео будуть показуватися відповідно до встановленого обмеження за часом
 (наприклад, 30-секундне відео з обмеженням у 2 хвилини буде відтворюватися 4 рази)</string>
   <string name="playlist_loop_short_videos_title">Короткі відео</string>
@@ -465,6 +510,10 @@
   <string name="playlist_random_start_position_title">Випадкова початкова позиція</string>
   <string name="playlist_remove_duplicates_summary">Видалити дублікати відео зі списку відтворення лише за назвою файлу</string>
   <string name="playlist_remove_duplicates_title">Видалити дублікати відео</string>
+  <string name="playlist_scheduled_blackout_enabled_summary">Автоматично затемнювати екран у проміжку між часом початку та часом закінчення</string>
+  <string name="playlist_scheduled_blackout_enabled_title">Увімкнути планове відключення електропостачання</string>
+  <string name="playlist_scheduled_blackout_end_title">Час завершення</string>
+  <string name="playlist_scheduled_blackout_start_title">Час початку</string>
   <string name="playlist_set_location_summary">Поточне місцезнаходження: %1$s</string>
   <string name="playlist_set_location_title">Встановити місцезнаходження</string>
   <string name="playlist_shuffle_summary">Випадковий порядок відео та зображень</string>
@@ -502,6 +551,7 @@
   <string name="samba_media_test_summary3">Знайдено відео: %1$s</string>
   <string name="samba_media_test_summary4">Знайдено зображень: %1$s</string>
   <string name="samba_media_test_summary5">Вибрано для відтворення: %1$s</string>
+  <string name="samba_media_test_summary6">Вибрано для відтворення: %1$s</string>
   <string name="samba_media_type_title">Виберіть тип носія</string>
   <string name="samba_media_wol_summary">Пробудження сервера під час спроби отримати медіафайли</string>
   <string name="samba_media_wol_title">Налаштування пробудження по локальній мережі</string>
@@ -584,6 +634,8 @@
   <string name="sources_immich_title">Сервер Immich</string>
   <string name="sources_local_summary">Відтворення відео безпосередньо з вашого пристрою або підключеного USB-накопичувача</string>
   <string name="sources_local_title">Локальне або USB-сховище</string>
+  <string name="sources_ncmemories_summary">Відтворювати відео та фотографії з сервера Nextcloud Memories</string>
+  <string name="sources_ncmemories_title">Сервер Nextcloud Memories</string>
   <string name="sources_samba_summary">Відтворення відео з локальної мережевої папки на ПК або пристрої NAS</string>
   <string name="sources_samba_title">SMB/Samba share</string>
   <string name="sources_webdav_summary">Відтворення відео, що зберігаються на сервері WebDAV, локально або віддалено</string>
@@ -634,4 +686,6 @@
   <string name="webdav_media_type_title">Виберіть тип носія</string>
   <string name="webdav_media_username_summary">"Не обов\'язково"</string>
   <string name="webdav_media_username_title">"Ім\'я користувача"</string>
+  <string name="webdav_media_validate_ssl_summary">Вимкнути, лише якщо використовуються самопідписані сертифікати</string>
+  <string name="webdav_media_validate_ssl_title">Перевірте SSL сертифікати</string>
 </resources>

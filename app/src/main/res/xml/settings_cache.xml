@@ -18,6 +18,16 @@
             app:useSimpleSummaryProvider="true"
             app:dialogTitle="@string/playlist_cache_interval_title" />
 
+        <ListPreference
+            app:defaultValue="next"
+            app:dependency="playlist_cache"
+            app:entries="@array/playlist_cache_resume_entries"
+            app:entryValues="@array/playlist_cache_resume_values"
+            app:key="playlist_cache_resume_behaviour"
+            app:title="@string/playlist_cache_resume_title"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="@string/playlist_cache_resume_title" />
+
         <Preference
             app:key="clear_playlist_cache"
             app:dependency="playlist_cache"

@@ -2,8 +2,11 @@ package com.neilturner.aerialviews.data.network
 
 import android.net.Uri
 import com.hierynomus.mssmb2.SMB2Dialect
+import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
+import com.hierynomus.smbj.connection.Connection
+import com.hierynomus.smbj.session.Session
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import timber.log.Timber
@@ -133,16 +136,63 @@ object SambaHelper {
         password: String,
         domainName: String,
     ): AuthenticationContext {
-        if (userName.isEmpty() && password.isEmpty()) {
+        val trimmedUser = userName.trim()
+        val trimmedDomain = domainName.trim()
+
+        if (trimmedUser.isEmpty() && password.trim().isEmpty()) {
             Timber.i("Using anonymous login auth")
             return AuthenticationContext.anonymous()
         }
 
-        if (userName.equals("guest", true)) {
+        if (trimmedUser.equals("guest", true)) {
             Timber.i("Using guest login auth")
             return AuthenticationContext.guest()
         }
-        return AuthenticationContext(userName, password.toCharArray(), domainName)
+        return AuthenticationContext(trimmedUser, password.toCharArray(), trimmedDomain)
+    }
+
+    fun authenticate(
+        smbClient: SMBClient,
+        connection: Connection,
+        hostName: String,
+        userName: String,
+        password: String,
+        domainName: String,
+    ): Pair<Connection, Session> {
+        val trimmedUser = userName.trim()
+        val trimmedPass = password.trim()
+        val trimmedDomain = domainName.trim()
+
+        var currentConnection = connection
+
+        if (trimmedUser.isEmpty() && trimmedPass.isEmpty()) {
+            Timber.i("Attempting anonymous login auth")
+            try {
+                val session = currentConnection.authenticate(AuthenticationContext.anonymous())
+                return Pair(currentConnection, session)
+            } catch (ex: Exception) {
+                Timber.w(ex, "Anonymous authentication failed, falling back to guest authentication")
+                runCatching { currentConnection.close() }
+                currentConnection = smbClient.connect(hostName)
+                val session = currentConnection.authenticate(AuthenticationContext.guest())
+                return Pair(currentConnection, session)
+            }
+        }
+
+        val authContext = buildAuthContext(trimmedUser, password, trimmedDomain)
+        val session = currentConnection.authenticate(authContext)
+        return Pair(currentConnection, session)
+    }
+
+    fun connectAndAuthenticate(
+        smbClient: SMBClient,
+        hostName: String,
+        userName: String,
+        password: String,
+        domainName: String,
+    ): Pair<Connection, Session> {
+        val connection = smbClient.connect(hostName)
+        return authenticate(smbClient, connection, hostName, userName, password, domainName)
     }
 
     fun buildSmbConfig(prefs: SambaProviderPreferences = SambaMediaPrefs): SmbConfig =

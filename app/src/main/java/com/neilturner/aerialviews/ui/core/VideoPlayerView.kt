@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -21,7 +20,6 @@ import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFacto
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
-import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
@@ -30,7 +28,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -45,7 +42,7 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
         Player.Listener {
-        private val exoPlayer: ExoPlayer
+        private lateinit var exoPlayer: ExoPlayer
         private var state = VideoState()
 
         private var listener: OnVideoPlayerEventListener? = null
@@ -79,16 +76,24 @@ class VideoPlayerView
 
         init {
             // Use applicationContext to prevent activity context leaks
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
-
-            player = exoPlayer
-            player?.addListener(this)
-
-            player?.repeatMode = Player.REPEAT_MODE_OFF
+            replacePlayer(context)
 
             controllerAutoShow = false
             useController = false
             resizeMode = VideoPlayerHelper.getResizeMode(GeneralPrefs.videoScale)
+        }
+
+        private fun replacePlayer(context: Context) {
+            if (::exoPlayer.isInitialized) {
+                player = null
+                exoPlayer.setVideoSurface(null)
+                exoPlayer.release()
+            }
+
+            exoPlayer = VideoPlayerHelper.buildPlayer(context.applicationContext, GeneralPrefs)
+            player = exoPlayer
+            player?.addListener(this)
+            player?.repeatMode = Player.REPEAT_MODE_OFF
         }
 
         fun release() {
@@ -347,7 +352,7 @@ class VideoPlayerView
             val w = videoSize.width
             val h = videoSize.height
             val unapplied = videoSize.unappliedRotationDegrees
-            Timber.i("Video size: ${w}x${h}, unappliedRotationDegrees=$unapplied")
+            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=$unapplied")
 
             if (!GeneralPrefs.portraitVideoRotationEnabled) return
 
@@ -359,7 +364,7 @@ class VideoPlayerView
             // Portrait detection: taller than wide (before any rotation)
             val isPortrait = h > w
             if (!isPortrait) {
-                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x${h})")
+                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x$h)")
                 resetRotation()
                 return
             }
@@ -378,12 +383,12 @@ class VideoPlayerView
                 // so scale by containerH/containerW to fill the screen width.
                 val scale =
                     when (degrees) {
-                        90f, 270f -> containerH / containerW
-                        else -> 1f // 180° — aspect ratio unchanged, no scale needed
+                        90f, 270f -> containerW / containerH
+                        else -> 1f
                     }
 
                 Timber.i(
-                    "Portrait rotation fix: applying ${degrees}° rotation, scale=$scale " +
+                    "Portrait rotation fix: applying $degrees° rotation, scale=$scale " +
                         "(container ${containerW.toInt()}x${containerH.toInt()})",
                 )
 
@@ -478,8 +483,12 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
-                postDelayed(almostFinishedRunnable, 2 * 1000)
-                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                if (GeneralPrefs.loopUntilSkipped) {
+                    Timber.i("The video will only finish when skipped manually")
+                } else {
+                    postDelayed(almostFinishedRunnable, 2 * 1000)
+                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                }
                 return
             }
 
