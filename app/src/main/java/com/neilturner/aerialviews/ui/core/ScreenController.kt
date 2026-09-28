@@ -86,7 +86,6 @@ class ScreenController(
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
-    private var ktorServer: KtorServer? = null
     private var musicPlayer: MusicPlayer? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
@@ -264,12 +263,9 @@ class ScreenController(
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
-                ktorServer =
-                    KtorServer(context) { messageEvent ->
-                        GlobalBus.post(messageEvent)
-                    }.apply {
-                        start()
-                    }
+                KtorServer.start(context) { messageEvent ->
+                    GlobalBus.post(messageEvent)
+                }
             }
 
             // Build playlist and start screensaver
@@ -850,7 +846,7 @@ class ScreenController(
         videoParent?.removeView(videoViewBinding.root)
         videoPlayer.release()
         imagePlayer.release()
-        ktorServer?.stop()
+        KtorServer.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
         musicPlayer?.pause()
