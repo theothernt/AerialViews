@@ -804,12 +804,25 @@ class ScreenController(
     }
 
     private fun loadNextItem(previous: Boolean = false) {
+        if (!this::playlist.isInitialized || playlist.size == 0) {
+            Timber.w("ScreenController: Cannot load an item from an empty playlist")
+            showLoadingError()
+            return
+        }
+
         val media =
             if (previous) {
                 playlist.previousItem()
             } else {
                 playlist.nextItem()
             }
+
+        if (media == null) {
+            Timber.e("ScreenController: Playlist could not supply an item")
+            showLoadingError()
+            return
+        }
+
         loadItem(media)
     }
 

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Bundle
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
@@ -81,7 +82,7 @@ class MediaService(
         }
     }
 
-    private fun buildCompositeHash(): String {
+    private fun buildCompositeHash(filterRemote: Boolean): String {
         val generalParts =
             buildList {
                 add(GeneralPrefs.removeDuplicates.toString())
@@ -94,6 +95,9 @@ class MediaService(
                 add(GeneralPrefs.shuffleVideos.toString())
                 add(MusicPrefs.shuffle.toString())
                 add(MusicPrefs.repeat.toString())
+                // The derived network mode, not just the wifiOnly setting: the cache holds exactly
+                // the playlist that will be played, so crossing the WiFi boundary must invalidate it.
+                add(filterRemote.toString())
             }
         val generalHash = generalParts.joinToString("|")
 
@@ -121,21 +125,21 @@ class MediaService(
 
     suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
-            val settingsHash = hashFn?.invoke() ?: buildCompositeHash()
             val networkType = NetworkHelper.getNetworkType(context)
             val filterRemote = config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)
             Timber.i("MediaService: Network: $networkType | WiFi-only mode: ${config.wifiOnly} | Filtering remote sources: $filterRemote")
+
+            val settingsHash = hashFn?.invoke() ?: buildCompositeHash(filterRemote)
             val cacheRepo =
                 if (config.playlistCache) {
-                    com.neilturner.aerialviews.data
-                        .PlaylistCacheRepository(context)
+                    PlaylistCacheRepository(context)
                 } else {
                     null
                 }
 
             if (config.playlistCache) {
                 if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
-                    val cached = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
+                    val cached = cacheRepo.getCachedPlaylist()
                     if (cached != null) {
                         onStatus(LoadingStatus.RESUMING)
                         Timber.i("MediaService: USING CACHED PLAYLIST")
@@ -152,7 +156,18 @@ class MediaService(
                 onStatus(LoadingStatus.LOADING)
             }
 
-            val (media, tracks) = buildProviderContent(providers)
+            // Excluded before anything is fetched, so remote providers are never contacted over
+            // cellular. The cache is written from the filtered list below, which keeps the cached
+            // size, chunk offsets and saved position in a single index space.
+            val activeProviders =
+                if (filterRemote) {
+                    Timber.i("MediaService: WiFi-only mode enabled, excluding REMOTE providers (not on WiFi/Ethernet)")
+                    providers.filter { it.type != ProviderSourceType.REMOTE }
+                } else {
+                    providers
+                }
+
+            val (media, tracks) = buildProviderContent(activeProviders)
 
             // Split into videos and photos
             var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
@@ -182,7 +197,7 @@ class MediaService(
             }
 
             // Try to match videos with Apple, Community metadata for location/description
-            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers)
+            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, activeProviders)
             Timber.i("FeedManifests Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
             // Split photos in those with metadata and those without
@@ -247,6 +262,14 @@ class MediaService(
                 Timber.i("Shuffling media items with weighted source interleaving")
             }
 
+            // Defence in depth for a provider that emits a network source despite being typed
+            // local. Applied before caching so the cached list only ever holds playable items.
+            if (filterRemote) {
+                val before = filteredMedia.size
+                filteredMedia = filteredMedia.filterNot { it.source.requiresNetwork }
+                Timber.i("MediaService: WiFi-only filter removed ${before - filteredMedia.size} remote items")
+            }
+
             val musicPlaylist =
                 tracks
                     .takeIf { it.isNotEmpty() }
@@ -273,7 +296,7 @@ class MediaService(
                     shuffleEnabled = config.shuffleVideos,
                 )
 
-                val cachedResult = cacheRepo.getCachedPlaylist(filterRemote = filterRemote)
+                val cachedResult = cacheRepo.getCachedPlaylist()
                 if (cachedResult != null) {
                     Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
                     return@withContext cachedResult
@@ -283,33 +306,11 @@ class MediaService(
                 Timber.i("MediaService: Cache disabled, using full in-memory playlist (${filteredMedia.size} items)")
             }
 
-            // Cache disabled or cache read-back failed: all items in memory, no DB
-            if (filterRemote) {
-                val before = filteredMedia.size
-                filteredMedia = filteredMedia.filter { it.source !in remoteSources }
-                Timber.i("MediaService: WiFi-only filter removed ${before - filteredMedia.size} remote items (in-memory path)")
-            }
-
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,
             )
         }
-
-    companion object {
-        private val remoteSources =
-            setOf(
-                AerialMediaSource.APPLE,
-                AerialMediaSource.AMAZON,
-                AerialMediaSource.COMM1,
-                AerialMediaSource.COMM2,
-                AerialMediaSource.CUSTOM,
-                AerialMediaSource.RTSP,
-                AerialMediaSource.HLS,
-                AerialMediaSource.IMMICH,
-                AerialMediaSource.NCMEMORIES,
-            )
-    }
 
     private fun trackMediaUsage(media: List<AerialMedia>) {
         // Count distinct sources
