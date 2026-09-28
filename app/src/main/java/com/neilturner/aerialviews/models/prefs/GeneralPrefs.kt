@@ -183,7 +183,7 @@ object GeneralPrefs : KotprefModel() {
     var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
     // Typeface (for whole app)
-    var fontTypeface by stringPref("open-sans", "font_typeface")
+    var fontTypeface by stringPref("google-sans", "font_typeface")
 
     // Progress Bar
     var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
