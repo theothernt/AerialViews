@@ -14,13 +14,13 @@ import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.data.network.SambaHelper
 import com.neilturner.aerialviews.data.storage.FileHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
+import com.neilturner.aerialviews.utils.aerialMediaTypeFor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -236,18 +236,16 @@ class SambaMediaProvider(
             val uri =
                 "smb://$usernamePassword${prefs.hostName}/$shareName/$filename?domain=$domain&enc=${prefs.enableEncryption}&dialects=$dialectsEncoded"
                     .toUri()
-            val item = AerialMedia(uri)
+            val type =
+                aerialMediaTypeFor(filename)
+                    ?: run {
+                        // Never add untyped media - AerialMedia defaults to VIDEO, so an audio or
+                        // otherwise unrecognised file would be queued as a black-screen video.
+                        Timber.w("SambaMediaProvider: skipping unsupported file: $filename")
+                        return@forEach
+                    }
 
-            if (FileHelper.isSupportedVideoType(filename)) {
-                item.type = AerialMediaType.VIDEO
-            } else if (FileHelper.isSupportedImageType(filename)) {
-                item.type = AerialMediaType.IMAGE
-            } else {
-                // Never add untyped media - AerialMedia defaults to VIDEO, so an audio or otherwise
-                // unrecognised file would otherwise be queued as a black-screen video.
-                Timber.w("SambaMediaProvider: skipping unsupported file: $filename")
-                return@forEach
-            }
+            val item = AerialMedia(uri, type = type)
             item.source = AerialMediaSource.SAMBA
             media.add(item)
         }

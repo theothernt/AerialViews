@@ -6,12 +6,12 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.storage.FileHelper
 import com.neilturner.aerialviews.data.storage.StorageHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.LocalProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.utils.aerialMediaTypeFor
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -97,13 +97,8 @@ class LocalMediaProvider(
 
         // Create media list, adding media type
         for (file in selected) {
-            val uri = file.toUri()
-            val item = AerialMedia(uri)
-            if (FileHelper.isSupportedVideoType(file)) {
-                item.type = AerialMediaType.VIDEO
-            } else if (FileHelper.isSupportedImageType(file)) {
-                item.type = AerialMediaType.IMAGE
-            }
+            val type = aerialMediaTypeFor(file) ?: continue
+            val item = AerialMedia(file.toUri(), type = type)
             item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
@@ -221,14 +216,8 @@ class LocalMediaProvider(
             if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
                 continue
             }
-            // Set media type, should be refactored
-            // Also, check all providers
-            val item = AerialMedia(uri)
-            if (FileHelper.isSupportedVideoType(uri.filename)) {
-                item.type = AerialMediaType.VIDEO
-            } else if (FileHelper.isSupportedImageType(uri.filename)) {
-                item.type = AerialMediaType.IMAGE
-            }
+            val type = aerialMediaTypeFor(uri.filename) ?: continue
+            val item = AerialMedia(uri, type = type)
             item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
