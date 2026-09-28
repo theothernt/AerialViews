@@ -288,13 +288,22 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                var startPlayback = true
                 if (mediaResult.isFromCache) {
                     Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
                     delay(CACHE_RESUME_DELAY.milliseconds)
-                    if (isStopped || blackOutMode) return@launch
+                    // stop() cancels mainScope, so a stopped session cannot be observed here;
+                    // only a blackout entered while waiting should defer playback. Music, weather
+                    // and scheduled blackout must still be set up.
+                    startPlayback = !blackOutMode
+                    if (!startPlayback) {
+                        Timber.i("Blackout entered during cache resume delay, deferring playback start")
+                    }
                 }
-                loadNextItem()
-                scheduleSleepTimer()
+                if (startPlayback) {
+                    loadNextItem()
+                    scheduleSleepTimer()
+                }
                 scheduleScheduledBlackout()
             } else {
                 showLoadingError()
