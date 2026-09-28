@@ -5,13 +5,13 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.storage.FileHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
+import com.neilturner.aerialviews.utils.aerialMediaTypeFor
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -81,19 +81,15 @@ internal class WebDavMediaProvider(
                 val media =
                     testResult.files.mapNotNull { (url, displayName) ->
                         val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-                        val item =
-                            AerialMedia(uri).apply {
-                                metadata.title = displayName?.takeIf { it.isNotBlank() }.orEmpty()
-                            }
+// Resolve the type from the url, not displayName: displayName is nullable, so
+                        // keying off it would silently drop files whose name is unavailable but
+                        // whose url still carries a playable extension.
+                        val type = aerialMediaTypeFor(url) ?: return@mapNotNull null
 
-                        when {
-                            FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
-                            FileHelper.isSupportedImageType(url) -> item.type = AerialMediaType.IMAGE
-                            else -> return@mapNotNull null
+                        AerialMedia(uri, type = type).apply {
+                            source = AerialMediaSource.WEBDAV
+                            metadata.title = displayName?.takeIf { it.isNotBlank() }.orEmpty()
                         }
-
-                        item.source = AerialMediaSource.WEBDAV
-                        item
                     }
 
                 Timber.i("Media found: ${media.size}")
