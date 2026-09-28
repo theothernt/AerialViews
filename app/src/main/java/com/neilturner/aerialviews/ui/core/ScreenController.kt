@@ -100,6 +100,7 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
+    private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -112,8 +113,10 @@ class ScreenController(
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
+    private var forcedMuteVideo = false
+    private var userMutedVideo = !GeneralPrefs.playsVideoAudio
     private val cacheRepository = PlaylistCacheRepository(context)
-    private var videoViewBinding: VideoViewBinding
+    private lateinit var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -121,7 +124,7 @@ class ScreenController(
     private var loadingText: TextView
     private var loadingSpinner: View
     private var loadingContainer: View
-    private var videoPlayer: VideoPlayerView
+    private lateinit var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
     private val gradientTopView: View
@@ -147,7 +150,6 @@ class ScreenController(
         val binding = AerialActivityBinding.inflate(inflater)
 
         val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
-        val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
         val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
 
         // Setup binding for all views and controls
@@ -165,28 +167,18 @@ class ScreenController(
 
         val initialVideoRoot = binding.videoView.root
         val videoParent = initialVideoRoot.parent as? ViewGroup
-        val videoLayoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) {
-                R.layout.video_view_texture
-            } else {
-                R.layout.video_view
-            }
-
-        videoViewBinding =
+        val videoRoot =
             if (videoParent != null) {
                 val index = videoParent.indexOfChild(initialVideoRoot)
                 videoParent.removeView(initialVideoRoot)
-                val inflater = LayoutInflater.from(context)
-                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
+                val replacementVideoRoot = LayoutInflater.from(context).inflate(videoLayoutRes(), videoParent, false)
                 videoParent.addView(replacementVideoRoot, index)
-                VideoViewBinding.bind(replacementVideoRoot)
+                replacementVideoRoot
             } else {
-                binding.videoView
+                initialVideoRoot
             }
 
-        videoViewBinding.root.setBackgroundColor(backgroundVideos)
-        videoPlayer = videoViewBinding.videoPlayer
-        videoPlayer.setOnPlayerListener(this)
+        installVideoView(videoRoot)
 
         imageViewBinding = binding.imageView
         imageViewBinding.root.setBackgroundColor(backgroundPhotos)
@@ -397,6 +389,11 @@ class ScreenController(
             null
         }
 
+    private fun setVideoForcedMute(enabled: Boolean) {
+        forcedMuteVideo = enabled
+        videoPlayer.setMuteState(forcedMuteVideo, userMutedVideo)
+    }
+
     private fun setupMusicPlayer(
         musicPlaylist: MusicPlaylist?,
         resumeIndex: Int = 0,
@@ -405,17 +402,17 @@ class ScreenController(
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
-            videoPlayer.setForcedMute(false)
+            setVideoForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
-            videoPlayer.setForcedMute(false)
+            setVideoForcedMute(false)
             return
         }
 
-        videoPlayer.setForcedMute(true)
+        setVideoForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
@@ -748,6 +745,12 @@ class ScreenController(
         overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.isHidden = hidden }
     }
 
+    private fun renderMetadataOverlays(state: OverlayUiState) {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
+            state.metadata[overlay.type]?.let { overlay.render(it, videoPlayer) }
+        }
+    }
+
     fun showOverlays() {
         // Only allow reveal when overlays can be hidden
         if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
@@ -1033,6 +1036,7 @@ class ScreenController(
 
     fun toggleMute() {
         videoPlayer.toggleMute()
+        userMutedVideo = videoPlayer.mutedState
     }
 
     private fun pauseMedia() {
@@ -1095,20 +1099,39 @@ class ScreenController(
         }
     }
 
+    private fun videoLayoutRes(): Int =
+        if (GeneralPrefs.useTextureViewForVideo) {
+            R.layout.video_view_texture
+        } else {
+            R.layout.video_view
+        }
+
+    private fun installVideoView(
+        root: View,
+        visibility: Int = View.VISIBLE,
+    ) {
+        videoViewBinding = VideoViewBinding.bind(root)
+        videoViewBinding.root.setBackgroundColor(backgroundVideosColour)
+        videoViewBinding.root.visibility = visibility
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
+        videoPlayer.setMuteState(forcedMuteVideo, userMutedVideo)
+    }
+
     private fun recreateVideoPlayer() {
         val oldRoot = videoViewBinding.root
         val videoParent = oldRoot.parent as? ViewGroup ?: return
         val index = videoParent.indexOfChild(oldRoot)
+        val previousVisibility = oldRoot.visibility
         videoPlayer.release()
         videoParent.removeView(oldRoot)
 
-        val layoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
-        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        val replacement = LayoutInflater.from(context).inflate(videoLayoutRes(), videoParent, false)
         videoParent.addView(replacement, index)
-        videoViewBinding = VideoViewBinding.bind(replacement)
-        videoPlayer = videoViewBinding.videoPlayer
-        videoPlayer.setOnPlayerListener(this)
+        installVideoView(replacement, previousVisibility)
+
+        // The metadata overlays hold a reference to the old player for POI timings.
+        renderMetadataOverlays(overlayStateStore.uiState.value)
     }
 
     private fun handlePlaybackSpeedChanged() {
@@ -1259,12 +1282,7 @@ class ScreenController(
     }
 
     private fun renderOverlayState(state: OverlayUiState) {
-        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
-            val locationState = state.metadata[overlay.type]
-            if (locationState != null) {
-                overlay.render(locationState, videoPlayer)
-            }
-        }
+        renderMetadataOverlays(state)
 
         overlayHelper.findOverlay<NowPlayingOverlay>().forEach {
             it.render(state.nowPlaying)
