@@ -66,7 +66,7 @@ object GeneralPrefs : KotprefModel() {
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2Days by stringPref("5", "weather_line2_days")
+    var weatherLine2Days by stringPref("3", "weather_line2_days")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
