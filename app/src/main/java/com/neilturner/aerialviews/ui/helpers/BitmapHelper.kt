@@ -53,10 +53,12 @@ object BitmapHelper {
                 val gpsDir = metadata.getFirstDirectoryOfType(GpsDirectory::class.java)
                 val description = extractExifDescription(metadata)
                 ExifMetadata(
-                    date = subDir?.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
-                        ?: metadata.getFirstDirectoryOfType(ExifIFD0Directory::class.java)?.getString(ExifDirectoryBase.TAG_DATETIME),
-                    offset = subDir?.getString(TAG_OFFSET_TIME_ORIGINAL)
-                        ?: subDir?.getString(TAG_OFFSET_TIME),
+                    date =
+                        subDir?.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
+                            ?: metadata.getFirstDirectoryOfType(ExifIFD0Directory::class.java)?.getString(ExifDirectoryBase.TAG_DATETIME),
+                    offset =
+                        subDir?.getString(TAG_OFFSET_TIME_ORIGINAL)
+                            ?: subDir?.getString(TAG_OFFSET_TIME),
                     latitude = gpsDir?.geoLocation?.latitude,
                     longitude = gpsDir?.geoLocation?.longitude,
                     description = description,

@@ -124,6 +124,15 @@
   <string name="media_music">Музика</string>
   <string name="media_photos">Фото</string>
   <string name="media_videos">Відео</string>
+  <string name="ncmemories_img_original">Оригінал</string>
+  <string name="ncmemories_img_preview">Попередній перегляд</string>
+  <string name="ncmemories_include_100">100 фотографій</string>
+  <string name="ncmemories_include_200">200 фотографій</string>
+  <string name="ncmemories_include_300">300 фотографій</string>
+  <string name="ncmemories_include_400">400 фотографій</string>
+  <string name="ncmemories_include_disabled">Вимкнено</string>
+  <string name="ncmemories_vid_original">Оригінал</string>
+  <string name="ncmemories_vid_transcoded">Перекодовано</string>
   <string name="nowplaying_artist">Виконавець</string>
   <string name="nowplaying_artist_song">Виконавець · Пісня</string>
   <string name="nowplaying_disabled">Вимкнено</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 секунди*</string>
   <string name="overlay_reveal_6s">6 секунд</string>
   <string name="overlay_reveal_8s">8 секунд</string>
+  <string name="overlay_visibility_always_hidden">Завжди прихований</string>
+  <string name="overlay_visibility_always_visible">Завжди на виду</string>
+  <string name="overlay_visibility_hide_after">Сховати через певний час</string>
+  <string name="overlay_visibility_show_after">Показати з затримкою</string>
   <string name="photo_scale_fill_crop">Заповнити кадруванням*</string>
   <string name="photo_scale_no_crop">Заповнення без кадрування</string>
   <string name="playlist_cache_refresh_1_week">Щотижня</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">Кожні 3 тижні</string>
   <string name="playlist_cache_refresh_4_weeks">Кожні 4 тижні</string>
   <string name="playlist_cache_refresh_all">Коли всі медіа переглянуті</string>
+  <string name="playlist_cache_resume_next">Відтворити наступний елемент плейлиста</string>
+  <string name="playlist_cache_resume_same">Відтворити той самий елемент плейлиста</string>
   <string name="progressbar_loc_bottom">Нижня частина екрану</string>
   <string name="progressbar_loc_disabled">Вимкнено</string>
   <string name="progressbar_loc_top">Верхня частина екрану</string>

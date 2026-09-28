@@ -53,6 +53,7 @@ class MigrationHelper(
         if (lastKnownVersion < 92) release92()
         if (lastKnownVersion < 113) release113()
         if (lastKnownVersion < 114) release114()
+        if (lastKnownVersion < 138) release138()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -387,12 +388,10 @@ class MigrationHelper(
         val closeOnScreenTapUsed = prefs.contains("close_on_screen_tap")
         if (closeOnScreenTapUsed) {
             Timber.i("Updating close on screen tap")
-            prefs.edit { putBoolean("close_on_screen_tap", false) }
-            val closeOnScreenTap = prefs.getBoolean("close_on_screen_tap", false)
-            if (closeOnScreenTap) {
-                prefs.edit { putString("gesture_tap", "EXIT") }
+            prefs.edit {
+                putString("gesture_tap", "EXIT")
+                remove("close_on_screen_tap")
             }
-            prefs.edit { remove("close_on_screen_tap") }
         }
     }
 
@@ -602,6 +601,43 @@ class MigrationHelper(
         prefs.edit {
             putString("playlist_audio_mode", mode.name)
         }
+    }
+
+    private fun release138() {
+        Timber.i("Migrating settings for release 138")
+
+        val autoHideUsed = prefs.contains("overlay_auto_hide")
+        if (!autoHideUsed) {
+            Timber.i("overlay_auto_hide not found, skipping migration")
+            return
+        }
+
+        val autoHideValue = prefs.getString("overlay_auto_hide", "-1").toStringOrEmpty()
+        Timber.i("Migrating overlay_auto_hide=$autoHideValue to overlay_visibility")
+
+        when (autoHideValue) {
+            "-1" -> {
+                prefs.edit { putString("overlay_visibility", "ALWAYS_VISIBLE") }
+            }
+
+            "0" -> {
+                prefs.edit { putString("overlay_visibility", "ALWAYS_HIDDEN") }
+            }
+
+            else -> {
+                val delay = autoHideValue.toIntOrNull()
+                if (delay != null && delay in 2..10) {
+                    prefs.edit {
+                        putString("overlay_visibility", "HIDE_AFTER_DELAY")
+                        putString("overlay_visibility_delay", delay.toString())
+                    }
+                } else {
+                    prefs.edit { putString("overlay_visibility", "ALWAYS_VISIBLE") }
+                }
+            }
+        }
+
+        prefs.edit { remove("overlay_auto_hide") }
     }
 
     private fun hasConfiguredMusicSource(): Boolean =

@@ -39,6 +39,7 @@ captures/
 # Agents
 .qwen/
 .mimocode/
+.kilo/
 
 # IntelliJ
 *.iml
@@ -83,3 +84,6 @@ lint/tmp/
 
 # macOS
 *.DS_Store
+
+# Secrets file for Act
+.secrets

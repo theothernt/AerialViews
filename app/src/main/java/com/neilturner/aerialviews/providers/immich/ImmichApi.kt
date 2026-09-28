@@ -78,14 +78,14 @@ interface ImmichApi {
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
 
-    // v3: fetch album assets via search/metadata with albumId filter
+    // v3: fetch album assets via search/metadata with albumIds filter
     @POST("/api/search/metadata")
     suspend fun getAlbumAssets(
         @Header("x-api-key") apiKey: String,
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
 
-    // v3: fetch shared album assets via search/metadata with albumId and shared link key
+    // v3: fetch shared album assets via search/metadata with albumIds and shared link key
     @POST("/api/search/metadata")
     suspend fun getSharedAlbumAssets(
         @Query("key") key: String,
@@ -118,7 +118,7 @@ data class SearchMetadataRequest(
     val size: Int? = null,
     val withExif: Boolean? = null,
     val type: String? = null,
-    val albumId: String? = null,
+    val albumIds: List<String>? = null,
     val page: Int? = null,
 )
 

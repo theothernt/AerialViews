@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -167,6 +168,7 @@ class PlaybackDiagnosticsListener(
         Timber.i(summary)
     }
 
+    @SuppressLint("DefaultLocale")
     private fun formatTime(ms: Long): String =
         String.format(
             "%02d:%02d:%02d",

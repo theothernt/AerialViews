@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import kotlin.time.Duration.Companion.milliseconds
 
 class CountdownOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
@@ -74,7 +75,7 @@ class CountdownOverlay : AppCompatTextView {
                 while (isActive) {
                     updateCountdown()
                     if (isCompleted) break
-                    delay(1000)
+                    delay(1000.milliseconds)
                 }
             }
     }

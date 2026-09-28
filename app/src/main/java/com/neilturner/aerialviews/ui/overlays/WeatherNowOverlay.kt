@@ -28,12 +28,17 @@ class WeatherNowOverlay
         private var overlayItems: List<OverlayItem> = emptyList()
         private var layout = ""
         private var previousWeather: WeatherEvent? = null
+        var isHidden = false
 
         // Layout constants
         private val fadeAnimationDuration = 300L
         private val minVisibleAlphaForFade = 0.95f
         private val itemMargin = 16 // dp between text items
         private val iconScale = 1.3f // multiplier relative to text height
+
+        // Extra top padding to give room for superscript-like characters such
+        // as the degree symbol (°) when includeFontPadding is false.
+        private val superscriptExtraPaddingDp = 2f
 
         private var font = ""
         private var size = 0f
@@ -91,7 +96,7 @@ class WeatherNowOverlay
             if (previousWeather == null) {
                 previousWeather = weather
                 updateOverlayContent(weather)
-                if (allowFadeAnimation) {
+                if (allowFadeAnimation && !isHidden) {
                     animate()
                         .alpha(1f)
                         .setDuration(fadeAnimationDuration)
@@ -104,7 +109,7 @@ class WeatherNowOverlay
             previousWeather = weather
 
             // Fade out
-            if (!allowFadeAnimation) {
+            if (!allowFadeAnimation || isHidden) {
                 updateOverlayContent(weather)
                 return
             }
@@ -117,10 +122,12 @@ class WeatherNowOverlay
                     updateOverlayContent(weather)
 
                     // Fade back in
-                    animate()
-                        .alpha(1f)
-                        .setDuration(fadeAnimationDuration)
-                        .start()
+                    if (!isHidden) {
+                        animate()
+                            .alpha(1f)
+                            .setDuration(fadeAnimationDuration)
+                            .start()
+                    }
                 }.start()
         }
 
@@ -167,6 +174,7 @@ class WeatherNowOverlay
                         val textView =
                             TextView(context).apply {
                                 text = item.text
+                                includeFontPadding = false
                             }
                         TextViewCompat.setTextAppearance(textView, R.style.OverlayText)
 
@@ -185,6 +193,9 @@ class WeatherNowOverlay
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                         textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                        val textViewOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textView.textSize)
+                        val superscriptExtraPx = (superscriptExtraPaddingDp * resources.displayMetrics.density).toInt()
+                        textView.setPadding(0, textViewOffset + superscriptExtraPx, 0, -(textViewOffset + superscriptExtraPx))
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")

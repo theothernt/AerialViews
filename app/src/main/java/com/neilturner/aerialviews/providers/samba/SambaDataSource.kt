@@ -141,14 +141,22 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     private fun openSambaFile(): File {
-        smbClient = SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
-        val connection = smbClient?.connect(hostName)
-        val dialect = connection?.connectionContext?.negotiatedProtocol?.dialect
+        val client = SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
+        smbClient = client
+        val initialConnection = client.connect(hostName)
+        val (connection, session) =
+            SambaHelper.authenticate(
+                smbClient = client,
+                connection = initialConnection,
+                hostName = hostName,
+                userName = userName,
+                password = password,
+                domainName = domainName,
+            )
+        val dialect = connection.connectionContext?.negotiatedProtocol?.dialect
         Timber.i("Negotiated SMB Dialect: $dialect")
 
-        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-        val session = connection?.authenticate(authContext)
-        val share = session?.connectShare(shareName) as DiskShare
+        val share = session.connectShare(shareName) as DiskShare
 
         val shareAccess = hashSetOf<SMB2ShareAccess>()
         shareAccess.add(SMB2ShareAccess.ALL.iterator().next())

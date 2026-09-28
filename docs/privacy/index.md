@@ -1,6 +1,6 @@
 # Aerial Views Privacy Policy
 
-Updated: August 2025
+Updated: November 2025
 
 ## 1. What information we collect
 
@@ -32,9 +32,11 @@ No personal information is ever collected or linked to a real person or device.
 
 ## 3. Examples of data collected and why
 
-1. We once saw a crash that only affected a specific device language. Including the device’s language and region (without any personal identifiers) helped us diagnose and fix the issue.
+1. We once saw a crash that only affected a specific device language. Including the device's language and region (without any personal identifiers) helped us diagnose and fix the issue.
 
 2. The weather feature uses a third‑party API with rate limits. We record anonymous request counts to ensure the app stays within those limits and to tune the frequency of weather updates in the future.
+
+3. We track which media sources users enable and generalized counts of videos/photos. No actual media file names, paths, or content is collected. This helps us understand where optimisations are needed.
 
 ## 4. How your data is protected
 

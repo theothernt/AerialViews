@@ -20,6 +20,8 @@ class ImmichRepository(
 ) {
     lateinit var server: String
 
+    private val apiKey: String get() = prefs.apiKey.trim()
+
     private val immichClient by lazy {
         apiOverride ?: run {
             server = UrlParser.parseServerUrl(prefs.url)
@@ -41,7 +43,9 @@ class ImmichRepository(
     private var cachedServerMajorVersion: Int? = null
 
     /**
-     * Returns the major version number of the connected Immich server (e.g. 2 or 3).
+     * Returns the effective server version used internally for API routing.
+     * For Immich v1.106+ and all v3+ servers, this returns 3 so the v3 code
+     * paths are used. For earlier versions it returns the actual major version.
      * The result is cached after the first successful call.
      * Falls back to v2 behaviour on failure so existing users are unaffected.
      */
@@ -50,11 +54,15 @@ class ImmichRepository(
         return try {
             val response = immichClient.getServerVersion()
             if (response.isSuccessful) {
-                val major = response.body()?.major ?: 2
-                Timber.d("Immich server version: major=$major")
-                cachedServerMajorVersion = major
-                urlBuilder.setServerV3(major >= 3)
-                major
+                val serverVersion = response.body() ?: ServerVersionResponse()
+                val major = serverVersion.major
+                val minor = serverVersion.minor
+                val isV3 = major >= 3 || (major == 1 && minor >= 106)
+                val effectiveVersion = if (isV3) 3 else major
+                Timber.d("Immich server version: major=$major, minor=$minor, isV3=$isV3")
+                cachedServerMajorVersion = effectiveVersion
+                urlBuilder.setServerV3(isV3)
+                effectiveVersion
             } else {
                 Timber.w("Failed to fetch server version (${response.code()}), assuming v2")
                 cachedServerMajorVersion = 2
@@ -180,10 +188,23 @@ class ImmichRepository(
                                 if (albumResponse.isSuccessful) {
                                     val album = albumResponse.body()
                                     if (album != null) {
-                                        Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                        return album.copy(
-                                            assets = album.assets.map { it.copy(albumName = album.name) },
-                                        )
+                                        val albumAssets = album.assets
+                                        if (albumAssets.isEmpty()) {
+                                            Timber.w(
+                                                "Shared album ${album.name} returned no inline assets, falling back to search/metadata",
+                                            )
+                                            val fallbackAssets = fetchAlbumAssetsSharedV3(shared.album.id, shared.key, album.name)
+                                            Timber.d("Fallback fetched ${fallbackAssets.size} assets for shared album: ${album.name}")
+                                            return album.copy(
+                                                assetCount = fallbackAssets.size,
+                                                assets = fallbackAssets,
+                                            )
+                                        } else {
+                                            Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                            return album.copy(
+                                                assets = album.assets.map { it.copy(albumName = album.name) },
+                                            )
+                                        }
                                     } else {
                                         Timber.e("Received null album from successful response")
                                         return Album(
@@ -262,22 +283,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumId = albumId,
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getSharedAlbumAssets(key = sharedKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch shared album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching shared album assets (v3, page $page)")
                 break
             }
         }
@@ -296,22 +322,27 @@ class ImmichRepository(
         var page = 1
         val pageSize = 500
         while (true) {
-            val request =
-                SearchMetadataRequest(
-                    albumId = albumId,
-                    withExif = true,
-                    size = pageSize,
-                    page = page,
-                    type = getTypeFilter(),
-                )
-            val response = immichClient.getAlbumAssets(apiKey = prefs.apiKey, searchRequest = request)
-            if (response.isSuccessful) {
-                val items = response.body()?.assets?.items ?: break
-                allAssets.addAll(items.map { it.copy(albumName = albumName) })
-                if (items.size < pageSize) break // last page
-                page++
-            } else {
-                Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+            try {
+                val request =
+                    SearchMetadataRequest(
+                        albumIds = listOf(albumId),
+                        withExif = true,
+                        size = pageSize,
+                        page = page,
+                        type = getTypeFilter(),
+                    )
+                val response = immichClient.getAlbumAssets(apiKey = apiKey, searchRequest = request)
+                if (response.isSuccessful) {
+                    val items = response.body()?.assets?.items ?: break
+                    allAssets.addAll(items.map { it.copy(albumName = albumName) })
+                    if (items.size < pageSize) break // last page
+                    page++
+                } else {
+                    Timber.e("Failed to fetch album assets (v3, page $page). Code: ${response.code()}")
+                    break
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error fetching album assets (v3, page $page)")
                 break
             }
         }
@@ -332,7 +363,7 @@ class ImmichRepository(
 
                 Timber.d("Attempting to fetch ${selectedAlbumIds.size} selected albums")
                 Timber.d("Selected Album IDs: $selectedAlbumIds")
-                Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
+                Timber.d("API Key (first 5 chars): ${apiKey.take(5)}...")
 
                 val serverVersion = getServerVersion()
 
@@ -343,7 +374,7 @@ class ImmichRepository(
                 val albumDeferreds =
                     selectedAlbumIds.map { albumId ->
                         async {
-                            Pair(albumId, immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId))
+                            Pair(albumId, immichClient.getAlbum(apiKey = apiKey, albumId = albumId))
                         }
                     }
 
@@ -370,11 +401,22 @@ class ImmichRepository(
                                 }
                             } else {
                                 // v2: assets are inline
-                                Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                                val albumAssets = album.assets.map { it.copy(albumName = album.name) }
-                                allAssets.addAll(albumAssets)
-                                albumAssets.forEach { asset ->
-                                    albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                val albumAssets = album.assets
+                                if (albumAssets.isEmpty()) {
+                                    Timber.w("Album ${album.name} returned no inline assets on v2, falling back to search/metadata")
+                                    val fallbackAssets = fetchAlbumAssetsV3(albumId, album.name)
+                                    Timber.d("Fallback fetched ${fallbackAssets.size} assets for album: ${album.name}")
+                                    allAssets.addAll(fallbackAssets)
+                                    fallbackAssets.forEach { asset ->
+                                        albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                    }
+                                } else {
+                                    Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                    val mappedAssets = albumAssets.map { it.copy(albumName = album.name) }
+                                    allAssets.addAll(mappedAssets)
+                                    mappedAssets.forEach { asset ->
+                                        albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
+                                    }
                                 }
                             }
                         } else {
@@ -444,7 +486,7 @@ class ImmichRepository(
                     withExif = true,
                     type = getTypeFilter(),
                 )
-            val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+            val response = immichClient.getFavoriteAssets(apiKey = apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
                 val allAssets = searchResponse?.assets?.items ?: emptyList()
@@ -478,7 +520,7 @@ class ImmichRepository(
                                         withExif = true,
                                         type = getTypeFilter(),
                                     )
-                                immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                                immichClient.getFavoriteAssets(apiKey = apiKey, searchRequest = searchRequest)
                             }
                         }
 
@@ -511,7 +553,7 @@ class ImmichRepository(
                     withExif = true,
                     type = getTypeFilter(),
                 )
-            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+            val response = immichClient.getRandomAssets(apiKey = apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} random assets")
@@ -538,7 +580,7 @@ class ImmichRepository(
                     withExif = true,
                     type = getTypeFilter(),
                 )
-            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+            val response = immichClient.getRecentAssets(apiKey = apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
                 val assets = searchResponse?.assets?.items ?: emptyList()
@@ -563,17 +605,17 @@ class ImmichRepository(
                 val regularDeferred =
                     async {
                         if (serverVersion >= 3) {
-                            immichClient.getAlbumsV3(apiKey = prefs.apiKey)
+                            immichClient.getAlbumsV3(apiKey = apiKey)
                         } else {
-                            immichClient.getAlbums(apiKey = prefs.apiKey)
+                            immichClient.getAlbums(apiKey = apiKey)
                         }
                     }
                 val sharedDeferred =
                     async {
                         if (serverVersion >= 3) {
-                            immichClient.getAlbumsV3(apiKey = prefs.apiKey, isShared = true)
+                            immichClient.getAlbumsV3(apiKey = apiKey, isShared = true)
                         } else {
-                            immichClient.getAlbums(apiKey = prefs.apiKey, shared = true)
+                            immichClient.getAlbums(apiKey = apiKey, shared = true)
                         }
                     }
 

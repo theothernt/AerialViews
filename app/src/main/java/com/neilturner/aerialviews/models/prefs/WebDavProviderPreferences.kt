@@ -16,4 +16,7 @@ interface WebDavProviderPreferences {
     var userName: String
     var password: String
     var searchSubfolders: Boolean
+    var validateSsl: Boolean
+
+    fun settingsHash(): String
 }

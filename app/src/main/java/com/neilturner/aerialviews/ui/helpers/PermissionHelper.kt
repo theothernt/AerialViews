@@ -115,4 +115,13 @@ object PermissionHelper {
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     fun hasSystemOverlayPermission(context: Context): Boolean = Settings.canDrawOverlays(context)
+
+    fun hasLocalNetworkPermission(context: Context): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            ContextCompat.checkSelfPermission(context, "android.permission.ACCESS_LOCAL_NETWORK") == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+
+    fun getLocalNetworkPermission(): String = "android.permission.ACCESS_LOCAL_NETWORK"
 }

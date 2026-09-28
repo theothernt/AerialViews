@@ -2,11 +2,11 @@ package com.neilturner.aerialviews.data.network
 
 import android.annotation.SuppressLint
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.net.URI
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.util.regex.Pattern
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
@@ -17,6 +17,19 @@ data class ServerConfig(
 )
 
 object UrlParser {
+    private val IPV4_PATTERN =
+        Pattern.compile(
+            "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+        )
+    private val HOSTNAME_PATTERN =
+        Pattern.compile(
+            "^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$",
+        )
+    private val SINGLE_LABEL_HOSTNAME_PATTERN =
+        Pattern.compile(
+            "^(?![0-9]+$)[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$",
+        )
+
     fun parseServerUrl(input: String): String {
         if (input.isBlank()) return ""
 
@@ -54,6 +67,10 @@ object UrlParser {
                 throw IllegalArgumentException("Invalid URL")
             }
 
+            if (!isValidHost(uri.host)) {
+                throw IllegalArgumentException("Invalid host: ${uri.host}")
+            }
+
             if (processedUrl.endsWith("/")) {
                 processedUrl = processedUrl.dropLast(1)
             }
@@ -64,18 +81,19 @@ object UrlParser {
             throw IllegalArgumentException("Invalid URL format: ${e.message}")
         }
     }
+
+    private fun isValidHost(host: String): Boolean =
+        IPV4_PATTERN.matcher(host).matches() ||
+            HOSTNAME_PATTERN.matcher(host).matches() ||
+            SINGLE_LABEL_HOSTNAME_PATTERN.matcher(host).matches() ||
+            host.equals("localhost", ignoreCase = true)
 }
 
 class SslHelper {
     fun createOkHttpClient(config: ServerConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
-        val logging =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
-
-        builder.addInterceptor(logging)
+        HttpLogging.interceptor()?.let { builder.addInterceptor(it) }
 
         if (!config.validateCertificates) {
             val trustAllCerts =

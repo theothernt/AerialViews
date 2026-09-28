@@ -19,4 +19,6 @@ interface LocalProviderPreferences {
     var legacyVolume: String
     var legacyFolder: String
     var legacySearchSubfolders: Boolean
+
+    fun settingsHash(): String
 }

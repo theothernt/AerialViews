@@ -19,4 +19,6 @@ object AppleVideoPrefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("apple_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("apple_videos_")
 }

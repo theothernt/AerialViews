@@ -27,6 +27,8 @@ class AppleMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     override suspend fun fetch(): ProviderFetchResult {
         if (metadata.isEmpty()) buildVideoAndMetadata()
         return ProviderFetchResult.Success(media = videos, summary = "")

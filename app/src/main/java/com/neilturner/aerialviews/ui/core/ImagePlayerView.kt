@@ -3,6 +3,8 @@ package com.neilturner.aerialviews.ui.core
 import android.content.Context
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -11,6 +13,7 @@ import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import com.hierynomus.protocol.transport.TransportException
 import com.hierynomus.smbj.common.SMBRuntimeException
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -26,7 +29,6 @@ import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.helpers.BitmapHelper
-import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
@@ -123,14 +125,14 @@ class ImagePlayerView : FrameLayout {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media, media.uri)
+                loadImage(media, stripCredentialsForCoil(media))
                 return@launch
             }
 
             if (
                 (media.source == AerialMediaSource.IMMICH) ||
                 (media.source == AerialMediaSource.NCMEMORIES)
-                ) {
+            ) {
                 loadImage(media, baseStream)
                 return@launch
             }
@@ -147,7 +149,7 @@ class ImagePlayerView : FrameLayout {
                 val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
                 if (headerLength <= 0) {
                     stream.close()
-                    loadImage(media, media.uri)
+                    loadImage(media, stripCredentialsForCoil(media))
                     return@launch
                 }
                 stream.unread(headerBytes, 0, headerLength)
@@ -195,6 +197,9 @@ class ImagePlayerView : FrameLayout {
                     .Builder(context)
                     .data(data)
                     .size(targetWidth, targetHeight)
+                    // The pre-S blurred background is a CPU bitmap operation. Coil hardware
+                    // bitmaps cannot be drawn into the software canvas used by Drawable.toBitmap().
+                    .allowHardware(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || !GeneralPrefs.photoBackgroundBlurEnabled)
                     .target(
                         onStart = {
                             // resetImageTransforms()
@@ -269,10 +274,6 @@ class ImagePlayerView : FrameLayout {
             return false
         }
 
-        if (resolveForegroundScaleType(imageWidth, imageHeight) != ImageView.ScaleType.FIT_CENTER) {
-            return false
-        }
-
         val (containerWidth, containerHeight) = resolveTargetSize()
         if (containerWidth <= 0 || containerHeight <= 0) {
             return false
@@ -288,6 +289,13 @@ class ImagePlayerView : FrameLayout {
         val epsilon = 0.5f
 
         return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
+    }
+
+    private fun stripCredentialsForCoil(media: AerialMedia): Uri {
+        if (media.source != AerialMediaSource.WEBDAV) {
+            return media.uri
+        }
+        return ImagePlayerHelper.stripUserinfoFromUri(media.uri)
     }
 
     companion object {

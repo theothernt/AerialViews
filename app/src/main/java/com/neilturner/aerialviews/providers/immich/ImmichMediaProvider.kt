@@ -22,10 +22,12 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
-    private val urlBuilder = ImmichUrlBuilder(serverUrl, prefs)
-    private val repository = ImmichRepository(prefs, urlBuilder)
-    private val mapper = ImmichAssetMapper(prefs, urlBuilder)
+    private val urlBuilder by lazy { ImmichUrlBuilder(serverUrl, prefs) }
+    private val repository by lazy { ImmichRepository(prefs, urlBuilder) }
+    private val mapper by lazy { ImmichAssetMapper(prefs, urlBuilder) }
 
     override suspend fun fetch(): ProviderFetchResult {
         val result = fetchImmichMedia()
@@ -104,6 +106,12 @@ class ImmichMediaProvider(
     private fun validateInput(): String? {
         if (prefs.url.isEmpty()) {
             return "Hostname and port not specified"
+        }
+
+        try {
+            UrlParser.parseServerUrl(prefs.url)
+        } catch (_: Exception) {
+            return "Invalid server URL"
         }
 
         if (prefs.authType == ImmichAuthType.SHARED_LINK) {
@@ -185,6 +193,7 @@ class ImmichMediaProvider(
 
             return@coroutineScope AssetFetchResults(
                 allAssets = allAssets,
+                primaryAlbumCount = filteredPrimaryAssets.size,
                 favoriteCount = favoriteAssets.size,
                 ratedCount = ratedAssets.size,
                 randomCount = randomAssets.size,
@@ -210,7 +219,7 @@ class ImmichMediaProvider(
         var message = ""
 
         // Show total assets fetched from albums/shared links
-        message += "Album assets: ${assetResults.allAssets.size}\n"
+        message += "Album assets: ${assetResults.primaryAlbumCount}\n"
 
         // Add information about different asset sources
         if (prefs.authType == ImmichAuthType.API_KEY) {
@@ -235,11 +244,17 @@ class ImmichMediaProvider(
 
     private data class AssetFetchResults(
         val allAssets: List<Asset>,
+        val primaryAlbumCount: Int,
         val favoriteCount: Int,
         val ratedCount: Int,
         val randomCount: Int,
         val recentCount: Int,
     )
 
-    suspend fun fetchAlbums(): Result<List<Album>> = repository.fetchAlbums()
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        try {
+            repository.fetchAlbums()
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }

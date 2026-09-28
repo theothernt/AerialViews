@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
@@ -41,10 +40,10 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.GradientHelper
+import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
-import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
@@ -66,6 +65,14 @@ import kotlinx.coroutines.runBlocking
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
+
+enum class BlackOutSource {
+    NONE,
+    USER,
+    SLEEP_TIMER,
+    SCHEDULED,
+}
 
 class ScreenController(
     val context: Context,
@@ -86,7 +93,8 @@ class ScreenController(
     private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
-    private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
+    private val overlayVisibilityMode = GeneralPrefs.overlayVisibility
+    private val overlayVisibilityDelay = GeneralPrefs.overlayVisibilityDelay.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
     private val overlayFadeOut: Long = GeneralPrefs.overlayFadeOutDuration.toLong()
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
@@ -96,15 +104,16 @@ class ScreenController(
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
+    private var explicitSkip = false
     private var canSkip = false
     private var isPaused = false
+    private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
-
-    private val videoViewBinding: VideoViewBinding
+    private var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -118,6 +127,7 @@ class ScreenController(
     private val gradientTopView: View
     private val gradientBottomView: View
     private val progressBarView: ProgressBar
+    private val notificationContainer: ViewGroup
     val view: View
 
     private val topLeftIds: List<Int>
@@ -127,6 +137,10 @@ class ScreenController(
 
     var blackOutMode = false
         private set
+    var blackOutSource: BlackOutSource = BlackOutSource.NONE
+        private set
+    private var scheduledBlackoutJob: Job? = null
+    private var wasInScheduledBlackoutWindow: Boolean? = null
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -181,12 +195,16 @@ class ScreenController(
 
         brightnessView = binding.brightnessView
         progressBarView = binding.progressBar
+        notificationContainer = view.findViewById(R.id.notification_container)
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
                 textSize = GeneralPrefs.loadingTextSize.toFloat()
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
+                includeFontPadding = false
+                val offset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textSize)
+                setPadding(0, offset, 0, -offset)
             }
         } else {
             loadingContainer.visibility = View.INVISIBLE
@@ -270,8 +288,14 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
+                if (mediaResult.isFromCache) {
+                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
+                    delay(CACHE_RESUME_DELAY.milliseconds)
+                    if (isStopped || blackOutMode) return@launch
+                }
                 loadNextItem()
                 scheduleSleepTimer()
+                scheduleScheduledBlackout()
             } else {
                 showLoadingError()
             }
@@ -309,39 +333,100 @@ class ScreenController(
         Timber.i("Scheduling sleep timer for $minutes minute(s)")
         sleepTimerJob =
             mainScope.launch {
-                delay(minutes * 60_000L)
+                delay((minutes * 60_000L).milliseconds)
                 if (!blackOutMode) {
                     Timber.i("Sleep timer finished - toggling blackout mode")
-                    toggleBlackOutMode()
+                    toggleBlackOutMode(BlackOutSource.SLEEP_TIMER)
                 }
             }
     }
+
+    private fun scheduleScheduledBlackout() {
+        scheduledBlackoutJob?.cancel()
+        wasInScheduledBlackoutWindow = null
+        if (!GeneralPrefs.scheduledBlackoutEnabled) {
+            Timber.i("Scheduled blackout disabled")
+            return
+        }
+        Timber.i("Scheduling blackout check ticker")
+        scheduledBlackoutJob =
+            mainScope.launch {
+                while (true) {
+                    checkScheduledBlackout()
+                    delay(15_000L.milliseconds)
+                }
+            }
+    }
+
+    private fun checkScheduledBlackout() {
+        if (!GeneralPrefs.scheduledBlackoutEnabled) return
+
+        val startTime = parseLocalTime(GeneralPrefs.scheduledBlackoutStart) ?: return
+        val endTime = parseLocalTime(GeneralPrefs.scheduledBlackoutEnd) ?: return
+        val now = java.time.LocalTime.now()
+
+        val isNowInWindow = ScheduledBlackoutWindow.contains(startTime, endTime, now)
+
+        if (wasInScheduledBlackoutWindow == null) {
+            wasInScheduledBlackoutWindow = isNowInWindow
+            if (isNowInWindow && !blackOutMode) {
+                Timber.i("Initial check: inside scheduled blackout window ($startTime to $endTime)")
+                enterBlackOutMode(BlackOutSource.SCHEDULED)
+            }
+        } else if (isNowInWindow != wasInScheduledBlackoutWindow) {
+            wasInScheduledBlackoutWindow = isNowInWindow
+            if (isNowInWindow && !blackOutMode) {
+                Timber.i("Scheduled blackout window started ($startTime to $endTime)")
+                enterBlackOutMode(BlackOutSource.SCHEDULED)
+            } else if (!isNowInWindow && blackOutMode && blackOutSource == BlackOutSource.SCHEDULED) {
+                Timber.i("Scheduled blackout window ended ($startTime to $endTime)")
+                exitBlackOutMode()
+            }
+        }
+    }
+
+    private fun parseLocalTime(timeStr: String): java.time.LocalTime? =
+        try {
+            val parts = timeStr.split(":")
+            if (parts.size == 2) {
+                java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
 
     private fun setupMusicPlayer(
         musicPlaylist: MusicPlaylist?,
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
+
+        videoPlayer.setForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
         musicPlayer?.createPlayer()
-        if (resumeIndex > 0) {
-            musicPlayer?.seekToTrack(resumeIndex)
+        if (blackOutMode) {
+            musicPlayer?.pause()
+            Timber.i("MusicPlayer: not starting while blackout is active")
+        } else {
+            musicPlayer?.play(resumeIndex)
+            Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
         }
-        musicPlayer?.play()
-        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -417,9 +502,13 @@ class ScreenController(
     }
 
     private fun fadeInNextItem() {
+        if (blackOutMode) return
+
+        savePlaybackPosition()
+
         canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
+        val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text/spinner
         if (loadingContainer.isVisible) {
@@ -428,40 +517,103 @@ class ScreenController(
         }
 
         // Reset any overlay animations
-        if (autoHideOverlayDelay >= 0) {
-            overlayHelper.getOverlaysToFade().forEach { view ->
-                view.animate()?.cancel()
-                view.clearAnimation()
-            }
+        overlayHelper.getOverlaysToFade().forEach { view ->
+            view.animate()?.cancel()
+            view.clearAnimation()
         }
 
         // Hide overlays immediately
-        if (autoHideOverlayDelay.toInt() == 0) {
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-            // Also hide gradients immediately if they have fading overlays
-            // AND no persistent overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-                gradientTopView.alpha = 0f
+//        if (autoHideOverlayDelay.toInt() == 0) {
+//            overlayHelper.isHidden = true
+//            setOverlayInstancesHidden(true)
+//            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+//            // Also hide gradients immediately if they have fading overlays
+//            // AND no persistent overlays
+//            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+//                gradientTopView.alpha = 0f
+        when (overlayVisibilityMode) {
+            "ALWAYS_VISIBLE" -> {
+                // Overlays stay visible, no hiding
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
-                !overlayHelper.hasBottomPersistentOverlays()
-            ) {
-                gradientBottomView.alpha = 0f
-            }
-            canShowOverlays = true
-        }
 
-        // Hide overlays after a delay
-        if (autoHideOverlayDelay > 0) {
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
-            // Also show gradients initially if they have fading overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                gradientTopView.alpha = 1f
+            "ALWAYS_HIDDEN" -> {
+                // Hide overlays immediately, only show on user reveal
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
+                    gradientBottomView.alpha = 0f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                gradientBottomView.alpha = 1f
+
+            "HIDE_AFTER_DELAY" -> {
+                // Show overlays, then hide after delay
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                hideOverlays(overlayDelay)
             }
-            hideOverlays(overlayDelay)
+
+            "SHOW_AFTER_DELAY" -> {
+                // Hide overlays initially, show after delay, stay visible
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                    !overlayHelper.hasBottomPersistentOverlays()
+                ) {
+                    gradientBottomView.alpha = 0f
+                }
+                mainScope.launch {
+                    delay(overlayDelay.milliseconds)
+                    val overlaysToFade = overlayHelper.getOverlaysToFade()
+                    overlaysToFade.forEachIndexed { index, view ->
+                        val animator =
+                            view
+                                .animate()
+                                .alpha(1f)
+                                .setStartDelay(0)
+                                .setDuration(overlayFadeIn)
+                        if (index == overlaysToFade.lastIndex) {
+                            animator.withEndAction { canShowOverlays = true }
+                        }
+                        animator.start()
+                    }
+                    if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                        gradientTopView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
+                    }
+                    if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                        gradientBottomView
+                            .animate()
+                            .alpha(1f)
+                            .setStartDelay(0)
+                            .setDuration(overlayFadeIn)
+                            .start()
+                    }
+                }
+            }
         }
 
         // Fade out LoadingView
@@ -501,7 +653,7 @@ class ScreenController(
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
-                videoViewBinding.videoPlayer.stop()
+                // Let setVideo() replace the source without forcing a Realtek codec teardown.
 
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
@@ -511,13 +663,32 @@ class ScreenController(
                 pauseStartTime = 0
 
                 if (!blackOutMode) {
+                    val wasExplicitSkip = explicitSkip
                     val loadPreviousItem = previousItem
+                    explicitSkip = false
                     previousItem = false
-                    loadNextItem(loadPreviousItem)
+
+                    if (wasExplicitSkip) {
+                        loadNextItem(loadPreviousItem)
+                    } else if (loopUntilSkipped && currentMedia != null) {
+                        replayCurrentItem()
+                    } else {
+                        loadNextItem(false)
+                    }
                 } else {
+                    explicitSkip = false
                     previousItem = false
                 }
             }.start()
+    }
+
+    private fun replayCurrentItem() {
+        val media = currentMedia
+        if (media != null) {
+            loadItem(media)
+        } else {
+            loadNextItem()
+        }
     }
 
     private fun showLoadingError() {
@@ -532,6 +703,9 @@ class ScreenController(
             canShowOverlays = true
             return
         }
+
+        overlayHelper.isHidden = true
+        setOverlayInstancesHidden(true)
 
         overlaysToFade.forEachIndexed { index, view ->
             val animator =
@@ -568,9 +742,15 @@ class ScreenController(
         }
     }
 
+    private fun setOverlayInstancesHidden(hidden: Boolean) {
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherNowOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.isHidden = hidden }
+    }
+
     fun showOverlays() {
-        // Overlay auto hide pref must be enabled
-        if (autoHideOverlayDelay < 0) return
+        // Only allow reveal when overlays can be hidden
+        if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
 
         // If blackout mode is on, exit
         if (blackOutMode) return
@@ -586,6 +766,8 @@ class ScreenController(
         if (overlaysToFade.isEmpty()) return
 
         canShowOverlays = false
+        overlayHelper.isHidden = false
+        setOverlayInstancesHidden(false)
 
         overlaysToFade.forEachIndexed { index, view ->
             val animator =
@@ -629,12 +811,12 @@ class ScreenController(
                 playlist.nextItem()
             }
         loadItem(media)
-        savePlaybackPosition()
     }
 
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
+                Timber.d("PlaylistCache: Saving playback position: ${playlist.currentPosition}")
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
             }
         }
@@ -655,10 +837,10 @@ class ScreenController(
         isStopped = true
 
         if (GeneralPrefs.playlistCache) {
+            // ExoPlayer must be accessed on the main thread
+            val trackIndex = musicPlayer?.getCurrentTrackIndex() ?: 0
             runBlocking(Dispatchers.IO) {
-                musicPlayer?.let {
-                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
-                }
+                cacheRepository.saveMusicTrackIndex(trackIndex)
             }
         }
         RefreshRateHelper.restoreOriginalMode(context)
@@ -674,32 +856,75 @@ class ScreenController(
         musicPlayer?.pause()
         musicPlayer?.release()
         sleepTimerJob?.cancel()
+        scheduledBlackoutJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
         mainScope.cancel()
     }
 
     fun skipItem(previous: Boolean = false) {
+        explicitSkip = true
         previousItem = previous
         fadeOutCurrentItem()
     }
 
-    fun toggleBlackOutMode() {
+    fun toggleBlackOutMode(source: BlackOutSource = BlackOutSource.USER) {
         if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
         if (!blackOutMode) {
-            blackOutMode = true
-            // Cancel any pending sleep timer as we've already entered blackout
-            sleepTimerJob?.cancel()
-            fadeOutCurrentItem()
-        } else {
-            blackOutMode = false
-            loadNextItem()
-            // Restart sleep timer if preference still enabled
-            scheduleSleepTimer()
+            enterBlackOutMode(source)
+        } else if (
+            blackOutSource != BlackOutSource.SCHEDULED || source == BlackOutSource.SCHEDULED
+        ) {
+            exitBlackOutMode()
         }
+    }
+
+    /**
+     * Enters blackout immediately, including during initial media preparation. The normal
+     * fade-out path intentionally requires a fully displayed item, which made scheduled
+     * blackout ineffective when the first item was still loading.
+     */
+    private fun enterBlackOutMode(source: BlackOutSource) {
+        blackOutMode = true
+        blackOutSource = source
+        sleepTimerJob?.cancel()
+        canSkip = false
+
+        loadingView.animate().cancel()
+        loadingView.setBackgroundColor(Color.BLACK)
+        loadingContainer.visibility = View.GONE
+        loadingView.alpha = 1f
+        loadingView.visibility = View.VISIBLE
+
+        videoViewBinding.root.visibility = View.INVISIBLE
+        videoViewBinding.videoPlayer.stop()
+        imageViewBinding.root.visibility = View.INVISIBLE
+        imageViewBinding.imagePlayer.stop()
+
+        // The loading view sits below these layers, so hide them for a true blackout.
+        overlayView.visibility = View.INVISIBLE
+        progressBarView.visibility = View.INVISIBLE
+        brightnessView.visibility = View.INVISIBLE
+        notificationContainer.visibility = View.INVISIBLE
+        musicPlayer?.pause()
+    }
+
+    private fun exitBlackOutMode() {
+        blackOutMode = false
+        blackOutSource = BlackOutSource.NONE
+        loadingView.setBackgroundColor(ColourHelper.colourFromString(GeneralPrefs.backgroundLoading))
+        overlayView.visibility = View.VISIBLE
+        progressBarView.visibility =
+            if (GeneralPrefs.progressBarLocation == ProgressBarLocation.DISABLED) View.GONE else View.VISIBLE
+        brightnessView.visibility =
+            if (GeneralPrefs.videoBrightness == "100") View.GONE else View.VISIBLE
+        notificationContainer.visibility = View.VISIBLE
+        loadNextItem()
+        musicPlayer?.resume()
+        scheduleSleepTimer()
     }
 
     fun nextTrack() {
@@ -759,9 +984,16 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        if (videoViewBinding.root.isVisible) {
-            videoPlayer.toggleLooping()
-        }
+        loopUntilSkipped = !loopUntilSkipped
+        val message =
+            if (loopUntilSkipped) {
+                resources.getString(
+                    R.string.playlist_loop_enabled,
+                )
+            } else {
+                resources.getString(R.string.playlist_loop_disabled)
+            }
+        NotificationHelper.show(notificationContainer, message)
     }
 
     fun increaseBrightness() = changeBrightness(true)
@@ -795,10 +1027,8 @@ class ScreenController(
             view.visibility = View.VISIBLE
         }
 
-        // Show toast
-        mainScope.launch {
-            ToastHelper.show(context, "Brightness: $newBrightness%")
-        }
+        // Show notification
+        NotificationHelper.show(notificationContainer, resources.getString(R.string.brightness_notification, newBrightness))
     }
 
     fun toggleMute() {
@@ -850,26 +1080,49 @@ class ScreenController(
     }
 
     private fun handleError() {
+        if (blackOutMode) return
+
+        recreateVideoPlayer()
+
         mainScope.launch {
-            delay(ERROR_DELAY)
+            delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
                 loadNextItem()
             } else {
+                explicitSkip = true
                 fadeOutCurrentItem()
             }
         }
     }
 
+    private fun recreateVideoPlayer() {
+        val oldRoot = videoViewBinding.root
+        val videoParent = oldRoot.parent as? ViewGroup ?: return
+        val index = videoParent.indexOfChild(oldRoot)
+        videoPlayer.release()
+        videoParent.removeView(oldRoot)
+
+        val layoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        videoParent.addView(replacement, index)
+        videoViewBinding = VideoViewBinding.bind(replacement)
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
+    }
+
     private fun handlePlaybackSpeedChanged() {
         val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        NotificationHelper.show(notificationContainer, message)
     }
 
     override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()
 
     override fun onVideoAlmostFinished() = fadeOutCurrentItem()
 
-    override fun onVideoPrepared() = fadeInNextItem()
+    override fun onVideoPrepared() {
+        if (!blackOutMode) fadeInNextItem()
+    }
 
     override fun onVideoError() = handleError()
 
@@ -990,6 +1243,7 @@ class ScreenController(
 
     override fun onImagePrepared() {
         Timber.d("onImagePrepared")
+        if (blackOutMode) return
         currentMedia
             ?.takeIf { it.type == AerialMediaType.IMAGE }
             ?.let { updateMetadataOverlayData(it) }
@@ -1034,6 +1288,7 @@ class ScreenController(
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
-        const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
+        const val ERROR_DELAY: Long = 1000 // Delay before loading next item, after error
+        const val CACHE_RESUME_DELAY: Long = 1000 // Delay before starting playback when restoring from cache
     }
 }

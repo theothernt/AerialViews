@@ -152,9 +152,7 @@ object FileHelper {
         }
     }
 
-    fun extractFilenameFromPath(
-        path: String
-    ): String {
+    fun extractFilenameFromPath(path: String): String {
         val segments = path.split("/").toMutableList()
         val filename = segments[segments.lastIndex].toStringOrEmpty()
         val index = filename.lastIndexOf(".")

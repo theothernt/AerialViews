@@ -26,6 +26,14 @@
                     app:title="@string/webdav_media_scheme_title"
                     app:useSimpleSummaryProvider="true" />
 
+                <CheckBoxPreference
+                    app:dependency="webdav_media2_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="true"
+                    app:key="webdav_media2_validate_ssl"
+                    app:title="@string/webdav_media_validate_ssl_title"
+                    app:summary="@string/webdav_media_validate_ssl_summary" />
+
                 <EditTextPreference
                     app:dependency="webdav_media2_enabled"
                     app:disableDependentsState="false"

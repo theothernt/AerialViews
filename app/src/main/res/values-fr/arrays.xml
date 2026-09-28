@@ -124,6 +124,15 @@
   <string name="media_music">Musique</string>
   <string name="media_photos">Photos</string>
   <string name="media_videos">Vidéos</string>
+  <string name="ncmemories_img_original">Original</string>
+  <string name="ncmemories_img_preview">Aperçu</string>
+  <string name="ncmemories_include_100">100 photos</string>
+  <string name="ncmemories_include_200">200 photos</string>
+  <string name="ncmemories_include_300">300 photos</string>
+  <string name="ncmemories_include_400">400 photos</string>
+  <string name="ncmemories_include_disabled">Désactivé</string>
+  <string name="ncmemories_vid_original">Original</string>
+  <string name="ncmemories_vid_transcoded">Transcodé</string>
   <string name="nowplaying_artist">Artiste</string>
   <string name="nowplaying_artist_song">Artiste - Chanson</string>
   <string name="nowplaying_disabled">Désactivé</string>
@@ -163,6 +172,10 @@
   <string name="overlay_reveal_4s">4 secondes*</string>
   <string name="overlay_reveal_6s">6 secondes</string>
   <string name="overlay_reveal_8s">8 secondes</string>
+  <string name="overlay_visibility_always_hidden">Toujours caché</string>
+  <string name="overlay_visibility_always_visible">Toujours visible</string>
+  <string name="overlay_visibility_hide_after">Masquer après un certain délai</string>
+  <string name="overlay_visibility_show_after">Diffusion en différé</string>
   <string name="photo_scale_fill_crop">Remplir avec la récolte*</string>
   <string name="photo_scale_no_crop">Échelle sans culture</string>
   <string name="playlist_cache_refresh_1_week">Chaque semaine</string>
@@ -170,6 +183,8 @@
   <string name="playlist_cache_refresh_3_weeks">Toutes les 3 semaines</string>
   <string name="playlist_cache_refresh_4_weeks">Toutes les 4 semaines</string>
   <string name="playlist_cache_refresh_all">Lorsque tous les médias ont été visionnés</string>
+  <string name="playlist_cache_resume_next">Lire le titre suivant de la liste de lecture</string>
+  <string name="playlist_cache_resume_same">Lire le même élément de la liste de lecture</string>
   <string name="progressbar_loc_bottom">Bas de l\'écran</string>
   <string name="progressbar_loc_disabled">Désactivé</string>
   <string name="progressbar_loc_top">Haut de l\'écran</string>

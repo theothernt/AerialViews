@@ -7,4 +7,6 @@ interface ProviderPreferences {
     val quality: VideoQuality?
     val scene: Set<String>
     val timeOfDay: Set<String>
+
+    fun settingsHash(): String
 }

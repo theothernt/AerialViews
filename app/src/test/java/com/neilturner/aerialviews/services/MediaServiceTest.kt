@@ -1,23 +1,53 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.os.Bundle
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
+import com.neilturner.aerialviews.utils.FirebaseHelper
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.mockkObject
+import io.mockk.unmockkConstructor
+import io.mockk.unmockkObject
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
 internal class MediaServiceTest {
     private val context = mockk<Context>(relaxed = true)
+
+    @BeforeEach
+    fun setUp() {
+        mockkConstructor(Bundle::class)
+        every { anyConstructed<Bundle>().putString(any(), any()) } returns Unit
+        every { anyConstructed<Bundle>().keySet() } returns emptySet()
+        mockkObject(FirebaseHelper)
+        every { FirebaseHelper.analyticsEvent(any(), any()) } returns Unit
+        mockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
+        every {
+            com.neilturner.aerialviews.data.network.NetworkHelper
+                .isOnWifiOrEthernet(any())
+        } returns false
+    }
+
+    @AfterEach
+    fun tearDown() {
+        unmockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
+        unmockkObject(FirebaseHelper)
+        unmockkConstructor(Bundle::class)
+    }
 
     @Test
     fun `returns only visual playlist when no provider exposes music`() =
@@ -33,6 +63,7 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
@@ -56,6 +87,7 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
@@ -79,12 +111,39 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
 
             assertEquals(0, result.mediaPlaylist.size)
             assertNull(result.musicPlaylist)
+        }
+
+    @Test
+    fun `filters out remote media sources when wifiOnly is true and not on wifi`() =
+        runTest {
+            val appleMedia = testMedia("apple-1", AerialMediaSource.APPLE)
+            val localMedia = testMedia("local-1", AerialMediaSource.LOCAL)
+
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(appleMedia, localMedia),
+                            ),
+                        ),
+                    config = defaultConfig().copy(wifiOnly = true),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, result.mediaPlaylist.size)
+            assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem().source)
         }
 
     @Test
@@ -129,6 +188,8 @@ internal class MediaServiceTest {
         override suspend fun fetchMusic(): List<MusicTrack> = tracks
 
         override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
+
+        override fun settingsHash(): String = "fake"
     }
 
     private fun defaultConfig() =
@@ -136,29 +197,13 @@ internal class MediaServiceTest {
             removeDuplicates = false,
             ignoreNonManifestVideos = false,
             autoTimeOfDay = false,
-            currentTimePeriod = "",
             playlistTimeOfDayDayIncludes = emptySet(),
             playlistTimeOfDayNightIncludes = emptySet(),
             playlistCache = false,
             shuffleVideos = false,
             shuffleMusic = false,
             repeatMusic = false,
-            useAppleVideos = false,
-            useAmazonVideos = false,
-            useComm1Videos = false,
-            useComm2Videos = false,
-            useLocalVideos = false,
-            useSambaVideos = false,
-            useWebDavVideos = false,
-            webDavPath = "",
-            useImmichVideos = false,
-            immichUrl = "",
-            immichPath = "",
-            useNCMemoriesVideos = false,
-            ncmemoriesUrl = "",
-            ncmemoriesUsername = "",
-            useCustomStreams = false,
-            customUrls = "",
+            wifiOnly = false,
         )
 
     private fun testMedia(

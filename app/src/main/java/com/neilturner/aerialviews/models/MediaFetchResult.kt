@@ -6,6 +6,7 @@ data class MediaFetchResult(
     val mediaPlaylist: MediaPlaylist,
     val musicPlaylist: MusicPlaylist?,
     val musicResumeIndex: Int = 0,
+    val isFromCache: Boolean = false,
 )
 
 enum class LoadingStatus {

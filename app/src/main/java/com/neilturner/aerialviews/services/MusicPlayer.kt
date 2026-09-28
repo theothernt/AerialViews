@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import androidx.annotation.OptIn
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -9,6 +10,7 @@ import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
 class MusicPlayer(
@@ -23,6 +25,7 @@ class MusicPlayer(
         )
 
     var onMediaItemChanged: (() -> Unit)? = null
+    var onPlayerError: (() -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context.applicationContext)
@@ -34,6 +37,22 @@ class MusicPlayer(
                 ) {
                     onMediaItemChanged?.invoke()
                 }
+
+                override fun onPlayerError(error: PlaybackException) {
+                    super.onPlayerError(error)
+                    val trackIndex = player?.currentMediaItemIndex ?: -1
+                    val trackUri =
+                        playlist.tracks
+                            .getOrNull(trackIndex)
+                            ?.uri
+                            ?.toString() ?: "unknown"
+                    FirebaseHelper.crashlyticsLogMessage(
+                        "MusicPlayer: background music playback error on track $trackIndex ($trackUri)",
+                    )
+                    FirebaseHelper.crashlyticsException(error.cause)
+                    Timber.e(error, "MusicPlayer: background music playback error")
+                    onPlayerError?.invoke()
+                }
             },
         )
         return player!!
@@ -41,16 +60,8 @@ class MusicPlayer(
 
     fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
 
-    // Support resume capability
-    fun seekToTrack(index: Int) {
-        if (index > 0 && index < playlist.size) {
-            player?.seekTo(index, 0L)
-            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $index")
-        }
-    }
-
     @OptIn(UnstableApi::class)
-    fun play() {
+    fun play(startTrackIndex: Int = 0) {
         val player =
             player ?: run {
                 Timber.w("MusicPlayer: play() called but player not created")
@@ -63,6 +74,11 @@ class MusicPlayer(
             player.addMediaSource(mediaSource)
         }
         player.prepare()
+
+        if (startTrackIndex in playlist.tracks.indices) {
+            player.seekTo(startTrackIndex, 0L)
+            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $startTrackIndex")
+        }
 
         // Apply repeat mode
         player.repeatMode =
@@ -88,6 +104,16 @@ class MusicPlayer(
             player?.pause()
         }
         Timber.i("MusicPlayer: pausing")
+    }
+
+    fun resume() {
+        val player = player ?: return
+        player.play()
+        volumeHelper.fadeIn(
+            durationMs = 500,
+            targetVolume = GeneralPrefs.videoVolume.toFloat() / 100,
+        )
+        Timber.i("MusicPlayer: resuming")
     }
 
     fun nextTrack() {

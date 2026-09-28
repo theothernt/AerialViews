@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
@@ -83,6 +84,14 @@ class TestActivity : AppCompatActivity() {
         }
 
         return super.dispatchKeyEvent(event)
+    }
+
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (InputHelper.handleGenericMotionEvent(event, ::finishWithResult)) {
+            return true
+        }
+
+        return super.dispatchGenericMotionEvent(event)
     }
 
     override fun onStop() {

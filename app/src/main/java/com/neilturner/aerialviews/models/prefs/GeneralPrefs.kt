@@ -66,7 +66,7 @@ object GeneralPrefs : KotprefModel() {
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2Days by stringPref("5", "weather_line2_days")
+    var weatherLine2Days by stringPref("3", "weather_line2_days")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
@@ -161,7 +161,8 @@ object GeneralPrefs : KotprefModel() {
     var mediaFadeOutDuration by stringPref("800", "media_fade_out_duration")
 
     // Overlay Auto hide/reveal
-    var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+    var overlayVisibility by stringPref("ALWAYS_VISIBLE", "overlay_visibility")
+    var overlayVisibilityDelay by stringPref("4", "overlay_visibility_delay")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Per-corner fade settings (which corners should fade when auto-hide is enabled)
@@ -182,7 +183,7 @@ object GeneralPrefs : KotprefModel() {
     var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
     // Typeface (for whole app)
-    var fontTypeface by stringPref("open-sans", "font_typeface")
+    var fontTypeface by stringPref("google-sans", "font_typeface")
 
     // Progress Bar
     var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
@@ -192,6 +193,9 @@ object GeneralPrefs : KotprefModel() {
     // Ignore system animation override
     var ignoreAnimationScale by booleanPref(true, "ignore_animation_scale")
 
+    // WiFi-only mode
+    var wifiOnly by booleanPref(false, "wifi_only")
+
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
     var localeScreensaver by stringPref("default", "locale_screensaver")
@@ -200,6 +204,9 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    var scheduledBlackoutEnabled by booleanPref(false, "scheduled_blackout_enabled")
+    var scheduledBlackoutStart by stringPref("22:00", "scheduled_blackout_start")
+    var scheduledBlackoutEnd by stringPref("08:00", "scheduled_blackout_end")
     var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
     val playlistTimeOfDayDayIncludes by stringSetPref("playlist_time_of_day_day_includes") {
         setOf("SUNRISE")
@@ -211,6 +218,7 @@ object GeneralPrefs : KotprefModel() {
     // Playlist Cache
     var playlistCache by booleanPref(false, "playlist_cache")
     var playlistCacheRefresh by stringPref("-1", "playlist_cache_refresh")
+    var playlistCacheResumeBehaviour by stringPref("next", "playlist_cache_resume_behaviour")
 
     // Playlist - Videos
     var playlistAudioMode by nullableEnumValuePref(PlaylistAudioMode.VIDEO_MUTED, "playlist_audio_mode")
@@ -264,12 +272,19 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
-    var seekInterval by stringPref("10", "seek_interval") // Advanced
+    var exitOnMouseMovement by booleanPref(false, "exit_on_mouse_movement")
+    var seekInterval by stringPref("30", "seek_interval")
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
+    var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
+    var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
+    var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
+
+    val portraitVideoRotationEnabled: Boolean
+        get() = portraitVideoRotationDegrees != "0"
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

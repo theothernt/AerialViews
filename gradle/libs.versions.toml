@@ -1,56 +1,57 @@
 [versions]
-agp = "9.2.1"
-kotlin = "2.4.0"
+agp = "9.4.1"
+kotlin = "2.4.20"
 kotlin-serialization = "1.11.0"
 google-services = "4.5.0"
-ksp = "2.3.9"
+ksp = "2.3.12"
 coroutines = "1.11.0"
 core-ktx = "1.19.0"
 activity-ktx = "1.13.0"
-constraintlayout = "2.2.1"
-appcompat = "1.7.1"
+constraintlayout = "2.2.2"
+appcompat = "1.8.0"
 metadata-extractor = "2.20.0"
 desugar-jdk-libs = "2.1.5"
-room = "2.8.4"
 
-firebase-bom = "34.16.0"
-firebase-crashlytics-plugin = "3.0.7"
+room3 = "3.0.3"
+sqlite = "2.7.1"
+
+firebase-bom = "34.19.0"
+firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
-ktor = "3.5.1"
-gradle-doctor = "0.12.1"
-kotlinter-gradle = "5.5.0"
+ktor = "3.6.0"
+kotlinter-gradle = "5.7.0"
 leakcanary = "3.0-alpha-8"
 
 leanback = "1.2.0"
 leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
-okhttp = "5.4.0"
+okhttp = "5.5.0"
 retrofit = "3.0.0"
 sardine-android = "0.0.3"
 
 smbj = "0.13.0"
-media3-exoplayer = "1.10.1"
+media3-exoplayer = "1.11.1"
 flowbus = "1.1"
 kotpref = "2.13.2"
-coil3 = "3.5.0"
+coil3 = "3.6.3"
 timber = "5.0.1"
-slf4j = "2.0.18"
+slf4j = "2.0.19"
 
-junit-jupiter = "6.1.1"
+junit-jupiter = "6.1.3"
 junit5 = "2.0.1"
 mockk = "1.14.11"
 junit = "1.3.0"
 espresso-core = "3.7.0"
 uiautomator = "2.4.0"
-benchmark-macro-junit4 = "1.4.1"
-baselineprofile = "1.5.0-alpha07"
+benchmark-macro-junit4 = "1.5.0"
+baselineprofile = "1.5.0"
 profileinstaller = "1.4.1"
-benchmark = "1.4.1"
+benchmark = "1.5.0"
 runner = "1.7.0"
 junit-version = "4.13.2"
-benchmark-junit4 = "1.4.1"
+benchmark-junit4 = "1.5.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -65,9 +66,9 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 metadata-extractor = { group = "com.drewnoakes", name = "metadata-extractor", version.ref = "metadata-extractor" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3" }
+room3-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room3" }
+sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "sqlite" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
@@ -134,7 +135,6 @@ kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logging"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
-room = ["room-runtime", "room-ktx"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -147,7 +147,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
-gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }

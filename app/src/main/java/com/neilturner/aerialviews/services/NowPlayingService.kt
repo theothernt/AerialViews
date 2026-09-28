@@ -17,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 // Thanks to @Spocky for his help with this feature!
 // Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
@@ -51,10 +52,18 @@ class NowPlayingService(
         Timber.i("Setting up Now Playing session")
         sessionManager = context.getSystemService<MediaSessionManager>()
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
-        val controllers = sessionManager?.getActiveSessions(notificationListener)
+        val controllers = safeGetActiveSessions()
         logControllers("setupSession", controllers)
         updateActiveSession(controllers)
     }
+
+    private fun safeGetActiveSessions(): MutableList<MediaController>? =
+        try {
+            sessionManager?.getActiveSessions(notificationListener)
+        } catch (e: SecurityException) {
+            Timber.w(e, "Missing permission to access media sessions")
+            null
+        }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
         val selectedController = pickController(controllers)
@@ -117,9 +126,9 @@ class NowPlayingService(
             scope.launch {
                 // Check every 500ms for 3 seconds (6 times)
                 repeat(6) {
-                    delay(500)
+                    delay(500.milliseconds)
                     Timber.i("Delayed check for active sessions")
-                    val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                    val freshControllers = safeGetActiveSessions()
                     logControllers("delayedCheck[$it]", freshControllers)
                     updateActiveSession(freshControllers)
                 }
@@ -266,4 +275,7 @@ class NowPlayingService(
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
-)
+) {
+    val isPlaying: Boolean
+        get() = artist.isNotBlank() || song.isNotBlank()
+}

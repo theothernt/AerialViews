@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
@@ -87,7 +88,7 @@ class MetadataOverlay : AppCompatTextView {
         poiJob?.cancel()
         poiJob =
             findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-                delay(1000)
+                delay(1000.milliseconds)
                 while (isActive) {
                     // Find POI string at current position/time
                     val time = player.currentPosition / 1000 // player current position
@@ -103,7 +104,7 @@ class MetadataOverlay : AppCompatTextView {
                         // Do not animate alpha back to 1f.
                         if (this@MetadataOverlay.alpha < minVisibleAlphaForPoiFade) {
                             this@MetadataOverlay.text = nextText
-                            delay(1000)
+                            delay(1000.milliseconds)
                             continue
                         }
 
@@ -125,7 +126,7 @@ class MetadataOverlay : AppCompatTextView {
                     // Set new interval for POI string update
                     // Longer is a new string has just been set
                     val interval = if (shouldUpdate) 3000L else 1000L
-                    delay(interval)
+                    delay(interval.milliseconds)
                 }
             }
     }

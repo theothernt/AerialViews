@@ -188,7 +188,7 @@ class WeatherService(
         WeatherDisplayConfig(
             currentWeatherCity = GeneralPrefs.weatherLocationCustomName,
             forecastCity = GeneralPrefs.weatherLocationCustomName,
-            forecastDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 5,
+            forecastDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 3,
         )
 
     internal suspend fun fetchWeatherData(
@@ -469,7 +469,7 @@ class WeatherService(
         FirebaseHelper.analyticsEvent(
             "weather_updates",
             Bundle().apply {
-                putInt("per_session", totalUpdates)
+                putDouble("value", totalUpdates.toDouble())
             },
         )
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
@@ -518,5 +518,5 @@ data class WeatherRequestConfig(
 data class WeatherDisplayConfig(
     val currentWeatherCity: String = "",
     val forecastCity: String = "",
-    val forecastDays: Int = 5,
+    val forecastDays: Int = 3,
 )

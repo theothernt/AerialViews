@@ -20,8 +20,13 @@ class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
         }
         try {
             val extractor = MediaExtractor()
-            extractor.setDataSource(mediaUrl!!)
+            val url = mediaUrl!!
             mediaUrl = null
+            if (url.startsWith("smb://")) {
+                extractor.setDataSource(SambaMediaDataSource(url))
+            } else {
+                extractor.setDataSource(url)
+            }
             val trackFormat = extractor.getTrackFormat(0)
             val codecData = trackFormat.getByteBuffer("csd-0")
             if (codecData != null && codecData.limit() != 0) {

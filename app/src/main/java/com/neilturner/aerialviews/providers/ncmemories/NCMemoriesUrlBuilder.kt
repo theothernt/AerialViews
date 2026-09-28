@@ -12,31 +12,29 @@ class NCMemoriesUrlBuilder(
     private val prefs: NCMemoriesUrlPrefs,
     private val uriFactory: (String) -> Uri = { it.toUri() },
 ) {
-    private val screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels
-    private val screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels
+    private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+    private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
 
     fun getImageUri(
-        fileID: Int,
+        fileId: Int,
         isVideo: Boolean,
         etag: String,
     ): Uri {
-        val fileIDString = fileID.toString()
-        val url: String
-        url =
-            // "preview" will use preview-reencoded pic closest to current screen size
+        val fileIdString = fileId.toString()
+        val url: String =
             if (isVideo) {
                 if (prefs.videoType == NCMemoriesVideoType.TRANSCODED) {
                     val client = "aerialviews"
                     val filename = "index.m3u8"
-                    "$server/apps/memories/api/video/transcode/$client/$fileIDString/$filename"
+                    "$server/apps/memories/api/video/transcode/$client/$fileIdString/$filename"
                 } else {
-                    "$server/apps/memories/api/stream/$fileID"
+                    "$server/apps/memories/api/stream/$fileId"
                 }
             } else {
                 if (prefs.imageType == NCMemoriesImageType.ORIGINAL) {
-                    "$server/apps/memories/api/image/decodable/$fileID?etag=$etag"
+                    "$server/apps/memories/api/image/decodable/$fileId?etag=$etag"
                 } else {
-                    "$server/apps/memories/api/image/preview/$fileID?x=$screenWidth&y=$screenHeight"
+                    "$server/apps/memories/api/image/preview/$fileId?x=$screenWidth&y=$screenHeight"
                 }
             }
         return uriFactory(url)

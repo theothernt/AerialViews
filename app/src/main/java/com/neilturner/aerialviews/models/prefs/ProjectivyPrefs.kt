@@ -31,6 +31,8 @@ object ProjectivyApplePrefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("projectivy_apple_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_apple_videos_")
 }
 
 object ProjectivyAmazonPrefs : KotprefModel(), ProviderPreferences {
@@ -47,6 +49,8 @@ object ProjectivyAmazonPrefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("projectivy_amazon_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_amazon_videos_")
 }
 
 object ProjectivyComm1Prefs : KotprefModel(), ProviderPreferences {
@@ -63,6 +67,8 @@ object ProjectivyComm1Prefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("projectivy_comm1_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_comm1_videos_")
 }
 
 object ProjectivyComm2Prefs : KotprefModel(), ProviderPreferences {
@@ -79,6 +85,8 @@ object ProjectivyComm2Prefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("projectivy_comm2_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_comm2_videos_")
 }
 
 object ProjectivyLocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
@@ -107,4 +115,6 @@ object ProjectivyLocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
     override var legacyVolume by stringPref("", "projectivy_local_videos_legacy_volume")
     override var legacyFolder by stringPref("", "projectivy_local_videos_legacy_folder")
     override var legacySearchSubfolders by booleanPref(false, "projectivy_local_videos_legacy_search_subfolders")
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_local_videos_", "projectivy_local_media_")
 }

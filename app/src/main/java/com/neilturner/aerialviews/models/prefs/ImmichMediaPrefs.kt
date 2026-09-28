@@ -60,4 +60,6 @@ object ImmichMediaPrefs : KotprefModel(), ImmichUrlPrefs, ImmichAssetPrefs, Immi
     override var includeRecent by stringPref("DISABLED", "immich_media_include_recent")
     override var imageType by nullableEnumValuePref(ImmichImageType.PREVIEW, "immich_media_image_type")
     override var videoType by nullableEnumValuePref(ImmichVideoType.TRANSCODED, "immich_media_video_type")
+
+    fun settingsHash(): String = settingsHashWithPrefix("immich_media_")
 }

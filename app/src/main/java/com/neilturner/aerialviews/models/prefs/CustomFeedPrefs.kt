@@ -13,4 +13,6 @@ object CustomFeedPrefs : KotprefModel() {
     var urls by stringPref("", "custom_media_urls")
     var urlsCache by stringPref("", "custom_media_urls_cache")
     var urlsSummary by stringPref("", "custom_media_urls_summary")
+
+    fun settingsHash(): String = settingsHashWithPrefix("custom_media_")
 }

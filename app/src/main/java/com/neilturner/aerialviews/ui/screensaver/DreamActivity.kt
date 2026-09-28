@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -23,6 +24,11 @@ class DreamActivity : DreamService() {
 
         // Hide system UI on phones
         hideSystemUI(window)
+
+        if (this::screenController.isInitialized) {
+            Timber.d("onAttachedToWindow called again with an active screenController — releasing it first")
+            screenController.stop()
+        }
 
         // Start playback, etc
         screenController =
@@ -76,22 +82,43 @@ class DreamActivity : DreamService() {
             return true
         }
 
-        return super.dispatchKeyEvent(event)
+        return try {
+            super.dispatchKeyEvent(event)
+        } catch (e: SecurityException) {
+            // Android bug: some OEM builds require BROADCAST_CLOSE_SYSTEM_DIALOGS
+            // for the fallback event handler's sendCloseSystemWindows() call.
+            // Safe to swallow — this only fires for keys we don't already handle.
+            true
+        }
     }
 
-    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
-        try {
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        if (InputHelper.handleGenericMotionEvent(event, ::altWakeUp)) {
+            return true
+        }
+
+        return try {
             super.dispatchGenericMotionEvent(event)
         } catch (e: SecurityException) {
             // Ignore the restricted setting access error
             false
         }
+    }
 
     override fun onDreamingStopped() {
-        super.onDreamingStopped()
+        Timber.d("onDreamingStopped")
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+        super.onDreamingStopped()
+    }
+
+    override fun onDetachedFromWindow() {
+        Timber.d("onDetachedFromWindow")
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+        super.onDetachedFromWindow()
     }
 }

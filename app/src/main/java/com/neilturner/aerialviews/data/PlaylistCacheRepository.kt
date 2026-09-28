@@ -67,17 +67,42 @@ class PlaylistCacheRepository(
             }
         }
 
-    suspend fun getCachedPlaylist(): MediaFetchResult? =
+    private val remoteSourceNames =
+        listOf(
+            AerialMediaSource.APPLE,
+            AerialMediaSource.AMAZON,
+            AerialMediaSource.COMM1,
+            AerialMediaSource.COMM2,
+            AerialMediaSource.CUSTOM,
+            AerialMediaSource.RTSP,
+            AerialMediaSource.HLS,
+            AerialMediaSource.IMMICH,
+            AerialMediaSource.NCMEMORIES,
+        ).map { it.name }
+
+    private suspend fun fetchChunk(
+        offset: Int,
+        limit: Int,
+        filterRemote: Boolean,
+    ): List<CachedMediaEntity> =
+        if (filterRemote) {
+            dao.getMediaItemsChunkFiltered(limit, offset, remoteSourceNames)
+        } else {
+            dao.getMediaItemsChunk(limit, offset)
+        }
+
+    suspend fun getCachedPlaylist(filterRemote: Boolean = false): MediaFetchResult? =
         withContext(Dispatchers.IO) {
             val state = dao.getPlaylistState() ?: return@withContext null
             if (state.totalMediaItems == 0) return@withContext null
 
             Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
+            Timber.i("PlaylistCache: Restoring cached playlist with filterRemote = $filterRemote")
 
             val windowLimit = 50
             val windowOffset = 0.coerceAtLeast(state.mediaPosition - 5)
             Timber.d("PlaylistCache: Loading initial window. Offset: $windowOffset, Limit: $windowLimit")
-            val cachedMediaChunks = dao.getMediaItemsChunk(windowLimit, windowOffset)
+            val cachedMediaChunks = fetchChunk(windowOffset, windowLimit, filterRemote)
 
             val cachedMusic = dao.getAllMusicTracksOrdered()
 
@@ -124,8 +149,17 @@ class PlaylistCacheRepository(
 
             // The saved media position is the last visual item that started.
             // nextItem() pre-increments, so restoring from this value starts the following item.
-            val resumePosition = state.mediaPosition.coerceIn(-1, state.totalMediaItems - 1)
-            Timber.d("PlaylistCache: Last started position ${state.mediaPosition}, startPosition set to $resumePosition")
+            // If "same" is chosen, decrement by 1 so pre-increment lands back on the saved position.
+            val resumeSame = GeneralPrefs.playlistCacheResumeBehaviour == "same"
+            val resumePosition =
+                if (resumeSame) {
+                    (state.mediaPosition - 1).coerceIn(-1, state.totalMediaItems - 1)
+                } else {
+                    state.mediaPosition.coerceIn(-1, state.totalMediaItems - 1)
+                }
+            Timber.d(
+                "PlaylistCache: Last started position ${state.mediaPosition}, resumeSame=$resumeSame, startPosition set to $resumePosition",
+            )
 
             MediaFetchResult(
                 mediaPlaylist =
@@ -136,21 +170,23 @@ class PlaylistCacheRepository(
                         windowOffset = windowOffset,
                         fetchChunk = { offset, limit ->
                             Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
-                            getMediaChunk(offset, limit)
+                            getMediaChunk(offset, limit, filterRemote)
                         },
                     ),
                 musicPlaylist = musicPlaylist,
                 musicResumeIndex = state.musicTrackIndex,
+                isFromCache = true,
             )
         }
 
     suspend fun getMediaChunk(
         offset: Int,
         limit: Int,
+        filterRemote: Boolean = false,
     ): List<AerialMedia> =
         withContext(Dispatchers.IO) {
             try {
-                val cachedMedia = dao.getMediaItemsChunk(limit, offset)
+                val cachedMedia = fetchChunk(offset, limit, filterRemote)
                 cachedMedia.map { mapEntityToMedia(it) }
             } catch (e: Exception) {
                 Timber.e(e, "PlaylistCache: Failed to map chunk")

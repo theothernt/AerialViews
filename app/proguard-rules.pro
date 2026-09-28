@@ -8,6 +8,12 @@
 # Firebase Crashlytics
  -keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
 
+# Firebase Perf network instrumentation is woven into Coil/OkHttp/XmlPull by the
+# firebase-perf Gradle plugin. F-Droid has no Firebase Perf SDK on the classpath,
+# so R8 cannot resolve these classes during minification — suppress them.
+-dontwarn com.google.firebase.perf.network.FirebasePerfOkHttpClient
+-dontwarn com.google.firebase.perf.network.FirebasePerfUrlConnection
+
 # Kotlin Serialization
 -keepclassmembers class ** {
     *** Companion;
@@ -24,9 +30,12 @@
 -keep class com.neilturner.aerialviews.data.** { *; }
 -keep class com.neilturner.aerialviews.providers.** { *; }
 
-# Sardine Android / XmlPullParser
+# Sardine Android / XmlPullParser / Simple XML
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
+-keep class javax.xml.namespace.QName { *; }
+-keep class com.thegrizzlylabs.sardineandroid.** { *; }
+-keep class org.simpleframework.xml.** { *; }
 
 -dontwarn org.apache.log4j.Level
 -dontwarn org.apache.log4j.Logger

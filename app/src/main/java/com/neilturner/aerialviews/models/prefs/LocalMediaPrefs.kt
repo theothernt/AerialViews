@@ -28,4 +28,6 @@ object LocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
     override var legacyVolume by stringPref("", "local_videos_legacy_volume")
     override var legacyFolder by stringPref("", "local_videos_legacy_folder")
     override var legacySearchSubfolders by booleanPref(false, "local_videos_legacy_search_subfolders")
+
+    override fun settingsHash(): String = settingsHashWithPrefix("local_videos_", "local_media_")
 }

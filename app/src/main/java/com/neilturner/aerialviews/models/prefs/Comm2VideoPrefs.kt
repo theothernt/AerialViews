@@ -19,4 +19,6 @@ object Comm2VideoPrefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("comm2_videos_time_of_day") {
         context.resources.getStringArray(R.array.comm2_videos_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("comm2_videos_")
 }

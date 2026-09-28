@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class AmazonVideosFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -39,7 +40,7 @@ class AmazonVideosFragment : MenuStateFragment() {
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
                 lifecycleScope.launch {
-                    delay(100)
+                    delay(100.milliseconds)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true
@@ -51,7 +52,7 @@ class AmazonVideosFragment : MenuStateFragment() {
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
                 lifecycleScope.launch {
-                    delay(100)
+                    delay(100.milliseconds)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true

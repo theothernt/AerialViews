@@ -27,7 +27,7 @@ object NetworkHelper {
     @Suppress("DEPRECATION")
     fun getActiveNetworkCapabilities(context: Context): NetworkCapabilities? {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return null
         val network = connectivityManager.activeNetwork ?: return null
         return connectivityManager.getNetworkCapabilities(network)
     }
@@ -46,6 +46,24 @@ object NetworkHelper {
     fun isNetworkAvailable(context: Context): Boolean {
         val capabilities = getActiveNetworkCapabilities(context) ?: return false
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    fun isOnWifiOrEthernet(context: Context): Boolean {
+        val capabilities = getActiveNetworkCapabilities(context) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+    }
+
+    fun isOnWifi(context: Context): Boolean = isOnWifiOrEthernet(context)
+
+    fun getNetworkType(context: Context): String {
+        val capabilities = getActiveNetworkCapabilities(context) ?: return "Disconnected"
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
+            else -> "Other"
+        }
     }
 
     fun getIPAddress(context: Context): String {

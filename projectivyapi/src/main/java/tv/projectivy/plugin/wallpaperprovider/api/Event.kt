@@ -41,29 +41,27 @@ sealed class Event(open val eventType: Int) : Parcelable {
             }
         }
 
-        override fun newArray(size: Int): Array<Event?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int) = arrayOfNulls<Event?>(size)
 
-        @Suppress("UNCHECKED_CAST")
         private fun <T> createEventFromParcel(parcel: Parcel, clazz: Class<T>): T {
             val creatorField = clazz.getField("CREATOR")
             val creator = creatorField.get(null) as Parcelable.Creator<*>
+            @Suppress("UNCHECKED_CAST")
             return creator.createFromParcel(parcel) as T
         }
     }
 
     @Parcelize
-    data class TimeElapsed(override val eventType: Int = TIME_ELAPSED): Event(eventType)
+    object TimeElapsed: Event(TIME_ELAPSED)
     @Parcelize
-    data class NowPlayingChanged(override val eventType: Int = NOW_PLAYING_CHANGED, val isPlaying: Boolean = true, val title: String?=null, val artist: String?=null, val album: String?=null, val iconUri: String?=null): Event(eventType)
+    data class NowPlayingChanged(override val eventType: Int = NOW_PLAYING_CHANGED, val isPlaying: Boolean = true, val title: String?=null, val artist: String?=null, val album: String?=null, val iconUri: String?=null): Event(NOW_PLAYING_CHANGED)
     @Parcelize
-    data class CardFocused(override val eventType: Int = CARD_FOCUSED, val lightColor: Int=0, val darkColor: Int=0): Event(eventType)
-    // type refers to TYPE_* in TvContractCompat.PreviewProgramColumns
+    data class CardFocused(override val eventType: Int = CARD_FOCUSED, val lightColor: Int=0, val darkColor: Int=0, val title: String?=null, val packageName: String?=null): Event(CARD_FOCUSED)
+    // type refers to TYPE_* in TvContractCompat.PreviewProgramColumns if < 100 or androidx.media3.common.@MediaType if >= 100 (in which case this is a Now Playing card)
     @Parcelize
-    data class ProgramCardFocused(override val eventType: Int = PROGRAM_CARD_FOCUSED, val title: String?=null, val type: Int?=null, val iconUri: String?=null, val iconAspectRatio: Int=0): Event(eventType)
+    data class ProgramCardFocused(override val eventType: Int = PROGRAM_CARD_FOCUSED, val title: String?=null, val type: Int?=null, val iconUri: String?=null, val iconAspectRatio: Int=0): Event(PROGRAM_CARD_FOCUSED)
     @Parcelize
-    data class LauncherIdleModeChanged(override val eventType: Int = LAUNCHER_IDLE_MODE_CHANGED, val isIdle: Boolean = true): Event(eventType)
+    data class LauncherIdleModeChanged(override val eventType: Int = LAUNCHER_IDLE_MODE_CHANGED, val isIdle: Boolean = true): Event(LAUNCHER_IDLE_MODE_CHANGED)
 
 
 }

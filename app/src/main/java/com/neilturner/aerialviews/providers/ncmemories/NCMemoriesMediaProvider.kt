@@ -21,10 +21,12 @@ class NCMemoriesMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
-    private val urlBuilder = NCMemoriesUrlBuilder(serverUrl, prefs)
-    private val repository = NCMemoriesRepository(prefs)
-    private val mapper = NCMemoriesImageMapper(prefs, urlBuilder)
+    private val urlBuilder by lazy { NCMemoriesUrlBuilder(serverUrl, prefs) }
+    private val repository by lazy { NCMemoriesRepository(prefs) }
+    private val mapper by lazy { NCMemoriesImageMapper(prefs, urlBuilder) }
 
     override suspend fun fetch(): ProviderFetchResult {
         val result = fetchAllMedia()
@@ -105,6 +107,12 @@ class NCMemoriesMediaProvider(
             return "Hostname and port not specified"
         }
 
+        try {
+            UrlParser.parseServerUrl(prefs.url)
+        } catch (_: Exception) {
+            return "Invalid server URL"
+        }
+
         if (prefs.username.isEmpty()) {
             return "Username not specified"
         }
@@ -136,10 +144,12 @@ class NCMemoriesMediaProvider(
                     if (prefs.includeFavorites != "DISABLED") {
                         val sourceName = prefs.favoritesName
                         val rawAssets =
-                            fetchOptionalImages(sourceName) { repository.getOptionalImages(
-                                imageSourceName = sourceName,
-                                count = prefs.includeFavorites.toIntOrNull()
-                            ) }
+                            fetchOptionalImages(sourceName) {
+                                repository.getOptionalImages(
+                                    imageSourceName = sourceName,
+                                    count = prefs.includeFavorites.toIntOrNull(),
+                                )
+                            }
                         mapper.filterImagesByMediaType(rawAssets)
                     } else {
                         emptyList()
@@ -151,10 +161,12 @@ class NCMemoriesMediaProvider(
                     if (prefs.includeRecent != "DISABLED") {
                         val sourceName = prefs.recentName
                         val rawAssets =
-                            fetchOptionalImages(sourceName) { repository.getOptionalImages(
-                                imageSourceName = sourceName,
-                                count = prefs.includeRecent.toIntOrNull()
-                            ) }
+                            fetchOptionalImages(sourceName) {
+                                repository.getOptionalImages(
+                                    imageSourceName = sourceName,
+                                    count = prefs.includeRecent.toIntOrNull(),
+                                )
+                            }
                         mapper.filterImagesByMediaType(rawAssets)
                     } else {
                         emptyList()
@@ -167,7 +179,7 @@ class NCMemoriesMediaProvider(
             // Combine and deduplicate all filtered images
             val allImages =
                 (filteredAlbumsImages + favoriteImages + recentImages)
-                    .distinctBy { it.fileid }
+                    .distinctBy { it.fileId }
 
             return@coroutineScope ImageFetchResults(
                 allImages = allImages,
@@ -209,5 +221,10 @@ class NCMemoriesMediaProvider(
         return message
     }
 
-    suspend fun fetchAlbums(): Result<List<Album>> = repository.fetchAlbumList()
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        try {
+            repository.fetchAlbumList()
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }
