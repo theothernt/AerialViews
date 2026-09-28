@@ -419,14 +419,26 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
+        musicPlayer?.onPlaybackFailed = { handleMusicPlaybackFailed() }
         musicPlayer?.createPlayer()
+        musicPlayer?.load(resumeIndex)
         if (blackOutMode) {
             musicPlayer?.pause()
             Timber.i("MusicPlayer: not starting while blackout is active")
         } else {
-            musicPlayer?.play(resumeIndex)
+            musicPlayer?.play()
             Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
         }
+    }
+
+    /**
+     * Background music could not recover from a playback error. Release it and stay silent: the
+     * user asked for background music, so video audio is not restored over the top of it.
+     */
+    private fun handleMusicPlaybackFailed() {
+        Timber.i("MusicPlayer: playback abandoned, staying silent")
+        musicPlayer?.release()
+        musicPlayer = null
     }
 
     private fun loadItem(media: AerialMedia) {
