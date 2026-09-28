@@ -388,12 +388,10 @@ class MigrationHelper(
         val closeOnScreenTapUsed = prefs.contains("close_on_screen_tap")
         if (closeOnScreenTapUsed) {
             Timber.i("Updating close on screen tap")
-            prefs.edit { putBoolean("close_on_screen_tap", false) }
-            val closeOnScreenTap = prefs.getBoolean("close_on_screen_tap", false)
-            if (closeOnScreenTap) {
-                prefs.edit { putString("gesture_tap", "EXIT") }
+            prefs.edit {
+                putString("gesture_tap", "EXIT")
+                remove("close_on_screen_tap")
             }
-            prefs.edit { remove("close_on_screen_tap") }
         }
     }
 
