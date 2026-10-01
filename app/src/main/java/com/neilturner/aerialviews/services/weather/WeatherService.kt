@@ -170,7 +170,12 @@ class WeatherService(
         val units = GeneralPrefs.weatherTemperatureUnits?.toString()?.lowercase() ?: "metric"
         val language = WeatherLanguage.getLanguageCode(context)
 
-        if (key.isEmpty() || lat == null || lon == null) {
+        if (key.isEmpty()) {
+            Timber.e("OpenWeather API key is missing")
+            return null
+        }
+
+        if (lat == null || lon == null) {
             Timber.e("Invalid location coordinates")
             return null
         }
