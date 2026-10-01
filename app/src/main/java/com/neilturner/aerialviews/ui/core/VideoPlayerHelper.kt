@@ -113,6 +113,15 @@ object VideoPlayerHelper {
             rendererFactory = CustomRendererFactory(context)
         }
 
+        // In tunneling mode ExoPlayer's own speed change (audio processors) is switched off, so with an
+        // audio track — which is what lets tunneling engage — every video played at 1x whatever the
+        // speed setting said. The speed then has to go through AudioTrack.setPlaybackParams; with
+        // tunneling the video follows the audio clock (measured on a Philips 65OLED808: 1.8x asked,
+        // 1.79x played, still tunneled).
+        if (prefs.enableTunneling) {
+            rendererFactory.setEnableAudioTrackPlaybackParams(true)
+        }
+
         val loadControl =
             DefaultLoadControl
                 .Builder()
