@@ -68,6 +68,8 @@ class VideoPlayerView
                 setVolume = { v -> exoPlayer.volume = v },
             )
         private var forcedMuted = false
+        private var currentMedia: AerialMedia? = null
+        private var separateAudioFailed = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
@@ -116,12 +118,15 @@ class VideoPlayerView
             removeCallbacks(onErrorRunnable)
             // Clear listener
             listener = null
+            currentMedia = null
             cancelVolumeFade()
         }
 
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
             state.type = media.source
+            currentMedia = media
+            separateAudioFailed = false
             cancelVolumeFade()
             resetRotation()
 
@@ -129,7 +134,11 @@ class VideoPlayerView
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
-            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
+            prepareMediaSource(media)
+        }
+
+        private fun prepareMediaSource(media: AerialMedia) {
+            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media, includeSeparateAudio = !separateAudioFailed)
             applyMuteState()
 
             // Disable subtitles/text tracks by default
@@ -334,9 +343,28 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
+
+            if (retryWithoutSeparateAudio()) return
+
             FirebaseHelper.crashlyticsException(error.cause)
 
             post(onErrorRunnable)
+        }
+
+        // A broken audio stream fails the whole merged source, so give the video
+        // one more chance on its own rather than skipping it entirely
+        private fun retryWithoutSeparateAudio(): Boolean {
+            val media = currentMedia ?: return false
+            if (separateAudioFailed || media.audioUri == null || !GeneralPrefs.playsVideoAudio) {
+                return false
+            }
+
+            Timber.w("Playback failed with a separate audio stream, retrying video only: ${media.audioUri}")
+            separateAudioFailed = true
+            state.prepared = false
+            state.loopCount = 0
+            prepareMediaSource(media)
+            return true
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {

@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -22,6 +23,9 @@ abstract class AbstractVideo {
     @SerialName("url-4K-HDR")
     val video4khdr: String? = null
 
+    @SerialName("url-audio")
+    val audioUrl: String? = null
+
     @SerialName("accessibilityLabel")
     val description: String = ""
 
@@ -30,6 +34,8 @@ abstract class AbstractVideo {
 
     val timeOfDay: String = ""
     val scene: String = ""
+
+    fun audioUri(): Uri? = audioUrl?.takeIf { it.isNotBlank() }?.toUri()
 
     abstract fun uriAtQuality(quality: VideoQuality?): Uri
 
