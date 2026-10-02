@@ -281,10 +281,16 @@ object GeneralPrefs : KotprefModel() {
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
     var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
+    var alwaysProvideAudioTrack by booleanPref(false, "always_provide_audio_track")
     var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
 
     val portraitVideoRotationEnabled: Boolean
         get() = portraitVideoRotationDegrees != "0"
+
+    // Tunneling needs a video and an audio track selected together, so there is no point
+    // merging in a silent track if muting then disables it again
+    val muteRemovesAudioTrack: Boolean
+        get() = muteDisablesAudioTrack && !alwaysProvideAudioTrack
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

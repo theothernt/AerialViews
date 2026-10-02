@@ -7,15 +7,19 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.rtsp.RtspMediaSource
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.MergingMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector.Parameters
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.AspectRatioFrameLayout
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.SchemeType
@@ -109,6 +113,15 @@ object VideoPlayerHelper {
             rendererFactory = CustomRendererFactory(context)
         }
 
+        // In tunneling mode ExoPlayer's own speed change (audio processors) is switched off, so with an
+        // audio track — which is what lets tunneling engage — every video played at 1x whatever the
+        // speed setting said. The speed then has to go through AudioTrack.setPlaybackParams; with
+        // tunneling the video follows the audio clock (measured on a Philips 65OLED808: 1.8x asked,
+        // 1.79x played, still tunneled).
+        if (prefs.enableTunneling) {
+            rendererFactory.setEnableAudioTrackPlaybackParams(true)
+        }
+
         val loadControl =
             DefaultLoadControl
                 .Builder()
@@ -155,7 +168,31 @@ object VideoPlayerHelper {
         player: ExoPlayer,
         media: AerialMedia,
     ) {
-        player.setMediaSource(createMediaSource(context, MediaItem.fromUri(media.uri), media.source))
+        val videoSource = createMediaSource(context, MediaItem.fromUri(media.uri), media.source)
+        player.setMediaSource(
+            if (GeneralPrefs.alwaysProvideAudioTrack) {
+                withSilentAudioTrack(context, videoSource)
+            } else {
+                videoSource
+            },
+        )
+    }
+
+    // Most aerial footage ships without an audio track, and the track selector only turns on
+    // tunneling when a video and an audio track are selected together. Merging in silence keeps
+    // the video on the hardware plane, which some TVs (eg. Philips OLEDs) check before they
+    // decide the screen is static and drop their own burn-in screensaver over the top.
+    @OptIn(UnstableApi::class)
+    private fun withSilentAudioTrack(
+        context: Context,
+        videoSource: MediaSource,
+    ): MediaSource {
+        val silence =
+            ProgressiveMediaSource
+                .Factory(DefaultDataSource.Factory(context))
+                .createMediaSource(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.silent_audio)))
+        // Clip to the shorter source, ie. the video - the silence is far longer than any clip
+        return MergingMediaSource(false, true, videoSource, silence)
     }
 
     @OptIn(UnstableApi::class)
