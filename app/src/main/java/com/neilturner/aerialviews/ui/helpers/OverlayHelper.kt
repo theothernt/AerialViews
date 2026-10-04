@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.helpers
 import android.content.Context
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import com.neilturner.aerialviews.R
@@ -124,11 +125,50 @@ class OverlayHelper(
         rightFlow.requestLayout()
     }
 
+    // Overrides the screen_border_padding margins set in overlay_view.xml
+    private fun applyScreenPadding(
+        root: OverlayViewBinding,
+        horizontalPx: Int,
+        verticalPx: Int,
+    ) {
+        root.flowTopLeft.updateMargins(startPx = horizontalPx, topPx = verticalPx)
+        root.flowTopRight.updateMargins(endPx = horizontalPx, topPx = verticalPx)
+        root.flowBottomLeft.updateMargins(startPx = horizontalPx, bottomPx = verticalPx)
+        root.flowBottomRight.updateMargins(endPx = horizontalPx, bottomPx = verticalPx)
+    }
+
+    private fun View.updateMargins(
+        startPx: Int? = null,
+        topPx: Int? = null,
+        endPx: Int? = null,
+        bottomPx: Int? = null,
+    ) {
+        val params = layoutParams as? ViewGroup.MarginLayoutParams ?: return
+        startPx?.let { params.marginStart = it }
+        topPx?.let { params.topMargin = it }
+        endPx?.let { params.marginEnd = it }
+        bottomPx?.let { params.bottomMargin = it }
+        layoutParams = params
+    }
+
     // Initialise chosen overlays, add them to the layout then return IDs for later use
     fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayIds {
         // Get a list of slots + selected overlay (or empty)
         val slots = SlotHelper.slotPrefs(context)
         val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
+
+        // User adjustable screen edge padding, overriding the dimens.xml defaults
+        val density = context.resources.displayMetrics.density
+        val paddingHorizontalPx =
+            OverlayPaddingHelper.toPx(OverlayPaddingHelper.horizontalDp(prefs.overlayPaddingHorizontal), density)
+        val paddingVerticalPx =
+            OverlayPaddingHelper.toPx(OverlayPaddingHelper.verticalDp(prefs.overlayPaddingVertical), density)
+
+        applyScreenPadding(
+            root,
+            paddingHorizontalPx,
+            paddingVerticalPx,
+        )
 
         // For each slot type (top left 1, etc) - order matters
         for (type in SlotType.entries) {
@@ -147,9 +187,9 @@ class OverlayHelper(
             if (view != null) {
                 root.layout.addView(view)
                 if (view is TextView) {
-                    val marginPx = context.resources.getDimensionPixelSize(R.dimen.screen_border_padding)
+                    // Stop text running under the opposite edge
                     val screenWidth = context.resources.displayMetrics.widthPixels
-                    view.maxWidth = screenWidth - marginPx * 2
+                    view.maxWidth = screenWidth - paddingHorizontalPx * 2
                 }
             }
         }

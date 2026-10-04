@@ -191,6 +191,10 @@ object GeneralPrefs : KotprefModel() {
     // Overlay text/icon colour
     var overlayColour by stringPref("#FFFFFF", "overlay_colour")
 
+    // Overlay screen edge padding (dp)
+    var overlayPaddingHorizontal by stringPref("32", "overlay_padding_horizontal")
+    var overlayPaddingVertical by stringPref("26", "overlay_padding_vertical")
+
     // Progress Bar
     var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
     var progressBarType by nullableEnumValuePref(ProgressBarType.BOTH, "progress_bar_type")

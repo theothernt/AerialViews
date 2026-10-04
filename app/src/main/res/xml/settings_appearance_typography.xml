@@ -21,5 +21,19 @@
                     app:defaultValue="@string/overlay_colour_default"
                     app:key="overlay_colour"
                     app:title="@string/appearance_overlay_colour_title" />
+                <ListPreference
+                    app:defaultValue="@string/overlay_padding_horizontal_default"
+                    app:entries="@array/overlay_padding_entries"
+                    app:entryValues="@array/overlay_padding_values"
+                    app:key="overlay_padding_horizontal"
+                    app:title="@string/appearance_overlay_padding_horizontal_title"
+                    app:useSimpleSummaryProvider="true" />
+                <ListPreference
+                    app:defaultValue="@string/overlay_padding_vertical_default"
+                    app:entries="@array/overlay_padding_entries"
+                    app:entryValues="@array/overlay_padding_values"
+                    app:key="overlay_padding_vertical"
+                    app:title="@string/appearance_overlay_padding_vertical_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

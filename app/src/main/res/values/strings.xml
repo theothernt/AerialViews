@@ -693,6 +693,8 @@
     <string name="appearance_typeface_title">Typeface</string>
     <string name="appearance_overlay_opacity_title">Overlay opacity</string>
     <string name="appearance_overlay_colour_title">Overlay colour</string>
+    <string name="appearance_overlay_padding_horizontal_title">Overlay padding (left/right)</string>
+    <string name="appearance_overlay_padding_vertical_title">Overlay padding (top/bottom)</string>
     <string name="overlay_colour_dialog_hex_hint">Hex colour, for example #FFC107</string>
     <string name="overlay_colour_dialog_invalid">Enter a colour such as #FFC107</string>
 

@@ -1174,6 +1174,32 @@
     </string-array>
     <string name="overlay_opacity_default" translatable="false">100</string>
 
+    <!-- Overlay screen edge padding, shared by the horizontal and vertical lists -->
+    <string-array name="overlay_padding_entries" translatable="false">
+        <item>0 dp</item>
+        <item>8 dp</item>
+        <item>16 dp</item>
+        <item>24 dp</item>
+        <item>26 dp</item>
+        <item>32 dp</item>
+        <item>40 dp</item>
+        <item>48 dp</item>
+        <item>64 dp</item>
+    </string-array>
+    <string-array name="overlay_padding_values" translatable="false">
+        <item>0</item>
+        <item>8</item>
+        <item>16</item>
+        <item>24</item>
+        <item>26</item>
+        <item>32</item>
+        <item>40</item>
+        <item>48</item>
+        <item>64</item>
+    </string-array>
+    <string name="overlay_padding_horizontal_default" translatable="false">32</string>
+    <string name="overlay_padding_vertical_default" translatable="false">26</string>
+
 <string name="overlay_colour_default" translatable="false">#FFFFFF</string>
 
     <!-- Immich -->
