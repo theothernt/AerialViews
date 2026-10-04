@@ -29,15 +29,9 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import timber.log.Timber
 import java.net.BindException
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Process-wide owner of the bundled message API server.
@@ -48,13 +42,11 @@ import java.util.concurrent.atomic.AtomicInteger
  * socket while the incoming one tried to bind the same port, which the CIO engine reports as a
  * [BindException] from a coroutine this app does not own.
  *
- * Every lifecycle change is funnelled through [lifecycleMutex] and stamped with a
- * monotonically increasing [lifecycleGeneration], so a stale start/stop request can never act
- * on — or shut down — a server created after it.
+ * The start/stop ordering itself lives in [KtorServerLifecycle], which is free of Android and
+ * Ktor types so it can be unit tested; this object only supplies the CIO engine and the logging.
  */
 object KtorServer {
     private const val DEFAULT_PORT = 8081
-    private const val MAX_PORT = 65535
     private const val BIND_ATTEMPTS = 5
     private const val BIND_RETRY_DELAY_MS = 400L
     private const val SHUTDOWN_GRACE_MS = 500L
@@ -66,11 +58,23 @@ object KtorServer {
      */
     private val serverScope = CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineName("KtorServer"))
 
-    private val lifecycleMutex = Mutex()
-    private val lifecycleGeneration = AtomicInteger(0)
-
-    @Volatile
-    private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
+    private val lifecycle =
+        KtorServerLifecycle<EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>>(
+            scope = serverScope,
+            portProvider = { resolveServerPort(GeneralPrefs.messageApiPort, DEFAULT_PORT) },
+            buildServer = ::buildServer,
+            startServer = { it.start(wait = false) },
+            stopServer = { it.stop(SHUTDOWN_GRACE_MS, SHUTDOWN_TIMEOUT_MS) },
+            discardServer = ::discardServer,
+            bindAttempts = BIND_ATTEMPTS,
+            bindRetryDelayMs = BIND_RETRY_DELAY_MS,
+            onResult = ::logResult,
+            onBindRetry = { port, attempt, attempts, cause ->
+                Timber.w("Port $port unavailable (attempt $attempt/$attempts): ${cause.message}")
+            },
+            onStopping = { Timber.i("Stopping Ktor server...") },
+            onStopped = { Timber.i("Ktor server stopped, port released") },
+        )
 
     @Volatile
     private var onMessageReceived: (MessageEvent) -> Unit = {}
@@ -95,8 +99,7 @@ object KtorServer {
         this.appContext = context.applicationContext
         loadValidationArrays()
 
-        val generation = lifecycleGeneration.incrementAndGet()
-        serverScope.launch { startInternal(generation) }
+        lifecycle.start()
     }
 
     /**
@@ -104,69 +107,27 @@ object KtorServer {
      * safe to call more than once.
      */
     fun stop() {
-        val generation = lifecycleGeneration.incrementAndGet()
-        serverScope.launch { stopInternal(generation) }
+        lifecycle.stop()
     }
 
-    private suspend fun startInternal(generation: Int) {
-        lifecycleMutex.withLock {
-            // A newer start()/stop() arrived while this request was queued.
-            if (generation != lifecycleGeneration.get()) return
-
-            // Release the previous instance first: this is the step that was previously racing
-            // the new bind, leaving the port in use.
-            stopLocked()
-
-            if (generation != lifecycleGeneration.get()) return
-
-            val port = GeneralPrefs.messageApiPort.toIntOrNull()?.takeIf { it in 1..MAX_PORT } ?: DEFAULT_PORT
-
-            repeat(BIND_ATTEMPTS) { attempt ->
-                if (generation != lifecycleGeneration.get()) return
-
-                // A CIOApplicationEngine cannot be restarted, so each attempt needs a fresh one.
-                val candidate = buildServer(port)
-                try {
-                    // wait = false still suspends internally until the engine's startup job
-                    // settles, so a bind failure is reported on this call rather than on a
-                    // coroutine whose failure nothing observes.
-                    candidate.start(wait = false)
-                } catch (e: BindException) {
-                    Timber.w("Port $port unavailable (attempt ${attempt + 1}/$BIND_ATTEMPTS): ${e.message}")
-                    discardServer(candidate)
-                    if (attempt < BIND_ATTEMPTS - 1) delay(BIND_RETRY_DELAY_MS)
-                    return@repeat
-                } catch (e: Exception) {
-                    Timber.e(e, "Error starting Ktor server on port $port")
-                    discardServer(candidate)
-                    return
-                }
-
-                server = candidate
-                Timber.i("Ktor server listening on port $port")
-                return
+    private fun logResult(result: ServerStartResult) {
+        when (result) {
+            is ServerStartResult.Started -> {
+                Timber.i("Ktor server listening on port ${result.port}")
             }
 
-            Timber.e("Ktor server not started: port $port unavailable after $BIND_ATTEMPTS attempts")
-        }
-    }
+            is ServerStartResult.PortUnavailable -> {
+                Timber.e("Ktor server not started: port ${result.port} unavailable after ${result.attempts} attempts")
+            }
 
-    private suspend fun stopInternal(generation: Int) {
-        lifecycleMutex.withLock {
-            // Superseded by a newer request; that request owns the lifecycle now.
-            if (generation != lifecycleGeneration.get()) return
-            stopLocked()
-        }
-    }
+            is ServerStartResult.Failed -> {
+                Timber.e(result.error, "Error starting Ktor server on port ${result.port}")
+            }
 
-    /** Must be called while holding [lifecycleMutex]. */
-    private suspend fun stopLocked() {
-        val current = server ?: return
-        server = null
-        Timber.i("Stopping Ktor server...")
-        // stop() blocks, so keep it off whatever dispatcher the caller happened to be on.
-        withContext(Dispatchers.IO) { current.stop(SHUTDOWN_GRACE_MS, SHUTDOWN_TIMEOUT_MS) }
-        Timber.i("Ktor server stopped, port released")
+            ServerStartResult.Superseded -> {
+                Timber.d("Ktor server lifecycle request superseded")
+            }
+        }
     }
 
     private fun buildServer(port: Int): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> {
