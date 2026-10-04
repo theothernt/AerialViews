@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.perf) apply false
 
-    alias(libs.plugins.kotlinter.gradle) apply false
     alias(libs.plugins.spotless) apply false
 
     alias(libs.plugins.android.junit5) apply false

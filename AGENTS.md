@@ -22,15 +22,15 @@ Instructions for AI coding agents working on the Aerial Views project.
 | Goal | Command |
 |---|---|
 | Run unit tests | `./gradlew :app:testBetaDebugUnitTest` |
-| Lint (kotlinter) | `./gradlew :app:lintKotlin` |
-| Auto-format | `./gradlew :app:formatKotlin` |
+| Lint (spotless) | `./gradlew :app:spotlessCheck` |
+| Auto-format | `./gradlew :app:spotlessApply` |
 | Debug APK | `./gradlew :app:assembleBetaDebug` |
 | Install on device | `./gradlew :app:installBetaDebug` |
 | Release APK (signed) | `./gradlew :app:assembleBetaRelease` |
 
 ## Verify a code change
 ```sh
-./gradlew :app:testBetaDebugUnitTest :app:lintKotlin :app:assembleBetaDebug
+./gradlew :app:testBetaDebugUnitTest :app:spotlessCheck :app:assembleBetaDebug
 ```
 Run unit tests first — they fail fast on compile errors. Signed `betaRelease` builds require local signing files (see Secrets); if absent, rely on CI for release packaging.
 
@@ -41,7 +41,7 @@ Run unit tests first — they fail fast on compile errors. Signed `betaRelease` 
 - Test logging is verbose (full stack traces, started/skipped/passed/failed, stdout shown) — keep it.
 
 ## Code style
-- `kotlin.code.style=official`, enforced by kotlinter (`org.jmailen.kotlinter`). Run `:app:formatKotlin` before finishing a change; `:app:lintKotlin` must pass.
+- `kotlin.code.style=official`, enforced by Spotless (`com.diffplug.spotless`) with ktlint. Run `:app:spotlessApply` before finishing a change; `:app:spotlessCheck` must pass. Spotless also runs automatically as part of `check`, and covers `**/*.md` / `.gitignore` for trailing whitespace and final newline.
 - Kotlin idioms: prefer small, pure functions; coroutines + Flow for async; sealed classes for UI state; null-safety (avoid `!!` on injected/optional values).
 - ViewBinding is enabled (`buildFeatures.viewBinding = true`).
 - `src/common/java` holds code shared across flavors; F-Droid-specific code is in `src/fdroid/java`.
@@ -55,6 +55,7 @@ Run unit tests first — they fail fast on compile errors. Signed `betaRelease` 
 
 ## Environment
 - Always use `./gradlew` (the wrapper), never a system Gradle. JDK 21 is required.
+- On Windows, pass `--no-daemon` to Gradle commands (e.g. `./gradlew --no-daemon :app:spotlessCheck`) to avoid stale/locked daemon JVMs.
 - Repositories are centralized in `settings.gradle.kts` (`FAIL_ON_PROJECT_REPOS`) and dependency versions in `gradle/libs.versions.toml`. Add new deps/versions in the catalog, not in build files.
 
 ## Git / hygiene

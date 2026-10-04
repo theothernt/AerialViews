@@ -20,7 +20,6 @@ firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
-kotlinter-gradle = "5.7.0"
 spotless = "8.10.2"
 leakcanary = "3.0-alpha-8"
 
@@ -139,7 +138,6 @@ ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
