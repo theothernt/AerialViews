@@ -17,5 +17,9 @@
                     app:key="overlay_opacity"
                     app:title="@string/appearance_overlay_opacity_title"
                     app:useSimpleSummaryProvider="true" />
+                <com.neilturner.aerialviews.ui.controls.OverlayColourPreference
+                    app:defaultValue="@string/overlay_colour_default"
+                    app:key="overlay_colour"
+                    app:title="@string/appearance_overlay_colour_title" />
         </PreferenceCategory>
 </PreferenceScreen>

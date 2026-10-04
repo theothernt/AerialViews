@@ -1174,6 +1174,8 @@
     </string-array>
     <string name="overlay_opacity_default" translatable="false">100</string>
 
+<string name="overlay_colour_default" translatable="false">#FFFFFF</string>
+
     <!-- Immich -->
     <string name="immich_auth_shared_link">Shared Link</string>
     <string name="immich_auth_api_key">API Key</string>

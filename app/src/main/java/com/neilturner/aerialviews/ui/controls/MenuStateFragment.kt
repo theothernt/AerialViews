@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-abstract class MenuStateFragment : PreferenceFragmentCompat() {
+abstract class MenuStateFragment :
+    PreferenceFragmentCompat(),
+    PreferenceFragmentCompat.OnPreferenceDisplayDialogCallback {
     private var position = -1
 
     override fun onResume() {
@@ -64,6 +66,24 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                 FirebaseHelper.crashlyticsException(ex)
             }
         }
+    }
+
+    // Preferences with their own dialog layout are not known to PreferenceFragmentCompat
+    override fun onPreferenceDisplayDialog(
+        caller: PreferenceFragmentCompat,
+        preference: Preference,
+    ): Boolean {
+        if (preference is OverlayColourPreference) {
+            preference.showDialog()
+            return true
+        }
+        return false
+    }
+
+    // The colour dialog is built from the Activity context, so it must not outlive this fragment
+    override fun onDestroyView() {
+        (preferenceManager.findPreference<OverlayColourPreference>("overlay_colour"))?.dismissDialog()
+        super.onDestroyView()
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {

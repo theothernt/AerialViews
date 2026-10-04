@@ -42,6 +42,8 @@ class OverlayHelper(
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeSp)
         view.typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weight)
         view.includeFontPadding = false
+        // Must come after setTextAppearance() in the overlay init blocks, which overwrites text colour
+        view.setTextColor(ColourHelper.overlayColour(prefs.overlayColour))
         val offset =
             FontHelper.getFontVerticalOffset(
                 context,

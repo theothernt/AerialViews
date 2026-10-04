@@ -22,6 +22,7 @@ class SvgImageView
         private var shadowDx = 1f
         private var shadowDy = 1f
         private var shadowRadius = 1f // Increasing this makes the icon smaller
+        private var tintColour = Color.WHITE
 
         private val shadowPaint = Paint()
         private var originalDrawable: Drawable? = null
@@ -45,9 +46,14 @@ class SvgImageView
             val drawable = ContextCompat.getDrawable(context, resId)
             if (drawable != null) {
                 originalDrawable = drawable.mutate()
-                DrawableCompat.setTint(originalDrawable!!, Color.WHITE)
+                DrawableCompat.setTint(originalDrawable!!, tintColour)
                 setImageDrawable(originalDrawable)
             }
+        }
+
+        fun setTintColour(colour: Int) {
+            tintColour = colour
+            originalDrawable?.let { DrawableCompat.setTint(it, colour) }
         }
 
         override fun onDraw(canvas: android.graphics.Canvas) {
@@ -88,10 +94,10 @@ class SvgImageView
                 }
 
                 // Reset for the actual image
-                DrawableCompat.setTint(drawable, Color.WHITE)
+                DrawableCompat.setTint(drawable, tintColour)
                 drawable.alpha = originalAlpha
 
-                // Draw the original white image
+                // Draw the tinted image
                 drawable.draw(this)
             }
         }

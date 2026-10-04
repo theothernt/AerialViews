@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/colour_preview_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF606060"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="Overlay 12:34"
+        android:textSize="28sp"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/colour_hex_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/overlay_colour_dialog_hex_hint"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="textCapCharacters|textNoSuggestions"
+        android:maxLength="9"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/colour_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/overlay_colour_dialog_invalid"
+        android:textColor="#FFCDD2"
+        android:visibility="gone" />
+</LinearLayout>
