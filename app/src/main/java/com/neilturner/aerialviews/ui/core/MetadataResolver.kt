@@ -221,6 +221,12 @@ internal class MetadataResolver(
 
             "FILENAME" -> {
                 when (media.source) {
+                    AerialMediaSource.WEBDAV -> {
+                        media.metadata.title
+                            .takeIf { it.isNotBlank() }
+                            ?: media.uri.filenameWithoutExtension
+                    }
+
                     AerialMediaSource.NCMEMORIES -> {
                         // original filename is stored in short description, not URI
                         FileHelper.extractFilenameFromPath(media.metadata.shortDescription)

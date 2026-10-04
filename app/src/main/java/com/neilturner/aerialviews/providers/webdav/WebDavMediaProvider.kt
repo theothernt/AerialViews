@@ -79,9 +79,12 @@ internal class WebDavMediaProvider(
         return when (val testResult = testConnectionInternal()) {
             is WebDavConnectionTestResult.SuccessSummary -> {
                 val media =
-                    testResult.files.mapNotNull { url ->
+                    testResult.files.mapNotNull { (url, displayName) ->
                         val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-                        val item = AerialMedia(uri)
+                        val item =
+                            AerialMedia(uri).apply {
+                                metadata.title = displayName?.takeIf { it.isNotBlank() }.orEmpty()
+                            }
 
                         when {
                             FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
@@ -137,7 +140,7 @@ internal class WebDavMediaProvider(
     ): WebDavConnectionTestResult =
         withContext(Dispatchers.IO) {
             val res = context.resources
-            val selected = mutableListOf<String>()
+            val selected = mutableListOf<Pair<String, String?>>()
             val excluded: Int
             val images: Int
 
@@ -153,19 +156,19 @@ internal class WebDavMediaProvider(
 
             val files =
                 try {
-                    listFilesAndFoldersRecursively(client, endpoint.baseUrl).map { it.first }
+                    listFilesAndFoldersRecursively(client, endpoint.baseUrl)
                 } catch (ex: Exception) {
                     Timber.e(ex)
                     return@withContext formatWebDavConnectionError(endpoint, ex)
                 }
 
             if (prefs.includeVideos) {
-                selected.addAll(files.filter { FileHelper.isSupportedVideoType(it) })
+                selected.addAll(files.filter { FileHelper.isSupportedVideoType(it.first) }.map { it.first to it.third })
             }
             val videos = selected.size
 
             if (prefs.includePhotos) {
-                selected.addAll(files.filter { FileHelper.isSupportedImageType(it) })
+                selected.addAll(files.filter { FileHelper.isSupportedImageType(it.first) }.map { it.first to it.third })
             }
             images = selected.size - videos
             excluded = files.size - selected.size
@@ -206,8 +209,8 @@ internal class WebDavMediaProvider(
     private fun listFilesAndFoldersRecursively(
         client: WebDavListingClient,
         url: String = "",
-    ): List<Pair<String, Long>> {
-        val filesWithDates = mutableListOf<Pair<String, Long>>()
+    ): List<Triple<String, Long, String?>> {
+        val filesWithDates = mutableListOf<Triple<String, Long, String?>>()
         val directories = ArrayDeque<String>()
         var rootVerified = false
 
@@ -227,7 +230,13 @@ internal class WebDavMediaProvider(
                     if (resource.isDirectory && prefs.searchSubfolders) {
                         directories.add("$currentUrl/${resource.name}")
                     } else if (!resource.isDirectory) {
-                        filesWithDates.add(Pair("$currentUrl/${resource.name}", resource.modifiedTimeMs))
+                        filesWithDates.add(
+                            Triple(
+                                "$currentUrl/${resource.name}",
+                                resource.modifiedTimeMs,
+                                resource.displayName,
+                            ),
+                        )
                     }
                 }
             } catch (ex: Exception) {
@@ -266,6 +275,7 @@ internal class WebDavMediaProvider(
 
 internal data class WebDavResourceInfo(
     val name: String,
+    val displayName: String? = null,
     val isDirectory: Boolean,
     val modifiedTimeMs: Long = 0L,
 )
@@ -299,6 +309,7 @@ internal class SardineWebDavClient(
             .map { resource ->
                 WebDavResourceInfo(
                     name = resource.name,
+                    displayName = resource.displayName,
                     isDirectory = resource.isDirectory,
                     modifiedTimeMs = resource.modified?.time ?: 0L,
                 )
