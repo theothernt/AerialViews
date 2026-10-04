@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
-    alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.spotless)
     alias(libs.plugins.baselineprofile)
 }
 
@@ -167,6 +167,20 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format("misc") {
+        target("**/*.md", "**/.gitignore")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 dependencies {
