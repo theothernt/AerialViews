@@ -208,6 +208,7 @@ dependencies {
     implementation(libs.media3.container)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
+    implementation(libs.metadata.extractor)
     implementation(libs.timber)
     implementation(libs.slf4j.simple)
 

@@ -1,7 +1,11 @@
 package com.neilturner.aerialviews.ui.helpers
 
-import androidx.exifinterface.media.ExifInterface
-import io.ktor.utils.io.charsets.forName
+import com.drew.imaging.ImageMetadataReader
+import com.drew.metadata.Directory
+import com.drew.metadata.exif.ExifDirectoryBase
+import com.drew.metadata.exif.ExifIFD0Directory
+import com.drew.metadata.exif.ExifSubIFDDirectory
+import com.drew.metadata.exif.GpsDirectory
 import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.InputStream
@@ -10,13 +14,15 @@ import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
 import java.util.Locale
 
+private const val ORIENTATION_UNDEFINED = 0
+
 data class ExifMetadata(
     val date: String? = null,
     val offset: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
     val description: String? = null,
-    val orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
+    val orientation: Int = ORIENTATION_UNDEFINED,
 )
 
 object BitmapHelper {
@@ -37,40 +43,67 @@ object BitmapHelper {
     private fun extractMetadata(openInputStream: () -> InputStream?): ExifMetadata =
         try {
             openInputStream()?.use { stream ->
-                val exif = ExifInterface(stream)
-                val description = extractExifDescription(exif)
+                val metadata = ImageMetadataReader.readMetadata(stream)
+                val ifd0 = metadata.getFirstDirectoryOfType(ExifIFD0Directory::class.java)
+                val subIfd = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory::class.java)
+                val geoLocation = metadata.getFirstDirectoryOfType(GpsDirectory::class.java)?.geoLocation
+
                 ExifMetadata(
-                    date = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_DATETIME),
-                    offset = exif.getAttribute(ExifInterface.TAG_OFFSET_TIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_OFFSET_TIME),
-                    latitude = exif.latLong?.getOrNull(0),
-                    longitude = exif.latLong?.getOrNull(1),
-                    description = description,
-                    orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED),
+                    date = readTag(subIfd, ifd0, ExifDirectoryBase.TAG_DATETIME_ORIGINAL, ExifDirectoryBase.TAG_DATETIME),
+                    offset = readTag(subIfd, ifd0, ExifDirectoryBase.TAG_TIME_ZONE_ORIGINAL, ExifDirectoryBase.TAG_TIME_ZONE),
+                    latitude = geoLocation?.latitude?.takeUnless { isNullIsland(it, geoLocation.longitude) },
+                    longitude = geoLocation?.longitude?.takeUnless { isNullIsland(geoLocation.latitude, it) },
+                    description = extractExifDescription(ifd0, subIfd),
+                    orientation = readOrientation(ifd0, subIfd),
                 )
             } ?: ExifMetadata()
         } catch (_: Exception) {
             ExifMetadata()
         }
 
-    private fun extractExifDescription(exif: ExifInterface): String? {
-        val imageDescription =
-            decodeExifText(
-                exif = exif,
-                tag = ExifInterface.TAG_IMAGE_DESCRIPTION,
-                hasUserCommentPrefix = false,
-            )
-        sanitizeExifDescription(imageDescription)?.let { return it }
+    // ExifInterface treated 0/0 as "no GPS fix". Keep that so photos tagged with a
+    // default fix are not reverse geocoded to the Gulf of Guinea.
+    private fun isNullIsland(
+        latitude: Double,
+        longitude: Double,
+    ): Boolean = latitude == 0.0 && longitude == 0.0
 
-        if (!PARSE_USER_COMMENT) return null
+    /** Reads [preferred] from the Exif SubIFD, falling back to [fallback] on IFD0 (or the reverse). */
+    private fun readTag(
+        preferred: Directory?,
+        fallback: Directory?,
+        preferredTag: Int,
+        fallbackTag: Int = preferredTag,
+    ): String? =
+        presentDirectory(preferred, preferredTag)?.getString(preferredTag)
+            ?: presentDirectory(fallback, fallbackTag)?.getString(fallbackTag)
 
-        val userComment =
-            decodeExifText(
-                exif = exif,
-                tag = ExifInterface.TAG_USER_COMMENT,
-                hasUserCommentPrefix = true,
-            )
-        return sanitizeExifDescription(userComment)
+    private fun presentDirectory(
+        directory: Directory?,
+        tag: Int,
+    ): Directory? = directory?.takeIf { it.getObject(tag) != null }
+
+    /**
+     * Orientation is a SHORT, so metadata-extractor stores a number rather than a string and
+     * [Directory.getString] returns null for it.
+     */
+    private fun readOrientation(
+        ifd0: Directory?,
+        subIfd: Directory?,
+    ): Int {
+        val tag = ExifDirectoryBase.TAG_ORIENTATION
+        val directory = presentDirectory(ifd0, tag) ?: presentDirectory(subIfd, tag) ?: return ORIENTATION_UNDEFINED
+        return when (val value = directory.getObject(tag)) {
+            is Number -> value.toInt()
+            is String -> value.toIntOrNull() ?: ORIENTATION_UNDEFINED
+            else -> ORIENTATION_UNDEFINED
+        }
     }
+
+    private fun extractExifDescription(
+        ifd0: Directory?,
+        subIfd: Directory?,
+    ): String? = sanitizeExifDescription(readText(ifd0, subIfd, ExifDirectoryBase.TAG_IMAGE_DESCRIPTION))
 
     internal fun sanitizeExifDescription(description: String?): String? {
         val trimmed = description?.trim()?.trimEnd('\u0000') ?: return null
@@ -84,35 +117,18 @@ object BitmapHelper {
         return trimmed
     }
 
-    private fun decodeExifText(
-        exif: ExifInterface,
-        tag: String,
-        hasUserCommentPrefix: Boolean,
+    private fun readText(
+        ifd0: Directory?,
+        subIfd: Directory?,
+        tag: Int,
     ): String? {
-        val rawBytes = exif.getAttributeBytes(tag)
-        val decoded =
-            if (rawBytes != null) {
-                if (hasUserCommentPrefix) decodeUserComment(rawBytes) else decodeBestEffort(rawBytes)
-            } else {
-                exif.getAttribute(tag)
-            }
-        return decoded?.trim()?.trimEnd('\u0000')?.takeIf { it.isNotBlank() }
+        val directory = presentDirectory(ifd0, tag) ?: presentDirectory(subIfd, tag) ?: return null
+        // getString honours the EXIF charset markers; getByteArray + best-effort
+        // decoding is the fallback for tags stored as raw bytes.
+        return directory.getString(tag) ?: directory.getByteArray(tag)?.let(::decodeBestEffort)
     }
 
-    private fun decodeUserComment(bytes: ByteArray): String? {
-        if (bytes.size < 8) return decodeBestEffort(bytes)
-        val prefix = String(bytes, 0, 8, Charsets.US_ASCII)
-        val payload = bytes.copyOfRange(8, bytes.size)
-        return when (prefix) {
-            "ASCII\u0000\u0000\u0000" -> String(payload, Charsets.US_ASCII)
-            "JIS\u0000\u0000\u0000\u0000\u0000" -> String(payload, Charsets.forName("Shift_JIS"))
-            "UNICODE\u0000" -> String(payload, Charsets.UTF_16)
-            "UNDEFINED" -> decodeBestEffort(payload)
-            else -> decodeBestEffort(bytes)
-        }
-    }
-
-    private fun decodeBestEffort(bytes: ByteArray): String {
+    private fun decodeBestEffort(bytes: ByteArray): String? {
         val utf8 = decodeUtf8IfValid(bytes)
         if (!utf8.isNullOrEmpty()) return utf8
         return String(bytes, Charsets.ISO_8859_1)
@@ -146,7 +162,6 @@ object BitmapHelper {
     private const val MAX_HUMAN_DESCRIPTION_LENGTH = 180
     private const val STRUCTURED_SEPARATOR_COUNT = 5
     private const val MAX_STRUCTURED_FRAGMENT_COUNT = 4
-    private const val PARSE_USER_COMMENT = false
 
     private val VENDOR_METADATA_MARKERS =
         listOf(
