@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.services
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -225,12 +224,16 @@ internal class KtorServerLifecycleTest {
 
                 // The start begins binding and then hits a port that never frees up.
                 harness.lifecycle.start()
-                advanceUntilIdle()
+                runCurrent()
+                assertEquals(1, harness.built.size)
 
                 harness.lifecycle.stop()
                 advanceUntilIdle()
 
-                assertTrue(harness.built.all { it.stopCount == 0 })
+                // The retry loop is abandoned rather than burned through, and the discarded
+                // candidate is never left half-torn-down.
+                assertEquals(1, harness.built.size)
+                assertTrue(harness.results.contains(ServerStartResult.Superseded))
                 assertNull(harness.lifecycle.activeServer)
             }
     }
