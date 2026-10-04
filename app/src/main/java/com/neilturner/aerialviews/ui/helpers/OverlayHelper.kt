@@ -126,6 +126,7 @@ class OverlayHelper(
     fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayIds {
         // Get a list of slots + selected overlay (or empty)
         val slots = SlotHelper.slotPrefs(context)
+        val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
 
         // For each slot type (top left 1, etc) - order matters
         for (type in SlotType.entries) {
@@ -135,6 +136,9 @@ class OverlayHelper(
 
             // Add ID to overlay for later use
             view?.id = View.generateViewId()
+
+            // Overlays in corners that never fade are not alpha'd by ScreenController
+            view?.alpha = visibleAlpha
 
             // Add overlay to overlays view for later positioning
             overlays.add(view)

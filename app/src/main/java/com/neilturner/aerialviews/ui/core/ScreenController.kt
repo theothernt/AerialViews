@@ -42,6 +42,7 @@ import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.GradientHelper
 import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
@@ -100,6 +101,7 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
+    private val overlayVisibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -555,7 +557,7 @@ class ScreenController(
         when (overlayVisibilityMode) {
             "ALWAYS_VISIBLE" -> {
                 // Overlays stay visible, no hiding
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
                     gradientTopView.alpha = 1f
                 }
@@ -581,7 +583,7 @@ class ScreenController(
 
             "HIDE_AFTER_DELAY" -> {
                 // Show overlays, then hide after delay
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
                     gradientTopView.alpha = 1f
                 }
@@ -609,7 +611,7 @@ class ScreenController(
                         val animator =
                             view
                                 .animate()
-                                .alpha(1f)
+                                .alpha(overlayVisibleAlpha)
                                 .setStartDelay(0)
                                 .setDuration(overlayFadeIn)
                         if (index == overlaysToFade.lastIndex) {
@@ -794,7 +796,7 @@ class ScreenController(
             val animator =
                 view
                     .animate()
-                    .alpha(1f)
+                    .alpha(overlayVisibleAlpha)
                     .setStartDelay(0)
                     .setDuration(overlayFadeIn)
 

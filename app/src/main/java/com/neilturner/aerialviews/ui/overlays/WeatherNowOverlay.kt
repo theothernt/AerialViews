@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
 import timber.log.Timber
 
@@ -32,7 +33,7 @@ class WeatherNowOverlay
 
         // Layout constants
         private val fadeAnimationDuration = 300L
-        private val minVisibleAlphaForFade = 0.95f
+        private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
         private val itemMargin = 16 // dp between text items
         private val iconScale = 1.3f // multiplier relative to text height
 
@@ -58,7 +59,7 @@ class WeatherNowOverlay
             orientation = HORIZONTAL
             // Start visible by default. ScreenController owns auto-hide and will
             // fade this view when that feature is enabled.
-            alpha = 1f
+            // Alpha is assigned by OverlayHelper for every slot, so it is not set here.
         }
 
         fun style(
@@ -84,7 +85,7 @@ class WeatherNowOverlay
             if (layout.isEmpty()) return
             if (weather.temperature.isEmpty()) return
 
-            val allowFadeAnimation = alpha >= minVisibleAlphaForFade
+            val allowFadeAnimation = OverlayOpacityHelper.isVisible(alpha, visibleAlpha)
 
             // Check if the new weather data is the same as the previous data
             if (previousWeather == weather) {
@@ -98,7 +99,7 @@ class WeatherNowOverlay
                 updateOverlayContent(weather)
                 if (allowFadeAnimation && !isHidden) {
                     animate()
-                        .alpha(1f)
+                        .alpha(visibleAlpha)
                         .setDuration(fadeAnimationDuration)
                         .start()
                 }
@@ -124,7 +125,7 @@ class WeatherNowOverlay
                     // Fade back in
                     if (!isHidden) {
                         animate()
-                            .alpha(1f)
+                            .alpha(visibleAlpha)
                             .setDuration(fadeAnimationDuration)
                             .start()
                     }

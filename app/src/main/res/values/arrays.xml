@@ -1147,6 +1147,33 @@
     <string name="volume_default" translatable="false">100</string>
     <string name="random_start_position_range_default" translatable="false">50</string>
 
+    <!-- Overlay opacity list (10% - 100% in 10% steps) -->
+    <string-array name="overlay_opacity_entries" translatable="false">
+        <item>10%</item>
+        <item>20%</item>
+        <item>30%</item>
+        <item>40%</item>
+        <item>50%</item>
+        <item>60%</item>
+        <item>70%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
+    </string-array>
+    <string-array name="overlay_opacity_values" translatable="false">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+    <string name="overlay_opacity_default" translatable="false">100</string>
+
     <!-- Immich -->
     <string name="immich_auth_shared_link">Shared Link</string>
     <string name="immich_auth_api_key">API Key</string>

@@ -10,5 +10,12 @@
                     app:key="font_typeface"
                     app:title="@string/appearance_typeface_title"
                     app:useSimpleSummaryProvider="true" />
+                <ListPreference
+                    app:defaultValue="@string/overlay_opacity_default"
+                    app:entries="@array/overlay_opacity_entries"
+                    app:entryValues="@array/overlay_opacity_values"
+                    app:key="overlay_opacity"
+                    app:title="@string/appearance_overlay_opacity_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

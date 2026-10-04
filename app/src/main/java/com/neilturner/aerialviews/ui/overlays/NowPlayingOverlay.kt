@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.MusicEvent
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
 import com.neilturner.aerialviews.ui.overlays.utils.TrackNameShortener
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var shouldUpdate = false
     private var isUpdating = false
     var isHidden = false
-    private val minVisibleAlphaForFade = 0.95f
+    private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
     private val prefs = GeneralPrefs
     private var scopeJob = SupervisorJob()
     private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
@@ -79,14 +80,14 @@ class NowPlayingOverlay : AppCompatTextView {
     private suspend fun updateNowPlaying() {
         isUpdating = true
 
-        if (alpha >= minVisibleAlphaForFade) {
+        if (OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
             fadeOut()
         }
 
         shouldUpdate = false
         val shouldFadeIn = updateText()
 
-        if (shouldFadeIn && alpha < minVisibleAlphaForFade) {
+        if (shouldFadeIn && !OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
             fadeIn()
         }
 
@@ -141,7 +142,7 @@ class NowPlayingOverlay : AppCompatTextView {
             return
         }
         animate()
-            .alpha(1f)
+            .alpha(visibleAlpha)
             .setDuration(300)
             .start()
         Timber.i("$type: Fading in...")

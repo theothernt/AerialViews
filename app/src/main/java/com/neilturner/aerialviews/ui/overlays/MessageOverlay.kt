@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,7 @@ class MessageOverlay : AppCompatTextView {
     private val prefs = GeneralPrefs
     private var shouldUpdate = false
     private var isUpdating = false
-    private val minVisibleAlphaForFade = 0.95f
+    private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
     private var scopeJob = SupervisorJob()
     private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
     private var clearJob: Job? = null
@@ -65,7 +66,7 @@ class MessageOverlay : AppCompatTextView {
 
     fun message(message: String) {
         text = message
-        alpha = 1f
+        alpha = visibleAlpha
         visibility = if (message.isBlank()) GONE else VISIBLE
     }
 
@@ -108,13 +109,13 @@ class MessageOverlay : AppCompatTextView {
 
         if (isGone) {
             alpha = 0f
-        } else if (alpha >= minVisibleAlphaForFade) {
+        } else if (OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
             fadeOut()
         }
 
         updateTextAndStyle()
 
-        if (!text.isNullOrBlank() && alpha < minVisibleAlphaForFade) {
+        if (!text.isNullOrBlank() && !OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
             fadeIn()
         }
 
@@ -176,7 +177,7 @@ class MessageOverlay : AppCompatTextView {
 
     private suspend fun fadeIn() {
         animate()
-            .alpha(1f)
+            .alpha(visibleAlpha)
             .setDuration(300)
             .start()
         Timber.i("$type: Fading in...")
@@ -207,7 +208,7 @@ class MessageOverlay : AppCompatTextView {
             alpha = 0f
             visibility = GONE
         } else {
-            alpha = 1f
+            alpha = visibleAlpha
             visibility = VISIBLE
         }
     }

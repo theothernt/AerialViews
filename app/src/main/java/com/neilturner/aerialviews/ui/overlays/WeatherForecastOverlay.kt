@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastDay
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.ForecastOverlayState
 import timber.log.Timber
 
@@ -46,7 +47,7 @@ class WeatherForecastOverlay
 
         // Layout constants
         private val fadeAnimationDuration = 300L
-        private val minVisibleAlphaForFade = 0.95f
+        private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
         private val cellSpacing = 24 // dp between day columns
         private val elementMargin = 4 // dp between label/icon/temp
         private val iconScale = 1.1f // multiplier relative to text height
@@ -72,7 +73,7 @@ class WeatherForecastOverlay
         init {
             orientation = HORIZONTAL
             gravity = Gravity.CENTER
-            alpha = 1f
+            // Alpha is assigned by OverlayHelper for every slot, so it is not set here.
             applyDebugBackgrounds("root")
         }
 
@@ -108,13 +109,13 @@ class WeatherForecastOverlay
                 return
             }
 
-            val allowFadeAnimation = alpha >= minVisibleAlphaForFade
+            val allowFadeAnimation = OverlayOpacityHelper.isVisible(alpha, visibleAlpha)
 
             if (previousDays == null) {
                 previousDays = days
                 updateForecastContent(days)
                 if (allowFadeAnimation && !isHidden) {
-                    animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                    animate().alpha(visibleAlpha).setDuration(fadeAnimationDuration).start()
                 }
                 return
             }
@@ -132,7 +133,7 @@ class WeatherForecastOverlay
                 .withEndAction {
                     updateForecastContent(days)
                     if (!isHidden) {
-                        animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                        animate().alpha(visibleAlpha).setDuration(fadeAnimationDuration).start()
                     }
                 }.start()
         }
