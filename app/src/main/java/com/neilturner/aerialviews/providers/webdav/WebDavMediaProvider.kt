@@ -81,8 +81,8 @@ internal class WebDavMediaProvider(
                 val media =
                     testResult.files.mapNotNull { (url, displayName) ->
                         val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-// Resolve the type from the url, not displayName: displayName is nullable, so
-                        // keying off it would silently drop files whose name is unavailable but
+                        // Resolve the type from the url, not displayName: displayName is nullable,
+                        // so keying off it would silently drop files whose name is unavailable but
                         // whose url still carries a playable extension.
                         val type = aerialMediaTypeFor(url) ?: return@mapNotNull null
 

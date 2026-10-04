@@ -262,7 +262,6 @@ class SambaMediaProvider(
             val res = context.resources
             val selected = mutableListOf<Pair<String, Long>>()
             val excluded: Int
-            val images: Int
 
             // SMB Config
             val config: SmbConfig
@@ -322,38 +321,18 @@ class SambaMediaProvider(
             activeConnection.close()
             smbClient.close()
 
-            // Only pick videos
-            if (prefs.includeVideos) {
-                selected.addAll(
-                    files.filter { item ->
-                        FileHelper.isSupportedVideoType(item.first)
-                    },
+            val selection =
+                selectSambaFiles(
+                    files = files,
+                    includeVideos = prefs.includeVideos,
+                    includePhotos = prefs.includePhotos,
+                    musicEnabled = prefs.musicEnabled,
                 )
-            }
-            val videos = selected.size
-
-            // Only pick images
-            if (prefs.includePhotos) {
-                selected.addAll(
-                    files.filter { item ->
-                        FileHelper.isSupportedImageType(item.first)
-                    },
-                )
-            }
-            images = selected.size - videos
-
-            // Music is intentionally NOT added to `selected`. Audio files are fetched separately by
-            // fetchMusic() via findAllSambaFiles() and played as background music, never as slideshow
-            // media. Adding them here would leave each one with the default AerialMediaType.VIDEO and
-            // turn every track into a black-screen playback attempt. Counted here for the summary only.
-            val music =
-                if (prefs.musicEnabled) {
-                    files.count { item -> FileHelper.isSupportedAudioType(item.first) }
-                } else {
-                    0
-                }
-
-            excluded = files.size - selected.size
+            selected.addAll(selection.selected)
+            val videos = selection.videos
+            val images = selection.images
+            val music = selection.music
+            excluded = selection.unsupported
 
             var message =
                 String.format(
@@ -427,4 +406,65 @@ class SambaMediaProvider(
         }
         return files
     }
+}
+
+/** Counts produced by [selectSambaFiles] for the connection-test summary. */
+internal data class SambaSelection(
+    /** Files queued as slideshow media, in listing order. Never contains audio. */
+    val selected: List<Pair<String, Long>>,
+    val videos: Int,
+    val images: Int,
+    val music: Int,
+    val unsupported: Int,
+)
+
+/**
+ * Classifies a share listing into slideshow media and the counts shown in the connection test.
+ *
+ * Audio is deliberately never added to [SambaSelection.selected]. Tracks are fetched separately by
+ * [SambaMediaProvider.fetchMusic] and played as background music. Adding them here previously left
+ * each one with the default `AerialMediaType.VIDEO`, so every track was also queued as a
+ * black-screen video - the exact bug this function exists to prevent. Kept free of I/O so the
+ * selection can be unit tested.
+ *
+ * [SambaSelection.unsupported] subtracts [SambaSelection.music] because tracks are reported on their
+ * own row; otherwise every audio file would be counted as unsupported too. When `musicEnabled` is
+ * false, `music` is 0 and tracks correctly fall through to unsupported.
+ */
+internal fun selectSambaFiles(
+    files: List<Pair<String, Long>>,
+    includeVideos: Boolean,
+    includePhotos: Boolean,
+    musicEnabled: Boolean,
+): SambaSelection {
+    val selected = mutableListOf<Pair<String, Long>>()
+
+    val videos =
+        if (includeVideos) {
+            files.filter { FileHelper.isSupportedVideoType(it.first) }.also { selected.addAll(it) }.size
+        } else {
+            0
+        }
+
+    val images =
+        if (includePhotos) {
+            files.filter { FileHelper.isSupportedImageType(it.first) }.also { selected.addAll(it) }.size
+        } else {
+            0
+        }
+
+    val music =
+        if (musicEnabled) {
+            files.count { FileHelper.isSupportedAudioType(it.first) }
+        } else {
+            0
+        }
+
+    return SambaSelection(
+        selected = selected,
+        videos = videos,
+        images = images,
+        music = music,
+        unsupported = files.size - selected.size - music,
+    )
 }
