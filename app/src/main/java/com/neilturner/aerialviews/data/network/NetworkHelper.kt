@@ -21,13 +21,21 @@ import java.util.Locale
 
 object NetworkHelper {
     /**
+     * Always use the application context here. ConnectivityManager caches the last created
+     * instance (and its context) in a static field, so asking for it with an Activity context
+     * leaks that Activity for the lifetime of the process.
+     */
+    private fun getConnectivityManager(context: Context): ConnectivityManager? =
+        context.applicationContext
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+
+    /**
      * Get network capabilities for the active network.
      * Returns null if no active network or capabilities cannot be determined.
      */
     @Suppress("DEPRECATION")
     fun getActiveNetworkCapabilities(context: Context): NetworkCapabilities? {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return null
+        val connectivityManager = getConnectivityManager(context) ?: return null
         val network = connectivityManager.activeNetwork ?: return null
         return connectivityManager.getNetworkCapabilities(network)
     }
@@ -94,8 +102,7 @@ object NetworkHelper {
                 networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                 networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
             ) {
-                val connectivityManager =
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val connectivityManager = getConnectivityManager(context) ?: return ""
                 val activeNetwork = connectivityManager.activeNetwork ?: return ""
                 val linkProperties = connectivityManager.getLinkProperties(activeNetwork) ?: return ""
 

@@ -175,6 +175,10 @@ class ScreenController(
         videoViewBinding =
             if (videoParent != null) {
                 val index = videoParent.indexOfChild(initialVideoRoot)
+                // The player from the inflated layout is discarded here, so release it. Otherwise its
+                // ExoPlayer is kept alive by the DefaultBandwidthMeter singleton, which retains the
+                // discarded view hierarchy and the Activity for the life of the process.
+                binding.videoView.videoPlayer.release()
                 videoParent.removeView(initialVideoRoot)
                 val inflater = LayoutInflater.from(context)
                 val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
@@ -866,10 +870,12 @@ class ScreenController(
         }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
+        // Release before detaching: View.removeCallbacks() does nothing once mAttachInfo is null,
+        // which would leave pending delayed messages holding the view and the Activity alive.
+        videoPlayer.release()
         // Remove video view from parent to break context reference chain
         val videoParent = videoViewBinding.root.parent as? ViewGroup
         videoParent?.removeView(videoViewBinding.root)
-        videoPlayer.release()
         imagePlayer.release()
         ktorServer?.stop()
         nowPlayingService?.stop()

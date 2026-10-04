@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -34,10 +35,22 @@ internal class NetworkHelperTest {
 
     @Test
     fun `isOnWifiOrEthernet returns false when network capabilities unavailable`() {
+        every { context.applicationContext } returns context
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetwork } returns null
 
         assertFalse(NetworkHelper.isOnWifiOrEthernet(context))
+    }
+
+    @Test
+    fun `network lookups use the application context so activities are not retained`() {
+        val applicationContext = mockk<Context>()
+        every { context.applicationContext } returns applicationContext
+        every { applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
+        every { connectivityManager.activeNetwork } returns null
+
+        assertFalse(NetworkHelper.isOnWifiOrEthernet(context))
+        verify(exactly = 0) { context.getSystemService(Context.CONNECTIVITY_SERVICE) }
     }
 
     private fun setupNetworkMock(
@@ -45,6 +58,7 @@ internal class NetworkHelperTest {
         hasEthernet: Boolean,
     ) {
         val mockNetwork = mockk<android.net.Network>()
+        every { context.applicationContext } returns context
         every { context.getSystemService(Context.CONNECTIVITY_SERVICE) } returns connectivityManager
         every { connectivityManager.activeNetwork } returns mockNetwork
         every { connectivityManager.getNetworkCapabilities(mockNetwork) } returns capabilities

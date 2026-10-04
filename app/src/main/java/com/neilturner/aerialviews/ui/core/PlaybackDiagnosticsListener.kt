@@ -2,8 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.annotation.OptIn
 import androidx.media3.common.Format
 import androidx.media3.common.PlaybackException
@@ -11,13 +9,17 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DecoderCounters
 import androidx.media3.exoplayer.analytics.AnalyticsListener
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @OptIn(UnstableApi::class)
 class PlaybackDiagnosticsListener(
-    private val context: Context,
+    context: Context,
 ) : AnalyticsListener {
+    // Application context: the listener outlives the Activity and must not retain it
+    private val context: Context = context.applicationContext
+
     private var startTimeMs: Long = 0
     private var totalBufferingTimeMs: Long = 0
     private var lastBufferingStartTimeMs: Long = 0
@@ -177,15 +179,5 @@ class PlaybackDiagnosticsListener(
             TimeUnit.MILLISECONDS.toSeconds(ms) % 60,
         )
 
-    private fun getNetworkType(): String {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return "Disconnected"
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return "Unknown"
-        return when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
-            else -> "Other"
-        }
-    }
+    private fun getNetworkType(): String = NetworkHelper.getNetworkType(context)
 }
