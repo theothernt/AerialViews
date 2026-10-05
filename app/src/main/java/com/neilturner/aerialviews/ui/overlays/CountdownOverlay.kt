@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.ui.overlays.utils.CountdownTimeParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -24,7 +25,8 @@ class CountdownOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
 
     private val prefs = GeneralPrefs
-    private val mainScope = CoroutineScope(Dispatchers.Main.immediate)
+    private var scopeJob = SupervisorJob()
+    private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
     private var updateJob: Job? = null
 
     private var targetTimeStr: String = ""
@@ -47,6 +49,10 @@ class CountdownOverlay : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        if (scopeJob.isCancelled) {
+            scopeJob = SupervisorJob()
+            mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
+        }
         initCountdown()
         startCountdown()
     }
@@ -54,6 +60,7 @@ class CountdownOverlay : AppCompatTextView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         stopCountdown()
+        scopeJob.cancel()
     }
 
     private fun initCountdown() {

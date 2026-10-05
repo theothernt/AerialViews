@@ -606,24 +606,24 @@
     <string name="countdown_time_is_up">Time\'s up!</string>
     <string name="countdown_invalid_time_format">Invalid time format</string>
     <string name="countdown_error">Error</string>
-    <!-- Translatable so other languages can use their own unit separator -->
-    <string name="countdown_unit_separator"> </string>
+    <!-- Escaped as \u0020 because aapt2 trims whitespace-only string values to an empty string -->
+    <string name="countdown_unit_separator">\u0020</string>
 
     <plurals name="countdown_unit_days">
-        <item quantity="one">%1$d d</item>
-        <item quantity="other">%1$d d</item>
+        <item quantity="one">%1$dd</item>
+        <item quantity="other">%1$dd</item>
     </plurals>
     <plurals name="countdown_unit_hours">
-        <item quantity="one">%1$d h</item>
-        <item quantity="other">%1$d h</item>
+        <item quantity="one">%1$dh</item>
+        <item quantity="other">%1$dh</item>
     </plurals>
     <plurals name="countdown_unit_minutes">
-        <item quantity="one">%1$d m</item>
-        <item quantity="other">%1$d m</item>
+        <item quantity="one">%1$dm</item>
+        <item quantity="other">%1$dm</item>
     </plurals>
     <plurals name="countdown_unit_seconds">
-        <item quantity="one">%1$d s</item>
-        <item quantity="other">%1$d s</item>
+        <item quantity="one">%1$ds</item>
+        <item quantity="other">%1$ds</item>
     </plurals>
 
     <string name="appearance_message_api_enabled_title">Enable API</string>
