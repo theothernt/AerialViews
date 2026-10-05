@@ -7,6 +7,7 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.overlays.utils.CountdownFormatter
 import com.neilturner.aerialviews.ui.overlays.utils.CountdownTimeParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,7 @@ class CountdownOverlay : AppCompatTextView {
 
     private var targetTimeStr: String = ""
     private var targetMessage: String = ""
+    private var label: String = ""
     private var targetDateTime: LocalDateTime? = null
     private var isCompleted = false
 
@@ -56,7 +58,8 @@ class CountdownOverlay : AppCompatTextView {
 
     private fun initCountdown() {
         targetTimeStr = prefs.countdownTargetTime
-        targetMessage = prefs.countdownTargetMessage.ifEmpty { "Time's up!" }
+        targetMessage = prefs.countdownTargetMessage.ifEmpty { resources.getString(R.string.countdown_time_is_up) }
+        label = prefs.countdownLabel
         targetDateTime = parseTargetTime(targetTimeStr, LocalDateTime.now())
         isCompleted = false
     }
@@ -65,7 +68,7 @@ class CountdownOverlay : AppCompatTextView {
         stopCountdown()
         if (targetTimeStr.isEmpty() || targetDateTime == null) {
             if (targetTimeStr.isNotEmpty()) {
-                text = "Invalid time format"
+                text = resources.getString(R.string.countdown_invalid_time_format)
             }
             return
         }
@@ -101,22 +104,21 @@ class CountdownOverlay : AppCompatTextView {
             text = formatCountdown(totalSeconds)
         } catch (e: Exception) {
             Timber.e("Error updating countdown: $e")
-            text = "Error"
+            text = resources.getString(R.string.countdown_error)
         }
     }
 
     private fun formatCountdown(totalSeconds: Long): String {
-        val days = totalSeconds / 86400
-        val hours = (totalSeconds % 86400) / 3600
-        val minutes = (totalSeconds % 3600) / 60
-        val seconds = totalSeconds % 60
+        val separator = resources.getString(R.string.countdown_unit_separator)
+        val countdown =
+            CountdownFormatter.parts(totalSeconds).joinToString(separator) { part ->
+                resources.getQuantityString(part.unit.pluralsRes, part.value.toInt(), part.value)
+            }
 
-        return when {
-            days > 0 -> "${days}d ${hours}h ${minutes}m"
-            hours > 0 -> "${hours}h ${minutes}m"
-            minutes > 0 -> "${minutes}m ${seconds}s"
-            else -> "${seconds}s"
-        }
+        return listOfNotNull(
+            label.takeIf { it.isNotBlank() },
+            countdown.takeIf { it.isNotBlank() },
+        ).joinToString(" ")
     }
 
     private fun parseTargetTime(

@@ -142,6 +142,7 @@ object GeneralPrefs : KotprefModel() {
     // Countdown
     var countdownTargetTime by stringPref("", "countdown_target_time")
     var countdownTargetMessage by stringPref("", "countdown_target_message")
+    var countdownLabel by stringPref("", "countdown_label")
     var countdownSize by stringPref("18", "countdown_size")
     var countdownWeight by stringPref("300", "countdown_weight")
 

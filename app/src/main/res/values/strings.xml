@@ -600,6 +600,31 @@
     <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
     <string name="appearance_countdown_target_message_title">Completion Message</string>
     <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. "Happy New Year!")</string>
+    <string name="appearance_countdown_label_title">Countdown Label</string>
+    <string name="appearance_countdown_label_summary">Optional text shown before the countdown, e.g. "Time left until New Year\'s:"</string>
+
+    <string name="countdown_time_is_up">Time\'s up!</string>
+    <string name="countdown_invalid_time_format">Invalid time format</string>
+    <string name="countdown_error">Error</string>
+    <!-- Translatable so other languages can use their own unit separator -->
+    <string name="countdown_unit_separator"> </string>
+
+    <plurals name="countdown_unit_days">
+        <item quantity="one">%1$d d</item>
+        <item quantity="other">%1$d d</item>
+    </plurals>
+    <plurals name="countdown_unit_hours">
+        <item quantity="one">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="countdown_unit_minutes">
+        <item quantity="one">%1$d m</item>
+        <item quantity="other">%1$d m</item>
+    </plurals>
+    <plurals name="countdown_unit_seconds">
+        <item quantity="one">%1$d s</item>
+        <item quantity="other">%1$d s</item>
+    </plurals>
 
     <string name="appearance_message_api_enabled_title">Enable API</string>
     <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
