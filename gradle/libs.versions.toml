@@ -15,12 +15,12 @@ desugar-jdk-libs = "2.1.5"
 room3 = "3.0.3"
 sqlite = "2.7.1"
 
-firebase-bom = "34.19.0"
+firebase-bom = "35.0.0"
 firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
-spotless = "8.10.2"
+spotless = "8.10.3"
 leakcanary = "3.0-alpha-8"
 
 leanback = "1.2.0"
