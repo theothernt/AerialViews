@@ -22,7 +22,7 @@ android {
     val keyProps = loadProperties("secrets.properties")
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 23 // Android v6
+        minSdk = 24 // Android v7
         targetSdk = 37
         versionCode = 149
         versionName = "1.8.6"
