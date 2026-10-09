@@ -1,6 +1,6 @@
 [versions]
 agp = "9.4.1"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 kotlin-serialization = "1.11.0"
 google-services = "4.5.0"
 ksp = "2.3.12"
@@ -20,7 +20,7 @@ firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
-spotless = "8.10.3"
+spotless = "8.10.4"
 leakcanary = "3.0-alpha-8"
 
 leanback = "1.2.0"
