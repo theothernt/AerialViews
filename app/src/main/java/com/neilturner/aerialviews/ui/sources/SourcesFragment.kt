@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.sources
 import android.os.Bundle
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class SourcesFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -10,5 +11,10 @@ class SourcesFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.sources, rootKey)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Sources", this)
     }
 }

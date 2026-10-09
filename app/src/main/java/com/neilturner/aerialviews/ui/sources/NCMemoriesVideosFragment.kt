@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -60,6 +61,11 @@ class NCMemoriesVideosFragment :
             updateSummary()
             setupPreferenceClickListeners()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Nextcloud Memories", this)
     }
 
     override fun onDestroy() {

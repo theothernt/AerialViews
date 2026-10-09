@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.Display.HDRFormat
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.launch
 
 class ProjectivyAppleVideosFragment : MenuStateFragment() {
@@ -30,6 +31,11 @@ class ProjectivyAppleVideosFragment : MenuStateFragment() {
         }
 
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Projectivy Apple Videos", this)
     }
 
     private fun setupQualityPreference() {

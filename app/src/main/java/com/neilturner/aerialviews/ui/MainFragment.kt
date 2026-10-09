@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.ToastHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -35,6 +36,11 @@ class MainFragment :
             resetLocalPermissionIfNeeded()
         }
         hideSystemOptionsIfNeeded()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Main", this)
     }
 
     private fun hideSystemOptionsIfNeeded() {

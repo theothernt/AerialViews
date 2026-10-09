@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class ProjectivyComm2VideosFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -19,6 +20,11 @@ class ProjectivyComm2VideosFragment : MenuStateFragment() {
 
         setupQualityPreference()
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Projectivy Comm2 Videos", this)
     }
 
     private fun setupQualityPreference() {

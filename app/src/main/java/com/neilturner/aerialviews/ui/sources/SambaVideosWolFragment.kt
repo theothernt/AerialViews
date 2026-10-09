@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,6 +41,11 @@ class SambaVideosWolFragment :
         }
 
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Samba Wake on LAN", this)
     }
 
     override fun onDestroy() {

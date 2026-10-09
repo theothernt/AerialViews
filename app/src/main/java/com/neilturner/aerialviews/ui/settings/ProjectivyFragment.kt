@@ -6,6 +6,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class ProjectivyFragment :
     MenuStateFragment(),
@@ -17,6 +18,11 @@ class ProjectivyFragment :
         setPreferencesFromResource(R.xml.settings_projectivy, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateVideoOptionsVisibility()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Projectivy", this)
     }
 
     override fun onDestroy() {

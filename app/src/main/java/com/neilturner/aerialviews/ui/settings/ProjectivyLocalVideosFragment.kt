@@ -21,6 +21,7 @@ import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
@@ -72,6 +73,11 @@ class ProjectivyLocalVideosFragment :
         }
 
         checkForMediaPermission()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Projectivy Local Videos", this)
     }
 
     override fun onDestroy() {

@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -32,6 +33,11 @@ class Comm1VideosFragment : MenuStateFragment() {
         )
         updateSummary()
         updateVideoCount()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Comm1 Videos", this)
     }
 
     private fun updateSummary() {
