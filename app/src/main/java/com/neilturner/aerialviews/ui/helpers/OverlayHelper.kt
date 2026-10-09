@@ -275,14 +275,14 @@ class OverlayHelper(
 //                }
             OverlayType.MUSIC1 -> {
                 NowPlayingOverlay(context).apply {
-                    applyFontToTextView(this, prefs.nowPlayingSize1.toFloat(), prefs.nowPlayingWeight1)
+                    style(prefs.fontTypeface, prefs.nowPlayingSize1.toFloat(), prefs.nowPlayingWeight1)
                     type = overlay
                 }
             }
 
             OverlayType.MUSIC2 -> {
                 NowPlayingOverlay(context).apply {
-                    applyFontToTextView(this, prefs.nowPlayingSize2.toFloat(), prefs.nowPlayingWeight2)
+                    style(prefs.fontTypeface, prefs.nowPlayingSize2.toFloat(), prefs.nowPlayingWeight2)
                     type = overlay
                 }
             }
