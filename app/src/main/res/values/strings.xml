@@ -606,8 +606,9 @@
     <string name="countdown_time_is_up">Time\'s up!</string>
     <string name="countdown_invalid_time_format">Invalid time format</string>
     <string name="countdown_error">Error</string>
+    
     <!-- Escaped as \u0020 because aapt2 trims whitespace-only string values to an empty string -->
-    <string name="countdown_unit_separator">\u0020</string>
+    <string name="countdown_unit_separator" translatable="false">\u0020</string>
 
     <plurals name="countdown_unit_days">
         <item quantity="one">%1$dd</item>
