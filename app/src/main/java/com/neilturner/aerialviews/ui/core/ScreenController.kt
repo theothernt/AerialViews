@@ -1023,6 +1023,14 @@ class ScreenController(
         NotificationHelper.show(notificationContainer, message)
     }
 
+    fun restartVideo() {
+        if (blackOutMode) return
+        if (currentMedia?.type != AerialMediaType.VIDEO) return
+        // Restart resumes playback, so clear any paused state
+        if (isPaused) resumeMedia()
+        videoPlayer.restart()
+    }
+
     fun increaseBrightness() = changeBrightness(true)
 
     fun decreaseBrightness() = changeBrightness(false)

@@ -172,6 +172,16 @@ class VideoPlayerView
             }
         }
 
+        fun restart() {
+            // Ignore if there is nothing to restart (eg. before the first video, or after it ended)
+            if (exoPlayer.playbackState == Player.STATE_IDLE || exoPlayer.playbackState == Player.STATE_ENDED) return
+            exoPlayer.seekTo(0)
+            // Restart always resumes playback, even if the video was paused
+            exoPlayer.playWhenReady = true
+            // Recalculate remaining time and restart timer
+            setupAlmostFinishedRunnable()
+        }
+
         fun fadeOutAudio(duration: Long) {
             if (isMuted || forcedMuted) return
             volumeHelper.fadeOut(durationMs = duration)
