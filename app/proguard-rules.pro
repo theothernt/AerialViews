@@ -8,6 +8,10 @@
 # Firebase Crashlytics
  -keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
 
+# protobuf-lite (used by firebase-perf) accesses generated message fields
+# reflectively by name, so they must survive R8 untouched
+-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+
 # Firebase Perf network instrumentation is woven into Coil/OkHttp/XmlPull by the
 # firebase-perf Gradle plugin. F-Droid has no Firebase Perf SDK on the classpath,
 # so R8 cannot resolve these classes during minification — suppress them.
