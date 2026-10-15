@@ -379,51 +379,55 @@ class VideoPlayerView
 
             val w = videoSize.width
             val h = videoSize.height
-            val unapplied = videoSize.unappliedRotationDegrees
-            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=$unapplied")
+            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=${videoSize.unappliedRotationDegrees}")
 
-            if (!GeneralPrefs.portraitVideoRotationEnabled) return
+            // Deferred so the view has been laid out and width/height are measured.
+            post { applyPortraitOrientation(w, h) }
+        }
 
-            if (GeneralPrefs.useTextureViewForVideo) {
-                Timber.i("Portrait rotation fix: skipped (TextureView mode)")
-                return
-            }
+        /**
+         * Applies the "portrait video rotation fix" for a video the firmware renders sideways.
+         *
+         * Media3 applies any container rotation itself, so [Format.rotationDegrees] tells us
+         * whether it has already done so. It is deprecated but remains the only way to reach
+         * that value: `VideoSize.unappliedRotationDegrees` is always 0 because the player
+         * pre-applies the rotation before reporting. If Media3 ever drops this field the fix
+         * will simply stop engaging for rotated files rather than mis-rotating them.
+         */
+        @Suppress("DEPRECATION")
+        private fun applyPortraitOrientation(
+            videoW: Int,
+            videoH: Int,
+        ) {
+            val formatRotation = exoPlayer.videoFormat?.rotationDegrees
+            val fix =
+                PortraitVideoOrientation.resolve(
+                    videoWidth = videoW,
+                    videoHeight = videoH,
+                    containerRotationDegrees = formatRotation,
+                    enabledDegrees =
+                        PortraitVideoOrientation.parseDegrees(GeneralPrefs.portraitVideoRotationDegrees),
+                    useTextureView = GeneralPrefs.useTextureViewForVideo,
+                    forceLandscape = GeneralPrefs.portraitVideoRotationForceLandscape,
+                    videoScale = GeneralPrefs.videoScale,
+                    containerWidth = width.toFloat(),
+                    containerHeight = height.toFloat(),
+                )
 
-            // Portrait detection: taller than wide (before any rotation)
-            val isPortrait = h > w
-            if (!isPortrait) {
-                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x$h)")
+            if (fix == null) {
+                Timber.i("Portrait rotation fix: not applied for ${videoW}x$videoH (formatRotation=$formatRotation)")
                 resetRotation()
                 return
             }
 
-            val degrees = GeneralPrefs.portraitVideoRotationDegrees.toFloatOrNull() ?: return
-            applyRotationFix(degrees)
-        }
+            Timber.i(
+                "Portrait rotation fix: applying ${fix.rotation}° rotation, scale=${fix.scale} " +
+                    "(container ${width}x$height)",
+            )
 
-        private fun applyRotationFix(degrees: Float) {
-            post {
-                val containerW = width.toFloat()
-                val containerH = height.toFloat()
-                if (containerW == 0f || containerH == 0f) return@post
-
-                // After a 90°/270° rotation the view's layout axes are swapped,
-                // so scale by containerH/containerW to fill the screen width.
-                val scale =
-                    when (degrees) {
-                        90f, 270f -> containerW / containerH
-                        else -> 1f
-                    }
-
-                Timber.i(
-                    "Portrait rotation fix: applying $degrees° rotation, scale=$scale " +
-                        "(container ${containerW.toInt()}x${containerH.toInt()})",
-                )
-
-                rotation = degrees
-                scaleX = scale
-                scaleY = scale
-            }
+            rotation = fix.rotation
+            scaleX = fix.scale
+            scaleY = fix.scale
         }
 
         private fun resetRotation() {

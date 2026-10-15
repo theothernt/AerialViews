@@ -47,6 +47,12 @@
 
                 <CheckBoxPreference
                     app:defaultValue="false"
+                    app:key="portrait_video_rotation_force_landscape"
+                    app:summary="@string/advanced_portrait_rotation_force_landscape_summary"
+                    app:title="@string/advanced_portrait_rotation_force_landscape_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
                     app:key="use_texture_view_for_video"
                     app:summary="@string/advanced_use_texture_view_summary"
                     app:title="@string/advanced_use_texture_view_title" />
