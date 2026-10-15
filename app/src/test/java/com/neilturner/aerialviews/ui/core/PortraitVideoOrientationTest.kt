@@ -19,17 +19,13 @@ internal class PortraitVideoOrientationTest {
         videoW: Int = 1080,
         videoH: Int = 1920,
         degrees: Float = 90f,
-        texture: Boolean = false,
         scale: VideoScale? = VideoScale.SCALE_TO_FIT,
         containerRotation: Int? = 0,
-        forceLandscape: Boolean = false,
     ) = PortraitVideoOrientation.resolve(
         videoWidth = videoW,
         videoHeight = videoH,
         containerRotationDegrees = containerRotation,
         enabledDegrees = degrees,
-        useTextureView = texture,
-        forceLandscape = forceLandscape,
         videoScale = scale,
         containerWidth = containerW,
         containerHeight = containerH,
@@ -79,11 +75,6 @@ internal class PortraitVideoOrientationTest {
     }
 
     @Test
-    fun `leaves video alone when using a TextureView`() {
-        assertNull(resolve(texture = true))
-    }
-
-    @Test
     fun `leaves video alone until the container has been measured`() {
         assertNull(
             PortraitVideoOrientation.resolve(
@@ -91,8 +82,6 @@ internal class PortraitVideoOrientationTest {
                 videoHeight = 1920,
                 containerRotationDegrees = 0,
                 enabledDegrees = 90f,
-                useTextureView = false,
-                forceLandscape = false,
                 videoScale = VideoScale.SCALE_TO_FIT,
                 containerWidth = 0f,
                 containerHeight = 0f,
@@ -134,23 +123,8 @@ internal class PortraitVideoOrientationTest {
     }
 
     @Test
-    fun `can be forced onto landscape shaped video`() {
-        assertEquals(90f, resolve(videoW = 1920, videoH = 1080, forceLandscape = true)?.rotation)
-        // Already matches the container, so there is no letterbox to compensate for.
-        assertEquals(1f, resolve(videoW = 1920, videoH = 1080, forceLandscape = true)?.scale)
-    }
-
-    @Test
-    fun `the landscape override still respects everything else`() {
-        assertNull(resolve(videoW = 1920, videoH = 1080, forceLandscape = true, texture = true))
-        assertNull(resolve(videoW = 1920, videoH = 1080, forceLandscape = true, degrees = 0f))
-        assertNull(resolve(videoW = 1920, videoH = 1080, forceLandscape = true, scale = VideoScale.SCALE_TO_FIT_WITH_CROPPING))
-        assertNull(resolve(videoW = 1920, videoH = 1080, forceLandscape = true, containerRotation = 270))
-        assertNull(resolve(videoW = 1920, videoH = 1080, forceLandscape = true, containerRotation = null))
-    }
-
-    @Test
-    fun `still ignores landscape video by default`() {
+    fun `leaves landscape shaped video alone`() {
         assertNull(resolve(videoW = 1920, videoH = 1080))
+        assertNull(resolve(videoW = 1920, videoH = 1080, degrees = 180f))
     }
 }

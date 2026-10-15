@@ -407,8 +407,6 @@ class VideoPlayerView
                     containerRotationDegrees = formatRotation,
                     enabledDegrees =
                         PortraitVideoOrientation.parseDegrees(GeneralPrefs.portraitVideoRotationDegrees),
-                    useTextureView = GeneralPrefs.useTextureViewForVideo,
-                    forceLandscape = GeneralPrefs.portraitVideoRotationForceLandscape,
                     videoScale = GeneralPrefs.videoScale,
                     containerWidth = width.toFloat(),
                     containerHeight = height.toFloat(),

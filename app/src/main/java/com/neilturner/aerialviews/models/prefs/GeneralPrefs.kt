@@ -279,11 +279,9 @@ object GeneralPrefs : KotprefModel() {
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
-    var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
     var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
     var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
-    var portraitVideoRotationForceLandscape by booleanPref(false, "portrait_video_rotation_force_landscape")
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

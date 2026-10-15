@@ -20,10 +20,6 @@ import com.neilturner.aerialviews.models.enums.VideoScale
  *   known. Media3 applies any container rotation itself and reports the result
  *   in `VideoSize`, so a non-zero value means the video is already the right
  *   way up and rotating it again would undo the player's work.
- * @param forceLandscape applies the rotation even when the video reports a
- *   landscape shape. Some devices are handed portrait footage that has been
- *   stored landscape with its rotation metadata stripped, which no container
- *   field distinguishes from genuinely landscape video.
  */
 internal object PortraitVideoOrientation {
     /** The transform to apply to the player view, or null to leave it alone. */
@@ -35,14 +31,11 @@ internal object PortraitVideoOrientation {
     /** Parses the stored preference value, falling back to "disabled". */
     fun parseDegrees(raw: String?): Float = raw?.toFloatOrNull() ?: 0f
 
-    @Suppress("LongParameterList")
     fun resolve(
         videoWidth: Int,
         videoHeight: Int,
         containerRotationDegrees: Int?,
         enabledDegrees: Float,
-        useTextureView: Boolean,
-        forceLandscape: Boolean,
         videoScale: VideoScale?,
         containerWidth: Float,
         containerHeight: Float,
@@ -50,25 +43,19 @@ internal object PortraitVideoOrientation {
         // Unknown or already handled by the player: never rotate blind.
         if (containerRotationDegrees == null) return null
         if (containerRotationDegrees != 0) return null
-        if (useTextureView) return null
         if (enabledDegrees == 0f) return null
         if (containerWidth <= 0f || containerHeight <= 0f) return null
         // Cropping scales and clips to fill the screen, which does not compose with
         // rotating the view, so the fix steps aside rather than fight it.
         if (videoScale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) return null
-        if (!forceLandscape && videoHeight <= videoWidth) return null
+        if (videoHeight <= videoWidth) return null
 
         val scale =
             when (enabledDegrees) {
                 // A letterboxed frame is smaller than the viewport, so the swapped axes need
-                // the container ratio to keep filling the screen. A frame that already matches
-                // the container has no letterbox to compensate for.
+                // the container ratio to keep filling the screen.
                 90f, 270f -> {
-                    if (videoHeight > videoWidth) {
-                        containerWidth / containerHeight
-                    } else {
-                        1f
-                    }
+                    containerWidth / containerHeight
                 }
 
                 else -> {
