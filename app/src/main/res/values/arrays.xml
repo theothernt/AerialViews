@@ -1154,6 +1154,61 @@
     <string name="volume_default" translatable="false">100</string>
     <string name="random_start_position_range_default" translatable="false">50</string>
 
+    <!-- Overlay opacity list (10% - 100% in 10% steps) -->
+    <string-array name="overlay_opacity_entries" translatable="false">
+        <item>10%</item>
+        <item>20%</item>
+        <item>30%</item>
+        <item>40%</item>
+        <item>50%</item>
+        <item>60%</item>
+        <item>70%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
+    </string-array>
+    <string-array name="overlay_opacity_values" translatable="false">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+    <string name="overlay_opacity_default" translatable="false">100</string>
+
+    <!-- Overlay screen edge padding, shared by the horizontal and vertical lists -->
+    <string-array name="overlay_padding_entries" translatable="false">
+        <item>0 dp</item>
+        <item>8 dp</item>
+        <item>16 dp</item>
+        <item>24 dp</item>
+        <item>26 dp</item>
+        <item>32 dp</item>
+        <item>40 dp</item>
+        <item>48 dp</item>
+        <item>64 dp</item>
+    </string-array>
+    <string-array name="overlay_padding_values" translatable="false">
+        <item>0</item>
+        <item>8</item>
+        <item>16</item>
+        <item>24</item>
+        <item>26</item>
+        <item>32</item>
+        <item>40</item>
+        <item>48</item>
+        <item>64</item>
+    </string-array>
+    <string name="overlay_padding_horizontal_default" translatable="false">32</string>
+    <string name="overlay_padding_vertical_default" translatable="false">26</string>
+
+<string name="overlay_colour_default" translatable="false">#FFFFFF</string>
+
     <!-- Immich -->
     <string name="immich_auth_shared_link">Shared Link</string>
     <string name="immich_auth_api_key">API Key</string>

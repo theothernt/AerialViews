@@ -13,7 +13,9 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
+import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
 import timber.log.Timber
 
@@ -32,7 +34,7 @@ class WeatherNowOverlay
 
         // Layout constants
         private val fadeAnimationDuration = 300L
-        private val minVisibleAlphaForFade = 0.95f
+        private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
         private val itemMargin = 16 // dp between text items
         private val iconScale = 1.3f // multiplier relative to text height
 
@@ -58,7 +60,7 @@ class WeatherNowOverlay
             orientation = HORIZONTAL
             // Start visible by default. ScreenController owns auto-hide and will
             // fade this view when that feature is enabled.
-            alpha = 1f
+            // Alpha is assigned by OverlayHelper for every slot, so it is not set here.
         }
 
         fun style(
@@ -70,6 +72,11 @@ class WeatherNowOverlay
             this.size = size
             this.weight = weight
         }
+
+        // Read from prefs with the other style attributes so every update picks up the
+        // current colour, matching how GeneralPrefs.fontTypeface is resolved above
+        private val colour: Int
+            get() = ColourHelper.overlayColour(GeneralPrefs.overlayColour)
 
         fun layout(layout: String) {
             this.layout = layout
@@ -84,7 +91,7 @@ class WeatherNowOverlay
             if (layout.isEmpty()) return
             if (weather.temperature.isEmpty()) return
 
-            val allowFadeAnimation = alpha >= minVisibleAlphaForFade
+            val allowFadeAnimation = OverlayOpacityHelper.isVisible(alpha, visibleAlpha)
 
             // Check if the new weather data is the same as the previous data
             if (previousWeather == weather) {
@@ -98,7 +105,7 @@ class WeatherNowOverlay
                 updateOverlayContent(weather)
                 if (allowFadeAnimation && !isHidden) {
                     animate()
-                        .alpha(1f)
+                        .alpha(visibleAlpha)
                         .setDuration(fadeAnimationDuration)
                         .start()
                 }
@@ -124,7 +131,7 @@ class WeatherNowOverlay
                     // Fade back in
                     if (!isHidden) {
                         animate()
-                            .alpha(1f)
+                            .alpha(visibleAlpha)
                             .setDuration(fadeAnimationDuration)
                             .start()
                     }
@@ -193,6 +200,8 @@ class WeatherNowOverlay
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                         textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                        // After setTextAppearance() above, which resets the text colour
+                        textView.setTextColor(colour)
                         val textViewOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, textView.textSize)
                         val superscriptExtraPx = (superscriptExtraPaddingDp * resources.displayMetrics.density).toInt()
                         textView.setPadding(0, textViewOffset + superscriptExtraPx, 0, -(textViewOffset + superscriptExtraPx))
@@ -207,6 +216,7 @@ class WeatherNowOverlay
                         val imageView =
                             SvgImageView(context).apply {
                                 setSvgResource(item.imageResId)
+                                setTintColour(colour)
                             }
 
                         val params = LayoutParams(iconSize, iconSize)

@@ -21,6 +21,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
 import com.neilturner.aerialviews.ui.overlays.utils.TrackNameShortener
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +46,7 @@ class NowPlayingOverlay
         private var trackInfo = MusicEvent()
         private var shouldUpdate = false
         private var isUpdating = false
-        private val minVisibleAlphaForFade = 0.95f
+        private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
         private val prefs = GeneralPrefs
 
         private val albumArtView: ImageView
@@ -121,14 +122,14 @@ class NowPlayingOverlay
         private suspend fun updateNowPlaying() {
             isUpdating = true
 
-            if (alpha >= minVisibleAlphaForFade) {
+            if (OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
                 fadeOut()
             }
 
             shouldUpdate = false
             val shouldFadeIn = updateContent()
 
-            if (shouldFadeIn && alpha < minVisibleAlphaForFade) {
+            if (shouldFadeIn && !OverlayOpacityHelper.isVisible(alpha, visibleAlpha)) {
                 fadeIn()
             }
 
@@ -179,7 +180,7 @@ class NowPlayingOverlay
                 Timber.i("$type: Skipping fade-in, overlay is hidden")
                 return
             }
-            animate().alpha(1f).setDuration(300).start()
+            animate().alpha(visibleAlpha).setDuration(300).start()
             Timber.i("$type: Fading in...")
             delay(300.milliseconds)
         }

@@ -186,6 +186,16 @@ object GeneralPrefs : KotprefModel() {
     // Typeface (for whole app)
     var fontTypeface by stringPref("google-sans", "font_typeface")
 
+    // Overlay opacity (visible alpha for all overlays)
+    var overlayOpacity by stringPref("100", "overlay_opacity")
+
+    // Overlay text/icon colour
+    var overlayColour by stringPref("#FFFFFF", "overlay_colour")
+
+    // Overlay screen edge padding (dp)
+    var overlayPaddingHorizontal by stringPref("32", "overlay_padding_horizontal")
+    var overlayPaddingVertical by stringPref("26", "overlay_padding_vertical")
+
     // Progress Bar
     var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
     var progressBarType by nullableEnumValuePref(ProgressBarType.BOTH, "progress_bar_type")
