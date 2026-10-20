@@ -168,12 +168,7 @@ class ScreenController(
 
         val initialVideoRoot = binding.videoView.root
         val videoParent = initialVideoRoot.parent as? ViewGroup
-        val videoLayoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) {
-                R.layout.video_view_texture
-            } else {
-                R.layout.video_view
-            }
+        val videoLayoutRes = R.layout.video_view
 
         videoViewBinding =
             if (videoParent != null) {
@@ -1149,8 +1144,7 @@ class ScreenController(
         videoPlayer.release()
         videoParent.removeView(oldRoot)
 
-        val layoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
+        val layoutRes = R.layout.video_view
         val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
         videoParent.addView(replacement, index)
         videoViewBinding = VideoViewBinding.bind(replacement)

@@ -909,9 +909,7 @@
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
     <string name="advanced_portrait_rotation_title">Portrait video rotation fix</string>
-    <string name="advanced_portrait_rotation_summary">Manually rotate portrait videos to correct their orientation. Only applies when using SurfaceView. Useful for devices with firmware bugs.</string>
-    <string name="advanced_use_texture_view_title">Use TextureView for video</string>
-    <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
+    <string name="advanced_portrait_rotation_summary">Manually rotate portrait videos to correct their orientation. Only applies when using SurfaceView and when video scaling is set to fit without cropping. Useful for devices with firmware bugs.</string>
     <string name="advanced_reduce_buffer_memory_title">Reduce playback buffers and memory usage</string>
     <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
     <string name="advanced_mute_disables_audio_track_title">Disable audio track when muted</string>
