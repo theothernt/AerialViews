@@ -1012,6 +1012,7 @@
     <string name="btn_toggle_mute">Toggle mute/unmute audio</string>
     <string name="btn_toggle_pause">Pause/unpause video or photo timer</string>
     <string name="btn_toggle_looping">Toggle looping for current photo or video</string>
+    <string name="btn_restart_video">Restart current video from the beginning</string>
     <string-array name="button_action_entries" translatable="false">
         <item>@string/btn_ignore</item>
         <item>@string/btn_skip_next</item>
@@ -1031,6 +1032,7 @@
         <item>@string/btn_toggle_mute</item>
         <item>@string/btn_toggle_pause</item>
         <item>@string/btn_toggle_looping</item>
+        <item>@string/btn_restart_video</item>
     </string-array>
     <string-array name="button_action_values" translatable="false">
         <item>IGNORE</item>
@@ -1051,6 +1053,7 @@
         <item>TOGGLE_MUTE</item>
         <item>TOGGLE_PAUSE</item>
         <item>TOGGLE_LOOPING</item>
+        <item>RESTART_VIDEO</item>
 
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
