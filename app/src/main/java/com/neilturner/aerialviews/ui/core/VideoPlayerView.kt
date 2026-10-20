@@ -147,8 +147,15 @@ class VideoPlayerView
             player?.prepare()
         }
 
-        fun setForcedMute(enabled: Boolean) {
-            forcedMuted = enabled
+        val mutedState: Boolean
+            get() = isMuted
+
+        fun setMuteState(
+            forcedMute: Boolean,
+            muted: Boolean,
+        ) {
+            forcedMuted = forcedMute
+            isMuted = muted
             applyMuteState()
         }
 
@@ -209,7 +216,6 @@ class VideoPlayerView
                 }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
-            isMuted = shouldMute && !forcedMuted
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
