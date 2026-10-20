@@ -8,6 +8,11 @@
                     app:title="@string/appearance_countdown_target_time_title" />
 
                 <EditTextPreference
+                    app:summary="@string/appearance_countdown_label_summary"
+                    app:key="countdown_label"
+                    app:title="@string/appearance_countdown_label_title" />
+
+                <EditTextPreference
                     app:summary="@string/appearance_countdown_target_message_summary"
                     app:key="countdown_target_message"
                     app:title="@string/appearance_countdown_target_message_title" />

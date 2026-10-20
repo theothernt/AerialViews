@@ -520,6 +520,29 @@
 
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
+    <!-- Main / Settings / Overlays / Sonos -->
+    <string name="category_sonos">Sonos (local network)</string>
+    <string name="sonos_enabled_title">Enable Sonos</string>
+    <string name="sonos_enabled_summary">Show the currently playing track from your Sonos speakers</string>
+    <string name="sonos_ip_title">Speaker IP address</string>
+    <string name="sonos_ip_not_set">Not configured</string>
+    <string name="sonos_test_title">Test connection</string>
+    <string name="sonos_test_default">Tap to test the connection</string>
+    <string name="sonos_test_no_ip">Enter an IP address first</string>
+    <string name="sonos_test_testing">Testing…</string>
+    <string name="sonos_test_nothing_playing">Nothing playing</string>
+    <string name="sonos_test_no_local_network_permission">Local network permission not granted. Go to Settings > Apps > Aerial Views > Permissions and enable Local Network access.</string>
+    <string name="sonos_test_not_sonos">Port 1400 responded but this doesn\'t look like a Sonos device</string>
+    <string name="sonos_test_paused">Paused</string>
+    <string name="sonos_test_stopped">Stopped</string>
+    <string name="sonos_discover_title">Discover speakers</string>
+    <string name="sonos_discover_summary">Search for Sonos speakers on the local network</string>
+    <string name="sonos_discover_searching">Searching… (up to 4 seconds)</string>
+    <string name="sonos_discover_no_devices">No Sonos speakers found</string>
+    <string name="sonos_discover_dialog_title">Sonos speakers found</string>
+    <string name="sonos_discover_selected">Selected: %s</string>
+    <string name="sonos_discover_no_permission">Local network permission not granted</string>
+
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
     <string name="weather_temperature_units_title">Units</string>
@@ -600,6 +623,32 @@
     <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
     <string name="appearance_countdown_target_message_title">Completion Message</string>
     <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. "Happy New Year!")</string>
+    <string name="appearance_countdown_label_title">Countdown Label</string>
+    <string name="appearance_countdown_label_summary">Optional text shown before the countdown, e.g. "Time left until New Year\'s:"</string>
+
+    <string name="countdown_time_is_up">Time\'s up!</string>
+    <string name="countdown_invalid_time_format">Invalid time format</string>
+    <string name="countdown_error">Error</string>
+    
+    <!-- Escaped as \u0020 because aapt2 trims whitespace-only string values to an empty string -->
+    <string name="countdown_unit_separator" translatable="false">\u0020</string>
+
+    <plurals name="countdown_unit_days">
+        <item quantity="one">%1$dd</item>
+        <item quantity="other">%1$dd</item>
+    </plurals>
+    <plurals name="countdown_unit_hours">
+        <item quantity="one">%1$dh</item>
+        <item quantity="other">%1$dh</item>
+    </plurals>
+    <plurals name="countdown_unit_minutes">
+        <item quantity="one">%1$dm</item>
+        <item quantity="other">%1$dm</item>
+    </plurals>
+    <plurals name="countdown_unit_seconds">
+        <item quantity="one">%1$ds</item>
+        <item quantity="other">%1$ds</item>
+    </plurals>
 
     <string name="appearance_message_api_enabled_title">Enable API</string>
     <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
@@ -691,6 +740,12 @@
 
     <!-- Main / Settings / Appearance / Typography -->
     <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_overlay_opacity_title">Overlay opacity</string>
+    <string name="appearance_overlay_colour_title">Overlay colour</string>
+    <string name="appearance_overlay_padding_horizontal_title">Overlay padding (left/right)</string>
+    <string name="appearance_overlay_padding_vertical_title">Overlay padding (top/bottom)</string>
+    <string name="overlay_colour_dialog_hex_hint">Hex colour, for example #FFC107</string>
+    <string name="overlay_colour_dialog_invalid">Enter a colour such as #FFC107</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="playlist_mute_videos_title">Mute videos</string>
@@ -860,9 +915,7 @@
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
     <string name="advanced_portrait_rotation_title">Portrait video rotation fix</string>
-    <string name="advanced_portrait_rotation_summary">Manually rotate portrait videos to correct their orientation. Only applies when using SurfaceView. Useful for devices with firmware bugs.</string>
-    <string name="advanced_use_texture_view_title">Use TextureView for video</string>
-    <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
+    <string name="advanced_portrait_rotation_summary">Manually rotate portrait videos to correct their orientation. Only applies when using SurfaceView and when video scaling is set to fit without cropping. Useful for devices with firmware bugs.</string>
     <string name="advanced_reduce_buffer_memory_title">Reduce playback buffers and memory usage</string>
     <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
     <string name="advanced_mute_disables_audio_track_title">Disable audio track when muted</string>

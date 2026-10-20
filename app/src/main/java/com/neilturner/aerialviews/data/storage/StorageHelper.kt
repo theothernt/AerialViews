@@ -4,22 +4,12 @@ import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
-import androidx.annotation.RequiresApi
-import java.lang.reflect.Array
 import java.lang.reflect.InvocationTargetException
 
 object StorageHelper {
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 
-    fun getStoragePaths(context: Context): LinkedHashMap<String, String> =
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            getStoragePathsLow(context)
-        } else {
-            getStoragePaths24(context)
-        }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private fun getStoragePaths24(context: Context): LinkedHashMap<String, String> {
+    fun getStoragePaths(context: Context): LinkedHashMap<String, String> {
         val paths = LinkedHashMap<String, String>()
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
@@ -45,36 +35,6 @@ object StorageHelper {
         } catch (e: IllegalAccessException) {
             e.printStackTrace()
         } catch (e: java.lang.NullPointerException) {
-            e.printStackTrace()
-        }
-        if (paths.isEmpty()) {
-            val path = Environment.getExternalStorageDirectory().absolutePath
-            paths[path] = formatPathAsLabel(path)
-        }
-        return paths
-    }
-
-    private fun getStoragePathsLow(context: Context): LinkedHashMap<String, String> {
-        val paths = LinkedHashMap<String, String>()
-        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
-        try {
-            val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
-            val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
-            val getPath = storageVolumeClazz.getMethod("getPath")
-            val result = getVolumeList.invoke(storageManager) as Any
-            val length: Int = Array.getLength(result)
-            for (i in 0 until length) {
-                val storageVolumeElement: Any = Array.get(result, i) as Any
-                val path = getPath.invoke(storageVolumeElement) as String
-                paths[path] = formatPathAsLabel(path)
-            }
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-        } catch (e: InvocationTargetException) {
-            e.printStackTrace()
-        } catch (e: NoSuchMethodException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
             e.printStackTrace()
         }
         if (paths.isEmpty()) {

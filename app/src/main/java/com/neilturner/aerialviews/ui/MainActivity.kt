@@ -15,7 +15,6 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import com.neilturner.aerialviews.ui.screensaver.TestActivity
 import com.neilturner.aerialviews.ui.settings.ImportExportFragment
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -66,7 +65,6 @@ class MainActivity :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.analyticsScreenView("Main", this)
         lifecycleScope.launch {
             handleCustomLaunching()
         }

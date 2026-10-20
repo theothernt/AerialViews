@@ -7,7 +7,7 @@ android {
     namespace = "tv.projectivy.plugin.wallpaperprovider.api"
     compileSdk = 37
     defaultConfig {
-        minSdk = 23
+        minSdk = 24
     }
 
     buildFeatures {
@@ -16,11 +16,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            optimization {
+                enable = false
+            }
         }
         create("nonMinifiedRelease") {
         }

@@ -22,9 +22,9 @@ android {
     val keyProps = loadProperties("secrets.properties")
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 23 // Android v6
+        minSdk = 24 // Android v7
         targetSdk = 37
-        versionCode = 149
+        versionCode = 150
         versionName = "1.8.6"
         betaVersion = "-beta1"
 
@@ -77,10 +77,10 @@ android {
             // isPseudoLocalesEnabled = true
         }
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            optimization {
+                enable = true
+            }
             // isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             val openWeather = keyProps.getProperty("openWeather", "")
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")

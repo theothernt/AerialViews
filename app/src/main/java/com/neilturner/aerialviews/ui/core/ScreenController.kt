@@ -26,11 +26,13 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.SonosPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MusicPlayer
 import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.sonos.SonosService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.controls.ProgressBar
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
@@ -42,6 +44,7 @@ import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.GradientHelper
 import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
@@ -85,8 +88,8 @@ class ScreenController(
     private var isStopped = false
 
     private var nowPlayingService: NowPlayingService? = null
+    private var sonosService: SonosService? = null
     private var weatherService: WeatherService? = null
-    private var ktorServer: KtorServer? = null
     private var musicPlayer: MusicPlayer? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
@@ -100,6 +103,8 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
+    private val overlayVisibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
+    private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -112,8 +117,10 @@ class ScreenController(
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
+    private var forcedMuteVideo = false
+    private var userMutedVideo = !GeneralPrefs.playsVideoAudio
     private val cacheRepository = PlaylistCacheRepository(context)
-    private var videoViewBinding: VideoViewBinding
+    private lateinit var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
@@ -121,7 +128,7 @@ class ScreenController(
     private var loadingText: TextView
     private var loadingSpinner: View
     private var loadingContainer: View
-    private var videoPlayer: VideoPlayerView
+    private lateinit var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
     private val gradientTopView: View
@@ -147,7 +154,6 @@ class ScreenController(
         val binding = AerialActivityBinding.inflate(inflater)
 
         val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
-        val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
         val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
 
         // Setup binding for all views and controls
@@ -165,28 +171,22 @@ class ScreenController(
 
         val initialVideoRoot = binding.videoView.root
         val videoParent = initialVideoRoot.parent as? ViewGroup
-        val videoLayoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) {
-                R.layout.video_view_texture
-            } else {
-                R.layout.video_view
-            }
-
-        videoViewBinding =
+        val videoRoot =
             if (videoParent != null) {
                 val index = videoParent.indexOfChild(initialVideoRoot)
+                // The player from the inflated layout is discarded here, so release it. Otherwise its
+                // ExoPlayer is kept alive by the DefaultBandwidthMeter singleton, which retains the
+                // discarded view hierarchy and the Activity for the life of the process.
+                binding.videoView.videoPlayer.release()
                 videoParent.removeView(initialVideoRoot)
-                val inflater = LayoutInflater.from(context)
-                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
+                val replacementVideoRoot = LayoutInflater.from(context).inflate(R.layout.video_view, videoParent, false)
                 videoParent.addView(replacementVideoRoot, index)
-                VideoViewBinding.bind(replacementVideoRoot)
+                replacementVideoRoot
             } else {
-                binding.videoView
+                initialVideoRoot
             }
 
-        videoViewBinding.root.setBackgroundColor(backgroundVideos)
-        videoPlayer = videoViewBinding.videoPlayer
-        videoPlayer.setOnPlayerListener(this)
+        installVideoView(videoRoot)
 
         imageViewBinding = binding.imageView
         imageViewBinding.root.setBackgroundColor(backgroundPhotos)
@@ -263,13 +263,18 @@ class ScreenController(
                 nowPlayingService = NowPlayingService(context)
             }
 
+            if (SonosPrefs.enabled && SonosPrefs.ipAddress.isNotEmpty()) {
+                if (PermissionHelper.hasLocalNetworkPermission(context)) {
+                    sonosService = SonosService(SonosPrefs.ipAddress, SonosPrefs.pollInterval).also { it.start() }
+                } else {
+                    Timber.w("SonosService not started: ACCESS_LOCAL_NETWORK permission not granted")
+                }
+            }
+
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
-                ktorServer =
-                    KtorServer(context) { messageEvent ->
-                        GlobalBus.post(messageEvent)
-                    }.apply {
-                        start()
-                    }
+                KtorServer.start(context) { messageEvent ->
+                    GlobalBus.post(messageEvent)
+                }
             }
 
             // Build playlist and start screensaver
@@ -406,6 +411,11 @@ class ScreenController(
             null
         }
 
+    private fun setVideoForcedMute(enabled: Boolean) {
+        forcedMuteVideo = enabled
+        videoPlayer.setMuteState(forcedMuteVideo, userMutedVideo)
+    }
+
     private fun setupMusicPlayer(
         musicPlaylist: MusicPlaylist?,
         resumeIndex: Int = 0,
@@ -414,17 +424,17 @@ class ScreenController(
 
         if (!backgroundMusicSelected) {
             Timber.i("MusicPlayer: background music not selected, skipping")
-            videoPlayer.setForcedMute(false)
+            setVideoForcedMute(false)
             return
         }
 
         if (musicPlaylist == null || musicPlaylist.size == 0) {
             Timber.i("MusicPlayer: no music playlist available, skipping")
-            videoPlayer.setForcedMute(false)
+            setVideoForcedMute(false)
             return
         }
 
-        videoPlayer.setForcedMute(true)
+        setVideoForcedMute(true)
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
@@ -555,7 +565,7 @@ class ScreenController(
         when (overlayVisibilityMode) {
             "ALWAYS_VISIBLE" -> {
                 // Overlays stay visible, no hiding
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
                     gradientTopView.alpha = 1f
                 }
@@ -581,7 +591,7 @@ class ScreenController(
 
             "HIDE_AFTER_DELAY" -> {
                 // Show overlays, then hide after delay
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
                 if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
                     gradientTopView.alpha = 1f
                 }
@@ -609,7 +619,7 @@ class ScreenController(
                         val animator =
                             view
                                 .animate()
-                                .alpha(1f)
+                                .alpha(overlayVisibleAlpha)
                                 .setStartDelay(0)
                                 .setDuration(overlayFadeIn)
                         if (index == overlaysToFade.lastIndex) {
@@ -769,6 +779,12 @@ class ScreenController(
         overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.isHidden = hidden }
     }
 
+    private fun renderMetadataOverlays(state: OverlayUiState) {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
+            state.metadata[overlay.type]?.let { overlay.render(it, videoPlayer) }
+        }
+    }
+
     fun showOverlays() {
         // Only allow reveal when overlays can be hidden
         if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
@@ -794,7 +810,7 @@ class ScreenController(
             val animator =
                 view
                     .animate()
-                    .alpha(1f)
+                    .alpha(overlayVisibleAlpha)
                     .setStartDelay(0)
                     .setDuration(overlayFadeIn)
 
@@ -866,13 +882,16 @@ class ScreenController(
         }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
+        // Release before detaching: View.removeCallbacks() does nothing once mAttachInfo is null,
+        // which would leave pending delayed messages holding the view and the Activity alive.
+        videoPlayer.release()
         // Remove video view from parent to break context reference chain
         val videoParent = videoViewBinding.root.parent as? ViewGroup
         videoParent?.removeView(videoViewBinding.root)
-        videoPlayer.release()
         imagePlayer.release()
-        ktorServer?.stop()
+        KtorServer.stop()
         nowPlayingService?.stop()
+        sonosService?.stop()
         weatherService?.stop()
         musicPlayer?.pause()
         musicPlayer?.release()
@@ -1017,6 +1036,14 @@ class ScreenController(
         NotificationHelper.show(notificationContainer, message)
     }
 
+    fun restartVideo() {
+        if (blackOutMode) return
+        if (currentMedia?.type != AerialMediaType.VIDEO) return
+        // Restart resumes playback, so clear any paused state
+        if (isPaused) resumeMedia()
+        videoPlayer.restart()
+    }
+
     fun increaseBrightness() = changeBrightness(true)
 
     fun decreaseBrightness() = changeBrightness(false)
@@ -1054,6 +1081,7 @@ class ScreenController(
 
     fun toggleMute() {
         videoPlayer.toggleMute()
+        userMutedVideo = videoPlayer.mutedState
     }
 
     private fun pauseMedia() {
@@ -1116,20 +1144,32 @@ class ScreenController(
         }
     }
 
+    private fun installVideoView(
+        root: View,
+        visibility: Int = View.VISIBLE,
+    ) {
+        videoViewBinding = VideoViewBinding.bind(root)
+        videoViewBinding.root.setBackgroundColor(backgroundVideosColour)
+        videoViewBinding.root.visibility = visibility
+        videoPlayer = videoViewBinding.videoPlayer
+        videoPlayer.setOnPlayerListener(this)
+        videoPlayer.setMuteState(forcedMuteVideo, userMutedVideo)
+    }
+
     private fun recreateVideoPlayer() {
         val oldRoot = videoViewBinding.root
         val videoParent = oldRoot.parent as? ViewGroup ?: return
         val index = videoParent.indexOfChild(oldRoot)
+        val previousVisibility = oldRoot.visibility
         videoPlayer.release()
         videoParent.removeView(oldRoot)
 
-        val layoutRes =
-            if (GeneralPrefs.useTextureViewForVideo) R.layout.video_view_texture else R.layout.video_view
-        val replacement = LayoutInflater.from(context).inflate(layoutRes, videoParent, false)
+        val replacement = LayoutInflater.from(context).inflate(R.layout.video_view, videoParent, false)
         videoParent.addView(replacement, index)
-        videoViewBinding = VideoViewBinding.bind(replacement)
-        videoPlayer = videoViewBinding.videoPlayer
-        videoPlayer.setOnPlayerListener(this)
+        installVideoView(replacement, previousVisibility)
+
+        // The metadata overlays hold a reference to the old player for POI timings.
+        renderMetadataOverlays(overlayStateStore.uiState.value)
     }
 
     private fun handlePlaybackSpeedChanged() {
@@ -1280,12 +1320,7 @@ class ScreenController(
     }
 
     private fun renderOverlayState(state: OverlayUiState) {
-        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
-            val locationState = state.metadata[overlay.type]
-            if (locationState != null) {
-                overlay.render(locationState, videoPlayer)
-            }
-        }
+        renderMetadataOverlays(state)
 
         overlayHelper.findOverlay<NowPlayingOverlay>().forEach {
             it.render(state.nowPlaying)

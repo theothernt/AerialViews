@@ -15,7 +15,9 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastDay
+import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.ForecastOverlayState
 import timber.log.Timber
 
@@ -46,7 +48,7 @@ class WeatherForecastOverlay
 
         // Layout constants
         private val fadeAnimationDuration = 300L
-        private val minVisibleAlphaForFade = 0.95f
+        private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
         private val cellSpacing = 24 // dp between day columns
         private val elementMargin = 4 // dp between label/icon/temp
         private val iconScale = 1.1f // multiplier relative to text height
@@ -72,9 +74,15 @@ class WeatherForecastOverlay
         init {
             orientation = HORIZONTAL
             gravity = Gravity.CENTER
-            alpha = 1f
+            // Alpha is assigned by OverlayHelper for every slot, so it is not set here.
             applyDebugBackgrounds("root")
         }
+
+        // Keeps the per-element dimming while using the user's overlay colour
+        private fun withAlpha(
+            colour: Int,
+            alpha: Int,
+        ): Int = Color.argb(alpha, Color.red(colour), Color.green(colour), Color.blue(colour))
 
         private fun applyDebugBackgrounds(
             key: String?,
@@ -95,6 +103,11 @@ class WeatherForecastOverlay
             this.weight = weight
         }
 
+        // Read from prefs with the other style attributes so every update picks up the
+        // current colour, matching how GeneralPrefs.fontTypeface is resolved in setupViews()
+        private val colour: Int
+            get() = ColourHelper.overlayColour(GeneralPrefs.overlayColour)
+
         fun render(state: ForecastOverlayState) {
             val days = state.event.days
             if (days.isEmpty()) {
@@ -108,13 +121,13 @@ class WeatherForecastOverlay
                 return
             }
 
-            val allowFadeAnimation = alpha >= minVisibleAlphaForFade
+            val allowFadeAnimation = OverlayOpacityHelper.isVisible(alpha, visibleAlpha)
 
             if (previousDays == null) {
                 previousDays = days
                 updateForecastContent(days)
                 if (allowFadeAnimation && !isHidden) {
-                    animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                    animate().alpha(visibleAlpha).setDuration(fadeAnimationDuration).start()
                 }
                 return
             }
@@ -132,7 +145,7 @@ class WeatherForecastOverlay
                 .withEndAction {
                     updateForecastContent(days)
                     if (!isHidden) {
-                        animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                        animate().alpha(visibleAlpha).setDuration(fadeAnimationDuration).start()
                     }
                 }.start()
         }
@@ -187,7 +200,7 @@ class WeatherForecastOverlay
             dayLabel.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
             val dayLabelOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, dayLabel.textSize)
             dayLabel.setPadding(0, dayLabelOffset + superscriptExtraPx, 0, -(dayLabelOffset + superscriptExtraPx))
-            dayLabel.setTextColor(Color.argb(dayLabelAlpha, 255, 255, 255))
+            dayLabel.setTextColor(withAlpha(colour, dayLabelAlpha))
             applyDebugBackgrounds("dayLabel", dayLabel)
             val labelParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             labelParams.bottomMargin = elementMargin
@@ -198,6 +211,7 @@ class WeatherForecastOverlay
                 val iconView =
                     SvgImageView(context).apply {
                         setSvgResource(day.icon)
+                        setTintColour(colour)
                     }
                 val iconParams = LayoutParams(iconSize, iconSize)
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL
@@ -227,7 +241,7 @@ class WeatherForecastOverlay
             highTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
             val highTempOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, highTemp.textSize)
             highTemp.setPadding(0, highTempOffset + superscriptExtraPx, 0, -(highTempOffset + superscriptExtraPx))
-            highTemp.setTextColor(Color.argb(highTempAlpha, 255, 255, 255))
+            highTemp.setTextColor(withAlpha(colour, highTempAlpha))
             tempContainer.addView(highTemp)
 
             val separator =
@@ -248,7 +262,7 @@ class WeatherForecastOverlay
             lowTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
             val lowTempOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, lowTemp.textSize)
             lowTemp.setPadding(0, lowTempOffset + superscriptExtraPx, 0, -(lowTempOffset + superscriptExtraPx))
-            lowTemp.setTextColor(Color.argb(lowTempAlpha, 255, 255, 255))
+            lowTemp.setTextColor(withAlpha(colour, lowTempAlpha))
             tempContainer.addView(lowTemp)
 
             column.addView(tempContainer)
