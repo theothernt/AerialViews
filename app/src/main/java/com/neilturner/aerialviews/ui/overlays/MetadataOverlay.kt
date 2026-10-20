@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -20,8 +21,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var poiJob: Job? = null
-    private val textAlpha = 1f // start + end values?
-    private val minVisibleAlphaForPoiFade = 0.95f
+    private val visibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
     var isFadingOutMedia = false // Stops POI change + fade as video is ending
     var type: OverlayType = OverlayType.METADATA1
 
@@ -101,8 +101,8 @@ class MetadataOverlay : AppCompatTextView {
                         lastPoi = newPoi // Compiler bug?
 
                         // If auto-hide has already faded this overlay out, update text silently.
-                        // Do not animate alpha back to 1f.
-                        if (this@MetadataOverlay.alpha < minVisibleAlphaForPoiFade) {
+                        // Do not animate alpha back to the visible alpha.
+                        if (!OverlayOpacityHelper.isVisible(this@MetadataOverlay.alpha, visibleAlpha)) {
                             this@MetadataOverlay.text = nextText
                             delay(1000.milliseconds)
                             continue
@@ -117,7 +117,7 @@ class MetadataOverlay : AppCompatTextView {
                                 this@MetadataOverlay.text = nextText
                                 this@MetadataOverlay
                                     .animate()
-                                    .alpha(textAlpha)
+                                    .alpha(visibleAlpha)
                                     .setDuration(1000)
                                     .start()
                             }.start()

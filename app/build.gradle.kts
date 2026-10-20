@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
-    alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.spotless)
     alias(libs.plugins.baselineprofile)
 }
 
@@ -22,11 +22,11 @@ android {
     val keyProps = loadProperties("secrets.properties")
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 23 // Android v6
+        minSdk = 24 // Android v7
         targetSdk = 37
-        versionCode = 147
-        versionName = "1.8.5"
-        betaVersion = "-beta11"
+        versionCode = 150
+        versionName = "1.8.6"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -77,10 +77,10 @@ android {
             // isPseudoLocalesEnabled = true
         }
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            optimization {
+                enable = true
+            }
             // isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             val openWeather = keyProps.getProperty("openWeather", "")
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
@@ -167,6 +167,20 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format("misc") {
+        target("**/*.md", "**/.gitignore")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 dependencies {

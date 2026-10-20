@@ -101,7 +101,10 @@ class PlaylistFragment : MenuStateFragment() {
 
     private fun updateSoundControls(value: String) {
         val volumePref = findPreference<ListPreference>("video_volume")
+        val musicRepeatPref = findPreference<CheckBoxPreference>("music_repeat")
+        val isBackgroundMusic = value == PlaylistAudioMode.BACKGROUND_MUSIC.name
         volumePref?.isEnabled = value != PlaylistAudioMode.VIDEO_MUTED.name
+        musicRepeatPref?.isVisible = isBackgroundMusic
     }
 
     private fun setupSummaryUpdater(

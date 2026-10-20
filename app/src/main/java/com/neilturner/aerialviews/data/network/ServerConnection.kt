@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.data.network
 
 import android.annotation.SuppressLint
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.net.URI
 import java.security.SecureRandom
@@ -94,12 +93,7 @@ class SslHelper {
     fun createOkHttpClient(config: ServerConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
-        val logging =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.HEADERS
-            }
-
-        builder.addInterceptor(logging)
+        HttpLogging.interceptor()?.let { builder.addInterceptor(it) }
 
         if (!config.validateCertificates) {
             val trustAllCerts =

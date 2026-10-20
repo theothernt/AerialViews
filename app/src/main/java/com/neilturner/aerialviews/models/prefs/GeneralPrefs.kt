@@ -66,7 +66,7 @@ object GeneralPrefs : KotprefModel() {
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2Days by stringPref("5", "weather_line2_days")
+    var weatherLine2Days by stringPref("3", "weather_line2_days")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
@@ -142,6 +142,7 @@ object GeneralPrefs : KotprefModel() {
     // Countdown
     var countdownTargetTime by stringPref("", "countdown_target_time")
     var countdownTargetMessage by stringPref("", "countdown_target_message")
+    var countdownLabel by stringPref("", "countdown_label")
     var countdownSize by stringPref("18", "countdown_size")
     var countdownWeight by stringPref("300", "countdown_weight")
 
@@ -183,7 +184,17 @@ object GeneralPrefs : KotprefModel() {
     var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
     // Typeface (for whole app)
-    var fontTypeface by stringPref("open-sans", "font_typeface")
+    var fontTypeface by stringPref("google-sans", "font_typeface")
+
+    // Overlay opacity (visible alpha for all overlays)
+    var overlayOpacity by stringPref("100", "overlay_opacity")
+
+    // Overlay text/icon colour
+    var overlayColour by stringPref("#FFFFFF", "overlay_colour")
+
+    // Overlay screen edge padding (dp)
+    var overlayPaddingHorizontal by stringPref("32", "overlay_padding_horizontal")
+    var overlayPaddingVertical by stringPref("26", "overlay_padding_vertical")
 
     // Progress Bar
     var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
@@ -273,18 +284,14 @@ object GeneralPrefs : KotprefModel() {
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
     var exitOnMouseMovement by booleanPref(false, "exit_on_mouse_movement")
-    var seekInterval by stringPref("10", "seek_interval") // Advanced
+    var seekInterval by stringPref("30", "seek_interval")
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
-    var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
     var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
     var muteDisablesAudioTrack by booleanPref(true, "mute_disables_audio_track")
     var portraitVideoRotationDegrees by stringPref("0", "portrait_video_rotation_degrees")
-
-    val portraitVideoRotationEnabled: Boolean
-        get() = portraitVideoRotationDegrees != "0"
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

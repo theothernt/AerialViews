@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
@@ -40,6 +41,11 @@ class WebDavVideos2Fragment :
         checkForLocalNetworkPermission()
         updateSummary()
         setupValidation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("WebDAV 2", this)
     }
 
     override fun onDestroy() {

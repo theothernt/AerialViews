@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
@@ -37,6 +38,11 @@ class SambaVideos2Fragment :
 
         checkForLocalNetworkPermission()
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Samba 2", this)
     }
 
     override fun onDestroy() {

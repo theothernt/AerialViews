@@ -46,6 +46,14 @@ class OverlaysCountdownFragment :
             targetTime?.summary = getString(R.string.appearance_countdown_target_time_summary)
         }
 
+        // Countdown Label
+        val label = findPreference<EditTextPreference>("countdown_label")
+        if (label?.text.toStringOrEmpty().isNotEmpty()) {
+            label?.summary = label.text
+        } else {
+            label?.summary = getString(R.string.appearance_countdown_label_summary)
+        }
+
         // Target Message
         val targetMessage = findPreference<EditTextPreference>("countdown_target_message")
         if (targetMessage?.text.toStringOrEmpty().isNotEmpty()) {
