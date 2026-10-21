@@ -1,0 +1,23 @@
+{
+  "name": "nc-memories",
+  "description": "Nextcloud Memories server. Requires the Memories app to be installed and enabled on the server.",
+  "general": {
+    "playlistCache": false,
+    "startScreensaverOnLaunch": true,
+    "shuffleVideos": false,
+    "autoTimeOfDay": false,
+    "wifiOnly": false
+  },
+  "providers": {
+    "ncMemories": {
+      "enabled": true,
+      "url": "https://203.0.113.71",
+      "username": "aerial",
+      "password": "aerial",
+      "validateSsl": false,
+      "favoritesName": "Favorites",
+      "recentName": "Recent",
+      "mediaSelection": ["VIDEOS", "PHOTOS"]
+    }
+  }
+}
