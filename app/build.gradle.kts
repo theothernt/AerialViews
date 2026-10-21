@@ -34,6 +34,12 @@ android {
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         manifestPlaceholders["performanceCollectionEnabled"] = false
 
+        // The runtime test config receiver is disabled unless the build opts in with -PtestConfig=true.
+        // This keeps it out of distributed builds while still allowing a local release build to be
+        // driven from adb, for example when verifying R8 shrunk builds against a real server.
+        manifestPlaceholders["testConfigReceiverEnabled"] =
+            (project.findProperty("testConfig") as String?)?.toBooleanStrictOrNull() ?: false
+
         val openWeather = keyProps.getProperty("openWeatherDebug", "")
         buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
         buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")

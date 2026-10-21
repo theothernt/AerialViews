@@ -8,6 +8,10 @@ import com.neilturner.aerialviews.models.enums.NCMemoriesImageType
 import com.neilturner.aerialviews.models.enums.NCMemoriesVideoType
 import com.neilturner.aerialviews.models.enums.SchemeType
 import com.neilturner.aerialviews.models.enums.VideoQuality
+import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
+import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
+import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
@@ -61,6 +65,12 @@ object TestConfigApplier {
         ImmichMediaPrefs.enabled = false
         NCMemoriesMediaPrefs.enabled = false
         LocalMediaPrefs.enabled = false
+        // The built in community feeds are enabled by default and would otherwise dominate the
+        // playlist, so a test run would take a long time to reach the provider under test.
+        Comm1VideoPrefs.enabled = false
+        Comm2VideoPrefs.enabled = false
+        AmazonVideoPrefs.enabled = false
+        AppleVideoPrefs.enabled = false
     }
 
     private fun applyGeneral(general: GeneralConfig) {

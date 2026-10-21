@@ -7,8 +7,8 @@ where reflection breakage only shows up.
 ## Model: one config file per provider
 
 Each file in [`configs/`](configs) enables exactly **one** provider. Before applying a file the
-applier disables every provider, so a test run only ever talks to the server under test and
-results cannot be polluted by a previously enabled provider.
+applier disables every provider, including the built in community feeds, so a test run only ever
+talks to the server under test and results cannot be polluted by a previously enabled provider.
 
 The loop is:
 
@@ -156,29 +156,45 @@ cp docs/testing/configs/samba.json local/test-configs/samba.json
 ## Applying a config
 
 The applier lives in `app/src/main/java/com/neilturner/aerialviews/testconfig/` and is registered
-in the manifest as a receiver that is **disabled by default**, so it is inert in normal builds.
-Enable it on the device that is being tested.
+in the manifest as a receiver. It is **disabled unless the build opts in** with
+`-PtestConfig=true`, so it is absent from distributed builds. The receiver also only accepts
+requests from the shell.
+
+Before applying a config the applier disables **every** provider, including the built in
+community feeds (Comm1, Comm2, Amazon, Apple). Those are enabled by default and would otherwise
+contribute hundreds of items and dominate the playlist, so a test run would take a long time to
+reach the provider under test. A config file therefore only needs to name the provider it tests.
 
 ```sh
-# 1. Install the release build under test (R8 enabled)
-./gradlew :app:installBetaRelease
+# 1. Build and install the build under test (R8 enabled for release builds)
+./gradlew :app:assembleBetaRelease -PtestConfig=true
+adb install -r app/build/outputs/apk/beta/release/app-beta-release.apk
 
-# 2. Enable the config receiver on this device only
-adb shell pm enable com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver
+# 2. Copy the config into the app's own files dir
+#    (adb push into /sdcard/Android/data is blocked by scoped storage)
+adb shell "run-as com.neilturner.aerialviews sh -c 'cat > files/test-config.json'" < local/test-configs/samba.json
 
-# 3. Push the config into the app's own external files dir (no storage permission needed)
-adb push local/test-configs/samba.json /sdcard/Android/data/com.neilturner.aerialviews/files/test-config.json
-
-# 4. Apply it
+# 3. Apply it
 adb shell am broadcast \
   -n com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver \
   -a com.neilturner.aerialviews.testconfig.APPLY \
-  --es path /sdcard/Android/data/com.neilturner.aerialviews/files/test-config.json
+  --es path /data/data/com.neilturner.aerialviews/files/test-config.json
 
-# 5. Relaunch so the app picks up the new settings
+# 4. Relaunch so the app picks up the new settings
 adb shell am force-stop com.neilturner.aerialviews
 adb shell am start -n com.neilturner.aerialviews/com.neilturner.aerialviews.ui.MainActivity
 ```
+
+`run-as` only works on debuggable builds. For a release build, pass the config inline instead:
+
+```sh
+adb shell am broadcast \
+  -n com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver \
+  -a com.neilturner.aerialviews.testconfig.APPLY \
+  --es json "$(cat local/test-configs/samba.json)"
+```
+
+The app id differs for debug builds, where it is `com.neilturner.aerialviews.debug`.
 
 ## Verifying a run
 
@@ -203,19 +219,20 @@ The playlist is built from both photos and videos, so leave `mediaSelection` as
 
 ```sh
 for config in local/test-configs/*.json; do
-  adb push "$config" /sdcard/Android/data/com.neilturner.aerialviews/files/test-config.json
+  adb shell "run-as com.neilturner.aerialviews sh -c 'cat > files/test-config.json'" < "$config"
   adb shell am broadcast \
     -n com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver \
     -a com.neilturner.aerialviews.testconfig.APPLY \
-    --es path /sdcard/Android/data/com.neilturner.aerialviews/files/test-config.json
+    --es path /data/data/com.neilturner.aerialviews/files/test-config.json
   adb shell am force-stop com.neilturner.aerialviews
   adb shell am start -n com.neilturner.aerialviews/com.neilturner.aerialviews.ui.MainActivity
   # ... check image playback, then video playback, then move to the next config
 done
 ```
 
-Turn the receiver off again when the device is no longer being used for testing:
+`MainActivity` only starts the screensaver automatically once the "exit to settings" preference
+has been set. Until then, launch the screensaver directly:
 
 ```sh
-adb shell pm disable com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver
+adb shell am start -n com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.TestActivity
 ```

@@ -223,14 +223,13 @@
             android:value="false" />
 
         <!--
-            Runtime test configuration. Disabled by default so that it is inert in normal builds.
-            Enable it on a test device with:
-            adb shell pm enable com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver
+            Runtime test configuration. Disabled unless the build enables it with -PtestConfig=true,
+            so it is inert in normal builds. The receiver also only accepts requests from the shell.
             See docs/testing/README.md
         -->
         <receiver
             android:name=".testconfig.TestConfigReceiver"
-            android:enabled="false"
+            android:enabled="${testConfigReceiverEnabled}"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.neilturner.aerialviews.testconfig.APPLY" />
