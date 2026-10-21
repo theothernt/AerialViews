@@ -19,12 +19,20 @@ class MediaPlaylist(
 
     private val windowVideos = initialVideos.toMutableList()
     private val windowLock = Any()
+
+    // Items already shown out of order (e.g. as a side-by-side companion), skipped once by nextItem()
+    private val pairedIndices = mutableSetOf<Int>()
     private val scope = CoroutineScope(Dispatchers.IO)
 
     val currentPosition: Int get() = position
 
     fun nextItem(): AerialMedia {
         position = calculateNext(++position)
+        synchronized(windowLock) {
+            while (size > 1 && pairedIndices.remove(position)) {
+                position = calculateNext(position + 1)
+            }
+        }
         if (position == 0 && size > 0) hasReachedEnd = true
 
         Timber.v("MediaPlaylist: nextItem() -> pos $position / $size (window: ${windowVideos.size})")
@@ -40,6 +48,28 @@ class MediaPlaylist(
         checkAndRefillWindow()
 
         return getItemAt(position)
+    }
+
+    /**
+     * Returns up to [count] upcoming items (with their absolute index) without moving the
+     * current position. Items already marked with [markPaired] and the current item are left out.
+     */
+    fun peekAhead(count: Int): List<IndexedValue<AerialMedia>> {
+        val current = position
+        val paired = synchronized(windowLock) { pairedIndices.toSet() }
+        return (1..minOf(count, size - 1))
+            .map { calculateNext(current + it) }
+            .filter { it != current && it !in paired }
+            .map { IndexedValue(it, getItemAt(it)) }
+    }
+
+    /**
+     * Marks the item at [absoluteIndex] as already shown, so the next pass of [nextItem] skips it.
+     */
+    fun markPaired(absoluteIndex: Int) {
+        synchronized(windowLock) {
+            pairedIndices.add(absoluteIndex)
+        }
     }
 
     private fun checkAndRefillWindow() {

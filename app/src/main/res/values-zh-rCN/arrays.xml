@@ -238,6 +238,9 @@
   <string name="slideshow_30s">30 秒*</string>
   <string name="slideshow_3m">3 分钟</string>
   <string name="slideshow_5m">5 分钟</string>
+  <string name="slideshow_2s">2 秒</string>
+  <string name="slideshow_3s">3 秒</string>
+  <string name="slideshow_4s">4 秒</string>
   <string name="slideshow_5s">5 秒</string>
   <string name="slideshow_6h">6小时</string>
   <string name="slot_clock">时钟</string>

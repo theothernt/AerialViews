@@ -238,6 +238,9 @@
   <string name="slideshow_30s">30 giây*</string>
   <string name="slideshow_3m">3 phút</string>
   <string name="slideshow_5m">5 phút</string>
+  <string name="slideshow_2s">2 giây</string>
+  <string name="slideshow_3s">3 giây</string>
+  <string name="slideshow_4s">4 giây</string>
   <string name="slideshow_5s">5 giây</string>
   <string name="slideshow_6h">6 giờ</string>
   <string name="slot_clock">Đồng hồ</string>

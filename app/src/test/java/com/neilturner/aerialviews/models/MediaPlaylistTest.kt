@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.models
 import android.net.Uri
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.Test
 
@@ -76,6 +77,49 @@ internal class MediaPlaylistTest {
 
         val prevItem = playlist.previousItem()
         assertSame(allMedia[59], prevItem, "Expected previousItem from 0 to loop to item 59")
+    }
+
+    @Test
+    fun `peekAhead returns upcoming items without moving position`() {
+        val media = List(4) { testMedia() }
+        val playlist = MediaPlaylist(media, startPosition = 0)
+
+        val peeked = playlist.peekAhead(2)
+
+        assertEquals(listOf(1, 2), peeked.map { it.index })
+        assertSame(media[1], peeked[0].value)
+        assertEquals(0, playlist.currentPosition)
+    }
+
+    @Test
+    fun `peekAhead wraps around and never returns the current item`() {
+        val media = List(3) { testMedia() }
+        val playlist = MediaPlaylist(media, startPosition = 2)
+
+        assertEquals(listOf(0, 1), playlist.peekAhead(10).map { it.index })
+    }
+
+    @Test
+    fun `nextItem skips paired item once`() {
+        val media = List(4) { testMedia() }
+        val playlist = MediaPlaylist(media, startPosition = 0)
+
+        playlist.markPaired(1)
+
+        assertSame(media[2], playlist.nextItem())
+        assertSame(media[3], playlist.nextItem())
+        assertSame(media[0], playlist.nextItem())
+        assertSame(media[1], playlist.nextItem())
+    }
+
+    @Test
+    fun `peekAhead leaves out paired items`() {
+        val media = List(4) { testMedia() }
+        val playlist = MediaPlaylist(media, startPosition = 0)
+
+        playlist.markPaired(1)
+
+        assertEquals(listOf(2, 3), playlist.peekAhead(3).map { it.index })
     }
 
     private fun testMedia() = AerialMedia(uri = mockk<Uri>(relaxed = true))

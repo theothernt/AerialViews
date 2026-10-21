@@ -77,6 +77,12 @@
                     app:title="@string/playlist_slideshow_speed_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_slideshow_speed_summary" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="photo_portrait_side_by_side"
+                    app:summary="@string/playlist_photo_portrait_side_by_side_summary"
+                    app:title="@string/playlist_photo_portrait_side_by_side_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_sound_background_music">

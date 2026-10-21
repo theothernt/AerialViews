@@ -254,6 +254,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
+    var photoPortraitSideBySide by booleanPref(false, "photo_portrait_side_by_side")
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
     var photoBackgroundBlurEnabled by booleanPref(true, "photo_background_blur_enabled")

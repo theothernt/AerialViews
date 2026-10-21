@@ -238,6 +238,9 @@
   <string name="slideshow_30s">30 שניות*</string>
   <string name="slideshow_3m">3 דקות</string>
   <string name="slideshow_5m">5 דקות</string>
+  <string name="slideshow_2s">2 שניות</string>
+  <string name="slideshow_3s">3 שניות</string>
+  <string name="slideshow_4s">4 שניות</string>
   <string name="slideshow_5s">5 שניות</string>
   <string name="slideshow_6h">6 שעות</string>
   <string name="slot_clock">שָׁעוֹן</string>

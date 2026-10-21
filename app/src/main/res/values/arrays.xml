@@ -733,6 +733,9 @@
     <string name="locale_screensaver_default" translatable="false">default</string>
 
     <!-- Slideshow speed -->
+    <string name="slideshow_2s">2 seconds</string>
+    <string name="slideshow_3s">3 seconds</string>
+    <string name="slideshow_4s">4 seconds</string>
     <string name="slideshow_5s">5 seconds</string>
     <string name="slideshow_10s">10 seconds</string>
     <string name="slideshow_15s">15 seconds</string>
@@ -750,6 +753,9 @@
     <string name="slideshow_6h">6 hours</string>
     <string name="slideshow_12h">12 hours</string>
     <string-array name="slideshow_speed_entries" translatable="false">
+        <item>@string/slideshow_2s</item>
+        <item>@string/slideshow_3s</item>
+        <item>@string/slideshow_4s</item>
         <item>@string/slideshow_5s</item>
         <item>@string/slideshow_10s</item>
         <item>@string/slideshow_15s</item>
@@ -768,6 +774,9 @@
         <item>@string/slideshow_12h</item>
     </string-array>
     <string-array name="slideshow_speed_values" translatable="false">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
