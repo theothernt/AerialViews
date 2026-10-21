@@ -1,0 +1,24 @@
+{
+  "name": "webdav",
+  "description": "WebDAV server used for the CalDAV/Nextcloud style test endpoint. Path is relative to the account root.",
+  "general": {
+    "playlistCache": false,
+    "startScreensaverOnLaunch": true,
+    "shuffleVideos": false,
+    "autoTimeOfDay": false,
+    "wifiOnly": false
+  },
+  "providers": {
+    "webdav": {
+      "enabled": true,
+      "scheme": "HTTPS",
+      "hostName": "198.51.100.60",
+      "pathName": "/remote.php/dav/files/aerial/Aerial",
+      "userName": "aerial",
+      "password": "aerial",
+      "searchSubfolders": true,
+      "validateSsl": false,
+      "mediaSelection": ["VIDEOS", "PHOTOS"]
+    }
+  }
+}

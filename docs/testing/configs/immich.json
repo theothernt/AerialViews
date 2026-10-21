@@ -1,0 +1,24 @@
+{
+  "name": "immich",
+  "description": "Immich server using API key authentication. Swap authType to SHARED_LINK and set pathName to use a shared album link instead.",
+  "general": {
+    "playlistCache": false,
+    "startScreensaverOnLaunch": true,
+    "shuffleVideos": false,
+    "autoTimeOfDay": false,
+    "wifiOnly": false
+  },
+  "providers": {
+    "immich": {
+      "enabled": true,
+      "url": "http://203.0.113.70:2283",
+      "pathName": "",
+      "apiKey": "00000000-0000-0000-0000-000000000000",
+      "authType": "API_KEY",
+      "validateSsl": false,
+      "imageType": "PREVIEW",
+      "videoType": "TRANSCODED",
+      "mediaSelection": ["VIDEOS", "PHOTOS"]
+    }
+  }
+}
