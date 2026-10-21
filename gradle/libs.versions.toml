@@ -29,7 +29,7 @@ preference-ktx = "1.2.1"
 
 okhttp = "5.5.0"
 retrofit = "3.0.0"
-sardine-android = "0.0.3"
+sardine-android = "v0.9-nova"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.11.1"
