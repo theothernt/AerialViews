@@ -1,9 +1,17 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# Project-specific R8 keep rules.
+#
+# This file lives in the `keepRules` source set (src/main/keepRules) and is
+# picked up automatically by AGP 9.3+ because of the `.keep` extension. R8 and
+# resource optimization are enabled for the release build type with
+# `optimization { enable = true }` in app/build.gradle.kts - there is no
+# `proguard-rules.pro` and no `proguardFiles` declaration.
+#
+# The default Android platform rules (equivalent to
+# `getDefaultProguardFile("proguard-android-optimize.txt")`) are included
+# automatically; opt out with `optimization.keepRules.includeDefault = false`.
 #
 # For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+#   https://developer.android.com/topic/performance/app-optimization/keep-rules-overview
 
 # Firebase Crashlytics
 -keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
