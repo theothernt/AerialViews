@@ -55,14 +55,6 @@
 -keep class com.neilturner.aerialviews.data.**_Impl { *; }
 -keep class com.neilturner.aerialviews.data.*Entity { *; }
 
-# Sardine Android / XmlPullParser / Simple XML
-# sardine-android bundles its own rules for the XML model classes
-# (sardine-android-0.0.3/proguard.txt), so they do not need to be repeated
-# here. xpp3, which simple-xml pulls in, bundles none, so the XmlPullParser
-# classes it contributes are kept.
--keep class org.xmlpull.v1.** { *; }
--dontwarn android.content.res.XmlResourceParser
-
 -dontwarn org.apache.log4j.Level
 -dontwarn org.apache.log4j.Logger
 -dontwarn org.apache.log4j.Priority
