@@ -29,7 +29,6 @@ preference-ktx = "1.2.1"
 
 okhttp = "5.5.0"
 retrofit = "3.0.0"
-sardine-android = "v0.9-nova"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.11.1"
@@ -42,6 +41,7 @@ slf4j = "2.0.20"
 junit-jupiter = "6.1.3"
 junit5 = "2.0.2"
 mockk = "1.14.11"
+mockwebserver = "5.5.0"
 junit = "1.3.0"
 espresso-core = "3.7.0"
 uiautomator = "2.4.0"
@@ -107,12 +107,12 @@ coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versio
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3" }
 
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
-sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
 
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }

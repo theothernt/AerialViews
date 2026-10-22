@@ -81,6 +81,13 @@ android {
             isDebuggable = true
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
+
+            // The performance plugin instruments every OkHttp call in the app, which turns the
+            // unit tests into a minefield of unmocked Android calls. Debug builds do not need
+            // the automatic network metrics, and skipping them also speeds up the build.
+            extensions.configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
+                setInstrumentationEnabled(false)
+            }
         }
         release {
             optimization {
@@ -212,7 +219,6 @@ dependencies {
     implementation(libs.sqlite.framework)
     implementation(libs.bundles.exoplayer)
     implementation(libs.media3.container)
-    implementation(libs.sardine.android)
     implementation(libs.smbj)
     implementation(libs.timber)
     implementation(libs.slf4j.simple)
@@ -221,6 +227,7 @@ dependencies {
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.mockk)
+    testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
     testRuntimeOnly(libs.junit.jupiter.engine)
 

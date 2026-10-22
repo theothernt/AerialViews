@@ -185,13 +185,14 @@ adb shell am force-stop com.neilturner.aerialviews
 adb shell am start -n com.neilturner.aerialviews/com.neilturner.aerialviews.ui.MainActivity
 ```
 
-`run-as` only works on debuggable builds. For a release build, pass the config inline instead:
+`run-as` only works on debuggable builds. For a release build, pass the config inline instead. The
+quotes have to survive the trip through the device shell, so they are single quoted there:
 
 ```sh
-adb shell am broadcast \
+adb shell "am broadcast \
   -n com.neilturner.aerialviews/com.neilturner.aerialviews.testconfig.TestConfigReceiver \
   -a com.neilturner.aerialviews.testconfig.APPLY \
-  --es json "$(cat local/test-configs/samba.json)"
+  --es json '$(cat local/test-configs/samba.json)'"
 ```
 
 The app id differs for debug builds, where it is `com.neilturner.aerialviews.debug`.
