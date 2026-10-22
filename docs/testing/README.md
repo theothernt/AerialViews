@@ -57,12 +57,17 @@ Top level keys:
 | Key | Pref | Notes |
 |---|---|---|
 | `playlistCache` | `GeneralPrefs.playlistCache` | Keep `false` so every run re-fetches from the server |
-| `startScreensaverOnLaunch` | `GeneralPrefs.startScreensaverOnLaunch` | `true` starts playback on launch, no UI interaction needed |
+| `startScreensaverOnLaunch` | `GeneralPrefs.startScreensaverOnLaunch` | `true` starts playback on launch, no UI interaction needed. The applier maps the OK button to `EXIT_TO_SETTINGS` if no button is mapped already |
 | `shuffleVideos` | `GeneralPrefs.shuffleVideos` | `false` keeps ordering stable between runs |
 | `autoTimeOfDay` | `GeneralPrefs.autoTimeOfDay` | `false` stops the time of day filter hiding content |
 | `wifiOnly` | `GeneralPrefs.wifiOnly` | `false` allows the emulator/host network |
 | `messageApiEnabled` | `GeneralPrefs.messageApiEnabled` | Optional, exposes the Ktor message API on port 8081 |
 | `messageApiPort` | `GeneralPrefs.messageApiPort` | Optional, defaults to `8081` |
+
+`MainActivity` deliberately only auto-starts the screensaver when a button is mapped to
+`EXIT_TO_SETTINGS`, so a user can always get back to settings. When `startScreensaverOnLaunch`
+is `true` and no such mapping exists, the applier maps OK press (`button_ok_press`) to
+`EXIT_TO_SETTINGS` for the test run. It does not overwrite an existing mapping.
 
 ### Provider blocks
 
@@ -231,8 +236,9 @@ for config in local/test-configs/*.json; do
 done
 ```
 
-`MainActivity` only starts the screensaver automatically once the "exit to settings" preference
-has been set. Until then, launch the screensaver directly:
+If `startScreensaverOnLaunch` is enabled, `MainActivity` starts the screensaver automatically
+because the applier provides the required `EXIT_TO_SETTINGS` button mapping. To skip the main
+menu entirely for a one-off launch, start the screensaver directly:
 
 ```sh
 adb shell am start -n com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.TestActivity

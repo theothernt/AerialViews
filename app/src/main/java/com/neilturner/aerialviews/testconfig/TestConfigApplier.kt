@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.testconfig
 
 import android.content.Context
+import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ImmichImageType
 import com.neilturner.aerialviews.models.enums.ImmichVideoType
@@ -21,12 +22,15 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
+import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import timber.log.Timber
 
 /**
  * Applies a [TestConfig] to the app preferences.
  *
  * Every provider is disabled first so that a config only ever exercises the provider it names.
+ * Settings that need a companion preference are filled in automatically, for example
+ * `startScreensaverOnLaunch` also needs a button mapped to `EXIT_TO_SETTINGS`.
  */
 object TestConfigApplier {
     private const val SAMBA_MEDIA_SELECTION_KEY = "samba_media_selection"
@@ -42,6 +46,7 @@ object TestConfigApplier {
     ): String {
         disableAllProviders()
         applyGeneral(config.general)
+        ensureExitToSettings()
         applyCustomFeed(config.providers.customFeed)
         applySamba(config.providers.samba, secondAccount = false)
         applySamba(config.providers.samba2, secondAccount = true)
@@ -81,6 +86,17 @@ object TestConfigApplier {
         general.wifiOnly?.let { GeneralPrefs.wifiOnly = it }
         general.messageApiEnabled?.let { GeneralPrefs.messageApiEnabled = it }
         general.messageApiPort?.let { GeneralPrefs.messageApiPort = it }
+    }
+
+    /**
+     * MainActivity only starts the screensaver on launch when a button is mapped to
+     * [ButtonType.EXIT_TO_SETTINGS], so a test config that enables that option needs a way out.
+     * OK press is unused by default, so map that rather than overwriting a common action.
+     */
+    private fun ensureExitToSettings() {
+        if (!GeneralPrefs.startScreensaverOnLaunch || PreferenceHelper.isExitToSettingSet()) return
+        GeneralPrefs.buttonOkPress = ButtonType.EXIT_TO_SETTINGS
+        Timber.i("TestConfigApplier: mapped OK press to EXIT_TO_SETTINGS for start on launch")
     }
 
     private fun applyCustomFeed(config: CustomFeedConfig?) {

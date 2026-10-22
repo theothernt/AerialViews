@@ -83,6 +83,18 @@ internal class TestConfigSampleTest {
     }
 
     @Test
+    fun `sample configs start the screensaver on launch`() {
+        sampleConfigs().forEach { file ->
+            val config = TestConfig.parse(file.readText())
+            assertEquals(
+                true,
+                config.general.startScreensaverOnLaunch,
+                "${file.name} should start the screensaver on launch",
+            )
+        }
+    }
+
+    @Test
     fun `sample configs turn off the playlist cache so every run refetches`() {
         sampleConfigs().forEach { file ->
             val config = TestConfig.parse(file.readText())
