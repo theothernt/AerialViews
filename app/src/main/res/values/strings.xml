@@ -58,7 +58,8 @@
     <string name="category_scaling">Scaling</string>
     <string name="category_capabilities">Capabilities</string>
     <string name="category_settings">Settings</string>
-    <string name="category_media_render_options">Media &amp; render options</string>
+    <string name="category_media_render_options">Media render options</string>
+    <string name="category_specific_tv_and_device_options">Specific TV and device options</string>
     <string name="category_samba_options">Samba/SMB options</string>
     <string name="category_dpad_press">Press</string>
     <string name="category_dpad_press_and_hold">Press &amp; hold</string>
@@ -914,16 +915,16 @@
 
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
-    <string name="advanced_portrait_rotation_title">Portrait video rotation fix</string>
+    <string name="advanced_portrait_rotation_title">Portrait video rotation fix for Sony TVs</string>
     <string name="advanced_portrait_rotation_summary">Manually rotate portrait videos to correct their orientation. Only applies when using SurfaceView and when video scaling is set to fit without cropping. Useful for devices with firmware bugs.</string>
     <string name="advanced_reduce_buffer_memory_title">Reduce playback buffers and memory usage</string>
     <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
     <string name="advanced_mute_disables_audio_track_title">Disable audio track when muted</string>
     <string name="advanced_mute_disables_audio_track_summary">Removes the audio track entirely when muted, for compatibility with soundbars and external equipment that ignore software volume</string>
     <string name="advanced_always_provide_audio_track_title">Always provide an audio track</string>
-    <string name="advanced_always_provide_audio_track_summary">Adds a silent audio track to videos that have none, so tunneling can be used. Helps on TVs that show their own burn-in screensaver over the top</string>
+    <string name="advanced_always_provide_audio_track_summary">Adds a silent audio track to videos that have none, so tunneling can be used. Can reduce CPU usage on some TVs</string>
     <string name="advanced_run_as_activity_title">Run as an app, not a screensaver</string>
-    <string name="advanced_run_as_activity_summary">Starts playback in a normal window when the screensaver begins. For TVs that replace any screensaver with their own burn-in protection</string>
+    <string name="advanced_run_as_activity_summary">Starts playback in a normal window when the screensaver begins. Helpful on Philips TVs</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
