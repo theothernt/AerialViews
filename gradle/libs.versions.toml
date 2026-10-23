@@ -30,7 +30,7 @@ preference-ktx = "1.2.1"
 okhttp = "5.5.1"
 retrofit = "3.0.0"
 
-smbj = "0.13.0"
+smbj = "0.15.0"
 media3-exoplayer = "1.11.1"
 flowbus = "1.1"
 kotpref = "2.13.2"
