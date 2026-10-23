@@ -33,7 +33,7 @@ class OverlayColourPreference
         // A plain Preference never asks for a dialog on click; only DialogPreference subclasses do
         override fun performClick() {
             super.performClick()
-            getPreferenceManager()?.showDialog(this)
+            preferenceManager?.showDialog(this)
         }
 
         override fun onGetDefaultValue(

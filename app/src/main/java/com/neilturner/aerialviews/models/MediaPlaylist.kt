@@ -81,6 +81,7 @@ class MediaPlaylist(
         if (fetchChunk == null) return
         val limit = 50
         try {
+            @Suppress("RunBlocking")
             val freshData =
                 runBlocking(Dispatchers.IO) {
                     fetchChunk.invoke(newOffset, limit)

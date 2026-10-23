@@ -8,7 +8,6 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.data.network.SambaHelper
 import okhttp3.Credentials
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
@@ -100,7 +99,7 @@ class WebDavDataSource(
         }
 
         response = opened
-        inputStream = opened.body?.byteStream() ?: throw IOException("Empty response from $url")
+        inputStream = opened.body.byteStream() ?: throw IOException("Empty response from $url")
         // A ranged answer only holds the rest of the file, the total size is in the content
         // range header.
         bytesToRead = totalLength(opened)
@@ -112,7 +111,7 @@ class WebDavDataSource(
             val total = contentRange.substringAfterLast('/').trim().toLongOrNull()
             if (total != null) return total
         }
-        val length = opened.body?.contentLength() ?: -1L
+        val length = opened.body.contentLength() ?: -1L
         return if (length >= 0) length else C.LENGTH_UNSET.toLong()
     }
 
