@@ -21,7 +21,7 @@ firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
 spotless = "8.10.4"
-leakcanary = "3.0-alpha-8"
+leakcanary = "3.0-alpha-9"
 
 leanback = "1.2.0"
 leanback-preference = "1.2.0"
