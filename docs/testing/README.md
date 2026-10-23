@@ -131,6 +131,15 @@ WebDAV servers. There is no separate CalDAV provider in the app.
 | `imageType` | `ImmichMediaPrefs.imageType` (`PREVIEW`, `FULLSIZE`, `ORIGINAL`) |
 | `videoType` | `ImmichMediaPrefs.videoType` (`TRANSCODED`, `ORIGINAL`) |
 | `mediaSelection` | `ImmichMediaPrefs.mediaSelection` |
+| `includeFavorites` | `ImmichMediaPrefs.includeFavorites` (`DISABLED`, `100`, `200`, `300`, `400`) |
+| `includeRandom` | `ImmichMediaPrefs.includeRandom` (`DISABLED`, `100`, `200`, `300`, `400`) |
+| `includeRecent` | `ImmichMediaPrefs.includeRecent` (`DISABLED`, `100`, `200`, `300`, `400`) |
+| `includeRatings` | `ImmichMediaPrefs.includeRatings` (star ratings `1`-`5`) |
+
+Albums are selected in the UI from the server's own album list, so they are not part of a config
+file. A run therefore needs at least one of `includeFavorites`, `includeRandom`, `includeRecent`
+or `includeRatings`; without one the provider has nothing to fetch and returns "No files found"
+without logging anything.
 
 #### `ncMemories`
 

@@ -18,7 +18,10 @@
       "validateSsl": false,
       "imageType": "PREVIEW",
       "videoType": "TRANSCODED",
-      "mediaSelection": ["VIDEOS", "PHOTOS"]
+      "mediaSelection": ["VIDEOS", "PHOTOS"],
+      "includeFavorites": "100",
+      "includeRandom": "100",
+      "includeRatings": ["4", "5"]
     }
   }
 }

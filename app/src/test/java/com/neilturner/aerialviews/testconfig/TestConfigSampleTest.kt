@@ -69,6 +69,29 @@ internal class TestConfigSampleTest {
             providers.immich?.takeIf { it.enabled }?.let { immich ->
                 assertNotNull(immich.url, "${file.name} is missing an immich url")
                 assertNotNull(immich.apiKey, "${file.name} is missing an immich api key")
+
+                val includeCounts =
+                    listOf(immich.includeFavorites, immich.includeRandom, immich.includeRecent)
+                        .filterNotNull()
+                includeCounts.forEach { value ->
+                    assertTrue(
+                        value == "DISABLED" || value.toIntOrNull()?.let { it in IMMICH_INCLUDE_COUNTS } == true,
+                        "${file.name} has an unsupported immich include count '$value'",
+                    )
+                }
+                immich.includeRatings.orEmpty().forEach { rating ->
+                    assertTrue(
+                        rating.toIntOrNull()?.let { it in 1..5 } == true,
+                        "${file.name} has an unsupported immich rating '$rating'",
+                    )
+                }
+
+                val mediaSources =
+                    includeCounts.count { it != "DISABLED" } + immich.includeRatings.orEmpty().size
+                assertTrue(
+                    mediaSources > 0,
+                    "${file.name} enables immich but selects no favourites, random, recent or rated assets",
+                )
             }
 
             providers.ncMemories?.takeIf { it.enabled }?.let { memories ->
@@ -114,5 +137,6 @@ internal class TestConfigSampleTest {
 
     private companion object {
         const val SAMPLE_CONFIG_DIR = "../docs/testing/configs"
+        val IMMICH_INCLUDE_COUNTS = setOf(100, 200, 300, 400)
     }
 }

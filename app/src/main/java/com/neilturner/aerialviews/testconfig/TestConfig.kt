@@ -91,6 +91,14 @@ data class ImmichConfig(
     val imageType: String? = null,
     val videoType: String? = null,
     val mediaSelection: List<String>? = null,
+    /** `DISABLED` or a count of 100/200/300/400 assets. */
+    val includeFavorites: String? = null,
+    /** `DISABLED` or a count of 100/200/300/400 assets. */
+    val includeRandom: String? = null,
+    /** `DISABLED` or a count of 100/200/300/400 assets. */
+    val includeRecent: String? = null,
+    /** Star ratings to include, each between 1 and 5. */
+    val includeRatings: List<String>? = null,
 )
 
 @Serializable

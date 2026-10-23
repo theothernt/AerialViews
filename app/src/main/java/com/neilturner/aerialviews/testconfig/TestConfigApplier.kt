@@ -36,6 +36,7 @@ object TestConfigApplier {
     private const val SAMBA_MEDIA_SELECTION_KEY = "samba_media_selection"
     private const val WEBDAV_MEDIA_SELECTION_KEY = "webdav_media_selection"
     private const val IMMICH_MEDIA_SELECTION_KEY = "immich_media_selection"
+    private const val IMMICH_INCLUDE_RATINGS_KEY = "immich_media_include_ratings"
     private const val NCMEMORIES_MEDIA_SELECTION_KEY = "ncmemories_media_selection"
     private const val NCMEMORIES_FAVORITES_NAME_KEY = "ncmemories_media_favorites_name"
     private const val NCMEMORIES_RECENT_NAME_KEY = "ncmemories_media_recent_name"
@@ -52,7 +53,7 @@ object TestConfigApplier {
         applySamba(config.providers.samba2, secondAccount = true)
         applyWebDav(config.providers.webdav, secondAccount = false)
         applyWebDav(config.providers.webdav2, secondAccount = true)
-        applyImmich(config.providers.immich)
+        applyImmich(context, config.providers.immich)
         applyNCMemories(context, config.providers.ncMemories)
         applyMediaSelections(context, config.providers)
 
@@ -160,7 +161,10 @@ object TestConfigApplier {
         }
     }
 
-    private fun applyImmich(config: ImmichConfig?) {
+    private fun applyImmich(
+        context: Context,
+        config: ImmichConfig?,
+    ) {
         if (config == null) return
         ImmichMediaPrefs.enabled = config.enabled
         config.url?.let { ImmichMediaPrefs.url = it }
@@ -170,6 +174,12 @@ object TestConfigApplier {
         config.validateSsl?.let { ImmichMediaPrefs.validateSsl = it }
         config.imageType?.let { value -> enumOrNull<ImmichImageType>(value)?.let { ImmichMediaPrefs.imageType = it } }
         config.videoType?.let { value -> enumOrNull<ImmichVideoType>(value)?.let { ImmichMediaPrefs.videoType = it } }
+        // Without at least one of these the provider has nothing to fetch and quietly returns
+        // "No files found", so a config that only sets the connection details tests nothing.
+        config.includeFavorites?.let { ImmichMediaPrefs.includeFavorites = it }
+        config.includeRandom?.let { ImmichMediaPrefs.includeRandom = it }
+        config.includeRecent?.let { ImmichMediaPrefs.includeRecent = it }
+        config.includeRatings?.let { writeStringSet(context, IMMICH_INCLUDE_RATINGS_KEY, it) }
     }
 
     private fun applyNCMemories(
@@ -211,8 +221,17 @@ object TestConfigApplier {
         key: String,
         selection: List<String>,
     ) {
+        writeStringSet(context, key, selection)
+    }
+
+    /** Writes a string set preference that is exposed as a read only property. */
+    private fun writeStringSet(
+        context: Context,
+        key: String,
+        values: Collection<String>,
+    ) {
         val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
-        prefs.edit().putStringSet(key, selection.toSet()).apply()
+        prefs.edit().putStringSet(key, values.toSet()).apply()
     }
 
     /** Writes a preference that is exposed as a read only property. */
