@@ -235,6 +235,8 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
