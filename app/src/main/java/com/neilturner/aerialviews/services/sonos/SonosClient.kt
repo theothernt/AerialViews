@@ -73,13 +73,28 @@ object SonosClient {
         )
     }
 
-    fun transportState(ip: String): String = extractTag(soapAction(ip, "GetTransportInfo"), "CurrentTransportState").orEmpty()
+    fun transportState(ip: String): String = parseTransportState(soapAction(ip, "GetTransportInfo"))
 
     fun isPlaying(ip: String): Boolean = transportState(ip) == STATE_PLAYING
 
     // Returns null when there is no track metadata available
-    fun currentTrack(ip: String): Track? {
-        val xml = soapAction(ip, "GetPositionInfo")
+    fun currentTrack(ip: String): Track? = parseTrack(soapAction(ip, "GetPositionInfo"), ip)
+
+    /**
+     * Pure parser for the SOAP `GetTransportInfo` response. Extracted from [transportState] so the
+     * parsing contract is unit-testable with a canned response and without network I/O.
+     */
+    internal fun parseTransportState(xml: String): String = extractTag(xml, "CurrentTransportState").orEmpty()
+
+    /**
+     * Pure parser for the SOAP `GetPositionInfo` response. The track metadata is a DIDL-Lite
+     * document, XML-escaped inside the SOAP envelope's `<TrackMetaData>` element. Extracted from
+     * [currentTrack] so a canned SOAP response can drive the tests without talking to a speaker.
+     */
+    internal fun parseTrack(
+        xml: String,
+        ip: String,
+    ): Track? {
         // Track metadata is a DIDL-Lite document, XML-escaped inside the SOAP response
         val didl = extractTag(xml, "TrackMetaData")?.let(::unescapeXml) ?: return null
         val title = extractTag(didl, "dc:title").orEmpty()
