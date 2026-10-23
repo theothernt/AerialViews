@@ -160,6 +160,12 @@ android {
         create("fdroid") {
             signingConfig = signingConfigs.getByName("release")
             dimension = "version"
+
+            // The F-Droid flavor leaves the Firebase libraries out (see firebaseFlavors below), so
+            // the performance plugin must not rewrite network calls to classes that aren't there.
+            extensions.configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
+                setInstrumentationEnabled(false)
+            }
         }
     }
 
