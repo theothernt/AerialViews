@@ -8,7 +8,10 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    ignore:
+    - dependency-name: "com.hierynomus:smbj" # new version might not work with anon or macOS
+    - dependency-name: "com.squareup.leakcanary:*" # new version requires minSDK bump
     open-pull-requests-limit: 10
     groups:
       androidx:
@@ -23,3 +26,4 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+      
