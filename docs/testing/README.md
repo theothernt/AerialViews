@@ -87,6 +87,10 @@ The `samba2` and `webdav2` blocks are the second account slots and take the same
 
 The URL is a base path containing `manifest.json`, which points at `entries.json`.
 
+Applying a custom feed config runs the same validation the settings screen does, so the feed is
+fetched and its resolved URLs cached before the app relaunches. Applying is therefore
+asynchronous: give the broadcast a second or two before force-stopping the app.
+
 #### `samba`
 
 | Key | Pref |
@@ -173,6 +177,10 @@ cp docs/testing/configs/samba.json local/test-configs/samba.json
 ```
 
 `local/test-configs/` is gitignored.
+
+Applying a config is asynchronous — the broadcast returns before the preferences have been
+written, and a custom feed needs its URL fetched and validated during that time. Wait a couple of
+seconds (or poll the log for `TestConfigApplier: applied config`) before force-stopping the app.
 
 ## Applying a config
 

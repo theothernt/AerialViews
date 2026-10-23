@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Process
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 
@@ -48,7 +51,16 @@ class TestConfigReceiver : BroadcastReceiver() {
 
         runCatching {
             val config = TestConfig.parse(json)
-            TestConfigApplier.apply(context, config)
+            val pendingResult = goAsync()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    TestConfigApplier.apply(context, config)
+                } catch (ex: Exception) {
+                    Timber.e(ex, "TestConfigReceiver: failed to apply config")
+                } finally {
+                    pendingResult.finish()
+                }
+            }
         }.onFailure { ex ->
             Timber.e(ex, "TestConfigReceiver: failed to apply config")
         }

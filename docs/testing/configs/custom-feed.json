@@ -11,7 +11,7 @@
   "providers": {
     "customFeed": {
       "enabled": true,
-      "urls": "http://198.51.100.80/aerial",
+      "urls": "https://raw.githubusercontent.com/AerialScreensaver/AerialCommunity/refs/heads/master/entries.json",
       "quality": "VIDEO_1080_SDR"
     }
   }

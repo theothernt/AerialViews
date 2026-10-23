@@ -22,6 +22,7 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
+import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import timber.log.Timber
 
@@ -41,14 +42,14 @@ object TestConfigApplier {
     private const val NCMEMORIES_FAVORITES_NAME_KEY = "ncmemories_media_favorites_name"
     private const val NCMEMORIES_RECENT_NAME_KEY = "ncmemories_media_recent_name"
 
-    fun apply(
+    suspend fun apply(
         context: Context,
         config: TestConfig,
     ): String {
         disableAllProviders()
         applyGeneral(config.general)
         ensureExitToSettings()
-        applyCustomFeed(config.providers.customFeed)
+        applyCustomFeed(context, config.providers.customFeed)
         applySamba(config.providers.samba, secondAccount = false)
         applySamba(config.providers.samba2, secondAccount = true)
         applyWebDav(config.providers.webdav, secondAccount = false)
@@ -100,12 +101,22 @@ object TestConfigApplier {
         Timber.i("TestConfigApplier: mapped OK press to EXIT_TO_SETTINGS for start on launch")
     }
 
-    private fun applyCustomFeed(config: CustomFeedConfig?) {
+    private suspend fun applyCustomFeed(
+        context: Context,
+        config: CustomFeedConfig?,
+    ) {
         if (config == null) return
         CustomFeedPrefs.enabled = config.enabled
         config.urls?.let { CustomFeedPrefs.urls = it }
         config.quality?.let { value ->
             enumOrNull<VideoQuality>(value)?.let { CustomFeedPrefs.quality = it }
+        }
+        if (config.enabled && config.urls != null) {
+            // The provider only reads urlsCache, which the settings screen normally fills by
+            // validating the URL. Run the same validation so a config is ready to play without
+            // anyone opening the UI first.
+            val message = CustomFeedProvider(context, CustomFeedPrefs).fetchTest()
+            Timber.i("TestConfigApplier: custom feed validation: $message")
         }
     }
 
