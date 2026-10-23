@@ -174,13 +174,13 @@ class VideoPlayerView
                 return
             }
             if (isMuted) {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
                 isMuted = false
             } else {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 }
                 exoPlayer.volume = 0f
@@ -206,12 +206,12 @@ class VideoPlayerView
         private fun applyMuteState() {
             val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 }
                 exoPlayer.volume = 0f
             } else {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100

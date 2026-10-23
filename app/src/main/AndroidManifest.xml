@@ -221,5 +221,19 @@
         <meta-data
             android:name="google_analytics_automatic_screen_reporting_enabled"
             android:value="false" />
+
+        <!--
+            Runtime test configuration. Disabled unless the build enables it with -PtestConfig=true,
+            so it is inert in normal builds. The receiver also only accepts requests from the shell.
+            See docs/testing/README.md
+        -->
+        <receiver
+            android:name=".testconfig.TestConfigReceiver"
+            android:enabled="${testConfigReceiverEnabled}"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.neilturner.aerialviews.testconfig.APPLY" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

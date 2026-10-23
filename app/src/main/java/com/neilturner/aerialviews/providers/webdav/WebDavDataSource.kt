@@ -7,8 +7,10 @@ import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.data.network.SambaHelper
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
-import okhttp3.Headers
+import okhttp3.Credentials
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException
@@ -22,11 +24,11 @@ class WebDavDataSource(
 ) : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
 
-    private var client: OkHttpSardine? = null
+    private var response: Response? = null
     private var inputStream: InputStream? = null
 
     private var bytesRead: Long = 0
-    private var bytesToRead: Long = 0
+    private var bytesToRead: Long = C.LENGTH_UNSET.toLong()
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun open(dataSpec: DataSpec): Long {
@@ -61,7 +63,8 @@ class WebDavDataSource(
         } finally {
             transferEnded()
             inputStream = null
-            client = null
+            response?.close()
+            response = null
         }
     }
 
@@ -76,23 +79,41 @@ class WebDavDataSource(
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
-        client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(dataSpec.uri)
-        client?.setCredentials(userName, password, true)
-
         val url = stripUserInfo(urlWithUserInfo)
 
-        val resource = client?.list(url)
-        if (resource?.isNotEmpty() == true) {
-            bytesToRead = resource[0].contentLength
+        val request =
+            Request
+                .Builder()
+                .url(url)
+                .header("Range", "bytes=$offset-")
+                .apply {
+                    if (userName.isNotEmpty()) {
+                        header("Authorization", Credentials.basic(userName, password))
+                    }
+                }.build()
+
+        val opened = okHttpClient.newCall(request).execute()
+        if (!opened.isSuccessful) {
+            opened.close()
+            throw IOException("Could not open $url: ${opened.code} ${opened.message}")
         }
 
-        val headers =
-            Headers
-                .Builder()
-                .add("Range", "bytes=$offset-")
-                .build()
-        inputStream = client?.get(url, headers)
+        response = opened
+        inputStream = opened.body?.byteStream() ?: throw IOException("Empty response from $url")
+        // A ranged answer only holds the rest of the file, the total size is in the content
+        // range header.
+        bytesToRead = totalLength(opened)
+    }
+
+    private fun totalLength(opened: Response): Long {
+        val contentRange = opened.header("Content-Range")
+        if (contentRange != null) {
+            val total = contentRange.substringAfterLast('/').trim().toLongOrNull()
+            if (total != null) return total
+        }
+        val length = opened.body?.contentLength() ?: -1L
+        return if (length >= 0) length else C.LENGTH_UNSET.toLong()
     }
 
     private fun stripUserInfo(url: String): String {

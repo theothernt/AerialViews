@@ -12,7 +12,6 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.aerialMediaTypeFor
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -24,7 +23,7 @@ internal class WebDavMediaProvider(
     private val prefs: WebDavProviderPreferences,
     private val clientFactory: () -> WebDavListingClient = {
         val okHttpClient = WebDavSslHelper.createOkHttpClient(prefs.validateSsl)
-        SardineWebDavClient(okHttpClient = okHttpClient)
+        OkHttpWebDavClient(okHttpClient = okHttpClient)
     },
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
@@ -284,30 +283,4 @@ internal interface WebDavListingClient {
     )
 
     fun list(url: String): List<WebDavResourceInfo>
-}
-
-internal class SardineWebDavClient(
-    okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
-) : WebDavListingClient {
-    private val delegate = OkHttpSardine(okHttpClient)
-
-    override fun setCredentials(
-        userName: String,
-        password: String,
-        preemptive: Boolean,
-    ) {
-        delegate.setCredentials(userName, password, preemptive)
-    }
-
-    override fun list(url: String): List<WebDavResourceInfo> =
-        delegate
-            .list(url)
-            .map { resource ->
-                WebDavResourceInfo(
-                    name = resource.name,
-                    displayName = resource.displayName,
-                    isDirectory = resource.isDirectory,
-                    modifiedTimeMs = resource.modified?.time ?: 0L,
-                )
-            }
 }

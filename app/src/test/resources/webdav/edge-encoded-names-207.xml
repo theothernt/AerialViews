@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:">
+  <D:response>
+    <D:href>/encoded/</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:resourcetype><D:collection/></D:resourcetype>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/encoded/space%20in%20name.jpg</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getcontentlength>100</D:getcontentlength>
+        <D:resourcetype/>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/encoded/plus+sign.jpg</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getcontentlength>200</D:getcontentlength>
+        <D:resourcetype/>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/encoded/percent%25sign.jpg</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getcontentlength>300</D:getcontentlength>
+        <D:resourcetype/>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/encoded/emoji%F0%9F%8C%8D%20sunset.jpg</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getcontentlength>400</D:getcontentlength>
+        <D:resourcetype/>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>/encoded/question%3Fmark.jpg</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getcontentlength>500</D:getcontentlength>
+        <D:resourcetype/>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+</D:multistatus>

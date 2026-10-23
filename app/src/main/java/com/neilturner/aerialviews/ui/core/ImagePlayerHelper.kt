@@ -29,7 +29,6 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
 import com.neilturner.aerialviews.providers.webdav.defaultPortFor
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -138,14 +137,27 @@ internal object ImagePlayerHelper {
     fun streamFromWebDavFile(uri: Uri): InputStream? {
         val baseClient = buildOkHttpClient(validateSsl = getWebDavValidateSslFromUri(uri), source = AerialMediaSource.WEBDAV)
         val okHttpClient = baseClient.newBuilder().build()
-        val client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
-            client.setCredentials(userName, password, true)
             val cleanUrl = stripUserinfo(uri.toString())
-            return client.get(cleanUrl)
+            val request =
+                Request
+                    .Builder()
+                    .url(cleanUrl)
+                    .apply {
+                        if (userName.isNotEmpty()) {
+                            header("Authorization", Credentials.basic(userName, password))
+                        }
+                    }.build()
+            val response = okHttpClient.newCall(request).execute()
+            if (!response.isSuccessful) {
+                response.close()
+                Timber.e("Could not open $cleanUrl: ${response.code} ${response.message}")
+                return null
+            }
+            return response.body?.byteStream()
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
+            Timber.e(ex, "Exception while opening WebDav file: ${ex.message}")
             FirebaseHelper.crashlyticsException(ex)
             return null
         }

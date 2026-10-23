@@ -1,16 +1,23 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# Project-specific R8 keep rules.
+#
+# This file lives in the `keepRules` source set (src/main/keepRules) and is
+# picked up automatically by AGP 9.3+ because of the `.keep` extension. R8 and
+# resource optimization are enabled for the release build type with
+# `optimization { enable = true }` in app/build.gradle.kts - there is no
+# `proguard-rules.pro` and no `proguardFiles` declaration.
+#
+# The default Android platform rules (equivalent to
+# `getDefaultProguardFile("proguard-android-optimize.txt")`) are included
+# automatically; opt out with `optimization.keepRules.includeDefault = false`.
 #
 # For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+#   https://developer.android.com/topic/performance/app-optimization/keep-rules-overview
 
 # Firebase Crashlytics
--keep class * extends java.lang.Exception  # Optional: Keep custom exceptions.
-
-# protobuf-lite (used by firebase-perf) accesses generated message fields
-# reflectively by name, so they must survive R8 untouched
--keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+# Keep this app's own exception types so stack traces stay readable. Library
+# exception classes do not need to be kept - Crashlytics resolves their names
+# through the mapping file.
+-keep class com.neilturner.aerialviews.** extends java.lang.Exception { *; }
 
 # Firebase Perf network instrumentation is woven into Coil/OkHttp/XmlPull by the
 # firebase-perf Gradle plugin. F-Droid has no Firebase Perf SDK on the classpath,
@@ -19,27 +26,34 @@
 -dontwarn com.google.firebase.perf.network.FirebasePerfUrlConnection
 
 # Kotlin Serialization
--keepclassmembers class ** {
-    *** Companion;
-}
--keepnames class ** {
+# kotlinx-serialization-core bundles its own rules for @Serializable classes
+# (Companion, INSTANCE and serializer() lookups) in
+# kotlinx-serialization-common.pro and kotlinx-serialization-r8.pro, so they do
+# not need to be repeated here. Only the names of this app's own serializable
+# members are kept - -keepclassmembernames is used rather than -keepnames so
+# that the class names themselves can still be obfuscated.
+-keepclassmembernames class com.neilturner.aerialviews.** {
     @kotlinx.serialization.Serializable *;
 }
--keepclassmembers class ** {
-    *** serializer(...);
-}
 
-# Keep our Data Models (Retrofit/Room/Serialization)
--keep class com.neilturner.aerialviews.models.** { *; }
--keep class com.neilturner.aerialviews.data.** { *; }
--keep class com.neilturner.aerialviews.providers.** { *; }
+# Enum constant names
+# Kotpref's enumValuePref/nullableEnumValuePref stores the constant *name* in
+# SharedPreferences, the playlist cache stores enum names in database columns,
+# and several overlays look constants up with valueOf() at runtime. Renaming a
+# constant would silently reset the setting, so the constants are kept.
+-keep enum com.neilturner.aerialviews.models.enums.** { *; }
+-keep enum com.neilturner.aerialviews.services.weather.** { *; }
 
-# Sardine Android / XmlPullParser / Simple XML
--keep class org.xmlpull.v1.** { *; }
--dontwarn android.content.res.XmlResourceParser
--keep class javax.xml.namespace.QName { *; }
--keep class com.thegrizzlylabs.sardineandroid.** { *; }
--keep class org.simpleframework.xml.** { *; }
+# SMB2Dialect constants are stored in preferences by name and looked up with
+# valueOf() when the SMB config is built.
+-keep enum com.hierynomus.mssmb2.SMB2Dialect { *; }
+
+# Room
+# Room resolves the generated implementation class by name using reflection, and
+# the entity field names are used as the database column names.
+-keep class com.neilturner.aerialviews.data.AerialDatabase { *; }
+-keep class com.neilturner.aerialviews.data.**_Impl { *; }
+-keep class com.neilturner.aerialviews.data.*Entity { *; }
 
 -dontwarn org.apache.log4j.Level
 -dontwarn org.apache.log4j.Logger
