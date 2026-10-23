@@ -126,7 +126,6 @@ class ImmichDataSource : BaseDataSource(true) {
     }
 }
 
-@Suppress("unused")
 class ImmichDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource = ImmichDataSource()

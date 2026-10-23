@@ -67,42 +67,17 @@ class PlaylistCacheRepository(
             }
         }
 
-    private val remoteSourceNames =
-        listOf(
-            AerialMediaSource.APPLE,
-            AerialMediaSource.AMAZON,
-            AerialMediaSource.COMM1,
-            AerialMediaSource.COMM2,
-            AerialMediaSource.CUSTOM,
-            AerialMediaSource.RTSP,
-            AerialMediaSource.HLS,
-            AerialMediaSource.IMMICH,
-            AerialMediaSource.NCMEMORIES,
-        ).map { it.name }
-
-    private suspend fun fetchChunk(
-        offset: Int,
-        limit: Int,
-        filterRemote: Boolean,
-    ): List<CachedMediaEntity> =
-        if (filterRemote) {
-            dao.getMediaItemsChunkFiltered(limit, offset, remoteSourceNames)
-        } else {
-            dao.getMediaItemsChunk(limit, offset)
-        }
-
-    suspend fun getCachedPlaylist(filterRemote: Boolean = false): MediaFetchResult? =
+    suspend fun getCachedPlaylist(): MediaFetchResult? =
         withContext(Dispatchers.IO) {
             val state = dao.getPlaylistState() ?: return@withContext null
             if (state.totalMediaItems == 0) return@withContext null
 
             Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
-            Timber.i("PlaylistCache: Restoring cached playlist with filterRemote = $filterRemote")
 
             val windowLimit = 50
             val windowOffset = 0.coerceAtLeast(state.mediaPosition - 5)
             Timber.d("PlaylistCache: Loading initial window. Offset: $windowOffset, Limit: $windowLimit")
-            val cachedMediaChunks = fetchChunk(windowOffset, windowLimit, filterRemote)
+            val cachedMediaChunks = dao.getMediaItemsChunk(windowLimit, windowOffset)
 
             val cachedMusic = dao.getAllMusicTracksOrdered()
 
@@ -161,6 +136,9 @@ class PlaylistCacheRepository(
                 "PlaylistCache: Last started position ${state.mediaPosition}, resumeSame=$resumeSame, startPosition set to $resumePosition",
             )
 
+            // The cached list is always the exact list that will be played: WiFi-only filtering is
+            // applied before the cache is written, so size, chunk offsets and the saved position
+            // all refer to the same rows and share one index space.
             MediaFetchResult(
                 mediaPlaylist =
                     MediaPlaylist(
@@ -170,7 +148,7 @@ class PlaylistCacheRepository(
                         windowOffset = windowOffset,
                         fetchChunk = { offset, limit ->
                             Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
-                            getMediaChunk(offset, limit, filterRemote)
+                            getMediaChunk(offset, limit)
                         },
                     ),
                 musicPlaylist = musicPlaylist,
@@ -182,12 +160,10 @@ class PlaylistCacheRepository(
     suspend fun getMediaChunk(
         offset: Int,
         limit: Int,
-        filterRemote: Boolean = false,
     ): List<AerialMedia> =
         withContext(Dispatchers.IO) {
             try {
-                val cachedMedia = fetchChunk(offset, limit, filterRemote)
-                cachedMedia.map { mapEntityToMedia(it) }
+                dao.getMediaItemsChunk(limit, offset).map { mapEntityToMedia(it) }
             } catch (e: Exception) {
                 Timber.e(e, "PlaylistCache: Failed to map chunk")
                 emptyList()

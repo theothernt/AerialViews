@@ -10,6 +10,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.net.BindException
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val DEFAULT_BIND_ATTEMPTS = 5
 private const val DEFAULT_BIND_RETRY_DELAY_MS = 400L
@@ -137,7 +138,7 @@ class KtorServerLifecycle<T>(
             } catch (e: BindException) {
                 onBindRetry(port, attempt, bindAttempts, e)
                 discardServer(candidate)
-                if (attempt < bindAttempts) delay(bindRetryDelayMs)
+                if (attempt < bindAttempts) delay(bindRetryDelayMs.milliseconds)
                 continue
             } catch (e: Exception) {
                 discardServer(candidate)

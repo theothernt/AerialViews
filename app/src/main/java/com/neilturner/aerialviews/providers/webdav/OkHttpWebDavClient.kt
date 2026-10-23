@@ -65,7 +65,7 @@ internal class OkHttpWebDavClient(
                 )
             }
 
-            val body = response.body?.byteStream() ?: throw IOException("Empty response from $url")
+            val body = response.body.byteStream() ?: throw IOException("Empty response from $url")
             return DavMultistatusParser.parse(body).map { it.toResourceInfo() }
         }
     }

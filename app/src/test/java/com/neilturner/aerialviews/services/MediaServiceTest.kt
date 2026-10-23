@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Bundle
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
@@ -9,10 +11,14 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import io.mockk.Runs
+import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.slot
 import io.mockk.unmockkConstructor
 import io.mockk.unmockkObject
 import kotlinx.coroutines.test.runTest
@@ -35,16 +41,13 @@ internal class MediaServiceTest {
         every { anyConstructed<Bundle>().keySet() } returns emptySet()
         mockkObject(FirebaseHelper)
         every { FirebaseHelper.analyticsEvent(any(), any()) } returns Unit
-        mockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
-        every {
-            com.neilturner.aerialviews.data.network.NetworkHelper
-                .isOnWifiOrEthernet(any())
-        } returns false
+        mockkObject(NetworkHelper)
+        every { NetworkHelper.isOnWifiOrEthernet(any()) } returns false
     }
 
     @AfterEach
     fun tearDown() {
-        unmockkObject(com.neilturner.aerialviews.data.network.NetworkHelper)
+        unmockkObject(NetworkHelper)
         unmockkObject(FirebaseHelper)
         unmockkConstructor(Bundle::class)
     }
@@ -143,7 +146,111 @@ internal class MediaServiceTest {
             val result = service.fetchMedia()
 
             assertEquals(1, result.mediaPlaylist.size)
-            assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem().source)
+            assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem()?.source)
+        }
+
+    /**
+     * Regression: with the playlist cache enabled, the cached list is the source of both the cached
+     * size and the chunk offsets, so remote items must never reach it. They previously did, while
+     * the read path filtered them out in SQL, which left the size counting items the chunk query
+     * could not return.
+     */
+    @Test
+    fun `cache path never caches remote media when wifiOnly is true and not on wifi`() =
+        runTest {
+            val cachedItems = slot<List<AerialMedia>>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist() } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val remoteProvider =
+                    FakeMediaProvider(
+                        context = context,
+                        media = listOf(testMedia("apple-1", AerialMediaSource.APPLE)),
+                        type = ProviderSourceType.REMOTE,
+                    )
+                val localProvider =
+                    FakeMediaProvider(
+                        context = context,
+                        media = listOf(testMedia("local-1", AerialMediaSource.LOCAL)),
+                    )
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers = mutableListOf(remoteProvider, localProvider),
+                        config = defaultConfig().copy(playlistCache = true, wifiOnly = true),
+                        hashFn = { "test-hash" },
+                    )
+
+                val result = service.fetchMedia()
+
+                // Remote providers are excluded before anything is fetched.
+                assertEquals(0, remoteProvider.fetchCount, "Remote provider must not be contacted off WiFi")
+                assertEquals(1, localProvider.fetchCount)
+
+                assertEquals(1, cachedItems.captured.size)
+                assertTrue(
+                    cachedItems.captured.none { it.source.requiresNetwork },
+                    "Cached playlist must not contain network sources: ${cachedItems.captured.map { it.source }}",
+                )
+
+                assertEquals(1, result.mediaPlaylist.size)
+                assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem()?.source)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
+        }
+
+    @Test
+    fun `cache path keeps remote media on wifi`() =
+        runTest {
+            every { NetworkHelper.isOnWifiOrEthernet(any()) } returns true
+
+            val cachedItems = slot<List<AerialMedia>>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist() } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers =
+                            mutableListOf(
+                                FakeMediaProvider(
+                                    context = context,
+                                    media =
+                                        listOf(
+                                            testMedia("apple-1", AerialMediaSource.APPLE),
+                                            testMedia("local-1", AerialMediaSource.LOCAL),
+                                        ),
+                                    type = ProviderSourceType.REMOTE,
+                                ),
+                            ),
+                        config = defaultConfig().copy(playlistCache = true, wifiOnly = true),
+                        hashFn = { "test-hash" },
+                    )
+
+                val result = service.fetchMedia()
+
+                assertEquals(2, cachedItems.captured.size)
+                assertTrue(cachedItems.captured.any { it.source.requiresNetwork })
+                assertEquals(2, result.mediaPlaylist.size)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
         }
 
     @Test
@@ -179,11 +286,17 @@ internal class MediaServiceTest {
         context: Context,
         private val media: List<AerialMedia> = emptyList(),
         private val tracks: List<MusicTrack> = emptyList(),
+        override val type: ProviderSourceType = ProviderSourceType.LOCAL,
     ) : MediaProvider(context) {
-        override val type: ProviderSourceType = ProviderSourceType.LOCAL
         override val enabled: Boolean = true
 
-        override suspend fun fetch(): ProviderFetchResult = ProviderFetchResult.Success(media = media, summary = "")
+        var fetchCount: Int = 0
+            private set
+
+        override suspend fun fetch(): ProviderFetchResult {
+            fetchCount++
+            return ProviderFetchResult.Success(media = media, summary = "")
+        }
 
         override suspend fun fetchMusic(): List<MusicTrack> = tracks
 
