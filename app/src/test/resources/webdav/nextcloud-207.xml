@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+  <d:response>
+    <d:href>/remote.php/dav/files/alice/Aerial/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Aerial</d:displayname>
+        <d:getcontentlength>0</d:getcontentlength>
+        <d:getcontenttype>httpd/unix-directory</d:getcontenttype>
+        <d:getetag>"68b1a1b1c8b1a1b1c8b1a1b1c8b1a1b1"</d:getetag>
+        <d:getlastmodified>Tue, 21 Jan 2025 10:15:00 GMT</d:getlastmodified>
+        <d:resourcetype><d:collection/></d:resourcetype>
+        <oc:permissions>RDNVCK</oc:permissions>
+        <oc:size>0</oc:size>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/remote.php/dav/files/alice/Aerial/Dolomites%20sunrise.jpg</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Dolomites sunrise.jpg</d:displayname>
+        <d:getcontentlength>4194304</d:getcontentlength>
+        <d:getcontenttype>image/jpeg</d:getcontenttype>
+        <d:getetag>"9f8e7d6c5b4a39281706"</d:getetag>
+        <d:getlastmodified>Wed, 22 Jan 2025 11:20:30 GMT</d:getlastmodified>
+        <d:resourcetype/>
+        <oc:permissions>RDVCK</oc:permissions>
+        <oc:size>4194304</oc:size>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/remote.php/dav/files/alice/Aerial/Alps%20timelapse.mp4</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Alps timelapse.mp4</d:displayname>
+        <d:getcontentlength>104857600</d:getcontentlength>
+        <d:getcontenttype>video/mp4</d:getcontenttype>
+        <d:getetag>"11223344556677889900"</d:getetag>
+        <d:getlastmodified>Thu, 23 Jan 2025 08:00:00 GMT</d:getlastmodified>
+        <d:resourcetype/>
+        <oc:permissions>RDVCK</oc:permissions>
+        <oc:size>104857600</oc:size>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/remote.php/dav/files/alice/Aerial/Subfolder/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>Subfolder</d:displayname>
+        <d:getcontentlength>0</d:getcontentlength>
+        <d:getcontenttype>httpd/unix-directory</d:getcontenttype>
+        <d:getetag>"aabbccddeeff00112233"</d:getetag>
+        <d:getlastmodified>Fri, 24 Jan 2025 12:45:00 GMT</d:getlastmodified>
+        <d:resourcetype><d:collection/></d:resourcetype>
+        <oc:permissions>RDNVCK</oc:permissions>
+        <oc:size>0</oc:size>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>

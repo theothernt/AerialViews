@@ -15,6 +15,14 @@ android {
         minSdk = 28
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Note: androidx.benchmark.enabledRules cannot be set here. AGP hard
+        // codes "-e androidx.benchmark.enabledRules macrobenchmark" when it
+        // launches the instrumentation, which overrides anything set in the
+        // build script. To run the baseline profile generator, pass the rule
+        // on the command line instead:
+        //   ./gradlew :baselineprofile:connectedBetaBenchmarkReleaseAndroidTest \
+        //     -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=baselineprofile
     }
 
     kotlin {
@@ -59,7 +67,7 @@ android {
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
     managedDevices += "androidTvApi36"
-    useConnectedDevices = false
+    useConnectedDevices = true
 }
 
 dependencies {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns">
+  <d:response>
+    <d:href>/remote.php/webdav/</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname></d:displayname>
+        <d:getcontentlength>0</d:getcontentlength>
+        <d:getcontenttype>httpd/unix-directory</d:getcontenttype>
+        <d:getetag>"5f4e3d2c1b0a99887766"</d:getetag>
+        <d:getlastmodified>Mon, 03 Feb 2025 16:00:00 GMT</d:getlastmodified>
+        <d:resourcetype><d:collection/></d:resourcetype>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/remote.php/webdav/beach.jpg</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>beach.jpg</d:displayname>
+        <d:getcontentlength>2097152</d:getcontentlength>
+        <d:getcontenttype>image/jpeg</d:getcontenttype>
+        <d:getetag>"00112233445566778899"</d:getetag>
+        <d:getlastmodified>Mon, 03 Feb 2025 16:05:00 GMT</d:getlastmodified>
+        <d:resourcetype/>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+  <d:response>
+    <d:href>/remote.php/webdav/city%20at%20night.mp4</d:href>
+    <d:propstat>
+      <d:prop>
+        <d:displayname>city at night.mp4</d:displayname>
+        <d:getcontentlength>52428800</d:getcontentlength>
+        <d:getcontenttype>video/mp4</d:getcontenttype>
+        <d:getetag>"ffeeddccbbaa99887766"</d:getetag>
+        <d:getlastmodified>Tue, 04 Feb 2025 09:30:00 GMT</d:getlastmodified>
+        <d:resourcetype/>
+      </d:prop>
+      <d:status>HTTP/1.1 200 OK</d:status>
+    </d:propstat>
+  </d:response>
+</d:multistatus>
