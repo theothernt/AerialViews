@@ -155,7 +155,7 @@ internal object ImagePlayerHelper {
                 Timber.e("Could not open $cleanUrl: ${response.code} ${response.message}")
                 return null
             }
-            return response.body?.byteStream()
+            return response.body.byteStream()
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while opening WebDav file: ${ex.message}")
             FirebaseHelper.crashlyticsException(ex)

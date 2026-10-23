@@ -32,7 +32,7 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("SameParameterValue", "JoinDeclarationAndAssignment")
+@Suppress("SameParameterValue")
 class VideoPlayerView
     @OptIn(UnstableApi::class)
     @JvmOverloads
@@ -410,6 +410,7 @@ class VideoPlayerView
          * pre-applies the rotation before reporting. If Media3 ever drops this field the fix
          * will simply stop engaging for rotated files rather than mis-rotating them.
          */
+        @OptIn(UnstableApi::class)
         @Suppress("DEPRECATION")
         private fun applyPortraitOrientation(
             videoW: Int,

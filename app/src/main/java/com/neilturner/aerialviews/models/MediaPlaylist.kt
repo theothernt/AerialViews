@@ -74,7 +74,10 @@ class MediaPlaylist(
         return getItemAt(position) ?: skipForward()
     }
 
-    /** Resolves [absoluteIndex] from the window, refilling synchronously on a hard miss. */
+    /**
+     * Resolves [absoluteIndex] from the window, refilling synchronously on a hard miss.
+     * Returns null if the index cannot be served after attempting a refill.
+     */
     private fun getItemAt(absoluteIndex: Int): AerialMedia? {
         synchronized(windowLock) {
             val relativeIndex = absoluteIndex - windowOffset
