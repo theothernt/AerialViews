@@ -68,6 +68,8 @@ class VideoPlayerView
                 setVolume = { v -> exoPlayer.volume = v },
             )
         private var forcedMuted = false
+        private var currentMedia: AerialMedia? = null
+        private var separateAudioFailed = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
@@ -116,12 +118,15 @@ class VideoPlayerView
             removeCallbacks(onErrorRunnable)
             // Clear listener
             listener = null
+            currentMedia = null
             cancelVolumeFade()
         }
 
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
             state.type = media.source
+            currentMedia = media
+            separateAudioFailed = false
             cancelVolumeFade()
             resetRotation()
 
@@ -129,7 +134,11 @@ class VideoPlayerView
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
-            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
+            prepareMediaSource(media)
+        }
+
+        private fun prepareMediaSource(media: AerialMedia) {
+            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media, includeSeparateAudio = !separateAudioFailed)
             applyMuteState()
 
             // Disable subtitles/text tracks by default
@@ -138,8 +147,15 @@ class VideoPlayerView
             player?.prepare()
         }
 
-        fun setForcedMute(enabled: Boolean) {
-            forcedMuted = enabled
+        val mutedState: Boolean
+            get() = isMuted
+
+        fun setMuteState(
+            forcedMute: Boolean,
+            muted: Boolean,
+        ) {
+            forcedMuted = forcedMute
+            isMuted = muted
             applyMuteState()
         }
 
@@ -158,18 +174,28 @@ class VideoPlayerView
                 return
             }
             if (isMuted) {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
                 isMuted = false
             } else {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 }
                 exoPlayer.volume = 0f
                 isMuted = true
             }
+        }
+
+        fun restart() {
+            // Ignore if there is nothing to restart (eg. before the first video, or after it ended)
+            if (exoPlayer.playbackState == Player.STATE_IDLE || exoPlayer.playbackState == Player.STATE_ENDED) return
+            exoPlayer.seekTo(0)
+            // Restart always resumes playback, even if the video was paused
+            exoPlayer.playWhenReady = true
+            // Recalculate remaining time and restart timer
+            setupAlmostFinishedRunnable()
         }
 
         fun fadeOutAudio(duration: Long) {
@@ -180,17 +206,16 @@ class VideoPlayerView
         private fun applyMuteState() {
             val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 }
                 exoPlayer.volume = 0f
             } else {
-                if (GeneralPrefs.muteDisablesAudioTrack) {
+                if (GeneralPrefs.muteRemovesAudioTrack) {
                     VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 }
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
-            isMuted = shouldMute && !forcedMuted
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
@@ -334,9 +359,28 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
+
+            if (retryWithoutSeparateAudio()) return
+
             FirebaseHelper.crashlyticsException(error.cause)
 
             post(onErrorRunnable)
+        }
+
+        // A broken audio stream fails the whole merged source, so give the video
+        // one more chance on its own rather than skipping it entirely
+        private fun retryWithoutSeparateAudio(): Boolean {
+            val media = currentMedia ?: return false
+            if (separateAudioFailed || media.audioUri == null || !GeneralPrefs.playsVideoAudio) {
+                return false
+            }
+
+            Timber.w("Playback failed with a separate audio stream, retrying video only: ${media.audioUri}")
+            separateAudioFailed = true
+            state.prepared = false
+            state.loopCount = 0
+            prepareMediaSource(media)
+            return true
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {
@@ -351,51 +395,53 @@ class VideoPlayerView
 
             val w = videoSize.width
             val h = videoSize.height
-            val unapplied = videoSize.unappliedRotationDegrees
-            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=$unapplied")
+            Timber.i("Video size: ${w}x$h, unappliedRotationDegrees=${videoSize.unappliedRotationDegrees}")
 
-            if (!GeneralPrefs.portraitVideoRotationEnabled) return
+            // Deferred so the view has been laid out and width/height are measured.
+            post { applyPortraitOrientation(w, h) }
+        }
 
-            if (GeneralPrefs.useTextureViewForVideo) {
-                Timber.i("Portrait rotation fix: skipped (TextureView mode)")
-                return
-            }
+        /**
+         * Applies the "portrait video rotation fix" for a video the firmware renders sideways.
+         *
+         * Media3 applies any container rotation itself, so [Format.rotationDegrees] tells us
+         * whether it has already done so. It is deprecated but remains the only way to reach
+         * that value: `VideoSize.unappliedRotationDegrees` is always 0 because the player
+         * pre-applies the rotation before reporting. If Media3 ever drops this field the fix
+         * will simply stop engaging for rotated files rather than mis-rotating them.
+         */
+        @Suppress("DEPRECATION")
+        private fun applyPortraitOrientation(
+            videoW: Int,
+            videoH: Int,
+        ) {
+            val formatRotation = exoPlayer.videoFormat?.rotationDegrees
+            val fix =
+                PortraitVideoOrientation.resolve(
+                    videoWidth = videoW,
+                    videoHeight = videoH,
+                    containerRotationDegrees = formatRotation,
+                    enabledDegrees =
+                        PortraitVideoOrientation.parseDegrees(GeneralPrefs.portraitVideoRotationDegrees),
+                    videoScale = GeneralPrefs.videoScale,
+                    containerWidth = width.toFloat(),
+                    containerHeight = height.toFloat(),
+                )
 
-            // Portrait detection: taller than wide (before any rotation)
-            val isPortrait = h > w
-            if (!isPortrait) {
-                Timber.i("Portrait rotation fix: skipped (landscape video ${w}x$h)")
+            if (fix == null) {
+                Timber.i("Portrait rotation fix: not applied for ${videoW}x$videoH (formatRotation=$formatRotation)")
                 resetRotation()
                 return
             }
 
-            val degrees = GeneralPrefs.portraitVideoRotationDegrees.toFloatOrNull() ?: return
-            applyRotationFix(degrees)
-        }
+            Timber.i(
+                "Portrait rotation fix: applying ${fix.rotation}° rotation, scale=${fix.scale} " +
+                    "(container ${width}x$height)",
+            )
 
-        private fun applyRotationFix(degrees: Float) {
-            post {
-                val containerW = width.toFloat()
-                val containerH = height.toFloat()
-                if (containerW == 0f || containerH == 0f) return@post
-
-                // After a 90°/270° rotation the view's layout axes are swapped,
-                // so scale by containerH/containerW to fill the screen width.
-                val scale =
-                    when (degrees) {
-                        90f, 270f -> containerW / containerH
-                        else -> 1f
-                    }
-
-                Timber.i(
-                    "Portrait rotation fix: applying $degrees° rotation, scale=$scale " +
-                        "(container ${containerW.toInt()}x${containerH.toInt()})",
-                )
-
-                rotation = degrees
-                scaleX = scale
-                scaleY = scale
-            }
+            rotation = fix.rotation
+            scaleX = fix.scale
+            scaleY = fix.scale
         }
 
         private fun resetRotation() {

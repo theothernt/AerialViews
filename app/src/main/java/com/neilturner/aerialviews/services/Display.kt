@@ -118,33 +118,25 @@ class Display
                 }
 
             // Check HDR Capabilities if available on device
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                // source.mode.supportedHdrTypes
-                val capabilities = source.hdrCapabilities
+            val capabilities = source.hdrCapabilities
 
-                supportsHDR =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        source.isHdr
-                    } else {
-                        capabilities != null
-                    }
+            supportsHDR =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    source.isHdr
+                } else {
+                    capabilities != null
+                }
 
-                hdrFormats =
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        @Suppress("DEPRECATION")
-                        capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
-                    } else {
-                        source.mode.supportedHdrTypes.map { hdrTypeToFormat(it) }
-                    }
+            hdrFormats =
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    @Suppress("DEPRECATION")
+                    capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
+                } else {
+                    source.mode.supportedHdrTypes.map { hdrTypeToFormat(it) }
+                }
 
-                minimumLuminance = capabilities?.desiredMinLuminance
-                maximumLuminance = capabilities?.desiredMaxLuminance
-            } else {
-                supportsHDR = false
-                minimumLuminance = null
-                maximumLuminance = null
-                hdrFormats = listOf()
-            }
+            minimumLuminance = capabilities?.desiredMinLuminance
+            maximumLuminance = capabilities?.desiredMaxLuminance
 
             // Check Wide Gamut Space Support
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -170,7 +170,12 @@ class WeatherService(
         val units = GeneralPrefs.weatherTemperatureUnits?.toString()?.lowercase() ?: "metric"
         val language = WeatherLanguage.getLanguageCode(context)
 
-        if (key.isEmpty() || lat == null || lon == null) {
+        if (key.isEmpty()) {
+            Timber.e("OpenWeather API key is missing")
+            return null
+        }
+
+        if (lat == null || lon == null) {
             Timber.e("Invalid location coordinates")
             return null
         }
@@ -188,7 +193,7 @@ class WeatherService(
         WeatherDisplayConfig(
             currentWeatherCity = GeneralPrefs.weatherLocationCustomName,
             forecastCity = GeneralPrefs.weatherLocationCustomName,
-            forecastDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 5,
+            forecastDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 3,
         )
 
     internal suspend fun fetchWeatherData(
@@ -518,5 +523,5 @@ data class WeatherRequestConfig(
 data class WeatherDisplayConfig(
     val currentWeatherCity: String = "",
     val forecastCity: String = "",
-    val forecastDays: Int = 5,
+    val forecastDays: Int = 3,
 )

@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
-import android.os.Build
 import timber.log.Timber
 import java.util.Locale
 
@@ -89,12 +88,5 @@ object WeatherLanguage {
     }
 
     // Get the current device locale
-    private fun getDeviceLocale(context: Context): Locale =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales
-                .get(0)
-        } else {
-            @Suppress("DEPRECATION")
-            context.resources.configuration.locale
-        }
+    private fun getDeviceLocale(context: Context): Locale = context.resources.configuration.locales[0]
 }

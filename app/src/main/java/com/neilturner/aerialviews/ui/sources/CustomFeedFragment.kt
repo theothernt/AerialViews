@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.launch
 
 class CustomFeedFragment : MenuStateFragment() {
@@ -21,6 +22,11 @@ class CustomFeedFragment : MenuStateFragment() {
     ) {
         setPreferencesFromResource(R.xml.sources_custom_feed, rootKey)
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Custom Feed", this)
     }
 
     private fun updateSummary() {

@@ -1,11 +1,11 @@
 [versions]
 agp = "9.4.1"
-kotlin = "2.4.20"
-kotlin-serialization = "1.11.0"
+kotlin = "2.4.21"
+kotlin-serialization = "1.12.0"
 google-services = "4.5.0"
 ksp = "2.3.12"
 coroutines = "1.11.0"
-core-ktx = "1.19.0"
+core-ktx = "1.19.1"
 activity-ktx = "1.13.0"
 constraintlayout = "2.2.2"
 appcompat = "1.8.0"
@@ -15,21 +15,20 @@ desugar-jdk-libs = "2.1.5"
 room3 = "3.0.3"
 sqlite = "2.7.1"
 
-firebase-bom = "34.19.0"
+firebase-bom = "35.1.0"
 firebase-crashlytics-plugin = "3.0.8"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.6.0"
-kotlinter-gradle = "5.7.0"
+spotless = "8.10.4"
 leakcanary = "3.0-alpha-8"
 
 leanback = "1.2.0"
 leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
-okhttp = "5.5.0"
+okhttp = "5.5.1"
 retrofit = "3.0.0"
-sardine-android = "0.0.3"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.11.1"
@@ -37,11 +36,12 @@ flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.6.3"
 timber = "5.0.1"
-slf4j = "2.0.19"
+slf4j = "2.0.20"
 
 junit-jupiter = "6.1.3"
-junit5 = "2.0.1"
+junit5 = "2.0.2"
 mockk = "1.14.11"
+mockwebserver = "5.5.1"
 junit = "1.3.0"
 espresso-core = "3.7.0"
 uiautomator = "2.4.0"
@@ -79,6 +79,8 @@ ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 
 leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
@@ -107,12 +109,12 @@ coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versio
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3" }
 
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
-sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
 
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
@@ -138,7 +140,7 @@ ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }

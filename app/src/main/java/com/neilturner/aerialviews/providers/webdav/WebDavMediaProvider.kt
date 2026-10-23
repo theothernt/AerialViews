@@ -5,14 +5,13 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.storage.FileHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import com.neilturner.aerialviews.utils.aerialMediaTypeFor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -24,7 +23,7 @@ internal class WebDavMediaProvider(
     private val prefs: WebDavProviderPreferences,
     private val clientFactory: () -> WebDavListingClient = {
         val okHttpClient = WebDavSslHelper.createOkHttpClient(prefs.validateSsl)
-        SardineWebDavClient(okHttpClient = okHttpClient)
+        OkHttpWebDavClient(okHttpClient = okHttpClient)
     },
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
@@ -79,18 +78,17 @@ internal class WebDavMediaProvider(
         return when (val testResult = testConnectionInternal()) {
             is WebDavConnectionTestResult.SuccessSummary -> {
                 val media =
-                    testResult.files.mapNotNull { url ->
+                    testResult.files.mapNotNull { (url, displayName) ->
                         val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-                        val item = AerialMedia(uri)
+                        // Resolve the type from the url, not displayName: displayName is nullable,
+                        // so keying off it would silently drop files whose name is unavailable but
+                        // whose url still carries a playable extension.
+                        val type = aerialMediaTypeFor(url) ?: return@mapNotNull null
 
-                        when {
-                            FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
-                            FileHelper.isSupportedImageType(url) -> item.type = AerialMediaType.IMAGE
-                            else -> return@mapNotNull null
+                        AerialMedia(uri, type = type).apply {
+                            source = AerialMediaSource.WEBDAV
+                            metadata.title = displayName?.takeIf { it.isNotBlank() }.orEmpty()
                         }
-
-                        item.source = AerialMediaSource.WEBDAV
-                        item
                     }
 
                 Timber.i("Media found: ${media.size}")
@@ -137,7 +135,7 @@ internal class WebDavMediaProvider(
     ): WebDavConnectionTestResult =
         withContext(Dispatchers.IO) {
             val res = context.resources
-            val selected = mutableListOf<String>()
+            val selected = mutableListOf<Pair<String, String?>>()
             val excluded: Int
             val images: Int
 
@@ -153,19 +151,19 @@ internal class WebDavMediaProvider(
 
             val files =
                 try {
-                    listFilesAndFoldersRecursively(client, endpoint.baseUrl).map { it.first }
+                    listFilesAndFoldersRecursively(client, endpoint.baseUrl)
                 } catch (ex: Exception) {
                     Timber.e(ex)
                     return@withContext formatWebDavConnectionError(endpoint, ex)
                 }
 
             if (prefs.includeVideos) {
-                selected.addAll(files.filter { FileHelper.isSupportedVideoType(it) })
+                selected.addAll(files.filter { FileHelper.isSupportedVideoType(it.first) }.map { it.first to it.third })
             }
             val videos = selected.size
 
             if (prefs.includePhotos) {
-                selected.addAll(files.filter { FileHelper.isSupportedImageType(it) })
+                selected.addAll(files.filter { FileHelper.isSupportedImageType(it.first) }.map { it.first to it.third })
             }
             images = selected.size - videos
             excluded = files.size - selected.size
@@ -206,8 +204,8 @@ internal class WebDavMediaProvider(
     private fun listFilesAndFoldersRecursively(
         client: WebDavListingClient,
         url: String = "",
-    ): List<Pair<String, Long>> {
-        val filesWithDates = mutableListOf<Pair<String, Long>>()
+    ): List<Triple<String, Long, String?>> {
+        val filesWithDates = mutableListOf<Triple<String, Long, String?>>()
         val directories = ArrayDeque<String>()
         var rootVerified = false
 
@@ -227,7 +225,13 @@ internal class WebDavMediaProvider(
                     if (resource.isDirectory && prefs.searchSubfolders) {
                         directories.add("$currentUrl/${resource.name}")
                     } else if (!resource.isDirectory) {
-                        filesWithDates.add(Pair("$currentUrl/${resource.name}", resource.modifiedTimeMs))
+                        filesWithDates.add(
+                            Triple(
+                                "$currentUrl/${resource.name}",
+                                resource.modifiedTimeMs,
+                                resource.displayName,
+                            ),
+                        )
                     }
                 }
             } catch (ex: Exception) {
@@ -266,6 +270,7 @@ internal class WebDavMediaProvider(
 
 internal data class WebDavResourceInfo(
     val name: String,
+    val displayName: String? = null,
     val isDirectory: Boolean,
     val modifiedTimeMs: Long = 0L,
 )
@@ -278,29 +283,4 @@ internal interface WebDavListingClient {
     )
 
     fun list(url: String): List<WebDavResourceInfo>
-}
-
-internal class SardineWebDavClient(
-    okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
-) : WebDavListingClient {
-    private val delegate = OkHttpSardine(okHttpClient)
-
-    override fun setCredentials(
-        userName: String,
-        password: String,
-        preemptive: Boolean,
-    ) {
-        delegate.setCredentials(userName, password, preemptive)
-    }
-
-    override fun list(url: String): List<WebDavResourceInfo> =
-        delegate
-            .list(url)
-            .map { resource ->
-                WebDavResourceInfo(
-                    name = resource.name,
-                    isDirectory = resource.isDirectory,
-                    modifiedTimeMs = resource.modified?.time ?: 0L,
-                )
-            }
 }

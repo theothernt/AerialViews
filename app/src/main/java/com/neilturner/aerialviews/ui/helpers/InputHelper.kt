@@ -133,6 +133,7 @@ object InputHelper {
             ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
             ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
             ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
+            ButtonType.RESTART_VIDEO -> controller?.restartVideo()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }
@@ -329,6 +330,7 @@ object InputHelper {
                 ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
                 ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
                 ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
+                ButtonType.RESTART_VIDEO -> controller?.restartVideo()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
                 else -> exit(true)
             }

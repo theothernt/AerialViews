@@ -19,4 +19,5 @@ enum class ButtonType {
     TOGGLE_MUTE, // Toggle audio mute/unmute
     TOGGLE_PAUSE, // Pause/unpause video or photo timer
     TOGGLE_LOOPING, // Toggle looping for current photo or video
+    RESTART_VIDEO, // Restart current video from the beginning
 }

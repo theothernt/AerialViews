@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers.webdav
 
+import com.neilturner.aerialviews.data.network.HttpLogging
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -18,11 +18,7 @@ internal object WebDavSslHelper {
                 createTrustAllClientBuilder()
             }
 
-        val logging =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.HEADERS
-            }
-        builder.addInterceptor(logging)
+        HttpLogging.interceptor()?.let { builder.addInterceptor(it) }
 
         return builder.build()
     }

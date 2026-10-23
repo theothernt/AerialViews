@@ -1,0 +1,24 @@
+{
+  "name": "samba",
+  "description": "SMB/CIFS share on the test NAS. Expects both images and videos under the share.",
+  "general": {
+    "playlistCache": false,
+    "startScreensaverOnLaunch": true,
+    "shuffleVideos": false,
+    "autoTimeOfDay": false,
+    "wifiOnly": false
+  },
+  "providers": {
+    "samba": {
+      "enabled": true,
+      "hostName": "192.0.2.50",
+      "domainName": "WORKGROUP",
+      "shareName": "Media/Aerial",
+      "userName": "aerial",
+      "password": "aerial",
+      "searchSubfolders": true,
+      "enableEncryption": false,
+      "mediaSelection": ["VIDEOS", "PHOTOS"]
+    }
+  }
+}

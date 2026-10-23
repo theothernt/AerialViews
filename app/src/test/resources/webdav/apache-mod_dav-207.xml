@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<D:multistatus xmlns:D="DAV:" xmlns:ns0="DAV:">
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getlastmodified>Wed, 21 Oct 2026 23:15:11 GMT</lp1:getlastmodified>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:getcontentlength/>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/Thumbs.db</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Fri, 07 Mar 2025 12:46:46 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>145408</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/robinfrcd_hennigsvaer_1080p_H264.m4v</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Mon, 05 Feb 2024 16:00:52 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>76029430</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/Roadways%20of%20Nevada.jpg</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Fri, 02 Feb 2024 15:54:05 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>4278120</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/robinfrcd_nusfjord_1080p_H264.m4v</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Tue, 02 Jul 2024 14:28:16 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>151213479</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/%e2%81%a8Fuji-Hakone-Izu%20National%20Park%e2%81%a9.HEIC</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Mon, 20 Jan 2025 07:30:57 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>1617922</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/.DS_Store</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Tue, 07 Apr 2026 18:31:09 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>6148</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/6602526-hd_1920_1080_30fps.mp4</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Fri, 07 Mar 2025 12:46:38 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>21542181</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/More%20Media/</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype><D:collection/></lp1:resourcetype>
+<lp1:getlastmodified>Wed, 21 Oct 2026 23:15:11 GMT</lp1:getlastmodified>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:getcontentlength/>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/Side%20street.jpg</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Wed, 07 Feb 2024 16:21:19 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>2492299</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/Tokyo%20tower.jpg</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Fri, 09 Feb 2024 19:09:34 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>2888167</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+<D:response xmlns:lp1="DAV:" xmlns:lp2="http://apache.org/dav/props/" xmlns:g0="DAV:">
+<D:href>/Video/Aerial/Test/IMG/Train%20station%20at%20Hakone.HEIC</D:href>
+<D:propstat>
+<D:prop>
+<lp1:resourcetype/>
+<lp1:getlastmodified>Mon, 20 Jan 2025 07:30:39 GMT</lp1:getlastmodified>
+<lp1:getcontentlength>2201867</lp1:getcontentlength>
+</D:prop>
+<D:status>HTTP/1.1 200 OK</D:status>
+</D:propstat>
+<D:propstat>
+<D:prop>
+<g0:displayname/>
+</D:prop>
+<D:status>HTTP/1.1 404 Not Found</D:status>
+</D:propstat>
+</D:response>
+</D:multistatus>

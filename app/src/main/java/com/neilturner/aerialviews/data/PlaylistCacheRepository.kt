@@ -195,6 +195,7 @@ class PlaylistCacheRepository(
                             description = entity.exifDescription,
                         ),
                 ),
+            audioUri = entity.audioUri?.toUri(),
         )
 
     suspend fun cachePlaylist(
@@ -225,6 +226,7 @@ class PlaylistCacheRepository(
                     exifState = m.metadata.exif.state,
                     exifCountry = m.metadata.exif.country,
                     exifDescription = m.metadata.exif.description,
+                    audioUri = m.audioUri?.toString(),
                 )
             }
 

@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.Display.HDRFormat
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -36,6 +37,11 @@ class AppleVideosFragment : MenuStateFragment() {
 
         updateSummary()
         updateVideoCount()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.analyticsScreenView("Apple Videos", this)
     }
 
     private fun setupQualityPreference() {

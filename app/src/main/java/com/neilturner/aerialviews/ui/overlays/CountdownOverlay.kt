@@ -7,10 +7,12 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.overlays.utils.CountdownFormatter
 import com.neilturner.aerialviews.ui.overlays.utils.CountdownTimeParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -23,11 +25,13 @@ class CountdownOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
 
     private val prefs = GeneralPrefs
-    private val mainScope = CoroutineScope(Dispatchers.Main.immediate)
+    private var scopeJob = SupervisorJob()
+    private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
     private var updateJob: Job? = null
 
     private var targetTimeStr: String = ""
     private var targetMessage: String = ""
+    private var label: String = ""
     private var targetDateTime: LocalDateTime? = null
     private var isCompleted = false
 
@@ -45,6 +49,10 @@ class CountdownOverlay : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        if (scopeJob.isCancelled) {
+            scopeJob = SupervisorJob()
+            mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
+        }
         initCountdown()
         startCountdown()
     }
@@ -52,11 +60,13 @@ class CountdownOverlay : AppCompatTextView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         stopCountdown()
+        scopeJob.cancel()
     }
 
     private fun initCountdown() {
         targetTimeStr = prefs.countdownTargetTime
-        targetMessage = prefs.countdownTargetMessage.ifEmpty { "Time's up!" }
+        targetMessage = prefs.countdownTargetMessage.ifEmpty { resources.getString(R.string.countdown_time_is_up) }
+        label = prefs.countdownLabel
         targetDateTime = parseTargetTime(targetTimeStr, LocalDateTime.now())
         isCompleted = false
     }
@@ -65,7 +75,7 @@ class CountdownOverlay : AppCompatTextView {
         stopCountdown()
         if (targetTimeStr.isEmpty() || targetDateTime == null) {
             if (targetTimeStr.isNotEmpty()) {
-                text = "Invalid time format"
+                text = resources.getString(R.string.countdown_invalid_time_format)
             }
             return
         }
@@ -101,22 +111,21 @@ class CountdownOverlay : AppCompatTextView {
             text = formatCountdown(totalSeconds)
         } catch (e: Exception) {
             Timber.e("Error updating countdown: $e")
-            text = "Error"
+            text = resources.getString(R.string.countdown_error)
         }
     }
 
     private fun formatCountdown(totalSeconds: Long): String {
-        val days = totalSeconds / 86400
-        val hours = (totalSeconds % 86400) / 3600
-        val minutes = (totalSeconds % 3600) / 60
-        val seconds = totalSeconds % 60
+        val separator = resources.getString(R.string.countdown_unit_separator)
+        val countdown =
+            CountdownFormatter.parts(totalSeconds).joinToString(separator) { part ->
+                resources.getQuantityString(part.unit.pluralsRes, part.value.toInt(), part.value)
+            }
 
-        return when {
-            days > 0 -> "${days}d ${hours}h ${minutes}m"
-            hours > 0 -> "${hours}h ${minutes}m"
-            minutes > 0 -> "${minutes}m ${seconds}s"
-            else -> "${seconds}s"
-        }
+        return listOfNotNull(
+            label.takeIf { it.isNotBlank() },
+            countdown.takeIf { it.isNotBlank() },
+        ).joinToString(" ")
     }
 
     private fun parseTargetTime(
