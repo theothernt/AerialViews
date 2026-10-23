@@ -816,6 +816,9 @@
     <string name="playlist_slideshow_speed_title">Slideshow speed</string>
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
+    <string name="playlist_photo_portrait_side_by_side_title">Display portrait photos side by side</string>
+    <string name="playlist_photo_portrait_side_by_side_summary">Pair a portrait photo with the next portrait photo in the playlist</string>
+
     <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
     <string name="playlist_playback_speed_reset">Playback speed reset to 1x (no actions assigned)</string>
 

@@ -237,6 +237,9 @@
   <string name="slideshow_30s">30 saniye*</string>
   <string name="slideshow_3m">3 dakika</string>
   <string name="slideshow_5m">5 dakika</string>
+  <string name="slideshow_2s">2 saniye</string>
+  <string name="slideshow_3s">3 saniye</string>
+  <string name="slideshow_4s">4 saniye</string>
   <string name="slideshow_5s">5 saniye</string>
   <string name="slideshow_6h">6 saat</string>
   <string name="slot_clock">Saat</string>

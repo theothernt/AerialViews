@@ -237,6 +237,9 @@
   <string name="slideshow_30s">30 Sekunden*</string>
   <string name="slideshow_3m">3 Minuten</string>
   <string name="slideshow_5m">5 Minuten</string>
+  <string name="slideshow_2s">2 Sekunden</string>
+  <string name="slideshow_3s">3 Sekunden</string>
+  <string name="slideshow_4s">4 Sekunden</string>
   <string name="slideshow_5s">5 Sekunden</string>
   <string name="slideshow_6h">6 Stunden</string>
   <string name="slot_clock">Uhr</string>

@@ -8,11 +8,13 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatImageView
 import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ImageRequest
+import coil3.request.SuccessResult
 import coil3.request.allowHardware
 import com.hierynomus.protocol.transport.TransportException
 import com.hierynomus.smbj.common.SMBRuntimeException
@@ -31,10 +33,13 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.helpers.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filename
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.BufferedInputStream
@@ -56,6 +61,8 @@ class ImagePlayerView : FrameLayout {
     private val ioScope = CoroutineScope(Dispatchers.IO + ioJob)
     private val mainScope = CoroutineScope(Dispatchers.Main + mainJob)
 
+    private var companionJob: Job? = null
+
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
@@ -76,7 +83,21 @@ class ImagePlayerView : FrameLayout {
 
     private val foregroundImageView =
         AppCompatImageView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
+        }
+
+    // Shows a second portrait photo next to the foreground one when two portrait photos are paired
+    private val companionImageView =
+        AppCompatImageView(context).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1f)
+            visibility = GONE
+        }
+    private val foregroundContainer =
+        LinearLayout(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            orientation = LinearLayout.HORIZONTAL
+            addView(foregroundImageView)
+            addView(companionImageView)
         }
     private val backgroundImageView =
         AppCompatImageView(context).apply {
@@ -99,7 +120,7 @@ class ImagePlayerView : FrameLayout {
 
     init {
         addView(backgroundImageView)
-        addView(foregroundImageView)
+        addView(foregroundContainer)
     }
 
     fun release() {
@@ -122,6 +143,7 @@ class ImagePlayerView : FrameLayout {
             }.build()
 
     fun setImage(media: AerialMedia) {
+        companionJob?.cancel()
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
@@ -206,14 +228,19 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            blurHelper.update(drawable.takeIf { shouldShowBlurBackground(media, it) })
-                            setForegroundDrawable(drawable)
+                            companionJob?.cancel()
+                            if (GeneralPrefs.photoPortraitSideBySide && isPortraitStill(media, drawable)) {
+                                companionJob =
+                                    mainScope.launch {
+                                        val companion = findPortraitCompanion()
+                                        showImage(media, drawable, companion?.value)
+                                        companion?.let { listener?.onPortraitCompanionShown(it.index) }
+                                    }
+                            } else {
+                                showImage(media, drawable, null)
+                            }
                         },
                     ).listener(
-                        onSuccess = { _, result ->
-                            setScaleMode(result.image.width, result.image.height)
-                            setupFinishedRunnable()
-                        },
                         onError = { _, result ->
                             handleImageError(result.throwable)
                         },
@@ -249,10 +276,67 @@ class ImagePlayerView : FrameLayout {
         return total
     }
 
-    private fun setForegroundDrawable(drawable: Drawable?) {
+    private fun showImage(
+        media: AerialMedia,
+        drawable: Drawable,
+        companion: Drawable?,
+    ) {
+        blurHelper.update(drawable.takeIf { shouldShowBlurBackground(media, it, companion != null) })
+        setForegroundDrawable(drawable, companion)
+        setScaleMode(drawable.intrinsicWidth, drawable.intrinsicHeight, companion != null)
+        setupFinishedRunnable()
+    }
+
+    /**
+     * Looks through the upcoming playlist images for another portrait photo to show next to
+     * the current one. Returns it with its playlist index, or null when none was found.
+     */
+    private suspend fun findPortraitCompanion(): IndexedValue<Drawable>? {
+        val candidates =
+            withContext(Dispatchers.IO) {
+                listener?.portraitCompanionCandidates().orEmpty()
+            }
+        for (candidate in candidates.take(MAX_PORTRAIT_COMPANION_ATTEMPTS)) {
+            val drawable = loadCompanionDrawable(candidate.value) ?: continue
+            if (isPortraitStill(candidate.value, drawable)) {
+                return IndexedValue(candidate.index, drawable)
+            }
+        }
+        return null
+    }
+
+    private suspend fun loadCompanionDrawable(media: AerialMedia): Drawable? =
+        try {
+            val data =
+                withContext(Dispatchers.IO) {
+                    ImagePlayerHelper.streamFromMedia(context, media)
+                } ?: stripCredentialsForCoil(media)
+            val (targetWidth, targetHeight) = resolveTargetSize()
+            val request =
+                ImageRequest
+                    .Builder(context)
+                    .data(data)
+                    .size(targetWidth / 2, targetHeight)
+                    .allowHardware(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || !GeneralPrefs.photoBackgroundBlurEnabled)
+                    .build()
+            (imageLoader.execute(request) as? SuccessResult)?.image?.asDrawable(resources)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.e(e, "Unable to load portrait companion: ${media.uri.filename}")
+            null
+        }
+
+    private fun setForegroundDrawable(
+        drawable: Drawable?,
+        companion: Drawable? = null,
+    ) {
         (foregroundImageView.drawable as? Animatable)?.stop()
         foregroundImageView.setImageDrawable(drawable)
         (drawable as? Animatable)?.start()
+
+        companionImageView.setImageDrawable(companion)
+        companionImageView.visibility = if (companion != null) VISIBLE else GONE
     }
 
     private fun shouldSkipBlurBackground(
@@ -260,9 +344,22 @@ class ImagePlayerView : FrameLayout {
         drawable: Drawable,
     ): Boolean = media.uri.filename.endsWith(".gif", ignoreCase = true) || drawable is Animatable
 
+    private fun isPortraitStill(
+        media: AerialMedia,
+        drawable: Drawable,
+    ): Boolean {
+        if (shouldSkipBlurBackground(media, drawable)) {
+            return false
+        }
+        val (containerWidth, containerHeight) = resolveTargetSize()
+        return containerWidth > containerHeight &&
+            AspectRatio.fromDimensions(drawable.intrinsicWidth, drawable.intrinsicHeight) == AspectRatio.PORTRAIT
+    }
+
     private fun shouldShowBlurBackground(
         media: AerialMedia,
         drawable: Drawable,
+        sideBySide: Boolean,
     ): Boolean {
         if (shouldSkipBlurBackground(media, drawable)) {
             return false
@@ -274,7 +371,9 @@ class ImagePlayerView : FrameLayout {
             return false
         }
 
-        val (containerWidth, containerHeight) = resolveTargetSize()
+        val (targetWidth, containerHeight) = resolveTargetSize()
+        // Side by side, each copy of the photo only gets half of the width
+        val containerWidth = if (sideBySide) targetWidth / 2 else targetWidth
         if (containerWidth <= 0 || containerHeight <= 0) {
             return false
         }
@@ -300,6 +399,7 @@ class ImagePlayerView : FrameLayout {
 
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
+        private const val MAX_PORTRAIT_COMPANION_ATTEMPTS = 50 // Upcoming images to try when looking for a second portrait photo
     }
 
     private fun resolveTargetSize(): Pair<Int, Int> {
@@ -317,6 +417,7 @@ class ImagePlayerView : FrameLayout {
 
     fun stop() {
         removeCallbacks(finishedRunnable)
+        companionJob?.cancel()
         setForegroundDrawable(null)
         pausedTimestamp = 0
         remainingDuration = 0
@@ -344,8 +445,13 @@ class ImagePlayerView : FrameLayout {
     private fun setScaleMode(
         width: Int,
         height: Int,
+        sideBySide: Boolean,
     ) {
-        foregroundImageView.scaleType = resolveForegroundScaleType(width, height)
+        // Side by side, each photo gets a box that is wider than a typical portrait photo,
+        // so cropping would cut off the top and bottom. Always show the whole photo instead.
+        val scaleType = if (sideBySide) ImageView.ScaleType.FIT_CENTER else resolveForegroundScaleType(width, height)
+        foregroundImageView.scaleType = scaleType
+        companionImageView.scaleType = scaleType
     }
 
     private fun resolveForegroundScaleType(
@@ -418,5 +524,9 @@ class ImagePlayerView : FrameLayout {
         fun onImageError()
 
         fun onImagePrepared()
+
+        fun portraitCompanionCandidates(): List<IndexedValue<AerialMedia>>
+
+        fun onPortraitCompanionShown(index: Int)
     }
 }

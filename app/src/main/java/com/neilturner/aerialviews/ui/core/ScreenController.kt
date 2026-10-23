@@ -1201,6 +1201,15 @@ class ScreenController(
 
     override fun onImageError() = handleError()
 
+    override fun portraitCompanionCandidates(): List<IndexedValue<AerialMedia>> {
+        if (!this::playlist.isInitialized) return emptyList()
+        return playlist
+            .peekAhead(PLAYLIST_ITEMS_LOOKAHEAD)
+            .filter { it.value.type == AerialMediaType.IMAGE }
+    }
+
+    override fun onPortraitCompanionShown(index: Int) = playlist.markPaired(index)
+
     private fun updateMetadataOverlayData(media: AerialMedia) {
         val metadataSlots =
             listOf(
@@ -1346,5 +1355,6 @@ class ScreenController(
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 1000 // Delay before loading next item, after error
         const val CACHE_RESUME_DELAY: Long = 1000 // Delay before starting playback when restoring from cache
+        const val PLAYLIST_ITEMS_LOOKAHEAD = 100 // Upcoming playlist items searched for a second portrait photo
     }
 }
