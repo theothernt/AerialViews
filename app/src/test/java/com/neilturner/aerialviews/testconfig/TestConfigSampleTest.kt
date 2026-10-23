@@ -75,7 +75,7 @@ internal class TestConfigSampleTest {
                         .filterNotNull()
                 includeCounts.forEach { value ->
                     assertTrue(
-                        value == "DISABLED" || value.toIntOrNull()?.let { it in IMMICH_INCLUDE_COUNTS } == true,
+                        value == "DISABLED" || value.toIntOrNull()?.let { it in INCLUDE_COUNTS } == true,
                         "${file.name} has an unsupported immich include count '$value'",
                     )
                 }
@@ -97,6 +97,18 @@ internal class TestConfigSampleTest {
             providers.ncMemories?.takeIf { it.enabled }?.let { memories ->
                 assertNotNull(memories.url, "${file.name} is missing a nc memories url")
                 assertNotNull(memories.username, "${file.name} is missing a nc memories user name")
+
+                val includeCounts = listOf(memories.includeFavorites, memories.includeRecent).filterNotNull()
+                includeCounts.forEach { value ->
+                    assertTrue(
+                        value == "DISABLED" || value.toIntOrNull()?.let { it in INCLUDE_COUNTS } == true,
+                        "${file.name} has an unsupported nc memories include count '$value'",
+                    )
+                }
+                assertTrue(
+                    includeCounts.any { it != "DISABLED" },
+                    "${file.name} enables nc memories but selects no favourites or recent assets",
+                )
             }
 
             providers.customFeed?.takeIf { it.enabled }?.let { feed ->
@@ -137,6 +149,6 @@ internal class TestConfigSampleTest {
 
     private companion object {
         const val SAMPLE_CONFIG_DIR = "../docs/testing/configs"
-        val IMMICH_INCLUDE_COUNTS = setOf(100, 200, 300, 400)
+        val INCLUDE_COUNTS = setOf(100, 200, 300, 400)
     }
 }

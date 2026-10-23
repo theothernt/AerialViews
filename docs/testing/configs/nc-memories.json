@@ -17,6 +17,8 @@
       "validateSsl": false,
       "favoritesName": "Favorites",
       "recentName": "Recent",
+      "includeFavorites": "100",
+      "includeRecent": "100",
       "mediaSelection": ["VIDEOS", "PHOTOS"]
     }
   }

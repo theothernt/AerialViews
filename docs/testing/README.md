@@ -153,6 +153,13 @@ without logging anything.
 | `favoritesName` | `NCMemoriesMediaPrefs.favoritesName` |
 | `recentName` | `NCMemoriesMediaPrefs.recentName` |
 | `mediaSelection` | `NCMemoriesMediaPrefs.mediaSelection` |
+| `includeFavorites` | `NCMemoriesMediaPrefs.includeFavorites` (`DISABLED`, `100`, `200`, `300`, `400`) |
+| `includeRecent` | `NCMemoriesMediaPrefs.includeRecent` (`DISABLED`, `100`, `200`, `300`, `400`) |
+
+`favoritesName` and `recentName` only name the Memories albums to treat as favourites and recent.
+The `includeFavorites`/`includeRecent` counts are what actually fetch them, and albums are picked in
+the UI from the server's own list, so a config needs at least one non-`DISABLED` count; otherwise
+the provider has nothing to fetch and returns "No files found" without logging anything.
 
 ## Real credentials
 

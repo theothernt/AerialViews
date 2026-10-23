@@ -194,6 +194,8 @@ object TestConfigApplier {
         config.validateSsl?.let { NCMemoriesMediaPrefs.validateSsl = it }
         config.favoritesName?.let { writePref(context, NCMEMORIES_FAVORITES_NAME_KEY, it) }
         config.recentName?.let { writePref(context, NCMEMORIES_RECENT_NAME_KEY, it) }
+        config.includeFavorites?.let { NCMemoriesMediaPrefs.includeFavorites = it }
+        config.includeRecent?.let { NCMemoriesMediaPrefs.includeRecent = it }
     }
 
     private fun applyMediaSelections(

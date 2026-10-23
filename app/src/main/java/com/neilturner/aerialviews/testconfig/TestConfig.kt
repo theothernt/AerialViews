@@ -111,4 +111,8 @@ data class NcMemoriesConfig(
     val favoritesName: String? = null,
     val recentName: String? = null,
     val mediaSelection: List<String>? = null,
+    /** `DISABLED` or a count of 100/200/300/400 assets. */
+    val includeFavorites: String? = null,
+    /** `DISABLED` or a count of 100/200/300/400 assets. */
+    val includeRecent: String? = null,
 )
