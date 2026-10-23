@@ -74,14 +74,14 @@ jobs:
 
     - name: Upload ${{ steps.flavorString.outputs.capitalized }} Release APK
       if: matrix.flavor == 'github'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.flavor }}-release.apk
         path: ${{ env.APK_PATH }}${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release.apk
 
     - name: Upload ${{ steps.flavorString.outputs.capitalized }} Bundle
       if: matrix.flavor != 'github'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ matrix.flavor }}-release.aab
         path: ${{ env.BUNDLE_PATH }}${{ matrix.flavor }}Release/app-${{ matrix.flavor }}-release.aab
