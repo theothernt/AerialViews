@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.data.AerialDatabase
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.data.PlaylistStateEntity
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.services.TimeOfDayHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.Dispatchers
@@ -81,11 +82,18 @@ class CacheFragment : MenuStateFragment() {
 
     private fun updateStatus() {
         lifecycleScope.launch {
-            val state =
+            val status =
                 withContext(Dispatchers.IO) {
                     try {
                         val db = AerialDatabase.getInstance(requireContext())
-                        db.playlistCacheDao().getPlaylistState()
+                        val state = db.playlistCacheDao().getPlaylistState()
+                        if (state == null) {
+                            null
+                        } else {
+                            // The cache stores the full list; show how many items the current
+                            // time-of-day filter would actually play.
+                            state to cacheRepository.countMatching(TimeOfDayHelper.currentFilter())
+                        }
                     } catch (e: Exception) {
                         null
                     }
@@ -93,9 +101,9 @@ class CacheFragment : MenuStateFragment() {
 
             withContext(Dispatchers.Main) {
                 val statusPref = findPreference<Preference>("playlist_cache_status")
-                if (state != null) {
-                    val statusText = buildStatusText(state)
-                    statusPref?.summary = statusText
+                val state = status?.first
+                if (status != null && state != null) {
+                    statusPref?.summary = buildStatusText(state, status.second)
                 } else {
                     statusPref?.summary = getString(R.string.playlist_cache_status_empty)
                 }
@@ -103,15 +111,30 @@ class CacheFragment : MenuStateFragment() {
         }
     }
 
-    private fun buildStatusText(state: PlaylistStateEntity): String {
+    private fun buildStatusText(
+        state: PlaylistStateEntity,
+        matchingMediaItems: Int,
+    ): String {
         val baseText =
-            getString(
-                R.string.playlist_cache_status_active,
-                state.totalMediaItems,
-                state.totalMusicTracks,
-            )
+            if (matchingMediaItems == state.totalMediaItems) {
+                getString(
+                    R.string.playlist_cache_status_active,
+                    state.totalMediaItems,
+                    state.totalMusicTracks,
+                )
+            } else {
+                getString(
+                    R.string.playlist_cache_status_active_filtered,
+                    matchingMediaItems,
+                    state.totalMediaItems,
+                    state.totalMusicTracks,
+                )
+            }
 
-        val indexText = getString(R.string.playlist_cache_status_index, state.mediaPosition + 1) // 1-based for display
+        // The saved position is an index into the filtered list, so clamp it for display when the
+        // period changed and the filtered list is now shorter.
+        val displayPosition = (state.mediaPosition + 1).coerceIn(0, matchingMediaItems) // 1-based for display
+        val indexText = getString(R.string.playlist_cache_status_index, displayPosition)
 
         val refreshIntervalStr = GeneralPrefs.playlistCacheRefresh
         val intervalWeeks = refreshIntervalStr.toIntOrNull() ?: -1

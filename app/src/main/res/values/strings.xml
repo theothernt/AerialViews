@@ -841,6 +841,7 @@
 
     <string name="playlist_cache_status_title">Cache Status</string>
     <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks,</string>
+    <string name="playlist_cache_status_active_filtered">%1$d of %2$d media items for the current time of day, %3$d music tracks,</string>
     <string name="playlist_cache_status_empty">No cache data</string>
     <string name="playlist_cache_status_unknown">Unknown</string>
     <string name="playlist_cache_expires">Expires:</string>

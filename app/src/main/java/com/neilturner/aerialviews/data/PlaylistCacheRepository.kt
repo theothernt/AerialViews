@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.TimeOfDayFilter
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.SceneType
@@ -19,15 +20,47 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import kotlin.time.Duration.Companion.days
 
+/**
+ * Snapshot of the cache preferences.
+ *
+ * Injected rather than read directly so the repository can be exercised in JVM tests without
+ * initialising Kotpref.
+ */
+data class PlaylistCachePrefs(
+    val enabled: Boolean,
+    val refresh: String,
+    val resumeSame: Boolean,
+) {
+    companion object {
+        fun current(): PlaylistCachePrefs =
+            PlaylistCachePrefs(
+                enabled = GeneralPrefs.playlistCache,
+                refresh = GeneralPrefs.playlistCacheRefresh,
+                resumeSame = GeneralPrefs.playlistCacheResumeBehaviour == "same",
+            )
+    }
+}
+
+/**
+ * The cached table holds the full playlist in `playlistOrder` order. The time-of-day filter is
+ * applied when the playlist is read, never when it is written, so the cache survives day/night
+ * cycles without refetching providers.
+ *
+ * All saved positions and chunk offsets are in the *filtered* index space. SQL applies LIMIT/OFFSET
+ * after the filter predicate, so the initial window and every lazy chunk describe the same list.
+ */
 class PlaylistCacheRepository(
     private val appContext: Context,
+    private val dao: PlaylistCacheDao = AerialDatabase.getInstance(appContext).playlistCacheDao(),
+    private val prefsProvider: () -> PlaylistCachePrefs = { PlaylistCachePrefs.current() },
 ) {
-    private val dao = AerialDatabase.getInstance(appContext).playlistCacheDao()
-
-    suspend fun isCacheValid(settingsHash: String): Boolean =
+    suspend fun isCacheValid(
+        settingsHash: String,
+        filter: TimeOfDayFilter,
+    ): Boolean =
         withContext(Dispatchers.IO) {
-            val cacheEnabled = GeneralPrefs.playlistCache
-            if (!cacheEnabled) {
+            val prefs = prefsProvider()
+            if (!prefs.enabled) {
                 Timber.d("PlaylistCache: Cache disabled in settings")
                 clearCache()
                 return@withContext false
@@ -45,16 +78,18 @@ class PlaylistCacheRepository(
                 return@withContext false
             }
 
-            val refreshIntervalStr = GeneralPrefs.playlistCacheRefresh
-            val intervalWeeks = refreshIntervalStr.toIntOrNull() ?: -1
+            val intervalWeeks = prefs.refresh.toIntOrNull() ?: -1
 
             if (intervalWeeks == -1) {
-                // Valid until end of playlist
-                val isValid = state.mediaPosition < state.totalMediaItems - 1
+                // Valid until end of playlist. The filtered list can shrink when the time-of-day
+                // period changes, so an out-of-range position means "restart", not "refetch".
+                val filteredTotal = countFiltered(filter)
+                val outOfRange = state.mediaPosition >= filteredTotal
+                val isValid = filteredTotal > 0 && (outOfRange || state.mediaPosition < filteredTotal - 1)
                 if (!isValid) {
-                    Timber.i("PlaylistCache: Cache invalidated (reached end of playlist: ${state.mediaPosition}/${state.totalMediaItems})")
+                    Timber.i("PlaylistCache: Cache invalidated (reached end of playlist: ${state.mediaPosition}/$filteredTotal)")
                 } else {
-                    Timber.d("PlaylistCache: Cache valid (position ${state.mediaPosition}/${state.totalMediaItems})")
+                    Timber.d("PlaylistCache: Cache valid (position ${state.mediaPosition}/$filteredTotal)")
                 }
                 return@withContext isValid
             } else {
@@ -67,17 +102,39 @@ class PlaylistCacheRepository(
             }
         }
 
-    suspend fun getCachedPlaylist(): MediaFetchResult? =
+    suspend fun getCachedPlaylist(filter: TimeOfDayFilter): MediaFetchResult? =
         withContext(Dispatchers.IO) {
             val state = dao.getPlaylistState() ?: return@withContext null
             if (state.totalMediaItems == 0) return@withContext null
 
-            Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
+            val resolvedFilter = resolveFilter(filter)
+            val filteredTotal = dao.countMediaItems(resolvedFilter.allowedNames())
+            if (filteredTotal == 0) {
+                Timber.w("PlaylistCache: DB state exists but no media items match the current filter")
+                return@withContext null
+            }
+
+            Timber.d(
+                "PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, " +
+                    "cached: ${state.totalMediaItems}, filtered: $filteredTotal, period: ${resolvedFilter.period}",
+            )
+
+            // The saved media position is the last visual item that started. nextItem()
+            // pre-increments, so restoring from this value starts the following item. If "same" is
+            // chosen, decrement by 1 so pre-increment lands back on the saved position. A saved
+            // position outside the current filtered list means the period changed: restart.
+            val resumeSame = prefsProvider().resumeSame
+            val resumePosition =
+                when {
+                    state.mediaPosition < 0 || state.mediaPosition >= filteredTotal -> -1
+                    resumeSame -> (state.mediaPosition - 1).coerceIn(-1, filteredTotal - 1)
+                    else -> state.mediaPosition.coerceIn(-1, filteredTotal - 1)
+                }
 
             val windowLimit = 50
-            val windowOffset = 0.coerceAtLeast(state.mediaPosition - 5)
+            val windowOffset = 0.coerceAtLeast(resumePosition - 5)
             Timber.d("PlaylistCache: Loading initial window. Offset: $windowOffset, Limit: $windowLimit")
-            val cachedMediaChunks = dao.getMediaItemsChunk(windowLimit, windowOffset)
+            val cachedMediaChunks = dao.getMediaItemsChunkFiltered(resolvedFilter.allowedNames(), windowLimit, windowOffset)
 
             val cachedMusic = dao.getAllMusicTracksOrdered()
 
@@ -120,35 +177,26 @@ class PlaylistCacheRepository(
                     null
                 }
 
-            Timber.i("PlaylistCache: Cache restored successfully. Music track: ${state.musicTrackIndex}/${state.totalMusicTracks}")
-
-            // The saved media position is the last visual item that started.
-            // nextItem() pre-increments, so restoring from this value starts the following item.
-            // If "same" is chosen, decrement by 1 so pre-increment lands back on the saved position.
-            val resumeSame = GeneralPrefs.playlistCacheResumeBehaviour == "same"
-            val resumePosition =
-                if (resumeSame) {
-                    (state.mediaPosition - 1).coerceIn(-1, state.totalMediaItems - 1)
-                } else {
-                    state.mediaPosition.coerceIn(-1, state.totalMediaItems - 1)
-                }
-            Timber.d(
-                "PlaylistCache: Last started position ${state.mediaPosition}, resumeSame=$resumeSame, startPosition set to $resumePosition",
+            Timber.i(
+                "PlaylistCache: Cache restored successfully. Music track: " +
+                    "${state.musicTrackIndex}/${state.totalMusicTracks}",
             )
 
-            // The cached list is always the exact list that will be played: WiFi-only filtering is
-            // applied before the cache is written, so size, chunk offsets and the saved position
-            // all refer to the same rows and share one index space.
+            Timber.d(
+                "PlaylistCache: Last started position ${state.mediaPosition}, filtered total $filteredTotal, " +
+                    "resumeSame=$resumeSame, startPosition set to $resumePosition",
+            )
+
             MediaFetchResult(
                 mediaPlaylist =
                     MediaPlaylist(
                         initialVideos = mediaList,
                         startPosition = resumePosition,
-                        size = state.totalMediaItems,
+                        size = filteredTotal,
                         windowOffset = windowOffset,
                         fetchChunk = { offset, limit ->
                             Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
-                            getMediaChunk(offset, limit)
+                            getMediaChunk(offset, limit, resolvedFilter)
                         },
                     ),
                 musicPlaylist = musicPlaylist,
@@ -160,15 +208,39 @@ class PlaylistCacheRepository(
     suspend fun getMediaChunk(
         offset: Int,
         limit: Int,
+        filter: TimeOfDayFilter,
     ): List<AerialMedia> =
         withContext(Dispatchers.IO) {
             try {
-                dao.getMediaItemsChunk(limit, offset).map { mapEntityToMedia(it) }
+                dao.getMediaItemsChunkFiltered(filter.allowedNames(), limit, offset).map { mapEntityToMedia(it) }
             } catch (e: Exception) {
                 Timber.e(e, "PlaylistCache: Failed to map chunk")
                 emptyList()
             }
         }
+
+    /** Number of cached items that match [filter] right now, for the cache status screen. */
+    suspend fun countMatching(filter: TimeOfDayFilter): Int =
+        withContext(Dispatchers.IO) {
+            countFiltered(filter)
+        }
+
+    private suspend fun countFiltered(filter: TimeOfDayFilter): Int = dao.countMediaItems(resolveFilter(filter).allowedNames())
+
+    /**
+     * If no videos match the preferred filter, fall back to the full list. This mirrors the
+     * in-memory behaviour so a filter can never hide the entire library.
+     */
+    private suspend fun resolveFilter(filter: TimeOfDayFilter): TimeOfDayFilter {
+        if (!filter.enabled) return TimeOfDayFilter.ALL
+        val matchingVideos = dao.countVideoItems(filter.allowedNames())
+        return if (matchingVideos == 0) {
+            Timber.w("PlaylistCache: No videos match ${filter.period}; using unfiltered list")
+            TimeOfDayFilter.ALL
+        } else {
+            filter
+        }
+    }
 
     private fun mapEntityToMedia(entity: CachedMediaEntity): AerialMedia =
         AerialMedia(
@@ -257,13 +329,13 @@ class PlaylistCacheRepository(
     }
 
     suspend fun saveMediaPosition(position: Int) {
-        if (GeneralPrefs.playlistCache) {
+        if (prefsProvider().enabled) {
             dao.updateMediaPosition(position)
         }
     }
 
     suspend fun saveMusicTrackIndex(index: Int) {
-        if (GeneralPrefs.playlistCache) {
+        if (prefsProvider().enabled) {
             dao.updateMusicTrackIndex(index)
         }
     }

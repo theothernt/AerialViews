@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.TimeOfDayFilter
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -52,6 +53,7 @@ class MediaService(
     private val providers: MutableList<MediaProvider> = mutableListOf(),
     private val config: Config = Config.fromPreferences(),
     private val hashFn: (() -> String)? = null,
+    private val periodProvider: () -> TimeOfDay = { TimeOfDayHelper.getCurrentTimePeriod() },
 ) {
     data class Config(
         val removeDuplicates: Boolean,
@@ -82,28 +84,19 @@ class MediaService(
         }
     }
 
-    private fun buildCompositeHash(filterRemote: Boolean): String {
-        val generalParts =
-            buildList {
-                add(GeneralPrefs.removeDuplicates.toString())
-                add(GeneralPrefs.ignoreNonManifestVideos.toString())
-                add(GeneralPrefs.autoTimeOfDay.toString())
-                if (GeneralPrefs.autoTimeOfDay) add(TimeOfDayHelper.getCurrentTimePeriod().name)
-                add(GeneralPrefs.playlistTimeOfDayDayIncludes.sorted().joinToString(","))
-                add(GeneralPrefs.playlistTimeOfDayNightIncludes.sorted().joinToString(","))
-                add(GeneralPrefs.playlistCache.toString())
-                add(GeneralPrefs.shuffleVideos.toString())
-                add(MusicPrefs.shuffle.toString())
-                add(MusicPrefs.repeat.toString())
-                // The derived network mode, not just the wifiOnly setting: the cache holds exactly
-                // the playlist that will be played, so crossing the WiFi boundary must invalidate it.
-                add(filterRemote.toString())
-            }
-        val generalHash = generalParts.joinToString("|")
-
-        val providerHashes = providers.map { "${it.type}:${it.settingsHash()}" }
-        return (listOf(generalHash) + providerHashes).joinToString("||").hashCode().toString()
-    }
+    private fun buildCompositeHash(filterRemote: Boolean): String =
+        PlaylistSettingsHash.build(
+            settings =
+                PlaylistSettingsHash.Settings(
+                    removeDuplicates = GeneralPrefs.removeDuplicates,
+                    ignoreNonManifestVideos = GeneralPrefs.ignoreNonManifestVideos,
+                    shuffleVideos = GeneralPrefs.shuffleVideos,
+                    shuffleMusic = MusicPrefs.shuffle,
+                    repeatMusic = MusicPrefs.repeat,
+                    filterRemote = filterRemote,
+                ),
+            providerHashes = providers.map { "${it.type}:${it.settingsHash()}" },
+        )
 
     init {
         if (providers.isEmpty()) {
@@ -137,9 +130,22 @@ class MediaService(
                     null
                 }
 
+            // Resolve the period once: the same filter drives the cache lookup, the fallback read
+            // and, when caching is off, the in-memory list.
+            val filter =
+                if (config.autoTimeOfDay) {
+                    TimeOfDayFilter.forPeriod(
+                        period = periodProvider(),
+                        dayIncludes = config.playlistTimeOfDayDayIncludes,
+                        nightIncludes = config.playlistTimeOfDayNightIncludes,
+                    )
+                } else {
+                    TimeOfDayFilter.ALL
+                }
+
             if (config.playlistCache) {
-                if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
-                    val cached = cacheRepo.getCachedPlaylist()
+                if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash, filter)) {
+                    val cached = cacheRepo.getCachedPlaylist(filter)
                     if (cached != null) {
                         onStatus(LoadingStatus.RESUMING)
                         Timber.i("MediaService: USING CACHED PLAYLIST")
@@ -157,8 +163,8 @@ class MediaService(
             }
 
             // Excluded before anything is fetched, so remote providers are never contacted over
-            // cellular. The cache is written from the filtered list below, which keeps the cached
-            // size, chunk offsets and saved position in a single index space.
+            // cellular. The cache is written after this filter, so its size, chunk offsets and
+            // saved position all stay in a single index space.
             val activeProviders =
                 if (filterRemote) {
                     Timber.i("MediaService: WiFi-only mode enabled, excluding REMOTE providers (not on WiFi/Ethernet)")
@@ -212,49 +218,14 @@ class MediaService(
 
             var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
 
-            if (config.autoTimeOfDay) {
-                val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
-                val dayIncludes = config.playlistTimeOfDayDayIncludes
-                val nightIncludes = config.playlistTimeOfDayNightIncludes
-                val dayIncludesSunrise = dayIncludes.contains("SUNRISE")
-                val dayIncludesSunset = dayIncludes.contains("SUNSET")
-                val nightIncludesSunrise = nightIncludes.contains("SUNRISE")
-                val nightIncludesSunset = nightIncludes.contains("SUNSET")
-                Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
-                val originalMedia = filteredMedia
-                filteredMedia =
-                    filteredMedia.filter { media ->
-                        if (media.type == AerialMediaType.VIDEO) {
-                            when (currentTimePeriod) {
-                                TimeOfDay.DAY -> {
-                                    media.metadata.timeOfDay == TimeOfDay.DAY ||
-                                        (dayIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
-                                        (dayIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
-                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
-                                }
-
-                                TimeOfDay.NIGHT -> {
-                                    (nightIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
-                                        (nightIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
-                                        media.metadata.timeOfDay == TimeOfDay.NIGHT ||
-                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
-                                }
-
-                                else -> {
-                                    true
-                                }
-                            }
-                        } else {
-                            true
-                        }
-                    }
-
-                val remainingVideos = filteredMedia.count { it.type == AerialMediaType.VIDEO }
-                if (remainingVideos == 0) {
-                    Timber.w("Auto time-of-day filtering removed all videos; falling back to unfiltered media")
-                    filteredMedia = originalMedia
-                }
-                Timber.i("Media items after time filtering: ${filteredMedia.size}")
+            // With caching on, the full list is stored and the filter is applied at read time, so
+            // the cache survives day/night cycles. Without a cache the filter is applied here,
+            // before shuffling, exactly as it always was.
+            if (cacheRepo == null && filter.enabled) {
+                Timber.i("Applying auto time-of-day filtering for period: ${filter.period}")
+                val before = filteredMedia.size
+                filteredMedia = filter.apply(filteredMedia)
+                Timber.i("Media items after time filtering: ${filteredMedia.size} (was $before)")
             }
 
             if (config.shuffleVideos) {
@@ -284,11 +255,13 @@ class MediaService(
 
             Timber.i("Total media items: ${filteredMedia.size}")
 
-            // Track enabled media sources and media counts
-            trackMediaUsage(filteredMedia)
+            // Track enabled media sources and media counts. With caching on, analytics should
+            // still reflect what would be played now rather than the full cached library.
+            trackMediaUsage(filter.apply(filteredMedia))
 
             if (config.playlistCache && cacheRepo != null) {
-                // Cache enabled: save to DB, return windowed playlist that streams from DB
+                // Cache enabled: store the full list, then return a windowed playlist that reads
+                // back through the current time-of-day filter.
                 cacheRepo.cachePlaylist(
                     media = filteredMedia,
                     musicPlaylist = musicPlaylist,
@@ -296,7 +269,7 @@ class MediaService(
                     shuffleEnabled = config.shuffleVideos,
                 )
 
-                val cachedResult = cacheRepo.getCachedPlaylist()
+                val cachedResult = cacheRepo.getCachedPlaylist(filter)
                 if (cachedResult != null) {
                     Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
                     return@withContext cachedResult
@@ -307,7 +280,7 @@ class MediaService(
             }
 
             return@withContext MediaFetchResult(
-                mediaPlaylist = MediaPlaylist(filteredMedia),
+                mediaPlaylist = MediaPlaylist(filter.apply(filteredMedia)),
                 musicPlaylist = musicPlaylist,
             )
         }
