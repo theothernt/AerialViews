@@ -99,7 +99,7 @@ class WebDavDataSource(
         }
 
         response = opened
-        inputStream = opened.body.byteStream() ?: throw IOException("Empty response from $url")
+        inputStream = opened.body.byteStream()
         // A ranged answer only holds the rest of the file, the total size is in the content
         // range header.
         bytesToRead = totalLength(opened)
@@ -111,7 +111,7 @@ class WebDavDataSource(
             val total = contentRange.substringAfterLast('/').trim().toLongOrNull()
             if (total != null) return total
         }
-        val length = opened.body.contentLength() ?: -1L
+        val length = opened.body.contentLength()
         return if (length >= 0) length else C.LENGTH_UNSET.toLong()
     }
 

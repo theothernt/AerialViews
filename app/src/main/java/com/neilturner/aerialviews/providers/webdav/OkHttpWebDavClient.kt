@@ -5,7 +5,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.IOException
 
 /**
  * A WebDAV client that lists a folder with a `PROPFIND` request.
@@ -65,7 +64,7 @@ internal class OkHttpWebDavClient(
                 )
             }
 
-            val body = response.body.byteStream() ?: throw IOException("Empty response from $url")
+            val body = response.body.byteStream()
             return DavMultistatusParser.parse(body).map { it.toResourceInfo() }
         }
     }

@@ -4,10 +4,15 @@ import android.content.Context
 import android.os.Bundle
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.TimeOfDayFilter
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -162,8 +167,8 @@ internal class MediaServiceTest {
             mockkConstructor(PlaylistCacheRepository::class)
 
             try {
-                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any()) } returns false
-                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist() } returns null
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(any()) } returns null
                 coEvery {
                     anyConstructed<PlaylistCacheRepository>()
                         .cachePlaylist(capture(cachedItems), any(), any(), any())
@@ -217,8 +222,8 @@ internal class MediaServiceTest {
             mockkConstructor(PlaylistCacheRepository::class)
 
             try {
-                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any()) } returns false
-                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist() } returns null
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(any()) } returns null
                 coEvery {
                     anyConstructed<PlaylistCacheRepository>()
                         .cachePlaylist(capture(cachedItems), any(), any(), any())
@@ -282,6 +287,138 @@ internal class MediaServiceTest {
         )
     }
 
+    @Test
+    fun `cache stores the full playlist and reads it back through the current filter`() =
+        runTest {
+            val cachedItems = slot<List<AerialMedia>>()
+            val lookupFilter = slot<TimeOfDayFilter>()
+            val readFilter = slot<TimeOfDayFilter>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), capture(lookupFilter))
+                } returns false
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(capture(readFilter))
+                } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers =
+                            mutableListOf(
+                                FakeMediaProvider(
+                                    context = context,
+                                    media =
+                                        listOf(
+                                            testMedia("day-1", timeOfDay = TimeOfDay.DAY),
+                                            testMedia("night-1", timeOfDay = TimeOfDay.NIGHT),
+                                        ),
+                                ),
+                            ),
+                        config =
+                            defaultConfig().copy(
+                                autoTimeOfDay = true,
+                                playlistCache = true,
+                                playlistTimeOfDayDayIncludes = setOf("SUNRISE"),
+                            ),
+                        hashFn = { "test-hash" },
+                        periodProvider = { TimeOfDay.DAY },
+                    )
+
+                val result = service.fetchMedia()
+
+                // The cache must hold the whole playlist; the time of day is applied on read so a
+                // period change does not force a refetch.
+                assertEquals(
+                    listOf("day-1", "night-1"),
+                    cachedItems.captured.map { it.metadata.title },
+                    "Expected both videos to be cached",
+                )
+
+                val expectedAllowed = setOf(TimeOfDay.UNKNOWN, TimeOfDay.DAY, TimeOfDay.SUNRISE)
+                assertEquals(expectedAllowed, lookupFilter.captured.allowed)
+                assertEquals(expectedAllowed, readFilter.captured.allowed)
+
+                // The mocked read-back returns null, so the in-memory fallback still filters.
+                assertEquals(1, result.mediaPlaylist.size)
+                val next = result.mediaPlaylist.nextItem()
+                assertEquals("day-1", next?.metadata?.title)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
+        }
+
+    @Test
+    fun `filter is applied in memory and the period is evaluated once when the cache is off`() =
+        runTest {
+            var periodEvaluations = 0
+
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media =
+                                    listOf(
+                                        testMedia("day-1", timeOfDay = TimeOfDay.DAY),
+                                        testMedia("night-1", timeOfDay = TimeOfDay.NIGHT),
+                                        testMedia("unknown-1", timeOfDay = TimeOfDay.UNKNOWN),
+                                    ),
+                            ),
+                        ),
+                    config =
+                        defaultConfig().copy(
+                            autoTimeOfDay = true,
+                            playlistTimeOfDayDayIncludes = setOf("SUNRISE"),
+                        ),
+                    hashFn = { "test-hash" },
+                    periodProvider = {
+                        periodEvaluations++
+                        TimeOfDay.DAY
+                    },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, periodEvaluations)
+            assertEquals(listOf("day-1", "unknown-1"), result.mediaPlaylist.titles())
+        }
+
+    @Test
+    fun `falls back to the unfiltered list when no video matches the period`() =
+        runTest {
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(testMedia("day-1", timeOfDay = TimeOfDay.DAY)),
+                            ),
+                        ),
+                    config =
+                        defaultConfig().copy(
+                            autoTimeOfDay = true,
+                            playlistTimeOfDayNightIncludes = emptySet(),
+                        ),
+                    hashFn = { "test-hash" },
+                    periodProvider = { TimeOfDay.NIGHT },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(listOf("day-1"), result.mediaPlaylist.titles())
+        }
+
     private class FakeMediaProvider(
         context: Context,
         private val media: List<AerialMedia> = emptyList(),
@@ -321,6 +458,15 @@ internal class MediaServiceTest {
 
     private fun testMedia(
         id: String,
-        source: AerialMediaSource,
-    ) = AerialMedia(uri = mockk(relaxed = true, name = id), source = source)
+        source: AerialMediaSource = AerialMediaSource.LOCAL,
+        type: AerialMediaType = AerialMediaType.VIDEO,
+        timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
+    ) = AerialMedia(
+        uri = mockk(relaxed = true, name = id),
+        type = type,
+        source = source,
+        metadata = AerialMediaMetadata(timeOfDay = timeOfDay, title = id),
+    )
+
+    private fun MediaPlaylist.titles(): List<String?> = List(size) { nextItem()?.metadata?.title }
 }

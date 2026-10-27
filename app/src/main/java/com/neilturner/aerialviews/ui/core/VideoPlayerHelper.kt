@@ -1,13 +1,14 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -119,7 +120,7 @@ object VideoPlayerHelper {
         // tunneling the video follows the audio clock (measured on a Philips 65OLED808: 1.8x asked,
         // 1.79x played, still tunneled).
         if (prefs.enableTunneling) {
-            rendererFactory.setEnableAudioTrackPlaybackParams(true)
+            rendererFactory.setEnableAudioOutputPlaybackParameters(true)
         }
 
         val loadControl =
@@ -208,7 +209,15 @@ object VideoPlayerHelper {
         val silence =
             ProgressiveMediaSource
                 .Factory(DefaultDataSource.Factory(context))
-                .createMediaSource(MediaItem.fromUri(RawResourceDataSource.buildRawResourceUri(R.raw.silent_audio)))
+                .createMediaSource(
+                    MediaItem.fromUri(
+                        Uri
+                            .Builder()
+                            .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                            .path(R.raw.silent_audio.toString())
+                            .build(),
+                    ),
+                )
         // Clip to the shorter source, ie. the video - the silence is far longer than any clip
         return MergingMediaSource(false, true, videoSource, silence)
     }

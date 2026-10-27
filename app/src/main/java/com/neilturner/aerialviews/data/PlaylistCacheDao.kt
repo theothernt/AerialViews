@@ -19,8 +19,27 @@ interface PlaylistCacheDao {
     @Query("SELECT * FROM cached_media ORDER BY playlistOrder ASC")
     suspend fun getAllMediaItemsOrdered(): List<CachedMediaEntity>
 
-    @Query("SELECT * FROM cached_media ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset")
-    suspend fun getMediaItemsChunk(
+    /**
+     * Counts the rows that survive the time-of-day filter. Photos, and any non-video type, always
+     * match; only videos are restricted to [allowed].
+     */
+    @Query("SELECT COUNT(*) FROM cached_media WHERE (type != 'VIDEO' OR timeOfDay IN (:allowed))")
+    suspend fun countMediaItems(allowed: List<String>): Int
+
+    /** Counts matching videos, used to decide whether the filter should fall back to everything. */
+    @Query("SELECT COUNT(*) FROM cached_media WHERE type = 'VIDEO' AND timeOfDay IN (:allowed)")
+    suspend fun countVideoItems(allowed: List<String>): Int
+
+    /**
+     * Returns a window of the filtered playlist. LIMIT/OFFSET are applied after the filter, so the
+     * offsets are in the same index space as the filtered total and the saved position.
+     */
+    @Query(
+        "SELECT * FROM cached_media WHERE (type != 'VIDEO' OR timeOfDay IN (:allowed)) " +
+            "ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset",
+    )
+    suspend fun getMediaItemsChunkFiltered(
+        allowed: List<String>,
         limit: Int,
         offset: Int,
     ): List<CachedMediaEntity>
