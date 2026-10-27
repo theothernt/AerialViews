@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
+import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -249,6 +250,10 @@ class VideoPlayerView
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
 
+        override fun onRenderedFirstFrame() {
+            DreamTiming.mark("video.firstFrame")
+        }
+
         @OptIn(UnstableApi::class)
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
@@ -317,6 +322,7 @@ class VideoPlayerView
                     }
 
                     if (!state.ready) {
+                        DreamTiming.mark("video.prepared")
                         listener?.onVideoPrepared()
                         state.ready = true
                     }

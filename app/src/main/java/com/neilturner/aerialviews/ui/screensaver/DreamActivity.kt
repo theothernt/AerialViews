@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
+import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
@@ -34,6 +35,7 @@ class DreamActivity : DreamService() {
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
+        DreamTiming.mark("dream.attach")
         super.onAttachedToWindow()
         // Setup
         isFullscreen = true
@@ -64,6 +66,7 @@ class DreamActivity : DreamService() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
+        DreamTiming.mark("dream.contentView")
 
         InputHelper.setupGestureListener(
             context = this,
@@ -149,6 +152,7 @@ class DreamActivity : DreamService() {
     }
 
     override fun onDreamingStopped() {
+        DreamTiming.mark("dream.stop")
         Timber.d("onDreamingStopped")
         if (activeHandoffDream === this) {
             activeHandoffDream = null

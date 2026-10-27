@@ -57,6 +57,7 @@ import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
+import com.neilturner.aerialviews.utils.DreamTiming
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -256,6 +257,8 @@ class ScreenController(
             gradientBottomView.visibility = View.VISIBLE
         }
 
+        DreamTiming.mark("screen.built")
+
         mainScope.launch {
             // Launch if we have permission
             // Used for a) Skip music tracks b) music info widget
@@ -291,6 +294,7 @@ class ScreenController(
                     }
                 }
             playlist = mediaResult.mediaPlaylist
+            DreamTiming.mark("playlist.resolved", "size=${playlist.size};cached=${mediaResult.isFromCache}")
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 var startPlayback = true
@@ -306,6 +310,7 @@ class ScreenController(
                     }
                 }
                 if (startPlayback) {
+                    DreamTiming.mark("playback.start", "cached=${mediaResult.isFromCache}")
                     loadNextItem()
                     scheduleSleepTimer()
                 }

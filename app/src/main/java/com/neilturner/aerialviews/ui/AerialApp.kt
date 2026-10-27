@@ -11,11 +11,13 @@ import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
+import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.LogcatCapture
 import timber.log.Timber
 
 class AerialApp : Application() {
     override fun onCreate() {
+        DreamTiming.mark("app.create")
         super.onCreate()
         configureLogging()
 
