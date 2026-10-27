@@ -67,6 +67,13 @@ class WeatherForecastOverlay
         // extend above a font's ascent when includeFontPadding is false.
         private val superscriptExtraPaddingDp = 2f
 
+        // Extra right padding for the last temperature in a column. The degree symbol's ink can
+        // spill a pixel past its own advance width; for the min temperature the view edge is also
+        // the column and overlay edge, so that pixel is clipped where the max temperature's is not
+        // (it has the separator inside the container to spill onto). Same reasoning as the
+        // superscript padding above, applied sideways.
+        private val trailingGlyphExtraPaddingDp = 1f
+
         private var font = ""
         private var size = 0f
         private var weight = ""
@@ -261,7 +268,15 @@ class WeatherForecastOverlay
             lowTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * tempSizeRatio)
             lowTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
             val lowTempOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, lowTemp.textSize)
-            lowTemp.setPadding(0, lowTempOffset + superscriptExtraPx, 0, -(lowTempOffset + superscriptExtraPx))
+            // The right padding widens the box without moving the text, leaving the degree symbol
+            // room to spill inside the view instead of being clipped by the column edge
+            val trailingGlyphExtraPx = (trailingGlyphExtraPaddingDp * density).toInt()
+            lowTemp.setPadding(
+                0,
+                lowTempOffset + superscriptExtraPx,
+                trailingGlyphExtraPx,
+                -(lowTempOffset + superscriptExtraPx),
+            )
             lowTemp.setTextColor(withAlpha(colour, lowTempAlpha))
             tempContainer.addView(lowTemp)
 
