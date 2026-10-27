@@ -52,6 +52,7 @@ class TestActivity : AppCompatActivity() {
     // swap in their own burn-in screensaver. The screen goes off with it, because the idle timeout
     // has already expired and this window cannot hold the screen until it is visible - so onStop
     // brings this activity back with FLAG_TURN_SCREEN_ON, which switches the panel back on.
+    @Suppress("DEPRECATION")
     private fun turnScreenOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
