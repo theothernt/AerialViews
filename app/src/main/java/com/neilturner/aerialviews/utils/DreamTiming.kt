@@ -15,7 +15,10 @@ import com.neilturner.aerialviews.BuildConfig
 object DreamTiming {
     private const val TAG = "AerialDreamTiming"
 
-    private val enabled = BuildConfig.DEBUG || BuildConfig.FLAVOR.contains("beta", ignoreCase = true)
+    private val enabled =
+        BuildConfig.DEBUG ||
+            BuildConfig.TEST_CONFIG ||
+            BuildConfig.FLAVOR.contains("beta", ignoreCase = true)
 
     fun mark(
         event: String,

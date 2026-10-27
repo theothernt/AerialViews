@@ -36,6 +36,9 @@ from typing import Any
 
 DEFAULT_PACKAGE = "com.neilturner.aerialviews"
 
+TEST_CONFIG_RECEIVER = "com.neilturner.aerialviews.testconfig.TestConfigReceiver"
+TEST_CONFIG_ACTION = "com.neilturner.aerialviews.testconfig.APPLY"
+
 TIMING_TAG = "AerialDreamTiming"
 TIMING_RE = re.compile(rf"{TIMING_TAG}: ([a-zA-Z.]+);(\d+)(?:;(.*))?$")
 DISPLAYED_RE = re.compile(r"Displayed \S*DreamActivity\b.*?: \+(\d+)ms")
@@ -117,6 +120,28 @@ class Adb:
         log = self.run("logcat", "-d", "-v", "monotonic")
         hits = DISPLAYED_RE.findall(log)
         return int(hits[-1]) if hits else None
+
+
+def set_playlist_cache(adb: Adb, package: str, enabled: bool) -> None:
+    """Flip the playlist cache preference through the app's shell-only test config receiver.
+
+    Only the general block is applied (`partial`), so the device's providers, media selections
+    and button mappings are left alone.
+    """
+    component = f"{package}/{TEST_CONFIG_RECEIVER}"
+    try:
+        adb.shell(f"pm enable {component}")
+    except RuntimeError:
+        # Builds made with -PtestConfig=true already have the receiver enabled; on other builds
+        # the shell is not allowed to enable it and the broadcast below fails instead.
+        pass
+    payload = '{"general":{"playlistCache":' + ("true" if enabled else "false") + "}}"
+    output = adb.shell(
+        f"am broadcast -n {component} -a {TEST_CONFIG_ACTION} --es json '{payload}' --ez partial true"
+    )
+    if "Broadcast completed" not in output:
+        raise RuntimeError(f"could not apply playlist cache={enabled}: {output.strip()}")
+    time.sleep(1.5)
 
 
 def wait_until(predicate: Any, timeout: float, interval: float = 0.3) -> bool:
@@ -227,6 +252,13 @@ def main() -> int:
     parser.add_argument("--trigger-timeout", type=float, default=25.0, help="seconds to wait for the dream to start")
     parser.add_argument("--frame-timeout", type=float, default=25.0, help="seconds to wait for the first frame mark")
     parser.add_argument("--retries", type=int, default=1, help="re-trigger attempts when the dream never starts")
+    parser.add_argument("--warmup", type=int, default=0, help="iterations to run but exclude (e.g. to populate the cache)")
+    parser.add_argument(
+        "--cache",
+        choices=("on", "off"),
+        default=None,
+        help="playlist cache for the run, applied via the test config receiver (restored to off)",
+    )
     args = parser.parse_args()
 
     adb = Adb(args.serial)
@@ -237,29 +269,37 @@ def main() -> int:
     print(f"device settings before run: {original}")
     if original[("system", "screen_off_timeout")] == str(TRIGGER_TIMEOUT_MS):
         print("warning: device still has the benchmark timeout; an earlier run was interrupted")
-    print(f"target package: {args.package}, iterations: {args.iterations}")
+    print(f"target package: {args.package}, iterations: {args.iterations}, warmup: {args.warmup}")
+    if args.cache:
+        print(f"playlist cache: {args.cache}")
+        set_playlist_cache(adb, args.package, args.cache == "on")
 
     rows: list[dict[str, Any]] = []
     failed = 0
+    total = args.warmup + args.iterations
     try:
-        for index in range(1, args.iterations + 1):
+        for index in range(1, total + 1):
+            warmup = index <= args.warmup
+            label = f"{index}{'w' if warmup else ''}"
             stop_dream(adb, args.package)
             started = False
             for attempt in range(args.retries + 1):
                 started, reason = trigger_dream(adb, args.package, args.trigger_timeout)
                 if started:
                     break
-                print(f"  iteration {index}: dream did not start (attempt {attempt + 1}: {reason})")
+                print(f"  iteration {label}: dream did not start (attempt {attempt + 1}: {reason})")
                 stop_dream(adb, args.package)
 
             if not started:
-                failed += 1
+                if not warmup:
+                    failed += 1
                 continue
 
             row = collect_run(adb, args.frame_timeout)
-            rows.append(row)
+            if not warmup:
+                rows.append(row)
             print(
-                f"  {index:2d}. attach {row['dream.attach.dt']}ms"
+                f"  {label:>3}. attach {row['dream.attach.dt']}ms"
                 f"  contentView {row['dream.contentView.dt']}ms"
                 f"  playlist {row['playlist.resolved.dt']}ms"
                 f"  prepared {row['video.prepared.dt']}ms"
@@ -273,6 +313,10 @@ def main() -> int:
                 adb.put_setting(namespace, key, value)
         adb.shell(f"am force-stop {args.package}")
         print("restored device settings")
+        if args.cache:
+            # The playlist cache is off by default; leave the device as the baseline run found it.
+            set_playlist_cache(adb, args.package, False)
+            print("restored playlist cache off")
 
     if not rows:
         print("no runs completed", file=sys.stderr)

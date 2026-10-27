@@ -28,6 +28,10 @@ import java.io.File
  *   -a com.neilturner.aerialviews.testconfig.APPLY \
  *   --es path /sdcard/Android/data/com.neilturner.aerialviews/files/test-config.json
  * ```
+ *
+ * Pass `--ez partial true` to apply only [TestConfig.general] and leave the providers, media
+ * selections and button mappings untouched. Full configs reset every provider they do not name,
+ * which is not wanted when a benchmark only needs one preference flipped on a real device.
  */
 class TestConfigReceiver : BroadcastReceiver() {
     override fun onReceive(
@@ -51,10 +55,11 @@ class TestConfigReceiver : BroadcastReceiver() {
 
         runCatching {
             val config = TestConfig.parse(json)
+            val partial = intent.getBooleanExtra(EXTRA_PARTIAL, false)
             val pendingResult = goAsync()
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    TestConfigApplier.apply(context, config)
+                    TestConfigApplier.apply(context, config, partial)
                 } catch (ex: Exception) {
                     Timber.e(ex, "TestConfigReceiver: failed to apply config")
                 } finally {
@@ -101,5 +106,6 @@ class TestConfigReceiver : BroadcastReceiver() {
         const val ACTION = "com.neilturner.aerialviews.testconfig.APPLY"
         const val EXTRA_JSON = "json"
         const val EXTRA_PATH = "path"
+        const val EXTRA_PARTIAL = "partial"
     }
 }

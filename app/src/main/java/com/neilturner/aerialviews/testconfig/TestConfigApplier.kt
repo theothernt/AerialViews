@@ -32,6 +32,9 @@ import timber.log.Timber
  * Every provider is disabled first so that a config only ever exercises the provider it names.
  * Settings that need a companion preference are filled in automatically, for example
  * `startScreensaverOnLaunch` also needs a button mapped to `EXIT_TO_SETTINGS`.
+ *
+ * A `partial` config applies only the general settings, leaving providers, media selections and
+ * button mappings alone.
  */
 object TestConfigApplier {
     private const val SAMBA_MEDIA_SELECTION_KEY = "samba_media_selection"
@@ -45,18 +48,23 @@ object TestConfigApplier {
     suspend fun apply(
         context: Context,
         config: TestConfig,
+        partial: Boolean = false,
     ): String {
-        disableAllProviders()
+        if (!partial) {
+            disableAllProviders()
+            ensureExitToSettings()
+        }
         applyGeneral(config.general)
-        ensureExitToSettings()
-        applyCustomFeed(context, config.providers.customFeed)
-        applySamba(config.providers.samba, secondAccount = false)
-        applySamba(config.providers.samba2, secondAccount = true)
-        applyWebDav(config.providers.webdav, secondAccount = false)
-        applyWebDav(config.providers.webdav2, secondAccount = true)
-        applyImmich(context, config.providers.immich)
-        applyNCMemories(context, config.providers.ncMemories)
-        applyMediaSelections(context, config.providers)
+        if (!partial) {
+            applyCustomFeed(context, config.providers.customFeed)
+            applySamba(config.providers.samba, secondAccount = false)
+            applySamba(config.providers.samba2, secondAccount = true)
+            applyWebDav(config.providers.webdav, secondAccount = false)
+            applyWebDav(config.providers.webdav2, secondAccount = true)
+            applyImmich(context, config.providers.immich)
+            applyNCMemories(context, config.providers.ncMemories)
+            applyMediaSelections(context, config.providers)
+        }
 
         val summary = config.name.ifBlank { "unnamed" }
         Timber.i("TestConfigApplier: applied config '$summary'")
