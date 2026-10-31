@@ -685,6 +685,7 @@ The app supports the "community" video format, which is a JSON file (typically n
       "timeOfDay": "sunset",
       "url-1080-SDR": "https://example.com/videos/sunset_1080p.mp4",
       "url-4K-SDR": "https://example.com/videos/sunset_4k.mp4",
+      "url-4K-HDR": "https://example.com/videos/sunset_4k_hdr.mp4",
       "url-audio": "https://example.com/videos/sunset_audio.m4a",
       "pointsOfInterest": {
         "0": "The setting sun",
@@ -695,7 +696,26 @@ The app supports the "community" video format, which is a JSON file (typically n
 }
 ```
 
-The optional `url-audio` field is intended for DASH-style videos from some external providers, where the video and audio streams are encoded seperately. 
+**Video URL fields**
+
+Each entry can provide one or more video URLs. The **Video quality** setting for custom feeds decides which one is played:
+
+| Video quality setting | Field used      | Fallback if field is missing or empty |
+|-----------------------|-----------------|---------------------------------------|
+| 1080p H.264           | `url-1080-H264` | -                                     |
+| 1080p HEVC            | `url-1080-SDR`  | -                                     |
+| 1080p HDR             | `url-1080-HDR`  | `url-1080-SDR`                        |
+| 4K HEVC               | `url-4K-SDR`    | -                                     |
+| 4K HDR                | `url-4K-HDR`    | `url-4K-SDR`                          |
+
+Not every video in a feed needs an HDR version. When an HDR quality is selected, entries without an HDR URL play their SDR version at the same resolution. HDR playback depends on your TV and device supporting the video's HDR format (see the FAQ about HDR videos).
+
+**Separate audio track (`url-audio`)**
+
+The optional `url-audio` field is for videos where the picture and sound are stored as separate files (DASH-style streams from some providers). Aerial Views plays the audio file in sync with whichever video URL was chosen, at any quality.
+
+* The audio file is only downloaded when **Audio mode** is set to **Play audio from videos**. When videos are muted or background music is playing, it is skipped.
+* If the associated audio track fails to load, the video is played without it.
 
 Another example [can be found on GitHub](https://github.com/AerialScreensaver/AerialCommunity/blob/master/entries.json).
 
