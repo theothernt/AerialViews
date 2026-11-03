@@ -37,8 +37,8 @@ import com.neilturner.aerialviews.providers.webdav.WebDavDataSourceFactory
 import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
 import com.neilturner.aerialviews.providers.webdav.defaultPortFor
 import com.neilturner.aerialviews.services.philips.CustomRendererFactory
+import com.neilturner.aerialviews.utils.PlaybackTiming
 import timber.log.Timber
-import kotlin.math.ceil
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -411,8 +411,12 @@ object VideoPlayerHelper {
             Timber.e("Invalid duration or video length: duration=$duration, maxLength=$maxLength%")
             return Pair(0, duration)
         }
-        val loopCount = ceil(maxLength / duration.toDouble()).toInt()
-        val targetDuration = duration * loopCount
+        // Only whole loops count: rounding up would play past the user's maximum length.
+        val loopCount = PlaybackTiming.wholeLoops(duration, maxLength)
+        if (loopCount <= 0) {
+            return Pair(0, duration)
+        }
+        val targetDuration = PlaybackTiming.loopingTargetDuration(duration, maxLength)
         Timber.i(
             "Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})",
         )

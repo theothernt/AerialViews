@@ -1043,6 +1043,9 @@ class ScreenController(
 
     fun toggleLooping() {
         loopUntilSkipped = !loopUntilSkipped
+        // Persist the toggle so the player and the next launch agree on the current state
+        GeneralPrefs.loopUntilSkipped = loopUntilSkipped
+        videoPlayer.refreshFinishTimer()
         val message =
             if (loopUntilSkipped) {
                 resources.getString(

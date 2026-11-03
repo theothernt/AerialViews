@@ -45,6 +45,44 @@ class CustomFeedCsvParserTest {
     }
 
     @Test
+    fun `parses quoted fields with commas and escaped quotes`() {
+        val csv =
+            "\"https://example.com/video.mp4\",\"A city, at sunset\"\n" +
+                "\"https://example.com/image.jpg\",\"He said \"\"hello\"\"\""
+
+        val result = CustomFeedCsvParser.parse(csv)
+
+        assertEquals(2, result.size)
+        assertEquals("https://example.com/video.mp4", result[0].url)
+        assertEquals("A city, at sunset", result[0].description)
+        assertEquals(AerialMediaType.VIDEO, result[0].type)
+        assertEquals("https://example.com/image.jpg", result[1].url)
+        assertEquals("He said \"hello\"", result[1].description)
+        assertEquals(AerialMediaType.IMAGE, result[1].type)
+    }
+
+    @Test
+    fun `supports quoted description with surrounding spaces`() {
+        val result = CustomFeedCsvParser.parse("https://example.com/image.jpg, \"A, b\"")
+
+        assertEquals(1, result.size)
+        assertEquals("https://example.com/image.jpg", result.single().url)
+        assertEquals("A, b", result.single().description)
+    }
+
+    @Test
+    fun `skips quoted header rows`() {
+        val result =
+            CustomFeedCsvParser.parse(
+                "\"url\",\"description\"\n\"https://example.com/photo.png\",\"Photo\"",
+            )
+
+        assertEquals(1, result.size)
+        assertEquals("https://example.com/photo.png", result.single().url)
+        assertEquals("Photo", result.single().description)
+    }
+
+    @Test
     fun `detects extensions before query strings`() {
         val result =
             CustomFeedCsvParser.parse(

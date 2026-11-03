@@ -25,6 +25,7 @@ import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.PlaybackTiming
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -558,36 +559,44 @@ class VideoPlayerView
                     0L
                 }
             val progress = loopDuration + exoPlayer.currentPosition - state.startPosition
-            val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
-
-            // Duration taking into account...
-            val durationMinusSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
-            val durationMinusSpeedAndProgress = durationMinusSpeed - progress
-            var durationMinusSpeedAndProgressAndFade = durationMinusSpeedAndProgress - fadeDuration
-
-            if (durationMinusSpeedAndProgressAndFade < 1000) {
-                durationMinusSpeedAndProgressAndFade = 1000
-            }
+            // Progress is media time but the finish delay is wall-clock time, so the remaining
+            // media time has to be converted at the current speed before the fade is removed.
+            val speed = GeneralPrefs.playbackSpeed.toDoubleOrNull()?.takeIf { it > 0.0 } ?: 1.0
+            val delay =
+                PlaybackTiming.finishDelayMs(
+                    mediaRemainingMs = duration - progress,
+                    speed = speed,
+                    fadeOutMs = GeneralPrefs.mediaFadeOutDuration.toLong(),
+                )
 
             Timber.i(
-                "Duration: ${duration.milliseconds} (at 1x), Delay: ${durationMinusSpeedAndProgressAndFade.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
+                "Duration: ${duration.milliseconds} (at 1x), Delay: ${delay.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
             )
 
             if (progressBar) {
                 GlobalBus.post(
                     ProgressBarEvent(
                         ProgressState.START,
-                        progress,
-                        durationMinusSpeed,
+                        PlaybackTiming.mediaToWallClock(progress, speed),
+                        PlaybackTiming.mediaToWallClock(duration, speed),
                     ),
                 )
             }
 
-            if (state.type == AerialMediaSource.RTSP && state.endPosition == 0L) {
+            if (GeneralPrefs.loopUntilSkipped) {
+                Timber.i("Looping until skipped, so no finish timer is scheduled")
+            } else if (state.type == AerialMediaSource.RTSP && state.endPosition == 0L) {
                 Timber.i("The video will only finish when skipped manually")
             } else {
-                Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
-                postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
+                Timber.i("Video will finish in: ${delay.milliseconds}")
+                postDelayed(almostFinishedRunnable, delay)
+            }
+        }
+
+        /** Re-evaluates the finish timer, for example after the loop-until-skipped toggle changes. */
+        fun refreshFinishTimer() {
+            if (exoPlayer.playWhenReady) {
+                setupAlmostFinishedRunnable()
             }
         }
 

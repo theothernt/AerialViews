@@ -11,6 +11,7 @@ internal object CustomFeedCsvParser {
 
     fun parse(content: String): List<CsvMediaItem> =
         content
+            .removePrefix("\uFEFF")
             .lineSequence()
             .map { it.trim() }
             .filter { it.isNotBlank() }
@@ -18,20 +19,50 @@ internal object CustomFeedCsvParser {
             .toList()
 
     private fun parseLine(line: String): CsvMediaItem? {
-        val unquotedLine = line.trimWrappingQuotes()
-        val commaIndex = unquotedLine.indexOf(',')
-        val rawUrl = if (commaIndex >= 0) unquotedLine.substring(0, commaIndex) else unquotedLine
-        val rawDescription = if (commaIndex >= 0) unquotedLine.substring(commaIndex + 1) else ""
+        val (rawUrl, rawDescription) = splitRow(line)
+        var url = rawUrl.parseField()
+        var description = rawDescription.parseField()
 
-        val url = rawUrl.trim().trimWrappingQuotes()
+        if (description.isEmpty() && url.contains(',')) {
+            // Legacy support for a whole row wrapped in quotes: "url,description"
+            val commaIndex = url.indexOf(',')
+            description = url.substring(commaIndex + 1).trim()
+            url = url.substring(0, commaIndex)
+        }
+
+        url = url.trim()
         if (url.equals("url", ignoreCase = true)) return null
 
         val mediaType = mediaTypeFor(url) ?: return null
         return CsvMediaItem(
             url = url,
-            description = rawDescription.trim().trimWrappingQuotes(),
+            description = description,
             type = mediaType,
         )
+    }
+
+    /**
+     * Splits a row at the first comma that is not inside a quoted field, so commas within a
+     * quoted description stay part of that description.
+     */
+    private fun splitRow(line: String): Pair<String, String> {
+        var inQuotes = false
+        line.forEachIndexed { index, char ->
+            when {
+                char == '"' -> inQuotes = !inQuotes
+                char == ',' && !inQuotes -> return line.substring(0, index) to line.substring(index + 1)
+            }
+        }
+        return line to ""
+    }
+
+    /**
+     * Removes one pair of wrapping quotes, if present, and unescapes doubled quotes.
+     */
+    private fun String.parseField(): String {
+        val trimmed = trim()
+        if (trimmed.length < 2 || trimmed.first() != '"' || trimmed.last() != '"') return trimmed
+        return trimmed.substring(1, trimmed.lastIndex).replace("\"\"", "\"")
     }
 
     private fun mediaTypeFor(url: String): AerialMediaType? {
@@ -40,15 +71,6 @@ internal object CustomFeedCsvParser {
             supportedVideoExtensions.any { path.endsWith(it, ignoreCase = true) } -> AerialMediaType.VIDEO
             supportedImageExtensions.any { path.endsWith(it, ignoreCase = true) } -> AerialMediaType.IMAGE
             else -> null
-        }
-    }
-
-    private fun String.trimWrappingQuotes(): String {
-        val trimmed = trim()
-        return if (trimmed.length >= 2 && trimmed.first() == '"' && trimmed.last() == '"') {
-            trimmed.substring(1, trimmed.lastIndex)
-        } else {
-            trimmed
         }
     }
 
