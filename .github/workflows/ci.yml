@@ -3,6 +3,9 @@ name: CI
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: Application Test
