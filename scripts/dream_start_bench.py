@@ -18,15 +18,19 @@ The system reported `Displayed ... DreamActivity: +NNNms` line is collected as a
 Usage:
     python scripts/dream_start_bench.py --iterations 10
 
-The screen-off timeout and stay-awake settings are restored when the run finishes, including
-on Ctrl+C.
+The screen-off timeout and stay-awake settings are restored when the run finishes, including on
+Ctrl+C or SIGTERM. Stay-awake is always left off afterwards, even if it was on before, because any
+other value stops the screensaver from ever starting. A snapshot is written to build/ first, so a
+run that is killed outright is repaired by the next one, or by `--restore`.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
+import signal
 import statistics
 import subprocess
 import sys
@@ -59,6 +63,18 @@ MARK_ORDER = [
 TRIGGER_TIMEOUT_MS = 5000
 SETTLE_TIMEOUT_MS = 600000
 STAY_ON_PLUGGED_IN = 15
+
+# Developer options > Stay awake. Any non-zero value sets PowerManagerService.mStayOn, which suspends
+# the idle timeout: the screensaver then never starts, whatever screen_off_timeout says, and nothing
+# in the UI tells you why. A run always leaves it at 0 so the next tester does not inherit that.
+STAY_AWAKE_DISABLED = "0"
+STAY_AWAKE_SETTING = ("global", "stay_on_while_plugged_in")
+SCREEN_OFF_TIMEOUT_SETTING = ("system", "screen_off_timeout")
+BENCHMARK_SETTINGS = (STAY_AWAKE_SETTING, SCREEN_OFF_TIMEOUT_SETTING)
+
+# Written before the first setting change and deleted once they are restored, so a run that is
+# killed outright (SIGKILL, dropped connection, laptop sleeping) is repaired by the next run.
+STATE_FILE = Path("build/.dream-start-bench-settings.json")
 
 
 class Adb:
@@ -243,6 +259,58 @@ def summarise(rows: list[dict[str, Any]]) -> None:
     print(f"\n{completed}/{len(rows)} runs reached the first video frame")
 
 
+def save_settings_snapshot(snapshot: dict[tuple[str, str], str]) -> None:
+    """Record the pre-run settings on disk, so a run that is killed outright can still be undone."""
+    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    STATE_FILE.write_text(json.dumps([[ns, key, value] for (ns, key), value in snapshot.items()]))
+
+
+def load_settings_snapshot() -> dict[tuple[str, str], str] | None:
+    """The snapshot an interrupted run left behind, if there is a readable one."""
+    if not STATE_FILE.exists():
+        return None
+    try:
+        return {(namespace, key): value for namespace, key, value in json.loads(STATE_FILE.read_text())}
+    except (OSError, ValueError):
+        return None
+
+
+def restore_settings(adb: Adb, snapshot: dict[tuple[str, str], str]) -> list[str]:
+    """Write a snapshot back and report the values written.
+
+    Stay-awake is always cleared, whatever the snapshot says: a device handed back with it set
+    silently never starts its screensaver again, which is a confusing thing to leave behind.
+    """
+    written = []
+    for setting, value in snapshot.items():
+        target = STAY_AWAKE_DISABLED if setting == STAY_AWAKE_SETTING else value
+        if not target or target == "null":
+            continue
+        adb.put_setting(*setting, target)
+        written.append(f"{setting[1]}={target}")
+    return written
+
+
+def clear_settings_snapshot() -> None:
+    STATE_FILE.unlink(missing_ok=True)
+
+
+def exit_cleanly_on_termination() -> None:
+    """Turn SIGTERM/SIGHUP into SystemExit so the finally block still restores the device."""
+
+    def handler(signum: int, frame: Any) -> None:
+        raise SystemExit(128 + signum)
+
+    for name in ("SIGTERM", "SIGHUP", "SIGBREAK"):
+        sig = getattr(signal, name, None)
+        if sig is None:
+            continue
+        try:
+            signal.signal(sig, handler)
+        except (OSError, ValueError):
+            pass
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--iterations", type=int, default=10)
@@ -259,15 +327,33 @@ def main() -> int:
         default=None,
         help="playlist cache for the run, applied via the test config receiver (restored to off)",
     )
+    parser.add_argument(
+        "--restore",
+        action="store_true",
+        help="repair whatever an interrupted run left on the device, then exit",
+    )
     args = parser.parse_args()
 
     adb = Adb(args.serial)
-    original = {
-        ("global", "stay_on_while_plugged_in"): adb.get_setting("global", "stay_on_while_plugged_in"),
-        ("system", "screen_off_timeout"): adb.get_setting("system", "screen_off_timeout"),
-    }
+    interrupted = load_settings_snapshot()
+    if interrupted is not None:
+        print("warning: an earlier run did not finish, so its device settings are being repaired")
+        restore_settings(adb, interrupted)
+        clear_settings_snapshot()
+
+    if args.restore:
+        if interrupted is None:
+            adb.put_setting(*STAY_AWAKE_SETTING, STAY_AWAKE_DISABLED)
+            print("no interrupted run to repair; cleared stay-awake so the screensaver can start")
+        return 0
+
+    original = {(namespace, key): adb.get_setting(namespace, key) for namespace, key in BENCHMARK_SETTINGS}
+    save_settings_snapshot(original)
+    exit_cleanly_on_termination()
     print(f"device settings before run: {original}")
-    if original[("system", "screen_off_timeout")] == str(TRIGGER_TIMEOUT_MS):
+    if original[STAY_AWAKE_SETTING] not in (STAY_AWAKE_DISABLED, "null"):
+        print("warning: Developer options 'Stay awake' is on; it is cleared for the run and left off afterwards")
+    if original[SCREEN_OFF_TIMEOUT_SETTING] == str(TRIGGER_TIMEOUT_MS):
         print("warning: device still has the benchmark timeout; an earlier run was interrupted")
     print(f"target package: {args.package}, iterations: {args.iterations}, warmup: {args.warmup}")
     if args.cache:
@@ -308,11 +394,15 @@ def main() -> int:
             )
             stop_dream(adb, args.package)
     finally:
-        for (namespace, key), value in original.items():
-            if value and value != "null":
-                adb.put_setting(namespace, key, value)
-        adb.shell(f"am force-stop {args.package}")
-        print("restored device settings")
+        try:
+            written = restore_settings(adb, original)
+            adb.shell(f"am force-stop {args.package}")
+            print(f"restored device settings: {', '.join(written) if written else 'nothing to change'}")
+        except RuntimeError as error:
+            # Leave the snapshot on disk so the next run, or --restore, can try again.
+            print(f"warning: could not restore device settings ({error}); rerun with --restore")
+        else:
+            clear_settings_snapshot()
         if args.cache:
             # The playlist cache is off by default; leave the device as the baseline run found it.
             set_playlist_cache(adb, args.package, False)
