@@ -113,7 +113,10 @@ class ImagePlayerView : FrameLayout {
     private val imageLoader =
         ImageLoader
             .Builder(context)
+            // Don't use caching at all
+            // Might add options for this in future?
             .memoryCache(null)
+            .diskCache(null)
             // .logger(logger)
             .components {
                 add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
+import coil3.ImageLoader
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import com.neilturner.aerialviews.ui.helpers.PackageHelper
@@ -54,6 +55,7 @@ class MigrationHelper(
         if (lastKnownVersion < 113) release113()
         if (lastKnownVersion < 114) release114()
         if (lastKnownVersion < 138) release138()
+        if (lastKnownVersion < 152) release152()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -638,6 +640,24 @@ class MigrationHelper(
         }
 
         prefs.edit { remove("overlay_auto_hide") }
+    }
+
+    private fun release152() {
+        Timber.i("Migrating settings for release 152")
+
+        // Disk cache for photos is now disabled, so clear any existing cache
+        Thread {
+            val imageLoader = ImageLoader.Builder(context).build()
+            try {
+                imageLoader.diskCache?.clear()
+                Timber.i("Cleared image disk cache")
+            } catch (ex: Exception) {
+                Timber.e(ex, "Failed to clear image disk cache")
+            } finally {
+                runCatching { imageLoader.diskCache?.shutdown() }
+                runCatching { imageLoader.shutdown() }
+            }
+        }.start()
     }
 
     private fun hasConfiguredMusicSource(): Boolean =
