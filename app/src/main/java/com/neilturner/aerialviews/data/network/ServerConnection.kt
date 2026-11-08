@@ -119,6 +119,9 @@ class SslHelper {
             try {
                 val sslContext =
                     SSLContext.getInstance("TLS").apply {
+                        // Deliberate, user-initiated bypass: this branch only runs when "Validate SSL
+                        // Certificates" is switched off for a server using a self-signed certificate.
+                        // codeql[java/insecure-trustmanager]
                         init(null, trustAllCerts, SecureRandom())
                     }
 

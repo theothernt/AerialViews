@@ -46,6 +46,9 @@ internal object WebDavSslHelper {
         return try {
             val sslContext =
                 SSLContext.getInstance("TLS").apply {
+                    // Deliberate, user-initiated bypass: this builder is only used when "Validate SSL
+                    // Certificates" is switched off for a WebDAV server using a self-signed certificate.
+                    // codeql[java/insecure-trustmanager]
                     init(null, trustAllCerts, SecureRandom())
                 }
 

@@ -94,6 +94,11 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
+        # Run the alert-suppression query alongside the default suite so that the
+        # // codeql[...] markers in the SSL helpers are recorded as suppressions[] in the
+        # SARIF. The dismiss step below is what actually actions them.
+        packs: ${{ matrix.language == 'java-kotlin' && 'codeql/java-queries:AlertSuppression.ql' || '' }}
+
     - name: Grant execute permission for gradlew
       if: matrix.build-mode == 'manual'
       run: chmod +x gradlew
@@ -106,6 +111,23 @@ jobs:
       run: ./gradlew ${{ matrix.gradle-task }} --no-daemon --no-build-cache --stacktrace
 
     - name: Perform CodeQL Analysis
+      id: analyze
       uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
+        # Keep the SARIF on disk: the dismiss step reads suppressions[] from it, and the
+        # `sarif-output` output of this step points at this directory.
+        output: sarif-results
+
+    # GitHub code scanning does not act on // codeql[...] comments by itself - CodeQL only
+    # records them as suppressions[] in the SARIF. This step PATCHes the matching alerts to
+    # "won't fix" (comment: "Suppressed via SARIF") and re-opens any it previously dismissed
+    # whose marker has since been removed.
+    - name: Dismiss alerts suppressed in code
+      uses: advanced-security/dismiss-alerts@v2
+      with:
+        sarif-id: ${{ steps.analyze.outputs.sarif-id }}
+        # The action accepts a file or a directory; this output is a directory.
+        sarif-file: ${{ steps.analyze.outputs.sarif-output }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
