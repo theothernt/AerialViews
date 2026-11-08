@@ -20,7 +20,7 @@ jobs:
         flavor: [ github, googleplay, amazon ]
 
     name: Build APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Save release version

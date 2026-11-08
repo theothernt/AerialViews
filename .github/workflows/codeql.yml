@@ -16,7 +16,9 @@ jobs:
     #   - https://gh.io/supported-runners-and-hardware-resources
     #   - https://gh.io/using-larger-runners (GitHub.com only)
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    # Pin the image instead of `ubuntu-latest`: that label migrates to Ubuntu 26 during
+    # October-November 2026 and warns on every job. Use `macos-latest` if swift is ever added.
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-24.04' }}
     permissions:
       # required for all workflows
       security-events: write
@@ -67,6 +69,13 @@ jobs:
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
+      env:
+        # Overlay-base (incremental) databases require buildless extraction, which Kotlin cannot
+        # use, so the manual Java/Kotlin build below can only ever produce a full database.
+        # Declaring that up front stops CodeQL attempting overlay analysis and warning about the
+        # fallback on every run. The analysis performed is identical either way; leaving this
+        # unset for the other languages keeps overlay analysis available to them.
+        CODEQL_OVERLAY_DATABASE_MODE: ${{ matrix.language == 'java-kotlin' && 'none' || '' }}
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
