@@ -35,10 +35,12 @@ jobs:
           languages: java-kotlin
           build-mode: manual
 
-      - name: Build GithubRelease variant
+      # Debug is deliberate: release variants need the gitignored signing keystore, and CodeQL
+      # reads unminified bytecode anyway, so there is nothing to gain from R8 here.
+      - name: Build GithubDebug variant
         run: |
           chmod +x gradlew
-          ./gradlew assembleGithubRelease
+          ./gradlew assembleGithubDebug
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
