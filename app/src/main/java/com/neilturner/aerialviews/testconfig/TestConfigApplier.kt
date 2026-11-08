@@ -40,6 +40,7 @@ object TestConfigApplier {
     private const val SAMBA_MEDIA_SELECTION_KEY = "samba_media_selection"
     private const val WEBDAV_MEDIA_SELECTION_KEY = "webdav_media_selection"
     private const val IMMICH_MEDIA_SELECTION_KEY = "immich_media_selection"
+    private const val IMMICH_SELECTED_ALBUM_IDS_KEY = "immich_media_selected_album_ids"
     private const val IMMICH_INCLUDE_RATINGS_KEY = "immich_media_include_ratings"
     private const val NCMEMORIES_MEDIA_SELECTION_KEY = "ncmemories_media_selection"
     private const val NCMEMORIES_FAVORITES_NAME_KEY = "ncmemories_media_favorites_name"
@@ -199,6 +200,9 @@ object TestConfigApplier {
         config.includeRandom?.let { ImmichMediaPrefs.includeRandom = it }
         config.includeRecent?.let { ImmichMediaPrefs.includeRecent = it }
         config.includeRatings?.let { writeStringSet(context, IMMICH_INCLUDE_RATINGS_KEY, it) }
+        // Albums are normally picked in the settings UI; naming them here keeps a run reproducible
+        // without touching the device, and an empty list clears any previous selection.
+        config.albumIds?.let { writeStringSet(context, IMMICH_SELECTED_ALBUM_IDS_KEY, it) }
     }
 
     private fun applyNCMemories(

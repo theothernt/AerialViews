@@ -91,6 +91,8 @@ data class ImmichConfig(
     val imageType: String? = null,
     val videoType: String? = null,
     val mediaSelection: List<String>? = null,
+    /** Album IDs to fetch from, as returned by the server's album list. */
+    val albumIds: List<String>? = null,
     /** `DISABLED` or a count of 100/200/300/400 assets. */
     val includeFavorites: String? = null,
     /** `DISABLED` or a count of 100/200/300/400 assets. */
