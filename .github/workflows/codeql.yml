@@ -1,12 +1,17 @@
 name: "CodeQL Advanced"
 
 on:
-  push:
-    branches: [ "master" ]
+  # Analyse the merged result of a pull request. The `closed` type also fires when a PR is
+  # closed without merging, so the job gates on `pull_request.merged` below.
   pull_request:
+    types: [ closed ]
     branches: [ "master" ]
+  # Twice a month, not weekly: cron has no "every 2 weeks" expression, so the 1st and 15th
+  # is the closest predictable approximation (gaps of 14-17 days).
   schedule:
-    - cron: '37 11 * * 4'
+    - cron: '37 11 1,15 * *'
+  # Allows a run on demand from the Actions tab.
+  workflow_dispatch:
 
 jobs:
   analyze:
@@ -18,6 +23,9 @@ jobs:
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     # Pin the image instead of `ubuntu-latest`: that label migrates to Ubuntu 26 during
     # October-November 2026 and warns on every job. Use `macos-latest` if swift is ever added.
+    # Skip pull requests that were closed without being merged; scheduled and manual
+    # runs always proceed. A merge into master is therefore the main trigger.
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-24.04' }}
     permissions:
       # required for all workflows
