@@ -81,7 +81,10 @@ object FileHelper {
             filename.endsWith(".webp", true) ||
             filename.endsWith(".heic", true) ||
             // HEIF format
-            filename.endsWith(".png", true)
+            filename.endsWith(".png", true) ||
+            // TIFF - Immich re-encodes these to JPEG for the preview/fullsize image types
+            filename.endsWith(".tif", true) ||
+            filename.endsWith(".tiff", true)
     }
 
     fun shouldFilter(
