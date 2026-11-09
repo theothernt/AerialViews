@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Дата збірки</string>
   <string name="about_version_title">Версія</string>
+  <string name="advanced_always_provide_audio_track_summary">Додає беззвучну аудіодоріжку до відео, у яких її немає, щоб можна було використовувати тунелювання. Може зменшити навантаження на процесор на деяких телевізорах</string>
+  <string name="advanced_always_provide_audio_track_title">Завжди додавайте аудіодоріжку</string>
   <string name="advanced_application_overlay_permission_summary">Потрібен дозвіл, щоб ця програма могла відображати спеціальне приховане вікно для зміни частоти оновлення під час відтворення відео</string>
   <string name="advanced_application_overlay_permission_title">Увімкнути дозвіл накладання програми</string>
   <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">Зменшення буферів відтворення та використання пам\'яті</string>
   <string name="advanced_refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
+  <string name="advanced_run_as_activity_summary">Запускає відтворення у звичайному вікні, коли вмикається заставка. Це корисно на телевізорах Philips</string>
+  <string name="advanced_run_as_activity_title">Запускати як додаток, а не як заставку</string>
   <string name="advanced_save_logs_summary">Зупинити запис і зберегти файл журналу в папці «Документи»</string>
   <string name="advanced_save_logs_title">Збереження журналів</string>
-  <string name="advanced_use_texture_view_summary">Використовуйте TextureView замість SurfaceView для рендерингу відео</string>
-  <string name="advanced_use_texture_view_title">Використовуйте TextureView для відео</string>
   <string name="advanced_wifi_only_summary">Відтворювати відео з віддалених джерел (Apple, Amazon тощо) слід лише під час підключення до Wi-Fi або Ethernet. Це не стосується локальних джерел та джерел у локальній мережі.</string>
   <string name="advanced_wifi_only_title">Трансляція медіафайлів виключно через Wi-Fi</string>
   <string name="advanced_wol_enable_summary">Надіслати пакет Wake on LAN перед отриманням медіафайлів</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">Розмір</string>
   <string name="appearance_clock_summary">Відображення поточного часу</string>
   <string name="appearance_clock_title">Годинник</string>
+  <string name="appearance_countdown_label_summary">Додатковий текст, що відображається перед початком відліку, наприклад: \"Залишилось до Нового року:\"</string>
+  <string name="appearance_countdown_label_title">Мітка зворотного відліку</string>
   <string name="appearance_countdown_summary">Відобразити зворотний відлік до певного часу</string>
   <string name="appearance_countdown_target_message_summary">Повідомлення, яке відображатиметься, коли зворотний відлік досягне нуля (наприклад, «З Новим роком!»)</string>
   <string name="appearance_countdown_target_message_title">Повідомлення про завершення</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">Метадані</string>
   <string name="appearance_music_summary">Відображення відтворюваної в даний момент пісні</string>
   <string name="appearance_music_title">Музика</string>
+  <string name="appearance_overlay_colour_title">Колір накладення</string>
+  <string name="appearance_overlay_opacity_title">Непрозорість накладення</string>
+  <string name="appearance_overlay_padding_horizontal_title">Відступ накладення (зліва/справа)</string>
+  <string name="appearance_overlay_padding_vertical_title">Відступ накладення (зверху/знизу)</string>
   <string name="appearance_photo_background_blur_intensity_summary">Регулювання радіуса розмиття як для сучасного, так і для застарілого розмиття</string>
   <string name="appearance_photo_background_blur_intensity_title">Інтенсивність розмиття</string>
   <string name="appearance_photo_background_blur_opacity_title">Непрозорість розмиття</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">Відомості про сервер і облікові дані</string>
   <string name="category_settings">Налаштування</string>
   <string name="category_slots">Слоти</string>
+  <string name="category_sonos">Sonos (локальна мережа)</string>
   <string name="category_sound_background_music">Звук та фонова музика</string>
+  <string name="category_specific_tv_and_device_options">Конкретні опції телевізорів та пристроїв</string>
   <string name="category_startup">Запуск</string>
   <string name="category_swipe_gestures">Жести зрушенням</string>
   <string name="category_tap_gestures">Жести натискання</string>
@@ -288,6 +298,33 @@
   <string name="comm1_videos_enabled">Використовувати відео спільноти</string>
   <string name="comm2_videos_enabled">Використовувати відео спільноти</string>
   <string name="common_default">(за замовчуванням)</string>
+  <string name="countdown_error">Помилка</string>
+  <string name="countdown_invalid_time_format">Недійсний формат часу</string>
+  <string name="countdown_time_is_up">Час скінчився!</string>
+  <plurals name="countdown_unit_days">
+    <item quantity="one">д</item>
+    <item quantity="few">д</item>
+    <item quantity="many">д</item>
+    <item quantity="other">д</item>
+  </plurals>
+  <plurals name="countdown_unit_hours">
+    <item quantity="one">г</item>
+    <item quantity="few">г</item>
+    <item quantity="many">г</item>
+    <item quantity="other">г</item>
+  </plurals>
+  <plurals name="countdown_unit_minutes">
+    <item quantity="one">х</item>
+    <item quantity="few">х</item>
+    <item quantity="many">х</item>
+    <item quantity="other">х</item>
+  </plurals>
+  <plurals name="countdown_unit_seconds">
+    <item quantity="one">с</item>
+    <item quantity="few">с</item>
+    <item quantity="many">с</item>
+    <item quantity="other">с</item>
+  </plurals>
   <string name="custom_media_enabled">Використовуйте власні канали</string>
   <string name="custom_media_feeds_notice">Додавайте URL-адреси для пакетів розширення Jetson Creative, користувацьких каналів (entries.json) і потоків RTSP</string>
   <string name="custom_media_urls_invalid">Одна або декілька URL-адрес недійсні</string>
@@ -451,6 +488,8 @@
   <string name="nowplaying_shorten_track_name_summary">Видаліть поширені суфікси на кшталт \"- Original Mix\" або \"(Remastered)\"</string>
   <string name="nowplaying_shorten_track_name_title">Скоротити назви треків</string>
   <string name="nowplaying_toast_text">Увімкніть Aerial Views у: Спеціальний доступ &gt; Доступ до сповіщень</string>
+  <string name="overlay_colour_dialog_hex_hint">Шістнадцятковий код кольору, наприклад #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">Введіть колір, наприклад #FFC107</string>
   <string name="overlay_metadata_folder_levels_title">Рівні папок для відображення</string>
   <string name="overlay_metadata_photo_date_format_summary">Вкажіть власний формат дати для дат EXIF фотографій</string>
   <string name="overlay_metadata_photo_date_format_title">Формат дати зйомки</string>
@@ -479,6 +518,7 @@
   <string name="playlist_cache_interval_title">Інтервал оновлення</string>
   <string name="playlist_cache_resume_title">Відновлення роботи</string>
   <string name="playlist_cache_status_active">%1$d медіаматеріали, %2$d музичні треки,</string>
+  <string name="playlist_cache_status_active_filtered">%1$d елементів медіа з сайту %2$d, що відповідають поточній годині дня, музичних треків з сайту %3$d,</string>
   <string name="playlist_cache_status_empty">Немає даних кешу</string>
   <string name="playlist_cache_status_expiry_d">%1$d день(дні)</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d день(дні), %2$d година(и)</string>
@@ -499,6 +539,8 @@
   <string name="playlist_loop_until_skipped_summary">Повторює відео до тих пір, поки воно не буде пропущено вручну натисканням клавіші D-pad або кнопки</string>
   <string name="playlist_loop_until_skipped_title">Повторювати відео, поки не буде пропущено</string>
   <string name="playlist_max_video_length_title">Обмежити довжину відео</string>
+  <string name="playlist_music_repeat_summary">Повторювати плейлист з фоновою музикою після його завершення</string>
+  <string name="playlist_music_repeat_title">Фонова музика зациклюється</string>
   <string name="playlist_mute_videos_summary">Вимкнути звук у всіх відео</string>
   <string name="playlist_mute_videos_title">Без звуку</string>
   <string name="playlist_playback_speed_changed">Швидкість відтворення змінено на: %1$s</string>
@@ -620,6 +662,26 @@
 Для отримання додаткової інформації відвідайте веб-сайт Aerial Views</string>
   <string name="show_media_error_toasts_summary">Відображати спливаючі повідомлення, коли виникають помилки відтворення медіафайлів</string>
   <string name="show_media_error_toasts_title">Показувати спливаючі повідомлення про помилки мультимедіа</string>
+  <string name="sonos_discover_dialog_title">Знайдено колонки Sonos</string>
+  <string name="sonos_discover_no_devices">Колонки Sonos не знайдено</string>
+  <string name="sonos_discover_no_permission">Дозвіл на доступ до локальної мережі не надано</string>
+  <string name="sonos_discover_searching">Пошук… (до 4 секунд)</string>
+  <string name="sonos_discover_selected">Вибрано: %s</string>
+  <string name="sonos_discover_summary">Пошук колонок Sonos у локальній мережі</string>
+  <string name="sonos_discover_title">Знайти колонки</string>
+  <string name="sonos_enabled_summary">Відобразити трек, який зараз відтворюється на колонках Sonos</string>
+  <string name="sonos_enabled_title">Увімкнути Sonos</string>
+  <string name="sonos_ip_not_set">Не налаштовано</string>
+  <string name="sonos_ip_title">IP-адреса динаміка</string>
+  <string name="sonos_test_default">Натисніть, щоб перевірити з’єднання</string>
+  <string name="sonos_test_no_ip">Спочатку введіть IP-адресу</string>
+  <string name="sonos_test_no_local_network_permission">Дозвіл на доступ до локальної мережі не надано. Перейдіть у меню «Налаштування» &gt; «Додатки» &gt; «Aerial Views» &gt; «Дозволи» та увімкніть доступ до локальної мережі</string>
+  <string name="sonos_test_not_sonos">Порт 1400 відповів, але це, схоже, не пристрій Sonos</string>
+  <string name="sonos_test_nothing_playing">Нічого не відтворюється</string>
+  <string name="sonos_test_paused">Призупинено</string>
+  <string name="sonos_test_stopped">Зупинено</string>
+  <string name="sonos_test_testing">Тестування…</string>
+  <string name="sonos_test_title">Перевірити з\'єднання</string>
   <string name="sources_amazon_summary">Трансляція відео з навколишнього середовища Amazon за допомогою інтернет-з\'єднання</string>
   <string name="sources_amazon_title">Відео від Amazon</string>
   <string name="sources_apple_summary">Потокове відео Apple, за допомогою підключення до Інтернету</string>

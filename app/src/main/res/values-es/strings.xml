@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Fecha de compilación</string>
   <string name="about_version_title">Versión</string>
+  <string name="advanced_always_provide_audio_track_summary">Agrega una pista de audio silenciosa a los videos que no la tienen, lo que permite usar la técnica de tunelización. Puede reducir el uso de la CPU en algunos televisores.</string>
+  <string name="advanced_always_provide_audio_track_title">Proporcione siempre una pista de audio.</string>
   <string name="advanced_application_overlay_permission_summary">Se requiere permiso para que esta aplicación pueda mostrar una ventana oculta especial para cambiar la frecuencia de actualización al reproducir videos.</string>
   <string name="advanced_application_overlay_permission_title">Habilitar el permiso de superposición de aplicaciones</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">Reduzca los búferes de reproducción y el uso de memoria.</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
+  <string name="advanced_run_as_activity_summary">Inicia la reproducción en una ventana normal cuando se activa el protector de pantalla. Útil en televisores Philips.</string>
+  <string name="advanced_run_as_activity_title">Ejecutar como una aplicación, no como un protector de pantalla.</string>
   <string name="advanced_save_logs_summary">Detenga la captura y guarde el archivo de registro en la carpeta Documentos.</string>
   <string name="advanced_save_logs_title">Guardar registros</string>
-  <string name="advanced_use_texture_view_summary">Utilice TextureView en lugar de SurfaceView para la renderización de vídeo.</string>
-  <string name="advanced_use_texture_view_title">Utilice TextureView para vídeo.</string>
   <string name="advanced_wifi_only_summary">Solo se permite la reproducción de vídeos desde fuentes remotas (Apple, Amazon, etc.) cuando se está conectado a Wi-Fi o Ethernet. Las fuentes locales y de red local no se ven afectadas.</string>
   <string name="advanced_wifi_only_title">Transmite contenido multimedia solo por WiFi.</string>
   <string name="advanced_wol_enable_summary">Enviar un paquete Wake on LAN antes de obtener el medio</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">Tamaño</string>
   <string name="appearance_clock_summary">Mostrar la hora actual</string>
   <string name="appearance_clock_title">Reloj</string>
+  <string name="appearance_countdown_label_summary">Texto opcional que se muestra antes de la cuenta regresiva, por ejemplo: \"Tiempo restante hasta Año Nuevo:\"</string>
+  <string name="appearance_countdown_label_title">Etiqueta de cuenta regresiva</string>
   <string name="appearance_countdown_summary">Mostrar una cuenta regresiva hasta un tiempo específico</string>
   <string name="appearance_countdown_target_message_summary">Mensaje para mostrar cuando la cuenta regresiva llega a cero (por ejemplo, \"¡Feliz Año Nuevo!\")</string>
   <string name="appearance_countdown_target_message_title">Mensaje de finalización</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">Metadatos</string>
   <string name="appearance_music_summary">Mostrar la canción que se está reproduciendo actualmente</string>
   <string name="appearance_music_title">Música</string>
+  <string name="appearance_overlay_colour_title">Color de superposición</string>
+  <string name="appearance_overlay_opacity_title">Opacidad de superposición</string>
+  <string name="appearance_overlay_padding_horizontal_title">Relleno superpuesto (izquierda/derecha)</string>
+  <string name="appearance_overlay_padding_vertical_title">Relleno superpuesto (superior/inferior)</string>
   <string name="appearance_photo_background_blur_intensity_summary">Ajusta el radio de desenfoque tanto para el desenfoque moderno como para el antiguo.</string>
   <string name="appearance_photo_background_blur_intensity_title">Intensidad del desenfoque</string>
   <string name="appearance_photo_background_blur_opacity_title">Opacidad de desenfoque</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">Detalles y credenciales del servidor</string>
   <string name="category_settings">Ajustes</string>
   <string name="category_slots">Espacios</string>
+  <string name="category_sonos">Sonos (red local)</string>
   <string name="category_sound_background_music">Sonido y música de fondo</string>
+  <string name="category_specific_tv_and_device_options">Opciones específicas de TV y dispositivos</string>
   <string name="category_startup">Arranque</string>
   <string name="category_swipe_gestures">Gestos de deslizamiento</string>
   <string name="category_tap_gestures">Gestos táctiles</string>
@@ -288,6 +298,25 @@
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="common_default">(predeterminado)</string>
+  <string name="countdown_error">Error</string>
+  <string name="countdown_invalid_time_format">Formato de hora no válido</string>
+  <string name="countdown_time_is_up">¡Se acabó el tiempo!</string>
+  <plurals name="countdown_unit_days">
+    <item quantity="one">%1$dd</item>
+    <item quantity="other">%1$dd</item>
+  </plurals>
+  <plurals name="countdown_unit_hours">
+    <item quantity="one">%1$dh</item>
+    <item quantity="other">%1$dh</item>
+  </plurals>
+  <plurals name="countdown_unit_minutes">
+    <item quantity="one">%1$dmetro</item>
+    <item quantity="other">%1$dmetro</item>
+  </plurals>
+  <plurals name="countdown_unit_seconds">
+    <item quantity="one">%1$ds</item>
+    <item quantity="other">%1$ds</item>
+  </plurals>
   <string name="custom_media_enabled">Utilizar fuentes personalizadas</string>
   <string name="custom_media_feeds_notice">Añadir URL para los paquetes de expansión de Jetson Creative, los feeds personalizados (entries.json) y las transmisiones RTSP</string>
   <string name="custom_media_urls_invalid">Una o varias URL no son válidas</string>
@@ -451,6 +480,8 @@
   <string name="nowplaying_shorten_track_name_summary">Eliminar sufijos comunes como \"- Mezcla original\" o \"(Remasterizado)\"</string>
   <string name="nowplaying_shorten_track_name_title">Acortar los nombres de las pistas</string>
   <string name="nowplaying_toast_text">Por favor, habilite Aerial Views en: Acceso especial de aplicaciones &gt; Acceso a notificaciones</string>
+  <string name="overlay_colour_dialog_hex_hint">Color hexadecimal, por ejemplo #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">Introduzca un color como por ejemplo #FFC107</string>
   <string name="overlay_metadata_folder_levels_title">Niveles de carpeta para mostrar</string>
   <string name="overlay_metadata_photo_date_format_summary">Especifique un formato de fecha personalizado para las fechas EXIF ​​de las fotos.</string>
   <string name="overlay_metadata_photo_date_format_title">Formato de fecha tomada</string>
@@ -479,6 +510,7 @@
   <string name="playlist_cache_interval_title">Intervalo de actualización</string>
   <string name="playlist_cache_resume_title">Reanudar el comportamiento</string>
   <string name="playlist_cache_status_active">%1$d elementos de medios, %2$d pistas musicales,</string>
+  <string name="playlist_cache_status_active_filtered">%1$d de %2$d Elementos de los medios de comunicación para la hora actual del día, %3$d pistas musicales,</string>
   <string name="playlist_cache_status_empty">No hay datos en caché</string>
   <string name="playlist_cache_status_expiry_d">%1$d días)</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d días), %2$d horas)</string>
@@ -499,6 +531,8 @@
   <string name="playlist_loop_until_skipped_summary">Reproduce el video en bucle hasta que se saltea manualmente con el pad direccional o presionando un botón</string>
   <string name="playlist_loop_until_skipped_title">Reproducir el vídeo en bucle hasta que se omita</string>
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
+  <string name="playlist_music_repeat_summary">Repite la lista de reproducción de música de fondo cuando termine.</string>
+  <string name="playlist_music_repeat_title">Música de fondo en bucle</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
   <string name="playlist_playback_speed_changed">La velocidad de reproducción cambió a: %1$s</string>
@@ -619,6 +653,26 @@
   <string name="settings_system_options_removed">Esta característica fue eliminada por el fabricante. Por favor visite el sitio web de Aerial Views para más detalles</string>
   <string name="show_media_error_toasts_summary">Mostrar mensajes de aviso cuando se producen errores de reproducción de medios</string>
   <string name="show_media_error_toasts_title">Mostrar notificaciones del sistema de error multimedia</string>
+  <string name="sonos_discover_dialog_title">Altavoces Sonos encontrados</string>
+  <string name="sonos_discover_no_devices">No se encontraron altavoces Sonos.</string>
+  <string name="sonos_discover_no_permission">Permiso de red local no concedido</string>
+  <string name="sonos_discover_searching">Buscando… (hasta 4 segundos)</string>
+  <string name="sonos_discover_selected">Seleccionado: %s</string>
+  <string name="sonos_discover_summary">Buscar altavoces Sonos en la red local</string>
+  <string name="sonos_discover_title">Descubra a los oradores</string>
+  <string name="sonos_enabled_summary">Muestra la canción que se está reproduciendo actualmente en tus altavoces Sonos.</string>
+  <string name="sonos_enabled_title">Habilitar Sonos</string>
+  <string name="sonos_ip_not_set">No configurado</string>
+  <string name="sonos_ip_title">Dirección IP del altavoz</string>
+  <string name="sonos_test_default">Toca para probar la conexión.</string>
+  <string name="sonos_test_no_ip">Primero, introduzca una dirección IP.</string>
+  <string name="sonos_test_no_local_network_permission">No se ha concedido el permiso de red local. Vaya a Ajustes &gt; Aplicaciones &gt; Vistas aéreas &gt; Permisos y habilite el acceso a la red local.</string>
+  <string name="sonos_test_not_sonos">El puerto 1400 respondió, pero esto no parece un dispositivo Sonos.</string>
+  <string name="sonos_test_nothing_playing">No hay nada sonando</string>
+  <string name="sonos_test_paused">Pausa</string>
+  <string name="sonos_test_stopped">Interrumpido</string>
+  <string name="sonos_test_testing">Pruebas…</string>
+  <string name="sonos_test_title">Probar la conexión</string>
   <string name="sources_amazon_summary">Reproduce vídeos ambientales de Amazon usando tu conexión a internet</string>
   <string name="sources_amazon_title">Vídeos de Amazon</string>
   <string name="sources_apple_summary">Reproduce vídeos de Apple usando tu conexión a Internet</string>

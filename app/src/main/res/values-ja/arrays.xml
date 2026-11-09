@@ -20,6 +20,7 @@
   <string name="btn_ignore">アクションを無視する</string>
   <string name="btn_music_next">次の曲へスキップ</string>
   <string name="btn_music_previous">前の曲へスキップ</string>
+  <string name="btn_restart_video">現在の動画を最初から再生します</string>
   <string name="btn_seek_backward">動画の再生を逆方向に巻き戻す</string>
   <string name="btn_seek_forward">動画内で先へ進む</string>
   <string name="btn_show_overlays">非表示になっている場合は、オーバーレイを表示する</string>

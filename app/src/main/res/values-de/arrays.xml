@@ -20,6 +20,7 @@
   <string name="btn_ignore">Aktion ignorieren</string>
   <string name="btn_music_next">Zum nächsten Musiktitel springen</string>
   <string name="btn_music_previous">Zum vorherigen Musiktitel springen</string>
+  <string name="btn_restart_video">Das aktuelle Video von Anfang an neu starten</string>
   <string name="btn_seek_backward">In einem Video zurückspulen</string>
   <string name="btn_seek_forward">In einem Video vorwärts spulen</string>
   <string name="btn_show_overlays">Overlays anzeigen, falls ausgeblendet</string>

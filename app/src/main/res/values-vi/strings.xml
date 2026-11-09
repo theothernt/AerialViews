@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Ngày dựng</string>
   <string name="about_version_title">Phiên bản</string>
+  <string name="advanced_always_provide_audio_track_summary">Thêm một bản nhạc nền không tiếng vào các video không có sẵn âm thanh, cho phép sử dụng kỹ thuật tunneling. Có thể giảm mức sử dụng CPU trên một số TV.</string>
+  <string name="advanced_always_provide_audio_track_title">Luôn cung cấp bản ghi âm.</string>
   <string name="advanced_application_overlay_permission_summary">Ứng dụng này cần cấp quyền để hiển thị một cửa sổ ẩn đặc biệt cho phép thay đổi tốc độ làm mới khi phát video</string>
   <string name="advanced_application_overlay_permission_title">Cho phép quyền phủ lớp ứng dụng</string>
   <string name="advanced_enable_tunneling_summary">Sử dụng khả năng tăng tốc phần cứng, điều này càng quan trọng hơn đối với độ phân giải 4K/HDR</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">Giảm bộ đệm phát lại và mức sử dụng bộ nhớ.</string>
   <string name="advanced_refresh_rate_switching_summary">Thay đổi tốc độ làm mới của màn hình sao cho phù hợp với tốc độ khung hình của video</string>
   <string name="advanced_refresh_rate_switching_title">Tự động chuyển đổi tốc độ làm mới</string>
+  <string name="advanced_run_as_activity_summary">Khởi động phát lại trong cửa sổ thông thường khi trình bảo vệ màn hình bắt đầu. Hữu ích trên TV Philips.</string>
+  <string name="advanced_run_as_activity_title">Chạy như một ứng dụng, không phải trình bảo vệ màn hình.</string>
   <string name="advanced_save_logs_summary">Dừng quá trình ghi và lưu tệp nhật ký vào thư mục Documents</string>
   <string name="advanced_save_logs_title">Lưu nhật ký</string>
-  <string name="advanced_use_texture_view_summary">Sử dụng TextureView thay vì SurfaceView để kết xuất video</string>
-  <string name="advanced_use_texture_view_title">Sử dụng TextureView cho video</string>
   <string name="advanced_wifi_only_summary">Chỉ phát video từ các nguồn từ xa (Apple, Amazon, v.v.) khi được kết nối với WiFi hoặc Ethernet. Các nguồn cục bộ và mạng LAN không bị ảnh hưởng.</string>
   <string name="advanced_wifi_only_title">Phát trực tuyến đa phương tiện chỉ qua WiFi</string>
   <string name="advanced_wol_enable_summary">Gửi gói tin Wake on LAN trước khi tải phương tiện</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">Kích cỡ</string>
   <string name="appearance_clock_summary">Hiển thị thời gian hiện tại</string>
   <string name="appearance_clock_title">Đồng hồ</string>
+  <string name="appearance_countdown_label_summary">Văn bản tùy chọn hiển thị trước khi đếm ngược, ví dụ: \"Thời gian còn lại đến Tết Dương lịch:\"</string>
+  <string name="appearance_countdown_label_title">Nhãn đếm ngược</string>
   <string name="appearance_countdown_summary">Hiển thị bộ đếm ngược đến một thời điểm cụ thể</string>
   <string name="appearance_countdown_target_message_summary">Hiển thị tin nhắn khi bộ đếm ngược về 0 (ví dụ: \"Chúc mừng năm mới!\")</string>
   <string name="appearance_countdown_target_message_title">Tin nhắn hoàn thành</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">Siêu dữ liệu</string>
   <string name="appearance_music_summary">Hiển thị bài hát đang phát</string>
   <string name="appearance_music_title">Âm nhạc</string>
+  <string name="appearance_overlay_colour_title">Màu phủ</string>
+  <string name="appearance_overlay_opacity_title">Độ mờ của lớp phủ</string>
+  <string name="appearance_overlay_padding_horizontal_title">Lớp đệm phủ (trái/phải)</string>
+  <string name="appearance_overlay_padding_vertical_title">Lớp đệm phủ (trên/dưới)</string>
   <string name="appearance_photo_background_blur_intensity_summary">Điều chỉnh bán kính làm mờ cho cả chế độ làm mờ hiện đại và cũ</string>
   <string name="appearance_photo_background_blur_intensity_title">Cường độ làm mờ</string>
   <string name="appearance_photo_background_blur_opacity_title">Độ mờ</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">Thông tin máy chủ và thông tin đăng nhập</string>
   <string name="category_settings">Cài đặt</string>
   <string name="category_slots">Khe</string>
+  <string name="category_sonos">Sonos (mạng cục bộ)</string>
   <string name="category_sound_background_music">Âm thanh và nhạc nền</string>
+  <string name="category_specific_tv_and_device_options">Các tùy chọn TV và thiết bị cụ thể</string>
   <string name="category_startup">Trạng thái khởi động</string>
   <string name="category_swipe_gestures">Cử chỉ vuốt</string>
   <string name="category_tap_gestures">Cử chỉ chạm</string>
@@ -288,6 +298,9 @@
   <string name="comm1_videos_enabled">Sử dụng video cộng đồng</string>
   <string name="comm2_videos_enabled">Sử dụng video cộng đồng</string>
   <string name="common_default">(mặc định)</string>
+  <string name="countdown_error">Lỗi</string>
+  <string name="countdown_invalid_time_format">Định dạng thời gian không hợp lệ</string>
+  <string name="countdown_time_is_up">Hết giờ rồi!</string>
   <string name="custom_media_enabled">Sử dụng nguồn cấp dữ liệu tùy chỉnh</string>
   <string name="custom_media_feeds_notice">Thêm URL cho các gói mở rộng Jetson Creative, nguồn cấp dữ liệu tùy chỉnh (entries.json), luồng HLS và RTSP</string>
   <string name="custom_media_urls_invalid">Một hoặc nhiều URL không hợp lệ</string>
@@ -451,6 +464,8 @@
   <string name="nowplaying_shorten_track_name_summary">Loại bỏ các hậu tố thông dụng như \"- Original Mix\" hoặc \"(Remastered)\"</string>
   <string name="nowplaying_shorten_track_name_title">Rút ngắn tên bài hát</string>
   <string name="nowplaying_toast_text">Vui lòng bật Chế độ xem từ trên cao trong: Quyền truy cập ứng dụng đặc biệt &gt; Quyền truy cập thông báo</string>
+  <string name="overlay_colour_dialog_hex_hint">Mã màu hex, ví dụ: #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">Nhập một màu, ví dụ như #FFC107</string>
   <string name="overlay_metadata_folder_levels_title">Các cấp độ thư mục để hiển thị</string>
   <string name="overlay_metadata_photo_date_format_summary">Chỉ định định dạng ngày tháng tùy chỉnh của ảnh EXIF</string>
   <string name="overlay_metadata_photo_date_format_title">Định dạng ngày chụp</string>
@@ -479,6 +494,7 @@
   <string name="playlist_cache_interval_title">Khoảng thời gian làm mới</string>
   <string name="playlist_cache_resume_title">Tiếp tục hành vi</string>
   <string name="playlist_cache_status_active">%1$d đa phương tiện, %2$d bản nhạc</string>
+  <string name="playlist_cache_status_active_filtered">%1$d của %2$d Các mục tin tức truyền thông cho thời điểm hiện tại trong ngày. %3$d các bản nhạc,</string>
   <string name="playlist_cache_status_empty">Không có dữ liệu bộ nhớ đệm</string>
   <string name="playlist_cache_status_expiry_d">%1$d ngày</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d ngày, %2$d giờ</string>
@@ -499,6 +515,8 @@
   <string name="playlist_loop_until_skipped_summary">Phát video lặp lại cho đến khi được tua nhanh thủ công bằng phím điều hướng hoặc nút bấm</string>
   <string name="playlist_loop_until_skipped_title">Phát lại video cho đến khi bỏ qua đoạn đó</string>
   <string name="playlist_max_video_length_title">Giới hạn độ dài video</string>
+  <string name="playlist_music_repeat_summary">Phát lại danh sách nhạc nền khi nó kết thúc.</string>
+  <string name="playlist_music_repeat_title">Nhạc nền lặp lại</string>
   <string name="playlist_mute_videos_summary">Tắt tiếng tất cả video</string>
   <string name="playlist_mute_videos_title">Tắt tiếng video</string>
   <string name="playlist_playback_speed_changed">Tốc độ phát lại đã được thay đổi thành: %1$s</string>
@@ -620,6 +638,26 @@
 Vui lòng truy cập trang web Aerial Views để biết thêm chi tiết</string>
   <string name="show_media_error_toasts_summary">Hiển thị thông báo khi xảy ra lỗi phát lại phương tiện</string>
   <string name="show_media_error_toasts_title">Hiển thị thông báo lỗi phát lại</string>
+  <string name="sonos_discover_dialog_title">Loa Sonos được tìm thấy</string>
+  <string name="sonos_discover_no_devices">Không tìm thấy loa Sonos nào</string>
+  <string name="sonos_discover_no_permission">Không được phép truy cập mạng cục bộ.</string>
+  <string name="sonos_discover_searching">Đang tìm kiếm… (tối đa 4 giây)</string>
+  <string name="sonos_discover_selected">Đã chọn: %s</string>
+  <string name="sonos_discover_summary">Tìm kiếm loa Sonos trên mạng cục bộ.</string>
+  <string name="sonos_discover_title">Khám phá các diễn giả</string>
+  <string name="sonos_enabled_summary">Hiển thị bài hát đang phát hiện tại từ loa Sonos của bạn.</string>
+  <string name="sonos_enabled_title">Kích hoạt Sonos</string>
+  <string name="sonos_ip_not_set">Chưa được cấu hình</string>
+  <string name="sonos_ip_title">Địa chỉ IP của loa</string>
+  <string name="sonos_test_default">Chạm để kiểm tra kết nối</string>
+  <string name="sonos_test_no_ip">Trước tiên hãy nhập địa chỉ IP.</string>
+  <string name="sonos_test_no_local_network_permission">Chưa được cấp quyền truy cập mạng cục bộ. Vào Cài đặt &gt; Ứng dụng &gt; Chế độ xem từ trên cao &gt; Quyền và bật quyền truy cập mạng cục bộ.</string>
+  <string name="sonos_test_not_sonos">Cổng 1400 đã phản hồi nhưng đây không giống như một thiết bị Sonos.</string>
+  <string name="sonos_test_nothing_playing">Không có gì đang phát</string>
+  <string name="sonos_test_paused">Tạm dừng</string>
+  <string name="sonos_test_stopped">Đã dừng lại</string>
+  <string name="sonos_test_testing">Đang thử nghiệm…</string>
+  <string name="sonos_test_title">Kiểm tra kết nối</string>
   <string name="sources_amazon_summary">Xem video Amazon Ambient bằng kết nối internet của bạn</string>
   <string name="sources_amazon_title">Video của Amazon</string>
   <string name="sources_apple_summary">Xem video của Apple bằng kết nối internet của bạn</string>

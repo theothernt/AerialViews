@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Yapım Tarihi</string>
   <string name="about_version_title">Sürüm</string>
+  <string name="advanced_always_provide_audio_track_summary">Ses içermeyen videolara sessiz bir ses parçası ekler, böylece tünelleme kullanılabilir. Bazı TV\'lerde CPU kullanımını azaltabilir.</string>
+  <string name="advanced_always_provide_audio_track_title">Her zaman bir ses parçası sağlayın.</string>
   <string name="advanced_application_overlay_permission_summary">Bu uygulamanın, video oynatımı sırasında yenileme hızını değiştirmek için özel bir gizli pencere görüntüleyebilmesi için izin gereklidir</string>
   <string name="advanced_application_overlay_permission_title">Uygulama yerleşimi iznini etkinleştirin</string>
   <string name="advanced_enable_tunneling_summary">Donanım hızlandırmayı kullanın, bu özellikle 4K/HDR için çok önemlidir</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">Oynatma arabelleklerini ve bellek kullanımını azaltın.</string>
   <string name="advanced_refresh_rate_switching_summary">Ekranın yenileme hızını video kare hızıyla eşleşecek şekilde değiştirin</string>
   <string name="advanced_refresh_rate_switching_title">Otomatik yenileme hızı değiştirme</string>
+  <string name="advanced_run_as_activity_summary">Ekran koruyucu başladığında normal bir pencerede oynatmayı başlatır. Philips TV\'lerde faydalıdır.</string>
+  <string name="advanced_run_as_activity_title">Ekran koruyucu olarak değil, uygulama olarak çalıştırın.</string>
   <string name="advanced_save_logs_summary">Yakalamayı durdurun ve günlük dosyasını Belgeler klasörüne kaydedin.</string>
   <string name="advanced_save_logs_title">Kayıtları kaydet</string>
-  <string name="advanced_use_texture_view_summary">Video işleme için SurfaceView yerine TextureView kullanın</string>
-  <string name="advanced_use_texture_view_title">Video için Doku Görünümü kullanın</string>
   <string name="advanced_wifi_only_summary">Yalnızca WiFi veya Ethernet bağlantısı varken uzak kaynaklardan (Apple, Amazon vb.) video akışı yapabilirsiniz. Yerel ve LAN kaynakları etkilenmez.</string>
   <string name="advanced_wifi_only_title">Medyayı yalnızca WiFi üzerinden yayınlayın</string>
   <string name="advanced_wol_enable_summary">Ortamı almadan önce Wake on LAN paketi gönderin</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">Boyut</string>
   <string name="appearance_clock_summary">Geçerli saati göster</string>
   <string name="appearance_clock_title">Saat</string>
+  <string name="appearance_countdown_label_summary">Geri sayım başlamadan önce gösterilebilecek isteğe bağlı metin, örneğin \"Yeni yıla kalan süre:\"</string>
+  <string name="appearance_countdown_label_title">Geri Sayım Etiketi</string>
   <string name="appearance_countdown_summary">Belirli bir zamana kadar geri sayımı göster</string>
   <string name="appearance_countdown_target_message_summary">Geri sayım sıfıra ulaştığında gösterilecek mesaj (örneğin \"Yeni Yılınız Kutlu Olsun!\")</string>
   <string name="appearance_countdown_target_message_title">Tamamlama Mesajı</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">Meta Veriler</string>
   <string name="appearance_music_summary">Şu anda çalmakta olan şarkıyı görüntüle</string>
   <string name="appearance_music_title">Müzik</string>
+  <string name="appearance_overlay_colour_title">Kaplama rengi</string>
+  <string name="appearance_overlay_opacity_title">Kaplama saydamlığı</string>
+  <string name="appearance_overlay_padding_horizontal_title">Üst üste bindirme dolgusu (sol/sağ)</string>
+  <string name="appearance_overlay_padding_vertical_title">Üst/alt katman dolgusu</string>
   <string name="appearance_photo_background_blur_intensity_summary">Hem modern hem de eski bulanıklaştırma için bulanıklaştırma yarıçapını ayarlar</string>
   <string name="appearance_photo_background_blur_intensity_title">Bulanıklık yoğunluğu</string>
   <string name="appearance_photo_background_blur_opacity_title">Bulanıklık opaklığı</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">Sunucu bilgileri ve kimlik bilgileri</string>
   <string name="category_settings">Ayarlar</string>
   <string name="category_slots">Slotlar</string>
+  <string name="category_sonos">Sonos (yerel ağ)</string>
   <string name="category_sound_background_music">Ses ve fon müziği</string>
+  <string name="category_specific_tv_and_device_options">Belirli TV ve cihaz seçenekleri</string>
   <string name="category_startup">Başlatmak</string>
   <string name="category_swipe_gestures">Kaydırma hareketleri</string>
   <string name="category_tap_gestures">Dokunma hareketleri</string>
@@ -288,6 +298,9 @@
   <string name="comm1_videos_enabled">Topluluk videolarını kullanın</string>
   <string name="comm2_videos_enabled">Topluluk videolarını kullanın</string>
   <string name="common_default">(varsayılan)</string>
+  <string name="countdown_error">Hata</string>
+  <string name="countdown_invalid_time_format">Geçersiz zaman formatı</string>
+  <string name="countdown_time_is_up">Süre doldu!</string>
   <string name="custom_media_enabled">Özel akışlar kullanın</string>
   <string name="custom_media_feeds_notice">Jetson Creative genişletme paketleri, özel yayınlar (entries.json) ve RTSP yayınları için URL\'ler ekleyin</string>
   <string name="custom_media_urls_invalid">Bir veya daha fazla URL geçersiz</string>
@@ -451,6 +464,8 @@
   <string name="nowplaying_shorten_track_name_summary">\"Orijinal versiyon\" veya \"(Yeniden düzenlenmiş)\" gibi yaygın ekleri kaldırın</string>
   <string name="nowplaying_shorten_track_name_title">Parça adlarını kısaltın</string>
   <string name="nowplaying_toast_text">Lütfen şu bölümden Hava Görünümlerini etkinleştirin: Özel uygulama erişimi &gt; Bildirim erişimi</string>
+  <string name="overlay_colour_dialog_hex_hint">Hex renk kodu, örneğin #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">#FFC107 gibi bir renk girin.</string>
   <string name="overlay_metadata_folder_levels_title">Gösterilecek klasör seviyeleri</string>
   <string name="overlay_metadata_photo_date_format_summary">Fotoğraf EXIF ​​tarihleri ​​için özel bir tarih formatı belirtin</string>
   <string name="overlay_metadata_photo_date_format_title">Çekim tarihi</string>
@@ -479,6 +494,7 @@
   <string name="playlist_cache_interval_title">Yenileme aralığı</string>
   <string name="playlist_cache_resume_title">Davranışı yeniden başlatın</string>
   <string name="playlist_cache_status_active">%1$dmedya öğeleri,%2$dmüzik parçaları</string>
+  <string name="playlist_cache_status_active_filtered">%1$d ile ilgili %2$d Günün mevcut saatine ait medya haberleri, %3$d müzik parçaları,</string>
   <string name="playlist_cache_status_empty">Önbellek verisi yok</string>
   <string name="playlist_cache_status_expiry_d">%1$d gün</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d gün, %2$d saat</string>
@@ -498,6 +514,8 @@
   <string name="playlist_loop_until_skipped_summary">Video, yön tuşları veya bir düğmeye basılarak manuel olarak atlanana kadar döngü halinde oynatılır.</string>
   <string name="playlist_loop_until_skipped_title">Atlanana kadar videoyu tekrar tekrar oynat.</string>
   <string name="playlist_max_video_length_title">Video uzunluğunu sınırlayın</string>
+  <string name="playlist_music_repeat_summary">Arka plan müziği çalma listesi bittiğinde tekrar çalın.</string>
+  <string name="playlist_music_repeat_title">Arka plan müziğini döngü halinde çal</string>
   <string name="playlist_mute_videos_summary">Tüm videoların sesini kapat</string>
   <string name="playlist_mute_videos_title">Videoları sessize al</string>
   <string name="playlist_playback_speed_changed">Oynatma hızı şuna değiştirildi: %1$s</string>
@@ -618,6 +636,26 @@
   <string name="settings_system_options_removed">Bu özellik üretici tarafından kaldırılmıştır. Daha fazla bilgi için lütfen Aerial Views web sitesini ziyaret edin</string>
   <string name="show_media_error_toasts_summary">Medya oynatma hataları oluştuğunda bildirimleri görüntüle</string>
   <string name="show_media_error_toasts_title">Oynatma hatası bildirimlerini göster</string>
+  <string name="sonos_discover_dialog_title">Sonos hoparlörleri bulundu.</string>
+  <string name="sonos_discover_no_devices">Sonos hoparlör bulunamadı.</string>
+  <string name="sonos_discover_no_permission">Yerel ağ izni verilmedi.</string>
+  <string name="sonos_discover_searching">Aranıyor… (en fazla 4 saniye)</string>
+  <string name="sonos_discover_selected">Seçilen: %s</string>
+  <string name="sonos_discover_summary">Yerel ağda Sonos hoparlörlerini arayın.</string>
+  <string name="sonos_discover_title">Konuşmacıları keşfedin</string>
+  <string name="sonos_enabled_summary">Sonos hoparlörlerinizden şu anda çalmakta olan parçayı gösterin.</string>
+  <string name="sonos_enabled_title">Sonos\'u etkinleştirin</string>
+  <string name="sonos_ip_not_set">Yapılandırılmamış</string>
+  <string name="sonos_ip_title">Konuşmacının IP adresi</string>
+  <string name="sonos_test_default">Bağlantıyı test etmek için dokunun.</string>
+  <string name="sonos_test_no_ip">Öncelikle bir IP adresi girin.</string>
+  <string name="sonos_test_no_local_network_permission">Yerel ağ izni verilmedi. Ayarlar &gt; Uygulamalar &gt; Aerial Views &gt; İzinler bölümüne gidin ve Yerel Ağ erişimini etkinleştirin.</string>
+  <string name="sonos_test_not_sonos">1400 numaralı port yanıt verdi ancak bu bir Sonos cihazına benzemiyor.</string>
+  <string name="sonos_test_nothing_playing">Hiçbir şey oynatılmıyor</string>
+  <string name="sonos_test_paused">Duraklatıldı</string>
+  <string name="sonos_test_stopped">Durduruldu</string>
+  <string name="sonos_test_testing">Test…</string>
+  <string name="sonos_test_title">Bağlantıyı test et</string>
   <string name="sources_amazon_summary">İnternet bağlantınızı kullanarak Amazon ortam videolarını izleyin</string>
   <string name="sources_amazon_title">Amazon\'un videoları</string>
   <string name="sources_apple_summary">İnternet bağlantınızı kullanarak Apple videolarını izleyin</string>

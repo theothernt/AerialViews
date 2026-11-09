@@ -20,6 +20,7 @@
   <string name="btn_ignore">Bỏ qua hành động</string>
   <string name="btn_music_next">Chuyển đến bản nhạc tiếp theo</string>
   <string name="btn_music_previous">Chuyển đến bản nhạc trước đó</string>
+  <string name="btn_restart_video">Khởi động lại video hiện tại từ đầu.</string>
   <string name="btn_seek_backward">Tìm kiếm ngược lại trong video</string>
   <string name="btn_seek_forward">Tìm kiếm về phía trước trong video</string>
   <string name="btn_show_overlays">Hiện các lớp phủ, nếu bị ẩn</string>

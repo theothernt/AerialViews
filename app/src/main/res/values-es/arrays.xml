@@ -20,6 +20,7 @@
   <string name="btn_ignore">Ignorar acción</string>
   <string name="btn_music_next">Saltar a la siguiente pista musical</string>
   <string name="btn_music_previous">Saltar a la pista de música anterior</string>
+  <string name="btn_restart_video">Reiniciar el vídeo actual desde el principio.</string>
   <string name="btn_seek_backward">Buscar hacia atrás en un vídeo</string>
   <string name="btn_seek_forward">Buscar hacia adelante en un video</string>
   <string name="btn_show_overlays">Mostrar superposiciones, si están ocultas</string>

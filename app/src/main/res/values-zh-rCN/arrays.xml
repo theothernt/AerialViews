@@ -20,6 +20,7 @@
   <string name="btn_ignore">忽略操作</string>
   <string name="btn_music_next">跳至下一首歌曲</string>
   <string name="btn_music_previous">跳至上一首歌曲</string>
+  <string name="btn_restart_video">从头开始重新播放当前视频。</string>
   <string name="btn_seek_backward">快进</string>
   <string name="btn_seek_forward">快退</string>
   <string name="btn_show_overlays">显示隐藏的叠加内容</string>

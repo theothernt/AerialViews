@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">构建日期</string>
   <string name="about_version_title">版本号</string>
+  <string name="advanced_always_provide_audio_track_summary">为没有静音音轨的视频添加静音音轨，以便使用隧道技术。可以降低部分电视的 CPU 占用率。</string>
+  <string name="advanced_always_provide_audio_track_title">务必提供音频轨道</string>
   <string name="advanced_application_overlay_permission_summary">此应用需要悬浮窗权限，用于在播放视频时自动调整屏幕刷新率</string>
   <string name="advanced_application_overlay_permission_title">启用应用程序覆盖权限</string>
   <string name="advanced_enable_tunneling_summary">使用硬件加速，对 4K/HDR 尤其重要</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">减少播放缓冲区和内存占用</string>
   <string name="advanced_refresh_rate_switching_summary">更改显示器的刷新率以匹配视频帧速率</string>
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
+  <string name="advanced_run_as_activity_summary">屏幕保护程序启动时，在正常窗口中开始播放。此功能在飞利浦电视上非常实用。</string>
+  <string name="advanced_run_as_activity_title">以应用程序模式运行，而不是屏幕保护程序模式。</string>
   <string name="advanced_save_logs_summary">停止捕捉并将日志文件保存到文档文件夹中</string>
   <string name="advanced_save_logs_title">保存日志</string>
-  <string name="advanced_use_texture_view_summary">使用 TextureView 代替 SurfaceView 进行视频渲染</string>
-  <string name="advanced_use_texture_view_title">使用纹理视图观看视频</string>
   <string name="advanced_wifi_only_summary">仅在连接到 Wi-Fi 或以太网时，才从远程来源（Apple、Amazon 等）流式传输视频。本地和局域网来源不受影响。</string>
   <string name="advanced_wifi_only_title">仅通过 Wi-Fi 流媒体播放</string>
   <string name="advanced_wol_enable_summary">获取介质前发送 \"唤醒局域网 \"数据包</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">字号</string>
   <string name="appearance_clock_summary">显示当前时间</string>
   <string name="appearance_clock_title">时钟</string>
+  <string name="appearance_countdown_label_summary">倒计时前显示的可选文本，例如“距离新年还有时间：”</string>
+  <string name="appearance_countdown_label_title">倒计时标签</string>
   <string name="appearance_countdown_summary">显示特定时间的倒计时</string>
   <string name="appearance_countdown_target_message_summary">倒计时归零时显示的信息（如 \"新年快乐！\"）</string>
   <string name="appearance_countdown_target_message_title">完成信息</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">元数据</string>
   <string name="appearance_music_summary">显示当前播放歌曲</string>
   <string name="appearance_music_title">音乐</string>
+  <string name="appearance_overlay_colour_title">叠加颜色</string>
+  <string name="appearance_overlay_opacity_title">叠加不透明度</string>
+  <string name="appearance_overlay_padding_horizontal_title">叠加层边距（左/右）</string>
+  <string name="appearance_overlay_padding_vertical_title">覆盖层衬垫（上/下）</string>
   <string name="appearance_photo_background_blur_intensity_summary">调整现代模糊和传统模糊的模糊半径</string>
   <string name="appearance_photo_background_blur_intensity_title">模糊强度</string>
   <string name="appearance_photo_background_blur_opacity_title">模糊不透明度</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">服务器详细信息和凭据</string>
   <string name="category_settings">设置</string>
   <string name="category_slots">展示位</string>
+  <string name="category_sonos">Sonos（本地网络）</string>
   <string name="category_sound_background_music">音效和背景音乐</string>
+  <string name="category_specific_tv_and_device_options">具体电视和设备选项</string>
   <string name="category_startup">启动</string>
   <string name="category_swipe_gestures">滑动手势</string>
   <string name="category_tap_gestures">点击手势</string>
@@ -288,6 +298,21 @@
   <string name="comm1_videos_enabled">使用社区视频</string>
   <string name="comm2_videos_enabled">使用社区视频</string>
   <string name="common_default">（默认）</string>
+  <string name="countdown_error">错误</string>
+  <string name="countdown_invalid_time_format">无效的时间格式</string>
+  <string name="countdown_time_is_up">时间到！</string>
+  <plurals name="countdown_unit_days">
+    <item quantity="other">%1$dd</item>
+  </plurals>
+  <plurals name="countdown_unit_hours">
+    <item quantity="other">%1$dh</item>
+  </plurals>
+  <plurals name="countdown_unit_minutes">
+    <item quantity="other">%1$d米</item>
+  </plurals>
+  <plurals name="countdown_unit_seconds">
+    <item quantity="other">%1$ds</item>
+  </plurals>
   <string name="custom_media_enabled">使用自定义源</string>
   <string name="custom_media_feeds_notice">为 Jetson Creative 扩展包、自定义源（entries.json）和 RTSP 流添加 URL</string>
   <string name="custom_media_urls_invalid">一个或多个 URL 无效</string>
@@ -451,6 +476,8 @@
   <string name="nowplaying_shorten_track_name_summary">删除常见后缀，如\"- Original Mix \"或\"(Remastered)\"</string>
   <string name="nowplaying_shorten_track_name_title">缩短曲目名称</string>
   <string name="nowplaying_toast_text">请在“特殊应用访问权限 &gt; 通知权限”中启用“Aerial Views”</string>
+  <string name="overlay_colour_dialog_hex_hint">例如，十六进制颜色代码为 #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">输入颜色，例如 #FFC107</string>
   <string name="overlay_metadata_folder_levels_title">显示文件夹级别</string>
   <string name="overlay_metadata_photo_date_format_summary">为照片 EXIF 日期指定自定义日期格式</string>
   <string name="overlay_metadata_photo_date_format_title">拍摄日期格式</string>
@@ -479,6 +506,7 @@
   <string name="playlist_cache_interval_title">刷新间隔</string>
   <string name="playlist_cache_resume_title">恢复行为</string>
   <string name="playlist_cache_status_active">%1$d 媒体项目 %2$d 音乐曲目，</string>
+  <string name="playlist_cache_status_active_filtered">%1$d 的 %2$d 当前时段的媒体报道 %3$d 音乐曲目，</string>
   <string name="playlist_cache_status_empty">无缓存数据</string>
   <string name="playlist_cache_status_expiry_d">%1$d 天）</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d 天）， %2$d 小时</string>
@@ -499,6 +527,8 @@
   <string name="playlist_loop_until_skipped_summary">循环播放视频，直到按键手动跳过</string>
   <string name="playlist_loop_until_skipped_title">循环播放视频，直至跳过</string>
   <string name="playlist_max_video_length_title">限制视频长度</string>
+  <string name="playlist_music_repeat_summary">背景音乐播放列表结束后，循环播放。</string>
+  <string name="playlist_music_repeat_title">循环背景音乐</string>
   <string name="playlist_mute_videos_summary">关闭所有视频声音</string>
   <string name="playlist_mute_videos_title">视频静音</string>
   <string name="playlist_playback_speed_changed">播放速度改为：%1$s</string>
@@ -620,6 +650,26 @@
 请访问 Aerial Views 网站了解更多详情</string>
   <string name="show_media_error_toasts_summary">媒体播放出现异常时弹出提示消息</string>
   <string name="show_media_error_toasts_title">显示媒体错误提示</string>
+  <string name="sonos_discover_dialog_title">找到 Sonos 扬声器</string>
+  <string name="sonos_discover_no_devices">未找到 Sonos 扬声器</string>
+  <string name="sonos_discover_no_permission">未授予本地网络权限</string>
+  <string name="sonos_discover_searching">搜索中…（最多 4 秒）</string>
+  <string name="sonos_discover_selected">已选：%s</string>
+  <string name="sonos_discover_summary">在本地网络上搜索 Sonos 音箱</string>
+  <string name="sonos_discover_title">发现演讲者</string>
+  <string name="sonos_enabled_summary">通过 Sonos 扬声器显示当前正在播放的曲目</string>
+  <string name="sonos_enabled_title">启用 Sonos</string>
+  <string name="sonos_ip_not_set">未配置</string>
+  <string name="sonos_ip_title">扬声器 IP 地址</string>
+  <string name="sonos_test_default">点击测试连接</string>
+  <string name="sonos_test_no_ip">请先输入IP地址</string>
+  <string name="sonos_test_no_local_network_permission">未授予本地网络权限。请前往“设置”&gt;“应用”&gt;“航拍视图”&gt;“权限”，然后启用“本地网络访问”。</string>
+  <string name="sonos_test_not_sonos">端口 1400 有响应，但这看起来不像是一个 Sonos 设备。</string>
+  <string name="sonos_test_nothing_playing">什么都没发生</string>
+  <string name="sonos_test_paused">暂停</string>
+  <string name="sonos_test_stopped">停止</string>
+  <string name="sonos_test_testing">测试……</string>
+  <string name="sonos_test_title">测试连接</string>
   <string name="sources_amazon_summary">在线播放 Amazon 氛围视频</string>
   <string name="sources_amazon_title">Amazon 视频</string>
   <string name="sources_apple_summary">在线播放 Apple 视频</string>

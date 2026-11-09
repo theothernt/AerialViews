@@ -20,6 +20,7 @@
   <string name="btn_ignore">Ігнорувати дію</string>
   <string name="btn_music_next">Перейти до наступного музичного треку</string>
   <string name="btn_music_previous">Перейти до попереднього музичного треку</string>
+  <string name="btn_restart_video">Почати перегляд поточного відео з початку</string>
   <string name="btn_seek_backward">Перемотування назад у відео</string>
   <string name="btn_seek_forward">Перемотування вперед у відео</string>
   <string name="btn_show_overlays">Показувати накладання, якщо вони приховані</string>

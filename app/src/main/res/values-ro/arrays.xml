@@ -20,6 +20,7 @@
   <string name="btn_ignore">Ignoră acțiunea</string>
   <string name="btn_music_next">Sari la următoarea piesă muzicală</string>
   <string name="btn_music_previous">Sari la piesa muzicală anterioară</string>
+  <string name="btn_restart_video">Reporniți videoclipul curent de la început</string>
   <string name="btn_seek_backward">Derulează înapoi în videoclip</string>
   <string name="btn_seek_forward">Derulează înainte în videoclip</string>
   <string name="btn_show_overlays">Afișează suprapunerile, dacă sunt ascunse</string>

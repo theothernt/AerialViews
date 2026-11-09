@@ -20,6 +20,7 @@
   <string name="btn_ignore">התעלם מהפעולה</string>
   <string name="btn_music_next">דלג לרצועת המוזיקה הבאה</string>
   <string name="btn_music_previous">דלג לרצועת המוזיקה הקודמת</string>
+  <string name="btn_restart_video">הפעל מחדש את הסרטון הנוכחי מההתחלה</string>
   <string name="btn_seek_backward">חיפוש אחורה בסרטון</string>
   <string name="btn_seek_forward">חיפוש קדימה בסרטון</string>
   <string name="btn_show_overlays">הצג שכבות-על, אם מוסתרות</string>

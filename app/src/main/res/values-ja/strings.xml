@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">構築日</string>
   <string name="about_version_title">バージョン</string>
+  <string name="advanced_always_provide_audio_track_summary">音声トラックがない動画に無音の音声トラックを追加し、トンネリング処理を可能にします。一部のテレビではCPU使用率を低減できます。</string>
+  <string name="advanced_always_provide_audio_track_title">必ず音声トラックを提供してください</string>
   <string name="advanced_application_overlay_permission_summary">このアプリが動画再生時にリフレッシュレートを変更するための特別な非表示ウィンドウを表示するには、権限が必要です</string>
   <string name="advanced_application_overlay_permission_title">アプリケーションオーバーレイの権限を有効にする</string>
   <string name="advanced_enable_tunneling_summary">ハードウェアアクセラレーションを活用しましょう。4K/HDRでは特に重要です。</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">再生バッファとメモリ使用量を削減する</string>
   <string name="advanced_refresh_rate_switching_summary">ディスプレイのリフレッシュレートを、動画のフレームレートに合わせて変更する</string>
   <string name="advanced_refresh_rate_switching_title">自動リフレッシュレート切り替え</string>
+  <string name="advanced_run_as_activity_summary">スクリーンセーバーが起動すると、通常のウィンドウで再生を開始します。フィリップス製テレビで便利です。</string>
+  <string name="advanced_run_as_activity_title">スクリーンセーバーではなく、アプリとして実行してください。</string>
   <string name="advanced_save_logs_summary">キャプチャを停止し、ログファイルを「ドキュメント」フォルダに保存する</string>
   <string name="advanced_save_logs_title">ログを保存する</string>
-  <string name="advanced_use_texture_view_summary">動画のレンダリングには、SurfaceViewの代わりにTextureViewを使用してください</string>
-  <string name="advanced_use_texture_view_title">動画にはTextureViewを使用する</string>
   <string name="advanced_wifi_only_summary">Wi-Fiまたはイーサネットに接続している場合のみ、外部ソース（Apple、Amazonなど）からの動画ストリーミングを行います。ローカルおよびLAN上のソースには影響ありません。</string>
   <string name="advanced_wifi_only_title">Wi-Fiのみでのメディアストリーミング</string>
   <string name="advanced_wol_enable_summary">メディアを取得する前に、Wake on LAN パケットを送信する</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">サイズ</string>
   <string name="appearance_clock_summary">現在の時刻を表示する</string>
   <string name="appearance_clock_title">時計</string>
+  <string name="appearance_countdown_label_summary">カウントダウンの前に表示されるオプションのテキスト。例：「新年まであと何時間ですか？」</string>
+  <string name="appearance_countdown_label_title">カウントダウンラベル</string>
   <string name="appearance_countdown_summary">特定の時刻までのカウントダウンを表示する</string>
   <string name="appearance_countdown_target_message_summary">カウントダウンがゼロになったときに表示するメッセージ（例：「あけましておめでとう！」）</string>
   <string name="appearance_countdown_target_message_title">完了メッセージ</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">メタデータ</string>
   <string name="appearance_music_summary">現在再生中の曲を表示する</string>
   <string name="appearance_music_title">音楽</string>
+  <string name="appearance_overlay_colour_title">重ね合わせの色</string>
+  <string name="appearance_overlay_opacity_title">オーバーレイの不透明度</string>
+  <string name="appearance_overlay_padding_horizontal_title">オーバーレイパディング（左/右）</string>
+  <string name="appearance_overlay_padding_vertical_title">オーバーレイパディング（上部/下部）</string>
   <string name="appearance_photo_background_blur_intensity_summary">最新および従来のぼかし効果の両方について、ぼかしの半径を調整します</string>
   <string name="appearance_photo_background_blur_intensity_title">ぼかしの強度</string>
   <string name="appearance_photo_background_blur_opacity_title">ぼかしの不透明度</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">サーバーの詳細と認証情報</string>
   <string name="category_settings">設定</string>
   <string name="category_slots">スロット</string>
+  <string name="category_sonos">Sonos（ローカルネットワーク）</string>
   <string name="category_sound_background_music">効果音とBGM</string>
+  <string name="category_specific_tv_and_device_options">テレビとデバイスの具体的なオプション</string>
   <string name="category_startup">スタートアップ</string>
   <string name="category_swipe_gestures">スワイプ操作</string>
   <string name="category_tap_gestures">タップ操作</string>
@@ -288,6 +298,21 @@
   <string name="comm1_videos_enabled">コミュニティの動画を活用する</string>
   <string name="comm2_videos_enabled">コミュニティの動画を活用する</string>
   <string name="common_default">(デフォルト)</string>
+  <string name="countdown_error">エラー</string>
+  <string name="countdown_invalid_time_format">無効な時刻形式</string>
+  <string name="countdown_time_is_up">時間切れです！</string>
+  <plurals name="countdown_unit_days">
+    <item quantity="other">%1$dd</item>
+  </plurals>
+  <plurals name="countdown_unit_hours">
+    <item quantity="other">%1$dh</item>
+  </plurals>
+  <plurals name="countdown_unit_minutes">
+    <item quantity="other">%1$dm</item>
+  </plurals>
+  <plurals name="countdown_unit_seconds">
+    <item quantity="other">%1$ds</item>
+  </plurals>
   <string name="custom_media_enabled">カスタムフィードを使用する</string>
   <string name="custom_media_feeds_notice">Jetson Creative 拡張パック、カスタムフィード（entries.json）、HLS、および RTSP ストリームの URL を追加します</string>
   <string name="custom_media_urls_invalid">1つ以上のURLが無効です</string>
@@ -451,6 +476,8 @@
   <string name="nowplaying_shorten_track_name_summary">「- Original Mix」や「(Remastered)」といった一般的な接尾辞を削除してください</string>
   <string name="nowplaying_shorten_track_name_title">トラック名を短縮する</string>
   <string name="nowplaying_toast_text">エアリアルビューを有効にしてください：特別アプリへのアクセス &gt; 通知へのアクセス</string>
+  <string name="overlay_colour_dialog_hex_hint">16進数カラーコード、例：#FFC107</string>
+  <string name="overlay_colour_dialog_invalid">#FFC107などの色を入力してください</string>
   <string name="overlay_metadata_folder_levels_title">表示するフォルダ階層</string>
   <string name="overlay_metadata_photo_date_format_summary">写真のEXIF日付に対して、カスタムの日付形式を指定する</string>
   <string name="overlay_metadata_photo_date_format_title">撮影日時の表示形式</string>
@@ -479,6 +506,7 @@
   <string name="playlist_cache_interval_title">更新間隔</string>
   <string name="playlist_cache_resume_title">動作を再開する</string>
   <string name="playlist_cache_status_active">%1$d メディアアイテム、 %2$d の楽曲、</string>
+  <string name="playlist_cache_status_active_filtered">%1$d の %2$d 現在の時間帯のメディアアイテム、%3$d 音楽トラック、</string>
   <string name="playlist_cache_status_empty">キャッシュデータはありません</string>
   <string name="playlist_cache_status_expiry_d">%1$d 日</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d 日、 %2$d 時間</string>
@@ -499,6 +527,8 @@
   <string name="playlist_loop_until_skipped_summary">Dパッドまたはボタンを押して手動でスキップするまで、動画をループ再生します</string>
   <string name="playlist_loop_until_skipped_title">スキップされるまで動画をループ再生する</string>
   <string name="playlist_max_video_length_title">動画の長さを制限する</string>
+  <string name="playlist_music_repeat_summary">バックグラウンドミュージックのプレイリストが終わったら、もう一度再生してください。</string>
+  <string name="playlist_music_repeat_title">ループ再生のBGM</string>
   <string name="playlist_mute_videos_summary">すべての動画の音声をミュートする</string>
   <string name="playlist_mute_videos_title">動画の音声をミュートする</string>
   <string name="playlist_playback_speed_changed">再生速度が次のように変更されました： %1$s</string>
@@ -620,6 +650,26 @@
 詳細については、Aerial Viewsのウェブサイトをご覧ください</string>
   <string name="show_media_error_toasts_summary">メディアの再生エラーが発生した際に通知を表示する</string>
   <string name="show_media_error_toasts_title">再生エラーの通知を表示する</string>
+  <string name="sonos_discover_dialog_title">Sonosスピーカーが見つかりました</string>
+  <string name="sonos_discover_no_devices">Sonosスピーカーは見つかりませんでした</string>
+  <string name="sonos_discover_no_permission">ローカルネットワークのアクセス許可が付与されていません</string>
+  <string name="sonos_discover_searching">検索中…（最大4秒）</string>
+  <string name="sonos_discover_selected">選択済み: %s</string>
+  <string name="sonos_discover_summary">ローカルネットワーク上でSonosスピーカーを検索する</string>
+  <string name="sonos_discover_title">講演者を探す</string>
+  <string name="sonos_enabled_summary">Sonosスピーカーで現在再生中のトラックを表示します。</string>
+  <string name="sonos_enabled_title">Sonosを有効にする</string>
+  <string name="sonos_ip_not_set">設定されていません</string>
+  <string name="sonos_ip_title">スピーカーのIPアドレス</string>
+  <string name="sonos_test_default">タップして接続をテストする</string>
+  <string name="sonos_test_no_ip">まずIPアドレスを入力してください</string>
+  <string name="sonos_test_no_local_network_permission">ローカルネットワークへのアクセス権限が付与されていません。設定 &gt; アプリ &gt; 航空写真 &gt; 権限 に移動し、ローカルネットワークへのアクセスを有効にしてください。</string>
+  <string name="sonos_test_not_sonos">ポート1400は応答したが、これはSonosデバイスではないようだ</string>
+  <string name="sonos_test_nothing_playing">何も再生されていません</string>
+  <string name="sonos_test_paused">一時停止</string>
+  <string name="sonos_test_stopped">停止しました</string>
+  <string name="sonos_test_testing">テスト中…</string>
+  <string name="sonos_test_title">接続テスト</string>
   <string name="sources_amazon_summary">インターネット接続を利用して、Amazonのアンビエント動画をストリーミング再生する</string>
   <string name="sources_amazon_title">Amazonの動画</string>
   <string name="sources_apple_summary">インターネット接続を使ってAppleの動画をストリーミング再生する</string>

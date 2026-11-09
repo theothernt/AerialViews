@@ -20,6 +20,7 @@
   <string name="btn_ignore">Игнорировать действия</string>
   <string name="btn_music_next">Переход к следующей музыкальной дорожке</string>
   <string name="btn_music_previous">Переход к предыдущей музыкальной дорожке</string>
+  <string name="btn_restart_video">Возобновить просмотр текущего видео с начала</string>
   <string name="btn_seek_backward">Просмотр видео в обратном направлении</string>
   <string name="btn_seek_forward">Искать вперед в видео</string>
   <string name="btn_show_overlays">Показать накладки, если они скрыты</string>

@@ -20,6 +20,7 @@
   <string name="btn_ignore">Eylemi görmezden gel</string>
   <string name="btn_music_next">Sonraki müzik parçasına geç</string>
   <string name="btn_music_previous">Önceki müzik parçasına geç</string>
+  <string name="btn_restart_video">Mevcut videoyu baştan başlatın.</string>
   <string name="btn_seek_backward">Videoda geriye doğru arama yapın</string>
   <string name="btn_seek_forward">Videoda ileri sarma</string>
   <string name="btn_show_overlays">Gizliyse katmanları göster</string>

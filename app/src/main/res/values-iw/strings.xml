@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">תאריך בנייה</string>
   <string name="about_version_title">גירסה</string>
+  <string name="advanced_always_provide_audio_track_summary">מוסיף רצועת שמע שקטה לסרטונים שאין בהם, כך שניתן להשתמש במנהור. יכול להפחית את ניצול המעבד בטלוויזיות מסוימות.</string>
+  <string name="advanced_always_provide_audio_track_title">תמיד ספק רצועת שמע</string>
   <string name="advanced_application_overlay_permission_summary">נדרשת הרשאה כדי שאפליקציה זו תוכל להציג חלון מוסתר מיוחד כדי לשנות את קצב הרענון בעת הפעלת סרטוני וידאו</string>
   <string name="advanced_application_overlay_permission_title">אפשר הרשאת שכבת-על לאפליקציה</string>
   <string name="advanced_enable_tunneling_summary">השתמש בהאצת חומרה, חשוב יותר עבור 4K/HDR</string>
@@ -30,10 +32,10 @@
   <string name="advanced_reduce_buffer_memory_title">הפחתת זיכרון זיכרון עם זיכרון מאגר (buffers)</string>
   <string name="advanced_refresh_rate_switching_summary">שנה את קצב הרענון של התצוגה כך שיתאים לקצב פריימים של הווידאו</string>
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
+  <string name="advanced_run_as_activity_summary">מתחיל את ההפעלה בחלון רגיל כאשר שומר המסך מתחיל. שימושי בטלוויזיות פיליפס</string>
+  <string name="advanced_run_as_activity_title">הפעל כאפליקציה, לא כשומר מסך</string>
   <string name="advanced_save_logs_summary">הפסק את הלכידה ושמור את קובץ היומן בתיקיית המסמכים</string>
   <string name="advanced_save_logs_title">שמירת יומני רישום</string>
-  <string name="advanced_use_texture_view_summary">השתמש ב-TextureView במקום ב-SurfaceView לצורך עיבוד וידאו</string>
-  <string name="advanced_use_texture_view_title">השתמש ב-TextureView עבור וידאו</string>
   <string name="advanced_wifi_only_summary">הזרמת סרטונים רק ממקורות מרוחקים (אפל, אמזון וכו\') כאשר מחוברים ל-WiFi או Ethernet. מקורות מקומיים ו-LAN אינם מושפעים.</string>
   <string name="advanced_wifi_only_title">הזרמת מדיה דרך WiFi בלבד</string>
   <string name="advanced_wol_enable_summary">שלח חבילת Wake on LAN לפני שליפת מדיה</string>
@@ -72,6 +74,8 @@
   <string name="appearance_clock_size_title">גודל</string>
   <string name="appearance_clock_summary">הצג את השעה הנוכחית</string>
   <string name="appearance_clock_title">שעון</string>
+  <string name="appearance_countdown_label_summary">טקסט אופציונלי המוצג לפני הספירה לאחור, לדוגמה \"זמן שנותר עד ראש השנה:\"</string>
+  <string name="appearance_countdown_label_title">תווית ספירה לאחור</string>
   <string name="appearance_countdown_summary">הצגת ספירה לאחור לשעה מסוימת</string>
   <string name="appearance_countdown_target_message_summary">הודעה שתוצג כאשר הספירה לאחור מגיעה לאפס (למשל \"שנה טובה!\")</string>
   <string name="appearance_countdown_target_message_title">הודעת השלמה</string>
@@ -125,6 +129,10 @@
   <string name="appearance_metadata_title">מידע</string>
   <string name="appearance_music_summary">הצג את השיר המתנגן כעת</string>
   <string name="appearance_music_title">מוסיקה</string>
+  <string name="appearance_overlay_colour_title">צבע שכבת-על</string>
+  <string name="appearance_overlay_opacity_title">שקיפות שכבת-על</string>
+  <string name="appearance_overlay_padding_horizontal_title">ריפוד שכבת-על (שמאל/ימין)</string>
+  <string name="appearance_overlay_padding_vertical_title">ריפוד שכבת-על (עליון/תחתון)</string>
   <string name="appearance_photo_background_blur_intensity_summary">מתאים את רדיוס הטשטוש עבור טשטוש מודרני וטשטוש מדור קודם</string>
   <string name="appearance_photo_background_blur_intensity_title">עוצמת הטשטוש</string>
   <string name="appearance_photo_background_blur_opacity_title">אטימות טשטוש</string>
@@ -269,7 +277,9 @@
   <string name="category_server_details_and_credentials">פרטי שרת ומשתמש</string>
   <string name="category_settings">הגדרות</string>
   <string name="category_slots">חריצים</string>
+  <string name="category_sonos">סונוס (רשת מקומית)</string>
   <string name="category_sound_background_music">סאונד ומוזיקת ​​רקע</string>
+  <string name="category_specific_tv_and_device_options">אפשרויות טלוויזיה ומכשיר ספציפיות</string>
   <string name="category_startup">הפעלה</string>
   <string name="category_swipe_gestures">תנועות החלקה</string>
   <string name="category_tap_gestures">תנועות הקשה</string>
@@ -288,6 +298,33 @@
   <string name="comm1_videos_enabled">השתמש בסרטוני קהילה</string>
   <string name="comm2_videos_enabled">השתמש בסרטוני קהילה</string>
   <string name="common_default">(ברירת מחדל)</string>
+  <string name="countdown_error">שגיאה</string>
+  <string name="countdown_invalid_time_format">פורמט זמן לא חוקי</string>
+  <string name="countdown_time_is_up">נגמר הזמן!</string>
+  <plurals name="countdown_unit_days">
+    <item quantity="one">%1$d ימים</item>
+    <item quantity="two">%1$d ימים</item>
+    <item quantity="many">%1$d ימים</item>
+    <item quantity="other">%1$d ימים</item>
+  </plurals>
+  <plurals name="countdown_unit_hours">
+    <item quantity="one">%1$d שעות</item>
+    <item quantity="two">%1$d שעות</item>
+    <item quantity="many">%1$d שעות</item>
+    <item quantity="other">%1$d שעות</item>
+  </plurals>
+  <plurals name="countdown_unit_minutes">
+    <item quantity="one">%1$d דקות</item>
+    <item quantity="two">%1$d דקות</item>
+    <item quantity="many">%1$d דקות</item>
+    <item quantity="other">%1$d דקות</item>
+  </plurals>
+  <plurals name="countdown_unit_seconds">
+    <item quantity="one">%1$d שניות</item>
+    <item quantity="two">%1$d שניות</item>
+    <item quantity="many">%1$d שניות</item>
+    <item quantity="other">%1$d שניות</item>
+  </plurals>
   <string name="custom_media_enabled">השתמש בהזנות מותאמות אישית</string>
   <string name="custom_media_feeds_notice">הוסף כתובות URL עבור חבילות הרחבה של ג׳טסון קריאטיב, פידים מותאמים אישית (entries.json) וזרמי RTSP</string>
   <string name="custom_media_urls_invalid">כתובת URL אחת או יותר אינן חוקיות</string>
@@ -451,6 +488,8 @@
   <string name="nowplaying_shorten_track_name_summary">הסר סיומות נפוצות כמו \"- Original Mix\" או \"(Remastered)\"</string>
   <string name="nowplaying_shorten_track_name_title">קיצור שמות רצועות שירום</string>
   <string name="nowplaying_toast_text">אנא הפעל תצוגות אוויר ב: גישה מיוחדת לאפליקציה &gt; גישת התראות</string>
+  <string name="overlay_colour_dialog_hex_hint">צבע הקסדצימלי, לדוגמה #FFC107</string>
+  <string name="overlay_colour_dialog_invalid">הזן צבע כגון #FFC107</string>
   <string name="overlay_metadata_folder_levels_title">רמות תיקייה להצגה</string>
   <string name="overlay_metadata_photo_date_format_summary">ציין פורמט תאריך מותאם אישית עבור תאריכי EXIF ​​של תמונות</string>
   <string name="overlay_metadata_photo_date_format_title">פורמט תאריך צילום</string>
@@ -479,6 +518,7 @@
   <string name="playlist_cache_interval_title">מרווח רענון</string>
   <string name="playlist_cache_resume_title">שחזור התנהגות</string>
   <string name="playlist_cache_status_active">%1$d פריטי מדיה, %2$d רצועות מוזיקה,</string>
+  <string name="playlist_cache_status_active_filtered">%1$d שֶׁל %2$d פריטי מדיה לשעה הנוכחית ביום, %3$d רצועות מוזיקה,</string>
   <string name="playlist_cache_status_empty">אין נתוני מטמון</string>
   <string name="playlist_cache_status_expiry_d">%1$d יום/ים</string>
   <string name="playlist_cache_status_expiry_d_h">%1$d יום/ים, %2$d שעה/ות</string>
@@ -499,6 +539,8 @@
   <string name="playlist_loop_until_skipped_summary">הפעלת הווידאו בלולאה עד לדילוג ידני על ידי dpad או לחיצת כפתור</string>
   <string name="playlist_loop_until_skipped_title">הפעל וידאו בלולאה עד לדילוג</string>
   <string name="playlist_max_video_length_title">הגבל את אורך הסרטון</string>
+  <string name="playlist_music_repeat_summary">חזור על רשימת ההשמעה של מוזיקת ​​הרקע כשהיא מסתיימת</string>
+  <string name="playlist_music_repeat_title">מוזיקת ​​רקע בלולאה</string>
   <string name="playlist_mute_videos_summary">השתק את הצליל של כל הסרטונים</string>
   <string name="playlist_mute_videos_title">השתקת סרטונים</string>
   <string name="playlist_playback_speed_changed">מהירות ההשמעה השתנתה ל: %1$s</string>
@@ -620,6 +662,26 @@
  אנא בקר באתר Aerial Views לפרטים נוספים</string>
   <string name="show_media_error_toasts_summary">הצגת הודעות זמניות כאשר מתרחשות שגיאות הפעלת מדיה</string>
   <string name="show_media_error_toasts_title">הצג הודעות זמניות של שגיאות מדיה</string>
+  <string name="sonos_discover_dialog_title">נמצאו רמקולי Sonos</string>
+  <string name="sonos_discover_no_devices">לא נמצאו רמקולי Sonos</string>
+  <string name="sonos_discover_no_permission">לא ניתנה הרשאה לרשת מקומית</string>
+  <string name="sonos_discover_searching">מחפש... (עד 4 שניות)</string>
+  <string name="sonos_discover_selected">נִבחָר: %s</string>
+  <string name="sonos_discover_summary">חפש רמקולים של Sonos ברשת המקומית</string>
+  <string name="sonos_discover_title">גלו רמקולים</string>
+  <string name="sonos_enabled_summary">הצג את הרצועה המתנגנת כעת מרמקולי Sonos שלך</string>
+  <string name="sonos_enabled_title">הפעלת סונוס</string>
+  <string name="sonos_ip_not_set">לא מוגדר</string>
+  <string name="sonos_ip_title">כתובת ה-IP של הרמקול</string>
+  <string name="sonos_test_default">הקש כדי לבדוק את החיבור</string>
+  <string name="sonos_test_no_ip">הזן תחילה כתובת IP</string>
+  <string name="sonos_test_no_local_network_permission">לא ניתנה הרשאה לרשת מקומית. עבור אל הגדרות &gt; אפליקציות &gt; נופי אוויר &gt; הרשאות והפעל גישה לרשת מקומית.</string>
+  <string name="sonos_test_not_sonos">פורט 1400 הגיב אבל זה לא נראה כמו מכשיר Sonos</string>
+  <string name="sonos_test_nothing_playing">שום דבר לא מתנגן</string>
+  <string name="sonos_test_paused">מושהה</string>
+  <string name="sonos_test_stopped">נעצר</string>
+  <string name="sonos_test_testing">בוחן...</string>
+  <string name="sonos_test_title">בדיקת חיבור</string>
   <string name="sources_amazon_summary">הזרם סרטוני אווירה של אמזון באמצעות חיבור האינטרנט שלך</string>
   <string name="sources_amazon_title">סרטונים מאמזון</string>
   <string name="sources_apple_summary">הזרם סרטוני אפל באמצעות חיבור האינטרנט שלך</string>
