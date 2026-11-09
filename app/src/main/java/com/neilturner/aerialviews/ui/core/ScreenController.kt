@@ -513,6 +513,9 @@ class ScreenController(
 
         // Images
         if (media.type == AerialMediaType.IMAGE) {
+            // A video that was skipped, trimmed or looping would otherwise keep playing behind the
+            // photo, and its finish callbacks would advance the photo before its timer elapses.
+            videoPlayer.suspendPlayback()
             imagePlayer.setImage(media)
             imageViewBinding.root.visibility = View.VISIBLE
             videoViewBinding.root.visibility = View.INVISIBLE
@@ -523,7 +526,11 @@ class ScreenController(
             GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         }
 
-        videoPlayer.start()
+        // Only a video has playback to start here: starting for a photo would resume the video
+        // that was suspended above.
+        if (media.type == AerialMediaType.VIDEO) {
+            videoPlayer.start()
+        }
     }
 
     private fun fadeOutLoadingText() {
@@ -1200,16 +1207,25 @@ class ScreenController(
 
     override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()
 
-    override fun onVideoAlmostFinished() = fadeOutCurrentItem()
-
-    override fun onVideoPrepared() {
-        if (!blackOutMode) fadeInNextItem()
+    override fun onVideoAlmostFinished() {
+        // A video can still report a finish after the screen has moved on to a photo.
+        if (!PlaybackCallbacks.videoEventAppliesTo(currentMedia?.type)) return
+        fadeOutCurrentItem()
     }
 
-    override fun onVideoError() = handleError()
+    override fun onVideoPrepared() {
+        if (!blackOutMode && PlaybackCallbacks.videoEventAppliesTo(currentMedia?.type)) fadeInNextItem()
+    }
+
+    override fun onVideoError() {
+        // A late error from a video must not skip the photo that replaced it.
+        if (!PlaybackCallbacks.videoEventAppliesTo(currentMedia?.type)) return
+        handleError()
+    }
 
     override fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata) {
-        val media = currentMedia ?: return
+        // A late metadata report from the previous video must not overwrite the photo's details.
+        val media = currentMedia?.takeIf { PlaybackCallbacks.videoEventAppliesTo(it.type) } ?: return
         Timber.i("Video metadata: %s", formatVideoMetadataForLog(metadata))
         val changed = applyVideoMetadataToMedia(media, metadata)
 

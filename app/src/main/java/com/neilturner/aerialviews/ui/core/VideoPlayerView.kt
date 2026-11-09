@@ -125,6 +125,8 @@ class VideoPlayerView
         }
 
         fun setVideo(media: AerialMedia) {
+            // A pending finish timer belongs to the previous video, not this one.
+            removeCallbacks(almostFinishedRunnable)
             state = VideoState() // Reset params for each video
             state.type = media.source
             currentMedia = media
@@ -241,6 +243,16 @@ class VideoPlayerView
                 // Recalculate remaining time and restart timer
                 setupAlmostFinishedRunnable()
             }
+        }
+
+        /**
+         * Pauses playback and cancels the item's finish timer without releasing the player, so the
+         * codec stays warm for the next video. Used while a photo is on screen: an unsuspended
+         * video keeps playing (or looping) invisibly and reports a finish against the photo.
+         */
+        fun suspendPlayback() {
+            removeCallbacks(almostFinishedRunnable)
+            exoPlayer.playWhenReady = false
         }
 
         fun stop() {
