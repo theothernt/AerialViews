@@ -1,6 +1,8 @@
-# AerialViews: Gradual Compose Screensaver Migration
+# AerialViews: Gradual Compose Screensaver Migration (v2)
 
 Plan for an LLM coding agent. Read this whole file before starting. Work on **one phase at a time** and **stop at the end of each phase** for human review.
+
+v2 incorporates a validation pass against the actual codebase. Where this plan and the code disagree, the code wins: stop and report.
 
 ## Goal
 
@@ -10,7 +12,7 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 
 ```
 :core                  models, enums, prefs, providers, services, data, utils,
-                       shared screensaver state holder (UI-agnostic)
+                       shared screensaver controller / state (UI-agnostic)
 :app                   legacy screensaver UI, settings, activities (DreamActivity, TestActivity)
                        composition root: depends on :core and :screensaver-compose
 :screensaver-compose   new Compose screensaver UI (depends on :core ONLY, never on :app)
@@ -18,106 +20,161 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 
 Dependency rules (enforce in every phase):
 - `:core` depends on neither `:app` nor `:screensaver-compose`.
-- `:core` contains no `Activity`, `DreamService`, `Window`, or View/Compose UI code.
-- `:screensaver-compose` never imports from `:app`.
+- `:core` contains no `Activity`, `DreamService`, or View/Compose UI code, and (see Phase 1) no direct Firebase calls.
+- `:screensaver-compose` never imports from `:app` and never depends on Firebase.
+
+## Verified facts about the project (reviewed against the codebase; re-verify cheaply, don't redo)
+
+- Modules: `:app`, `:projectivyapi` (AIDL library), `:baselineprofile`, `:microbenchmark`. One `version` flavor dimension: `github`, `beta`, `googleplay`, `googleplaybeta`, `amazon`, `fdroid`. minSdk 24, targetSdk 37, AGP 9.5.1, Kotlin 2.4.21.
+- Version catalog already exists (`gradle/libs.versions.toml`). `android.nonTransitiveRClass=true` and `nonFinalResIds=true` are already set. Do not "enable" them.
+- `AGENTS.md` defines the build/test/lint commands (see Standard gate below).
+- Entry points: `DreamActivity : DreamService` and `TestActivity : AppCompatActivity`, both manifest-declared; `DreamActivity` is exported with `BIND_DREAM_SERVICE`. `NotificationService` (notification listener) grant is stored by component name.
+- Prefs use Kotpref (its initializer captures the Context; the app has no static Context capture of its own).
+- `ScreenController` (~1,400 lines) **is the view**: its constructor inflates `AerialActivityBinding`, builds every overlay, installs the video view, reads ~20 prefs into fields. Playlist advance is implemented in animation end callbacks (`fadeOutCurrentItem`'s `withEndAction` decides skip/loop/next); gating uses `canSkip`/`canShowOverlays` flags mutated by `ViewPropertyAnimator` callbacks; video finish timing is a `View.postDelayed` inside `VideoPlayerView`. The fade/gate timing is effectively the state machine.
+- Existing, already-extracted and tested pure logic: `PlaybackTiming`, `PlaybackCallbacks`, `ScheduledBlackoutWindow`, `PortraitVideoOrientation`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler` (51 test files in total). Overlays are already driven from a `StateFlow` via `ui/overlays/state/` (`OverlayStateStore`, `OverlayUiState`, `OverlayEventBridge`). Note `OverlayUiState` imports `ui.controls.ProgressState`, so it is not yet UI-agnostic.
+- Source-set swap: `app/build.gradle.kts` hand-wires `src/common/java` for five flavors and `src/fdroid/java` for F-Droid. `FirebaseHelper` exists twice; the F-Droid build deliberately excludes Firebase (firebase flavors loop, Perf plugin disabled). `MediaService`, `VideoPlayerView`, `VideoPlayerHelper`, `MediaServiceHelper` call `FirebaseHelper` directly.
+- `BuildConfig` is read by code headed for `:core`: `OPEN_WEATHER` (`WeatherService`), `VERSION_CODE` (`MigrationHelper`), `DEBUG`/`TEST_CONFIG`/`FLAVOR` (`DreamTiming`, `ImagePlayerHelper`).
+- `GeneralPrefs` imports `services.weather.TemperatureUnit` and `WindSpeedUnit` (in `models/prefs/GeneralPrefs.kt`), so prefs depend on types that live under `services/`.
+- Manifest-declared components exist outside the activities, including `PackageReplacedReceiver` (in `data/preferences`, a package headed for `:core`) and `WallpaperProviderService` (`services/projectivy`, depends on `:projectivyapi`).
+- No `proguard-rules.pro`; keep rules live in `app/src/main/keepRules/*.keep`.
+- Spotless (ktlint) is declared in `:app` only and runs as part of `check`.
+- CI runs only on `workflow_dispatch`.
+- Locale: both hosts construct `ScreenController(LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver))`, so all string lookups use a locale-wrapped Context.
+- Exit semantics: `InputHelper` distinguishes `EXIT_TO_SETTINGS` from `EXIT` via `exit(shouldExit: Boolean)`. `TestActivity.finishWithResult()` computes `shouldExitApp` from `startScreensaverOnLaunch` + `isExitToSettingSet()` and returns `RESULT_OK` with an `exit_app` extra that `MainActivity` reads.
+- Process-global mutable state: `DreamActivity.activeHandoffDream`, `InputHelper.previousEvent`, `InputHelper.longPressEvent`.
+- `runAsActivity`: the Philips OLED handoff starts `TestActivity` from `DreamActivity.onDreamingStarted` and keeps the dream alive underneath.
+- `VideoPlayerView` extends Media3 `PlayerView` (SurfaceView by default). The portrait-rotation fix (`VideoPlayerView.kt` ~line 445) rotates/scales that surface and is explicitly scoped to SurfaceView with fit-without-cropping. Tunneling, a Philips Dolby Vision renderer, refresh-rate switching, and HDR handling are all SurfaceView-sensitive. Fades are on loading/overlay layers, not over the video.
+- `FirebaseHelper`'s `LOGGING_END_DATE` (2026-11-01) has lapsed, so non-fatals now log unconditionally. Note it; don't fix it in this migration.
 
 ## Ground rules
 
-1. **One phase per session.** Finish the phase, run the verification gate, write the stop report, then stop. Do not begin the next phase.
+1. **One phase per session.** Finish the phase, run the gate, write the stop report, then stop.
 2. **One branch per phase**, named `compose-migration/phase-N-short-name`, with small, reviewable commits.
-3. **Phases 1 to 6 are behavior-preserving refactors.** No functional change, no bug fixes, no cleanup of unrelated code. If you find a bug, note it in the stop report and leave it alone.
-4. **Do not rename packages or classes when moving files.** Move first, refactor never (in the same commit). This keeps diffs reviewable and avoids breaking serialization, ProGuard rules, and string references.
-5. **Component name stability.** Anything referenced from the manifest or stored/matched by name (DreamService, NotificationListenerService, activities, shortcuts, intent actions, class-name strings in prefs or serialization) must keep its fully qualified class name. The system stores the user's selected screensaver and notification-listener grants by component name, and changing it silently breaks existing installs.
-6. **Verify before declaring done.** Discover the real build commands in Phase 0 and use them. A phase is not finished unless every build flavor assembles, unit tests pass, and lint/R8 gates (where defined) pass.
-7. **Ask, don't guess.** If a requirement is ambiguous or the code contradicts this plan, stop and ask. Do not invent behavior.
-8. **Do not touch settings UI** except where a phase explicitly says so.
+3. **Phases 1 to 6 are behavior-preserving.** No functional change, no bug fixes, no unrelated cleanup. Note bugs in the stop report; leave them alone.
+4. **Do not rename packages or classes when moving files.** Move first, refactor never (in the same commit).
+5. **Component name stability.** Anything referenced from the manifest or matched/stored by name (DreamService, NotificationListenerService, receivers, activities, shortcuts, intent actions, class-name strings in prefs or serialization) must keep its fully qualified class name. Module boundaries do not change FQNs; packages do. The real hazard is **relative `android:name` values in a library manifest**: `.services.NotificationService` in `:core`'s manifest resolves against `:core`'s namespace, not the applicationId, and silently kills existing grants. Rules:
+   - Keep package names unchanged.
+   - If a manifest-declared class moves to `:core`, move its manifest entry with it **and** use a fully-qualified `android:name`. (Alternatively leave the entry in `:app`'s manifest, also fully qualified.) Never use relative names in a library manifest.
+   - Verify by diffing the **merged manifest** component list (names, exported flags, intent filters, permissions) before and after, per flavor, in every phase that moves a component.
+6. **Gates:** see below. A phase is not finished unless its gate passes.
+7. **Ask, don't guess.** If a requirement is ambiguous or the code contradicts the plan, stop and ask.
+8. **Do not touch the settings UI** except where a phase explicitly says so.
+9. **Single active UI instance.** At most one screensaver UI (legacy or Compose) may exist at a time, including the process-global state listed above. Any release path must also clear or correctly own that state.
+
+## Gates
+
+**Standard gate (every phase):** the commands in `AGENTS.md`: `testBetaDebugUnitTest`, `spotlessCheck`, `assembleBetaDebug`. New modules must be covered (Spotless/ktlint configured for them, tests included), or their files go unchecked.
+
+**Full gate (Phases 1, 4, 7, 9, 10 and before any release):** assemble **all** flavors including `fdroid`, build an R8-minified release for at least one Firebase flavor and for `fdroid`, run `:baselineprofile`/`:microbenchmark` configuration, and verify the F-Droid variant pulls in no Firebase artifacts. CI is `workflow_dispatch` only, so run or trigger it explicitly and say so in the stop report.
+
+**Device checks** are always labeled **human-verified**; an agent cannot claim them unless it actually ran on a device/emulator.
 
 ## Stop report template (end of every phase)
 
 - What changed (files/modules, summarized, not a diff dump)
-- Verification results (commands run and outcomes)
-- Anything surprising or deferred (bugs found, risks, deviations from plan)
+- Gate results (commands run and outcomes)
+- Merged-manifest diff result (if components moved)
+- Anything surprising or deferred (bugs found, risks, deviations)
 - Recommended adjustments to later phases
 - Confirmation that no behavior changed (phases 1 to 6)
 
 ---
 
-## Phase 0: Audit (read-only, no code changes)
+## Phase 0: Confirm and fill gaps (read-only)
 
-Produce `docs/migration/AUDIT.md` covering:
+The broad audit has been done (see "Verified facts"). Produce a short `docs/migration/AUDIT.md` that records those facts and adds only what's missing:
 
-1. **Build**: modules, build flavors/dimensions, build types, minSdk/targetSdk, AGP/Kotlin/Gradle versions, existing version catalog or convention plugins, exact commands to build all flavors, run unit tests, run lint.
-2. **Entry points**: `DreamActivity` (DreamService) and `TestActivity`: manifest declarations, FQNs, what each does in each lifecycle callback, how each differs (input handling, exit behavior, window setup).
-3. **Screensaver core flow**: identify the class(es) that orchestrate playback (playlist advance, timers, provider loading, music/now-playing detection, error handling, skip/exit handling). For each, note which responsibilities are pure logic and which are view wiring. This is the most important finding. If logic and views are tangled, say exactly where.
-4. **Overlays**: list every overlay (clock, date, weather, location, metadata, music, etc.), the class implementing it, and what state it reads.
-5. **Playback layer**: player setup (ExoPlayer/Media3), SurfaceView vs TextureView usage, image loading, transitions, GL effects, and every device-specific workaround (with file and line references and the device/bug each addresses).
-6. **Prefs mechanism**: how preferences are defined and accessed (singletons, delegates, SharedPreferences wrappers), and whether `Context` is captured statically.
-7. **Resources**: which strings, drawables, and XML are used by screensaver code vs settings only.
-8. **Android-framework coupling** in the packages slated for `:core`: list files that import `android.app.*`, `android.view.*`, `android.widget.*`, `Activity`, or `Window`, since these block extraction.
-9. **Name-sensitive references**: manifest components, serialized class names, ProGuard/R8 rules, `BuildConfig` usage, reflection.
-10. **Baselines**: APK size per flavor, and, if a device/emulator is available, idle memory while the screensaver runs. Otherwise state that baselines still need to be measured by the human.
-11. Proposed refinements to Phases 1 to 9 based on findings.
+1. **Dependency-closure map** for the planned `:core` contents: for every package slated to move, list what it imports from packages that are not yet moved (e.g. prefs → weather unit enums), and derive a **move order in which `:core` compiles at every commit**.
+2. Android-framework coupling in that closure (`Activity`, `Window`, `View`, `Context`-capturing singletons) that blocks extraction.
+3. Every manifest-declared component, its package, and which phase moves it.
+4. Every use of `FirebaseHelper` and `BuildConfig.*` in the closure.
+5. What `:projectivyapi` / `WallpaperProviderService` require of `:core`.
+6. Baselines: APK size per flavor, and (if a device/emulator is available) idle memory while the screensaver runs; otherwise mark "to be measured by the human".
+7. Any place where the plan contradicts the code.
 
-**Gate:** AUDIT.md exists; the build/test commands in it were actually run and worked. **STOP.**
+**Gate:** AUDIT.md exists; the Standard gate commands were run on the untouched tree and results recorded. **STOP.**
 
----
+## Phase 1: `:core` foundation and the two structural decisions
 
-## Phase 1: Gradle foundation and empty `:core`
+Create the module, then resolve the decisions that define `:core`'s whole dependency surface. **Stop for human confirmation on decisions 1 to 3 before moving any code.** Recommended defaults are given.
 
-1. Create the `:core` Android library module (namespace distinct from `:app`), registered in `settings.gradle`.
-2. Align flavor dimensions/build types with `:app` (use `missingDimensionStrategy`/matching fallbacks as needed) so all `:app` flavors resolve.
-3. Enable `android.nonTransitiveRClass=true` if not already (resolve any resulting R-reference breakage in this phase only).
-4. Make `:app` depend on `:core`. Add consumer ProGuard rules file to `:core` (empty is fine for now).
-5. If no version catalog exists, add one. Convention plugins are optional; only add them if the audit showed config duplication worth removing.
+1. **Firebase / source-set swap (decision).** Recommended: define a small telemetry interface in `:core` (crash/non-fatal logging, performance traces, analytics calls used today), with the Firebase implementation and the no-op implementation supplied from `:app` per flavor via the existing `common`/`fdroid` source sets, injected at startup. `:core` has no Firebase dependency. The alternative (replicating the source-set swap inside `:core`) requires giving `:core` the `version` dimension and the same `sourceSets` wiring; only choose it if the interface approach proves unworkable.
+2. **`BuildConfig` values (decision).** Recommended: `:core` reads them through an `AppConfig` abstraction initialized by `:app` (OPEN_WEATHER key, VERSION_CODE, DEBUG, TEST_CONFIG, FLAVOR), so secrets/`secrets.properties` plumbing and the `testConfig` property are **not** duplicated into the library. Don't enable `buildConfig` in `:core` unless it truly needs its own constants.
+3. **`:projectivyapi` (decision).** Recommended: `WallpaperProviderService` stays in `:app` (manifest entry unchanged) unless the Phase 0 closure shows `:core` code needs it; if `:core` must expose it, `:core` takes the `:projectivyapi` dependency and `buildFeatures.aidl` accordingly.
 
-**Gate:** all flavors assemble; unit tests pass; minified (R8) release build assembles for at least one flavor; app behavior unchanged. **STOP.**
+Then implement:
+4. Create the `:core` Android library (distinct namespace), register it in `settings.gradle.kts`, add it to `:app`.
+5. Align `:core` with the `version` flavor dimension and build types as needed (`missingDimensionStrategy`/matching fallbacks). Add the same matching fallbacks for `:baselineprofile` and `:microbenchmark`, which depend on `:app`'s flavors.
+6. Add `consumerProguardFiles` for `:core` (the project has no `proguard-rules.pro`; existing keep rules live in `app/src/main/keepRules/*.keep`, so check which of those must be moved or duplicated as code moves).
+7. Add a Spotless/ktlint block (matching `:app`'s configuration) for `:core`.
+8. Implement the telemetry and `AppConfig` seams in `:app` and `:core` **without moving other code yet**, and have existing `:app` code go through them where trivial; otherwise defer to the phase that moves that code.
+9. Do **not** touch `nonTransitiveRClass` or the version catalog structure beyond adding the module/dependency entries.
 
-## Phase 2: Move models and enums
+**Gate:** Full gate. F-Droid has no Firebase. **STOP.**
 
-1. Move pure-Kotlin models and enums to `:core` (keep package names).
-2. Anything with Android framework dependencies that cannot move cleanly stays in `:app`; list it in the stop report rather than refactoring it.
-3. Update `:app` imports only if the package changed (it should not).
+## Phase 2: Move the leaf closure (types, enums, models)
 
-**Gate:** same as Phase 1. **STOP.**
+1. Using the Phase 0 map, move leaf types first: enums, models, and **every type prefs/models transitively reach**, including `TemperatureUnit` and `WindSpeedUnit` currently under `services/weather`. Keep package names.
+2. Each commit must leave `:core` compiling and `:app` building. `:core` will not compile until the closure of whatever it contains is inside it, so choose commit boundaries accordingly.
+3. Anything that cannot move cleanly stays in `:app`. List it in the stop report instead of refactoring it.
+
+**Gate:** Standard gate. **STOP.**
 
 ## Phase 3: Move prefs, utils, and shared resources
 
-1. Move the prefs layer and utils to `:core`. If prefs rely on a statically captured `Context`, preserve that mechanism exactly and note how `:core` gets initialized.
-2. Move resources (strings, drawables, XML) needed by both paths to `:core`. Resources used only by settings stay in `:app`. Fix R references; watch for resource name collisions.
-3. Add or verify consumer ProGuard rules for moved code.
+1. Move the Kotpref-based prefs layer and utils. Preserve the Kotpref initialization mechanism exactly and document how `:core` gets initialized.
+2. Replace `BuildConfig` reads in moved code with `AppConfig` (Phase 1 decision 2), keeping behavior identical.
+3. Move resources needed by both paths into `:core`; settings-only resources stay in `:app`. Fix R references and watch for name collisions.
+4. Move `PackageReplacedReceiver` together with its migration code **only** with its fully-qualified manifest entry and a clean merged-manifest diff (ground rule 5). If that is too invasive, leave the receiver and its three files in `:app` and note it.
+5. Add or move consumer keep rules for moved code.
 
-**Gate:** same as Phase 1, plus R8 release build runs and a quick manual or instrumented smoke test of screensaver start/stop on a device or emulator (if available; otherwise flag as human-verified). **STOP.**
+**Gate:** Standard gate, merged-manifest diff, plus an R8 release build of one Firebase flavor. Smoke test of screensaver start/stop (human-verified). **STOP.**
 
 ## Phase 4: Move data, providers, and services
 
-1. Move providers (Immich, WebDAV/Nextcloud, Plex, Samba, etc.), data layer, and non-UI services to `:core`.
-2. **Do not move manifest-declared components** (e.g. a NotificationListenerService) if doing so would change their FQN. If they must live in `:app`, keep them there and expose an interface in `:core` for the logic they need.
-3. Move in small batches (one provider or package per commit) so regressions are bisectable.
-4. Move or add unit tests alongside moved code where tests exist.
+1. Move providers (Immich, WebDAV/Nextcloud, Plex, Samba, etc.), the data layer, and non-UI services, in small per-package batches so regressions are bisectable. Route Firebase usage (`MediaService`, `VideoPlayerHelper`, `MediaServiceHelper`, etc.) through the telemetry interface.
+2. `NotificationService`, `WallpaperProviderService` and any other manifest components: follow ground rule 5. Keep FQNs and manifest names fully qualified; verify with the merged-manifest diff.
+3. Move tests alongside moved code.
 
-**Gate:** same as Phase 3; moved providers' unit tests pass. **STOP.**
+**Gate:** Full gate, merged-manifest diff for every flavor, moved providers' unit tests pass. **STOP.**
 
-## Phase 5: Extract the shared screensaver state holder
+## Phase 5a: Extract the shared controller (no view changes)
 
-This is the key phase. Use the Phase 0 audit findings.
+This phase **finishes an extraction that is roughly 60% done**; it is not a greenfield state machine.
 
-1. Create a UI-agnostic controller/state holder in `:core` that owns playlist advance, timers, provider loading, music detection, and error/skip handling. It exposes immutable state (`StateFlow<ScreenState>`) and one-shot events (`Flow`/`SharedFlow`), and takes dependencies through constructors or interfaces so it is unit-testable with fakes.
-2. Refactor the legacy screensaver to **consume** it. The legacy UI becomes a renderer of the state and a forwarder of input events.
-3. Preserve exact behavior, including all device-specific workarounds, which stay in the legacy rendering/playback layer or move with their logic as appropriate. Document where each ended up.
-4. Add unit tests for the state holder (playlist advance, error handling, skip, music state transitions) using fakes and a test dispatcher.
-5. Lifecycle safety: construction must be idempotent and `release()` must be safe to call multiple times. Do not allow duplicate controller/player instances (leaked players are a known failure mode here).
+1. Seed from what exists: promote/extend `OverlayStateStore`, `OverlayUiState`, `OverlayEventBridge`, and the already-extracted pure logic (`PlaybackTiming`, `PlaybackCallbacks`, `ScheduledBlackoutWindow`, `PortraitVideoOrientation`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`). **Do not build a parallel `ScreenState` that duplicates the overlay state model.** First remove `OverlayUiState`'s dependency on `ui.controls.ProgressState` (move or replace the type) so the state model is UI-agnostic.
+2. Create a UI-agnostic controller in `:core` owning: playlist advance, item timers, music/now-playing, error policy, and blackout. It does **not** own fades or any animation.
+3. Define an explicit **transition protocol** so renderers own animation timing but the controller owns decisions, for example: the renderer reports `onItemFinished()`/`onTransitionCompleted()`, and the controller answers with skip/loop/next and gating state (`canSkip`, `canShowOverlays` as controller state rather than animation-callback flags). Document the protocol; it is what the Compose renderer will implement later.
+4. Dependencies come through constructors/interfaces; it must be unit-testable with fakes and a test dispatcher.
+5. Idempotent construction; `release()` safe to call multiple times.
+6. If the code shows playlist/skip logic cannot be separated from animation callbacks without changing observable behavior, **stop and report exactly where**.
 
-**Gate:** same as Phase 3, plus new unit tests pass, plus a manual comparison of legacy behavior before and after on at least one device (human-verified). **STOP.**
+**Gate:** Standard gate plus new unit tests covering playlist advance (skip/loop/next), timers, error policy, blackout, music state transitions. **Unit tests alone gate 5a; the legacy view is not changed in this phase.** **STOP.**
 
-## Phase 6: Host/UI seam and opt-in flag
+## Phase 5b: Move the legacy view onto the controller
 
-1. Define in `:core`:
+This is the riskiest step: the fade/gate timing is today's state machine, so "no functional change" must be demonstrated, not assumed.
+
+1. Make `ScreenController`'s view code a renderer of the shared controller's state, implementing the Phase 5a transition protocol with the existing fade animations. Do this **one feature at a time** (e.g. playlist advance, then skip handling, then music overlay, then blackout), each in its own commit.
+2. Keep all device-specific workarounds in the legacy playback/rendering layer untouched; list where each ended up.
+3. Keep `VideoPlayerView` finish timing semantics identical (document how the `postDelayed` behavior maps to the protocol).
+4. Maintain `docs/migration/BEFORE_AFTER.md`: for each feature, the scenario, expected behavior, and **human-verified** before/after result on a device.
+
+**Gate:** Standard gate plus the per-feature before/after table complete (human-verified). **STOP after each feature batch if the human asked for that; otherwise at the end.**
+
+## Phase 6: Host/UI seam, opt-in flag, and parity contracts
+
+1. In `:core`, define the host/UI interfaces. They must carry what the legacy path actually relies on, not just window/context:
+
    ```kotlin
+   enum class ExitReason { EXIT, EXIT_TO_SETTINGS }
+
    interface ScreensaverHost {
-       val context: Context
+       val context: Context        // already locale-wrapped (see below)
        val window: Window
-       fun exit()
+       fun exit(reason: ExitReason)    // host adapter owns result contract / finish()
    }
+
    interface ScreensaverUi {
        fun attach(host: ScreensaverHost)
        fun onStart()
@@ -126,62 +183,69 @@ This is the key phase. Use the Phase 0 audit findings.
        fun release()
    }
    ```
-   (Adjust to what the audit shows is needed. Keep `:core` free of Activity/DreamService types; a `Window`/`Context` interface boundary is acceptable.)
-2. In `:app`, add host adapters for `DreamActivity` (DreamService) and `TestActivity`, a `LegacyScreensaverUi` wrapping existing behavior, and a `ScreensaverUiFactory` that chooses based on a new pref `useComposeScreensaver` (default **false**).
-3. `DreamActivity` and `TestActivity` stay in `:app` with unchanged FQNs and become thin delegates.
-4. `TestActivity` accepts an intent extra (e.g. `ui_path=compose|legacy`) that overrides the pref, for testing without changing user-facing settings.
-5. Add a Crashlytics custom key `ui_path` set from the factory.
-6. Add a guard in the factory: if the compose path throws during init, fall back to legacy and record a non-fatal. Add a crash-loop counter that disables the pref automatically after N consecutive failures (N configurable, default 3).
-7. Legacy is the only implementation at this stage. Nothing user-visible changes.
 
-**Gate:** same as Phase 5; legacy path works identically via both entry points; intent override is exercised. **STOP.**
+   (Adjust to what the code needs, but keep these contracts.)
+2. **Locale:** the factory/host provides the Context wrapped by `LocaleHelper.alternateLocale(..., GeneralPrefs.localeScreensaver)` for **both** paths, so a Compose path cannot silently lose the screensaver-language pref.
+3. **Exit semantics:** the UI only reports an `ExitReason`. The host adapter keeps the existing behavior: for `TestActivity`, `finishWithResult()` logic (`shouldExitApp` from `startScreensaverOnLaunch` + `isExitToSettingSet()`, `RESULT_OK` with the `exit_app` extra read by `MainActivity`); for `DreamActivity`, existing finish behavior. `InputHelper`'s exit handling stays equivalent.
+4. **Static state:** the factory and `release()` must own/clear `DreamActivity.activeHandoffDream` and `InputHelper.previousEvent`/`longPressEvent` per ground rule 9. Add a test or assertion that two UIs are never active at once.
+5. **`runAsActivity` handoff:** the UI-path switch must sit **below** the Philips OLED handoff. `DreamActivity` still decides whether to hand off to `TestActivity`; the factory is invoked at the point that actually renders (the activity in the handoff case, the dream otherwise), so the dream and activity never both create a UI.
+6. In `:app`: host adapters for `DreamActivity` (DreamService) and `TestActivity`, `LegacyScreensaverUi` wrapping existing behavior, and a `ScreensaverUiFactory` choosing by a new pref `useComposeScreensaver` (default **false**). `DreamActivity`/`TestActivity` stay in `:app` with unchanged FQNs and become thin delegates.
+7. `TestActivity` accepts an intent extra (e.g. `ui_path=compose|legacy`) overriding the pref, for testing without touching the user-facing setting.
+8. Crashlytics custom key `ui_path` via the telemetry interface (no-op on F-Droid).
+9. Fallback guard in the factory: if compose-path init throws, fall back to legacy and record a non-fatal. **Crash-loop guard:** a counter with a defined storage key (a Kotpref pref), incremented when a Compose session starts and **reset on a successful start** (first item displayed or N seconds stable) **and on app upgrade** (`VERSION_CODE` change). After N consecutive failures (default 3) the opt-in is auto-disabled. The auto-disable must not be permanent: re-enabling is user-initiated, and the reset rules above prevent one transient failure from pinning the user to legacy forever.
+10. Legacy is the only implementation at this stage. Nothing user-visible changes.
+
+**Gate:** Standard gate; legacy path behaves identically via both entry points (human-verified), including exit-to-settings, `startScreensaverOnLaunch` round trip, and the handoff path; intent override exercised. **STOP.**
 
 ## Phase 7: Scaffold `:screensaver-compose`
 
-1. Create the module depending on `:core` only. Add Compose BOM and the Compose compiler plugin here, not in `:app`.
-2. Implement `ComposeScreensaverUi`:
+1. Create the module (depends on `:core` only; align flavor dimension/matching fallbacks; no Firebase). Add matching fallbacks for `:baselineprofile`/`:microbenchmark` if needed, a Spotless block, and consumer keep rules.
+2. Compose tooling is **not** module-local: add the Compose BOM and the `org.jetbrains.kotlin.plugin.compose` plugin to the version catalog and the root `build.gradle.kts` (which lists every plugin with `apply false`), then apply it in this module only.
+3. Implement `ComposeScreensaverUi`:
    - Host a `ComposeView` in the host window.
-   - Provide `ViewTreeLifecycleOwner`, `ViewTreeSavedStateRegistryOwner`, and `ViewTreeViewModelStoreOwner` manually, since a DreamService does not provide them. Drive the lifecycle from the host callbacks (attach, start, stop, detach).
-   - Dispose the composition and move the lifecycle to DESTROYED in `release()`; make `release()` idempotent.
-3. Render a minimal placeholder driven by the shared state holder (e.g. black background plus the current item's identifier) to prove lifecycle, state flow, and disposal.
-4. Wire into the factory in `:app` (`:app` now depends on `:screensaver-compose`).
-5. Leak check: start and stop the screensaver repeatedly (at least 20 cycles), then confirm no leaked compositions, lifecycle owners, or players (heap dump or LeakCanary in debug).
+   - Provide `ViewTreeLifecycleOwner`, `ViewTreeSavedStateRegistryOwner`, and (if needed) `ViewTreeViewModelStoreOwner` manually. Saved-state wiring is nearly pointless in a DreamService (no `onSaveInstanceState`), so a minimal/no-op `SavedStateRegistryOwner` that restores nothing and saves nothing is the pragmatic choice.
+   - Drive the lifecycle from host callbacks; dispose the composition and move to DESTROYED in `release()`; make `release()` idempotent.
+4. Render a minimal placeholder driven by the shared controller to prove lifecycle, state flow, and disposal.
+5. Wire into the factory (`:app` depends on `:screensaver-compose`).
+6. Leak check: start/stop at least 20 cycles in both hosts; confirm no leaked compositions, lifecycle owners, or players (heap dump or LeakCanary in debug).
 
-**Gate:** all flavors assemble with the new module; toggling `useComposeScreensaver` (or the intent override) shows the placeholder; leak check passes; legacy path unaffected. **STOP.**
+**Gate:** Full gate; the pref and the intent override show the placeholder; leak check (human-verified) passes; legacy path unaffected. **STOP.**
 
 ## Phase 8: Build out the Compose UI (parity)
 
-Maintain a parity checklist in `docs/migration/PARITY.md` with one row per feature (status: not started / in progress / parity / verified on device). Seed it from the audit's overlay and workaround lists. Work through it in this order, committing per item:
+Maintain `docs/migration/PARITY.md`, one row per feature (not started / in progress / parity / verified on device), seeded from the overlay and workaround lists in AUDIT.md. Include locale, exit semantics (both exit reasons and the `TestActivity` result contract), key/touch input, and the handoff path as rows, not just visuals.
 
-1. **Playback layer:** wrap the existing player in `AndroidView`. Reuse the existing playback engine and its device-specific workarounds; do not reimplement them. Prefer `TextureView` where Compose animations/transforms are applied over video, and call out any case where `SurfaceView` must be retained.
-2. **Image and video transitions.**
-3. **Overlays**, one at a time, as pure state-to-UI composables with `@Preview`s.
-4. **Input handling**: key and touch events, exit behavior, parity with legacy for both hosts.
-5. **Edge cases**: errors, empty playlists, provider failures, no-network, music start/stop, screen-off schedule behavior.
+Work in this order, committing per item:
 
-Performance rules: avoid per-frame recomposition, use `graphicsLayer` for animated properties, read state as late as possible, and keep the composition tree small.
+1. **Playback layer:** wrap the existing `VideoPlayerView` (a Media3 `PlayerView`, SurfaceView by default) in `AndroidView` and **keep it as the default**. Do not reimplement playback or its workarounds (portrait rotation/scale fix, tunneling, Philips Dolby Vision renderer, refresh-rate switching, HDR handling). Do **not** switch to TextureView: those workarounds are SurfaceView-sensitive, and nothing animated is composited over the video (fades are on loading/overlay layers). If a Compose requirement appears to need animated alpha/transforms over the video surface, stop and ask.
+2. **Item transitions**, implementing the Phase 5a transition protocol on the Compose side.
+3. **Overlays**, one at a time, as pure state-to-UI composables with `@Preview`s, fed by the shared overlay state.
+4. **Input handling:** key and touch events and exit behavior, with parity for both hosts.
+5. **Edge cases:** errors, empty playlists, provider failures, no network, music start/stop, scheduled blackout.
 
-Add screenshot tests for overlays if the project has (or agrees to add) a screenshot-testing setup. Ask first.
+Performance rules: avoid per-frame recomposition, use `graphicsLayer` for animated properties, read state as late as possible, keep the tree small.
 
-**Gate (per batch of items):** build/tests pass; PARITY.md updated; items marked "verified" only if checked on a real device. **STOP after each logical batch** (playback layer; transitions; overlays; input; edge cases).
+Screenshot tests would be **new infrastructure**, not parity work: ask the human first, and keep them out of the parity gate.
+
+**Gate (per batch):** Standard gate; PARITY.md updated; "verified" only if checked on a real device (human-verified). **STOP after each logical batch** (playback layer; transitions; overlays; input; edge cases).
 
 ## Phase 9: Opt-in beta
 
-1. Add an "experimental" toggle in settings (in `:app`) bound to `useComposeScreensaver`, with clear wording that it is a preview.
-2. Ensure the settings preview/test path uses the same chosen implementation.
-3. Verify the Crashlytics `ui_path` key is on all crash reports and non-fatals, and that the fallback and crash-loop guard work (simulate a failure).
-4. Measure on the lowest-RAM supported devices: memory, cold start, dropped frames/jank, versus the Phase 0 baselines. Record results in `docs/migration/PERF.md`.
-5. Draft release notes and a short feedback prompt for beta users.
+1. Add an "experimental" toggle in settings (in `:app`) bound to `useComposeScreensaver`, with clear preview wording.
+2. Ensure **both** preview/test paths use the chosen implementation, including `MainActivity`'s `startScreensaverOnLaunch` / `exit_app` round trip with `TestActivity`.
+3. Verify the `ui_path` key is on crash reports and non-fatals, and demonstrate the fallback and crash-loop guard (simulate failures, including the reset rules).
+4. Measure on the lowest-RAM supported devices (memory, cold start, dropped frames/jank) versus the Phase 0 baselines; record in `docs/migration/PERF.md`.
+5. Draft release notes and a feedback prompt.
 
-**Gate:** guard behavior demonstrated; perf comparison recorded and reviewed by the human. **STOP.**
+**Gate:** Full gate; guard behavior demonstrated; perf comparison reviewed by the human. **STOP.**
 
 ## Phase 10: Stabilize, flip default, retire legacy
 
-Do not start without explicit human approval based on crash rates and feedback from Phase 9.
+Do not start without explicit human approval based on crash rates and beta feedback.
 
 1. Flip the default of `useComposeScreensaver` to true. Keep the legacy path and the toggle for one or more release cycles.
-2. After a stable period, and only on explicit approval: delete the legacy UI, the factory and its fallback, the pref and toggle, and unused resources. Collapse `DreamActivity`/`TestActivity` to use the Compose UI directly (FQNs unchanged).
-3. Re-run all gates, including an R8 release build and a leak check.
+2. Only on explicit approval after a stable period: delete the legacy UI, the factory and fallback, the pref and toggle, and unused resources. `DreamActivity`/`TestActivity` use the Compose UI directly (FQNs unchanged).
+3. Re-run the Full gate, including an R8 release build and a leak check.
 
 ---
 
@@ -189,9 +253,16 @@ Do not start without explicit human approval based on crash rates and feedback f
 
 | Risk | Mitigation |
 |---|---|
-| Duplicated device-specific workarounds drift between paths | Single shared playback engine and workarounds; no reimplementation (Phase 8) |
-| Compose leaks or duplicate players in DreamService | Idempotent init/release, lifecycle owners driven manually, 20-cycle leak check (Phases 5, 7) |
-| Low-RAM devices regress | Measure early and compare against the Phase 0 baseline (Phases 7, 9) |
-| Broken screensaver selection or notification-listener grant after refactor | FQN stability rule for manifest/name-stored components (all phases) |
-| Resource/R8 breakage from module split | `nonTransitiveRClass`, consumer ProGuard rules, R8 build in every gate |
-| Animated Compose layers over `SurfaceView` misbehave | Use `TextureView` where animating over video; document exceptions |
+| `:core` pulls in Firebase and defeats the F-Droid build | Telemetry interface; F-Droid dependency check in the Full gate (Phases 1, 4, 7, 9, 10) |
+| `:core` won't compile mid-move (prefs → services enums) | Phase 0 closure map; leaf-first ordering; every commit compiles |
+| Library manifest silently changes component names | FQN rule, fully-qualified `android:name`, merged-manifest diff per flavor |
+| Phase 5 is a rewrite disguised as a refactor | Split 5a (unit-test-gated controller) / 5b (device-verified view adoption); transition protocol; per-feature before/after table |
+| Duplicated state model next to `OverlayStateStore` | Seed from and extend the existing overlay state |
+| Compose path loses locale, exit result, or handoff behavior | Locale-wrapped Context, `ExitReason` + host-owned result contract, factory below the `runAsActivity` handoff (Phase 6); parity rows (Phase 8) |
+| Process-global state (`activeHandoffDream`, `InputHelper` events) with two UI paths | Ground rule 9; single-instance assertion; release owns/clears it |
+| Compose leaks or duplicate players in DreamService | Idempotent init/release, manual lifecycle owners, 20-cycle leak check (Phases 5a, 7) |
+| Device-specific video workarounds drift or break | Keep `PlayerView`-in-`AndroidView` on SurfaceView; no TextureView switch; no playback reimplementation |
+| Low-RAM devices regress | Measure early against Phase 0 baselines (Phases 7, 9) |
+| Crash-loop guard pins users to legacy forever | Reset on success and on app upgrade; user-initiated re-enable |
+| New modules' files unchecked or mis-built | Spotless block per module; matching fallbacks for `:baselineprofile`/`:microbenchmark`; consumer keep rules |
+| CI doesn't catch regressions (workflow_dispatch only) | Run/trigger the Full gate explicitly at the listed phases |
