@@ -71,13 +71,6 @@ import timber.log.Timber
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
-enum class BlackOutSource {
-    NONE,
-    USER,
-    SLEEP_TIMER,
-    SCHEDULED,
-}
-
 class ScreenController(
     val context: Context,
 ) : OnVideoPlayerEventListener,

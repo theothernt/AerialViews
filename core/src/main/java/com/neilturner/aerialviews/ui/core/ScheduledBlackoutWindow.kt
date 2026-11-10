@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.ui.core
 import java.time.LocalTime
 
 /** Determines whether [now] falls within a daily blackout window. */
-internal object ScheduledBlackoutWindow {
+object ScheduledBlackoutWindow {
     fun contains(
         start: LocalTime,
         end: LocalTime,
