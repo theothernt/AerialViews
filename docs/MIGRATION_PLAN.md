@@ -1,8 +1,8 @@
-# AerialViews: Gradual Compose Screensaver Migration (v2)
+# AerialViews: Gradual Compose Screensaver Migration (v3)
 
 Plan for an LLM coding agent. Read this whole file before starting. Work on **one phase at a time** and **stop at the end of each phase** for human review.
 
-v2 incorporates a validation pass against the actual codebase. Where this plan and the code disagree, the code wins: stop and report.
+v2 incorporated a validation pass against the actual codebase. v3 adds the shared `:playback` module, separates host lifecycle ownership from Compose view creation, adds the overlay-config extraction, and corrects the Phase 1 flavor and lifecycle-dependency details. Where this plan and the code disagree, the code wins: stop and report.
 
 ## Goal
 
@@ -16,13 +16,19 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 - Thin ViewModels in `:screensaver-compose` that expose the shared controller to Compose (see "ViewModels and owners" below).
 
 **Non-goals (do not touch)**
-- **The video player and the image player.** The existing `VideoPlayerView` and the existing image loading/view (the `ImagePlayerHelper` path), including all device-specific workarounds, are **reused as they are** and hosted in the Compose screen via `AndroidView`. No reimplementation, no player or image-loader swap (a Compose image loader could be a separate, optional future project).
+- **The video player and the image player.** The existing `VideoPlayerView` and the existing image loading/view (the `ImagePlayerHelper` path), including all device-specific workarounds, are **reused as they are** from `:playback` and hosted in the Compose screen via `AndroidView`. No reimplementation, no player or image-loader swap (a Compose image loader could be a separate, optional future project).
 - The settings UI, providers, and prefs behavior.
 - Replacing Media3/ExoPlayer configuration, tunneling, HDR, Dolby Vision, or refresh-rate handling.
 
 **ViewModels and owners**
 - The shared controller in `:core` stays plain Kotlin (constructor-injected dependencies, its own `CoroutineScope`/`StateFlow`s, idempotent `release()`), so the legacy view can use it without any Android ViewModel machinery.
-- The Compose module wraps it in thin `androidx.lifecycle.ViewModel`s. A `DreamService` is not a `LifecycleOwner`, `SavedStateRegistryOwner`, or `ViewModelStoreOwner`, so the dream host uses a **`DreamServiceCompat` base class** (reference implementation by Niels van Velzen: https://gist.githubusercontent.com/nielsvanvelzen/e7d7d288e0e6e152bec9295579dfc32d/raw/70550214ac0be55f823070b3164cce48459802c1/DreamServiceCompat.kt) that implements those three interfaces on top of `DreamService`. `TestActivity` already provides them as an `AppCompatActivity`. If the agent cannot fetch the reference, it must **ask the human to paste it** rather than reinventing it from memory.
+- The Compose module wraps it in thin `androidx.lifecycle.ViewModel`s. The ViewModel is a lifetime holder, not a second state owner: it creates or receives the controller, exposes its `StateFlow`s, and calls `controller.release()` from `onCleared()`. It holds no logic, no prefs reads, and no player. **Do not run the controller on `viewModelScope`**: `onDreamingStopped` takes the lifecycle to `CREATED`, not `DESTROYED`, so `viewModelScope` would keep timers and playback alive after the dream stops. The controller's own `CoroutineScope` plus an explicit, idempotent `release()` is the contract.
+- A `DreamService` is not a `LifecycleOwner`, `SavedStateRegistryOwner`, or `ViewModelStoreOwner`, so the dream host uses a **`DreamServiceCompat` base class** in `:app` that implements those three interfaces on top of `DreamService`. Reference implementation by Niels van Velzen: https://gist.githubusercontent.com/nielsvanvelzen/e7d7d288e0e6e152bec9295579dfc32d/raw/70550214ac0be55f823070b3164cce48459802c1/DreamServiceCompat.kt. `TestActivity` already provides them as an `AppCompatActivity`. If the agent cannot fetch the reference, it must **ask the human to paste it** rather than reinventing it from memory.
+- **The reference is a starting point, not a copy-paste.** It has four defects for this app, all of which the implementation must fix:
+  1. It never drives the lifecycle to `DESTROYED`, so `ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed` never fires and the composition is never disposed. Override `onDestroy()` and move to `DESTROYED` there.
+  2. It never clears its `ViewModelStore`, so `onCleared()` is never called and the controller (with its ExoPlayer) outlives the dream. `DreamActivity` documents that `onAttachedToWindow` can fire again on the same service instance, so the store must be per dream session and cleared on stop/detach.
+  3. Its `ComposeView(this)` bypasses the locale-wrapped `Context` this app runs the screensaver on (see Verified facts). The Compose view must be built from `ScreensaverHost.context`.
+  4. Its `setContent(@Composable)` helper would drag Compose UI and the compose compiler plugin into `:app`, which Phase 7 forbids. `DreamServiceCompat` exposes owners only and contains **no Compose types**; `:screensaver-compose` builds its own `ComposeView`.
 - The host exposes these owners to the UI through `ScreensaverHost` (Phase 6); `ComposeScreensaverUi` consumes them (Phase 7).
 
 ## Target architecture
@@ -30,14 +36,18 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 ```
 :core                  models, enums, prefs, providers, services, data, utils,
                        shared screensaver controller / state (UI-agnostic)
+:playback              the existing video and image playback layer: VideoPlayerView,
+                       ImagePlayerView, VideoPlayerHelper, ImagePlayerHelper and their
+                       device-specific workarounds. Depends on :core ONLY.
 :app                   legacy screensaver UI, settings, activities (DreamActivity, TestActivity)
-                       composition root: depends on :core and :screensaver-compose
-:screensaver-compose   new Compose screensaver UI (depends on :core ONLY, never on :app)
+                       composition root: depends on :core, :playback and :screensaver-compose
+:screensaver-compose   new Compose screensaver UI (depends on :core and :playback, never on :app)
 ```
 
 Dependency rules (enforce in every phase):
-- `:core` depends on neither `:app` nor `:screensaver-compose`.
-- `:core` contains no `Activity`, `DreamService`, or View/Compose UI code, and (see Phase 1) no direct Firebase calls.
+- `:core` depends on neither `:app`, `:playback` nor `:screensaver-compose`.
+- `:core` contains no `Activity`, `DreamService`, `View` implementation, or Compose code, and (see Phase 1) no direct Firebase calls. It **may declare host/UI contracts** (framework types such as `Context`, `Window`, `KeyEvent`, and the lifecycle owners) as long as it implements no UI. That is why `:core` takes `androidx.lifecycle` and `androidx.savedstate` dependencies in Phase 1.
+- `:playback` depends on `:core` only. It holds the player/image Views and their workarounds, and no screensaver orchestration.
 - `:screensaver-compose` never imports from `:app` and never depends on Firebase.
 
 ## Verified facts about the project (reviewed against the codebase; re-verify cheaply, don't redo)
@@ -52,6 +62,12 @@ Dependency rules (enforce in every phase):
 - Source-set swap: `app/build.gradle.kts` hand-wires `src/common/java` for five flavors and `src/fdroid/java` for F-Droid. `FirebaseHelper` exists twice; the F-Droid build deliberately excludes Firebase (firebase flavors loop, Perf plugin disabled). `MediaService`, `VideoPlayerView`, `VideoPlayerHelper`, `MediaServiceHelper` call `FirebaseHelper` directly.
 - `BuildConfig` is read by code headed for `:core`: `OPEN_WEATHER` (`WeatherService`), `VERSION_CODE` (`MigrationHelper`), `DEBUG`/`TEST_CONFIG`/`FLAVOR` (`DreamTiming`, `ImagePlayerHelper`).
 - `GeneralPrefs` imports `services.weather.TemperatureUnit` and `WindSpeedUnit` (in `models/prefs/GeneralPrefs.kt`), so prefs depend on types that live under `services/`.
+- `:screensaver-compose` cannot reach the players as things stand: `VideoPlayerView`, `ImagePlayerView` and their helpers live in `:app`'s `ui/core`, and `:screensaver-compose` may not depend on `:app`. This is why `:playback` exists. `MetadataOverlay.render(...)` also takes a `VideoPlayerView`, so overlays are coupled to the player today.
+- Overlay *content* is in `OverlayUiState`; overlay *configuration* (slot assignment, sizes, weights, fonts, colours, opacity, gradient flags and top/bottom alternation) lives in `OverlayHelper`, `SlotHelper`, `FontHelper` and `OverlayOpacityHelper`, all of which build `View`s. There is no UI-agnostic overlay-config model yet.
+- `ProgressState` and `ProgressBarEvent` are declared inside `ui/controls/ProgressBarView.kt` (not in their own file), so making `OverlayUiState` UI-agnostic requires splitting that file.
+- `:baselineprofile` is a `com.android.test` module with `targetProjectPath = ":app"` that declares all six `version` flavors itself; `:microbenchmark` is a plain library with no flavor dimension and no `:app` dependency. Neither needs `missingDimensionStrategy`, and a flavorless `:core` consumed by a flavored `:app` does not either.
+- The catalog has no `androidx.lifecycle`/`androidx.savedstate` entries beyond `activity-ktx`; `lifecycle-runtime-ktx`, `lifecycle-viewmodel`, `lifecycle-viewmodel-compose`, `savedstate-ktx` and the Compose artifacts are all new entries.
+- `InputHelper` is a key-event state machine (`isLongPress`, `repeatCount.rem(10)` hold-repeat, `ACTION_UP` suppression after a repeat) with two process-global fields, and it imports the concrete `ScreenController`.
 - Manifest-declared components exist outside the activities, including `PackageReplacedReceiver` (in `data/preferences`, a package headed for `:core`) and `WallpaperProviderService` (`services/projectivy`, depends on `:projectivyapi`).
 - No `proguard-rules.pro`; keep rules live in `app/src/main/keepRules/*.keep`.
 - Spotless (ktlint) is declared in `:app` only and runs as part of `check`.
@@ -111,7 +127,7 @@ The broad audit has been done (see "Verified facts"). Produce a short `docs/migr
 
 **Gate:** AUDIT.md exists; the Standard gate commands were run on the untouched tree and results recorded. **STOP.**
 
-## Phase 1: `:core` foundation and the two structural decisions
+## Phase 1: `:core` foundation and the three structural decisions
 
 Create the module, then resolve the decisions that define `:core`'s whole dependency surface. **Stop for human confirmation on decisions 1 to 3 before moving any code.** Recommended defaults are given.
 
@@ -121,11 +137,12 @@ Create the module, then resolve the decisions that define `:core`'s whole depend
 
 Then implement:
 4. Create the `:core` Android library (distinct namespace), register it in `settings.gradle.kts`, add it to `:app`.
-5. Align `:core` with the `version` flavor dimension and build types as needed (`missingDimensionStrategy`/matching fallbacks). Add the same matching fallbacks for `:baselineprofile` and `:microbenchmark`, which depend on `:app`'s flavors.
-6. Add `consumerProguardFiles` for `:core` (the project has no `proguard-rules.pro`; existing keep rules live in `app/src/main/keepRules/*.keep`, so check which of those must be moved or duplicated as code moves).
-7. Add a Spotless/ktlint block (matching `:app`'s configuration) for `:core`.
-8. Implement the telemetry and `AppConfig` seams in `:app` and `:core` **without moving other code yet**, and have existing `:app` code go through them where trivial; otherwise defer to the phase that moves that code.
-9. Do **not** touch `nonTransitiveRClass` or the version catalog structure beyond adding the module/dependency entries.
+5. Keep `:core` **flavorless** (no `version` dimension). A flavorless library needs no `missingDimensionStrategy` when consumed by a flavored `:app`, and it needs only the default `debug`/`release` build types. Do not add flavor machinery to `:core`, `:baselineprofile` (which declares the six flavors itself) or `:microbenchmark` (which has no flavor dimension).
+6. Add the catalog entries `:core` needs for the `ScreensaverHost` owner types (`androidx.lifecycle:lifecycle-runtime-ktx`, `androidx.lifecycle:lifecycle-viewmodel`, `androidx.savedstate:savedstate-ktx`) now, so the contracts in Phase 6 are pure addition. Do not enable `buildConfig` in `:core`.
+7. Add `consumerProguardFiles` for `:core` (the project has no `proguard-rules.pro`; existing keep rules live in `app/src/main/keepRules/*.keep`, so check which of those must be moved or duplicated as code moves).
+8. Add a Spotless/ktlint block (matching `:app`'s configuration) for `:core`.
+9. Implement the telemetry and `AppConfig` seams in `:app` and `:core` **without moving other code yet**, and have existing `:app` code go through them where trivial; otherwise defer to the phase that moves that code.
+10. Do **not** touch `nonTransitiveRClass` or the version catalog structure beyond adding the module/dependency entries.
 
 **Gate:** Full gate. F-Droid has no Firebase. **STOP.**
 
@@ -149,22 +166,25 @@ Then implement:
 
 ## Phase 4: Move data, providers, and services
 
-1. Move providers (Immich, WebDAV/Nextcloud, Plex, Samba, etc.), the data layer, and non-UI services, in small per-package batches so regressions are bisectable. Route Firebase usage (`MediaService`, `VideoPlayerHelper`, `MediaServiceHelper`, etc.) through the telemetry interface.
+1. Move providers (Immich, WebDAV/Nextcloud, Plex, Samba, etc.), the data layer, and non-UI services, in small per-package batches so regressions are bisectable. Route Firebase usage (`MediaService`, `VideoPlayerHelper`, `MediaServiceHelper`, `VideoPlayerView`, etc.) through the telemetry interface.
 2. `NotificationService`, `WallpaperProviderService` and any other manifest components: follow ground rule 5. Keep FQNs and manifest names fully qualified; verify with the merged-manifest diff.
 3. Move tests alongside moved code.
+4. Create `:playback` (flavorless, depends on `:core` only, Spotless block, consumer keep rules). Move the playback Views and anything that holds one: `VideoPlayerView`, `ImagePlayerView`, `VideoPlayerHelper`, `ImagePlayerHelper`, `BackgroundBlurHelper`. Package names are unchanged, so `MetadataOverlay`'s `VideoPlayerView` parameter still compiles and `:app` depends on `:playback`.
+5. Move the pure playback helpers (`PlaybackCallbacks`, `PlaybackTiming`, `PortraitVideoOrientation`, `ScheduledBlackoutWindow`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`) into `:core` here or in Phase 5a: pick one and record it, do not move them twice.
 
-**Gate:** Full gate, merged-manifest diff for every flavor, moved providers' unit tests pass. **STOP.**
+**Gate:** Full gate, merged-manifest diff for every flavor, moved providers' unit tests pass, `:app` assembles against `:playback`, and a smoke run of playback in the legacy screensaver (human-verified). **STOP.**
 
 ## Phase 5a: Extract the shared controller (no view changes)
 
 This phase **finishes an extraction that is roughly 60% done**; it is not a greenfield state machine.
 
-1. Seed from what exists: promote/extend `OverlayStateStore`, `OverlayUiState`, `OverlayEventBridge`, and the already-extracted pure logic (`PlaybackTiming`, `PlaybackCallbacks`, `ScheduledBlackoutWindow`, `PortraitVideoOrientation`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`). **Do not build a parallel `ScreenState` that duplicates the overlay state model.** First remove `OverlayUiState`'s dependency on `ui.controls.ProgressState` (move or replace the type) so the state model is UI-agnostic.
-2. Create a UI-agnostic controller in `:core` owning: playlist advance, item timers, music/now-playing, error policy, and blackout. It does **not** own fades or any animation.
-3. Define an explicit **transition protocol** so renderers own animation timing but the controller owns decisions, for example: the renderer reports `onItemFinished()`/`onTransitionCompleted()`, and the controller answers with skip/loop/next and gating state (`canSkip`, `canShowOverlays` as controller state rather than animation-callback flags). Document the protocol; it is what the Compose renderer will implement later.
-4. Dependencies come through constructors/interfaces; it must be unit-testable with fakes and a test dispatcher.
-5. Idempotent construction; `release()` safe to call multiple times. The controller is **plain Kotlin, not an Android `ViewModel`** (see "ViewModels and owners"); the Compose module wraps it later.
-6. If the code shows playlist/skip logic cannot be separated from animation callbacks without changing observable behavior, **stop and report exactly where**.
+1. Seed from what exists: promote/extend `OverlayStateStore`, `OverlayUiState`, `OverlayEventBridge`, and the already-extracted pure logic (`PlaybackTiming`, `PlaybackCallbacks`, `ScheduledBlackoutWindow`, `PortraitVideoOrientation`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`). **Do not build a parallel `ScreenState` that duplicates the overlay state model.** To make the state model UI-agnostic, split `ProgressState`/`ProgressBarEvent` out of `ui/controls/ProgressBarView.kt` into their own file in `:core`; this file split is an explicitly sanctioned exception to ground rule 4.
+2. Extract the **overlay-configuration** model that does not exist yet: slot assignment, sizes, weights, fonts, colours, opacity, gradient flags and the top/bottom alternation currently built inside `OverlayHelper`, `SlotHelper`, `FontHelper` and `OverlayOpacityHelper`. Put it in `:core` as pure data plus resolution functions (prefs in, config out) so the legacy `OverlayHelper` and the future Compose overlays render the same layout from the same input. `OverlayUiState` is content only and is not a substitute.
+3. Create a UI-agnostic controller in `:core` owning: playlist advance, item timers, music/now-playing, error policy, and blackout. It does **not** own fades or any animation.
+4. Define an explicit **transition protocol** so renderers own animation timing but the controller owns decisions, for example: the renderer reports `onItemFinished()`/`onTransitionCompleted()`, and the controller answers with skip/loop/next and gating state (`canSkip`, `canShowOverlays` as controller state rather than animation-callback flags). Document the protocol; it is what the Compose renderer will implement later.
+5. Dependencies come through constructors/interfaces; it must be unit-testable with fakes and a test dispatcher.
+6. Idempotent construction; `release()` safe to call multiple times. The controller is **plain Kotlin, not an Android `ViewModel`** (see "ViewModels and owners"); the Compose module wraps it later.
+7. If the code shows playlist/skip logic cannot be separated from animation callbacks without changing observable behavior, **stop and report exactly where**.
 
 **Gate:** Standard gate plus new unit tests covering playlist advance (skip/loop/next), timers, error policy, blackout, music state transitions. **Unit tests alone gate 5a; the legacy view is not changed in this phase.** **STOP.**
 
@@ -176,6 +196,7 @@ This is the riskiest step: the fade/gate timing is today's state machine, so "no
 2. Keep all device-specific workarounds in the legacy playback/rendering layer untouched; list where each ended up.
 3. Keep `VideoPlayerView` finish timing semantics identical (document how the `postDelayed` behavior maps to the protocol).
 4. Maintain `docs/migration/BEFORE_AFTER.md`: for each feature, the scenario, expected behavior, and **human-verified** before/after result on a device.
+5. **Input:** extract `InputHelper`'s key-event state machine into a pure, unit-tested `KeyEventMapper` in `:core` (key event to action + press type, preserving `isLongPress`, `repeatCount.rem(10)` hold-repeat and `ACTION_UP` suppression) and have the legacy path consume it. This retires `InputHelper.previousEvent`/`longPressEvent` and leaves the Compose path one implementation to reuse rather than a rewrite by eye.
 
 **Gate:** Standard gate plus the per-feature before/after table complete (human-verified). **STOP after each feature batch if the human asked for that; otherwise at the end.**
 
@@ -207,11 +228,17 @@ This is the riskiest step: the fade/gate timing is today's state machine, so "no
    (Adjust to what the code needs, but keep these contracts.)
 2. **Locale:** the factory/host provides the Context wrapped by `LocaleHelper.alternateLocale(..., GeneralPrefs.localeScreensaver)` for **both** paths, so a Compose path cannot silently lose the screensaver-language pref.
 3. **Exit semantics:** the UI only reports an `ExitReason`. The host adapter keeps the existing behavior: for `TestActivity`, `finishWithResult()` logic (`shouldExitApp` from `startScreensaverOnLaunch` + `isExitToSettingSet()`, `RESULT_OK` with the `exit_app` extra read by `MainActivity`); for `DreamActivity`, existing finish behavior. `InputHelper`'s exit handling stays equivalent.
-4. **Static state:** the factory and `release()` must own/clear `DreamActivity.activeHandoffDream` and `InputHelper.previousEvent`/`longPressEvent` per ground rule 9. Add a test or assertion that two UIs are never active at once.
+4. **Static state:** the factory and `release()` must own/clear `DreamActivity.activeHandoffDream` per ground rule 9. If Phase 5b's `KeyEventMapper` has already retired `InputHelper.previousEvent`/`longPressEvent`, only the handoff reference remains; otherwise clear those too. Add a test or assertion that two UIs are never active at once.
 5. **`runAsActivity` handoff:** the UI-path switch must sit **below** the Philips OLED handoff. `DreamActivity` still decides whether to hand off to `TestActivity`; the factory is invoked at the point that actually renders (the activity in the handoff case, the dream otherwise), so the dream and activity never both create a UI.
 6. In `:app`: host adapters for `DreamActivity` (DreamService) and `TestActivity`, `LegacyScreensaverUi` wrapping existing behavior, and a `ScreensaverUiFactory` choosing by a new pref `useComposeScreensaver` (default **false**). `DreamActivity`/`TestActivity` stay in `:app` with unchanged FQNs and become thin delegates.
 7. `TestActivity` accepts an intent extra (e.g. `ui_path=compose|legacy`) overriding the pref, for testing without touching the user-facing setting.
-7a. **Owners for the dream host.** Introduce a `DreamServiceCompat` base class in `:app` (per "ViewModels and owners") and make `DreamActivity` extend it. `DreamActivity`'s FQN is unchanged; only its superclass chain changes. This is behavior-preserving only if verified: document the existing `DreamActivity` lifecycle overrides and their order (`onAttachedToWindow`, `onDreamingStarted`, `onDreamingStopped`, `onDetachedFromWindow`) before the change, confirm the compat class doesn't reorder or swallow them, and make sure each dream session gets a fresh `ViewModelStore` that is **cleared when the dream stops/detaches** (a dream can start and stop many times in one process; this is also a leak guard). `TestActivity` supplies the owners itself. Both host adapters implement the three owner members of `ScreensaverHost`.
+7a. **Owners for the dream host.** Introduce a `DreamServiceCompat` base class in `:app` (per "ViewModels and owners") and make `DreamActivity` extend it. `DreamActivity`'s FQN is unchanged; only its superclass chain changes. The class implements `LifecycleOwner`, `SavedStateRegistryOwner` and `ViewModelStoreOwner`, and nothing else:
+    - `onCreate`: `performAttach()` (if not already done in an initializer), `savedStateRegistryController.performRestore(null)`, lifecycle to `CREATED`.
+    - `onDreamingStarted`: lifecycle to `STARTED`. `onDreamingStopped`: lifecycle back to `CREATED`.
+    - `onDestroy`: lifecycle to `DESTROYED` **and** `viewModelStore.clear()`, so `onCleared()` releases the controller and `DisposeOnViewTreeLifecycleDestroyed` can dispose the composition.
+    - Fresh `ViewModelStore` per attach: `DreamActivity` documents that `onAttachedToWindow` can run again on the same instance with a live controller, so `onDetachedFromWindow` must clear the old store (or replace it) before a new UI is created.
+    - **No Compose types in this class** (no `ComposeView`, no `@Composable`). It exposes owners; Phase 7 builds the view.
+    - Behavior-preserving only if verified: document `DreamActivity`'s existing override order (`onAttachedToWindow`, `onDreamingStarted`, `onDreamingStopped`, `onDetachedFromWindow`) before the change and confirm the compat class neither reorders nor swallows them. `TestActivity` supplies the owners itself. Both host adapters implement the three owner members of `ScreensaverHost`.
 8. Crashlytics custom key `ui_path` via the telemetry interface (no-op on F-Droid).
 9. Fallback guard in the factory: if compose-path init throws, fall back to legacy and record a non-fatal. **Crash-loop guard:** a counter with a defined storage key (a Kotpref pref), incremented when a Compose session starts and **reset on a successful start** (first item displayed or N seconds stable) **and on app upgrade** (`VERSION_CODE` change). After N consecutive failures (default 3) the opt-in is auto-disabled. The auto-disable must not be permanent: re-enabling is user-initiated, and the reset rules above prevent one transient failure from pinning the user to legacy forever.
 10. Legacy is the only implementation at this stage. Nothing user-visible changes.
@@ -220,13 +247,13 @@ This is the riskiest step: the fade/gate timing is today's state machine, so "no
 
 ## Phase 7: Scaffold `:screensaver-compose`
 
-1. Create the module (depends on `:core` only; align flavor dimension/matching fallbacks; no Firebase). Add matching fallbacks for `:baselineprofile`/`:microbenchmark` if needed, a Spotless block, and consumer keep rules.
-2. Compose tooling is **not** module-local: add the Compose BOM and the `org.jetbrains.kotlin.plugin.compose` plugin to the version catalog and the root `build.gradle.kts` (which lists every plugin with `apply false`), then apply it in this module only.
+1. Create the module (depends on `:core` and `:playback`, never on `:app`; flavorless, so no flavor dimension and no matching fallbacks; no Firebase). Add a Spotless block and consumer keep rules.
+2. Compose tooling is **not** module-local: add the Compose BOM and the `org.jetbrains.kotlin.plugin.compose` plugin to the version catalog and the root `build.gradle.kts` (which lists every plugin with `apply false`), then apply it in this module only. Also add the ViewModel interop the Compose UI needs: `androidx.lifecycle:lifecycle-viewmodel-compose` (for `viewModel()`/`LocalViewModelStoreOwner`), plus `lifecycle-runtime-compose` only if lifecycle-aware collectors are used. `:app` gains **no** Compose dependency in this phase.
 3. Implement `ComposeScreensaverUi`:
-   - Host a `ComposeView` in the host window.
-   - Set `ViewTreeLifecycleOwner`, `ViewTreeSavedStateRegistryOwner`, and `ViewTreeViewModelStoreOwner` on the `ComposeView` from the owners the **host** provides (`DreamServiceCompat` for the dream, the activity for `TestActivity`); do not hand-roll owners here. Saved state is nearly pointless in a DreamService (no `onSaveInstanceState`), so don't build features that depend on it.
-   - Expose the shared controller through thin `ViewModel`s obtained from the host's `ViewModelStoreOwner`. The ViewModel's `onCleared()` (and `release()`) must release the controller; verify the store is cleared when the dream stops.
-   - Drive the lifecycle from host callbacks; dispose the composition and move to DESTROYED in `release()`; make `release()` idempotent.
+   - Build the `ComposeView` here, not in the host: `ComposeView(host.context)` so the locale-wrapped `Context` from Phase 6 is used, then `setContentView` on the host's window. `DreamServiceCompat` deliberately has no `setContent` helper.
+   - Set `ViewTreeLifecycleOwner`, `ViewTreeSavedStateRegistryOwner`, and `ViewTreeViewModelStoreOwner` on the `ComposeView` from the owners the **host** provides (`DreamServiceCompat` for the dream, the activity for `TestActivity`); do not hand-roll owners here. Use `ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed`, which only works because Phase 6 drives the dream lifecycle to `DESTROYED`. Saved state is nearly pointless in a `DreamService` (no `onSaveInstanceState`), so don't build features that depend on it.
+   - Expose the shared controller through a thin `ViewModel` obtained from the host's `ViewModelStoreOwner` (see "ViewModels and owners"): no logic, no `viewModelScope`, `onCleared()` calls `controller.release()`.
+   - Drive the lifecycle from host callbacks; dispose the composition and move to `DESTROYED` in `release()`; make `release()` idempotent. A second `attach` on the same host must dispose the previous composition before creating a new one.
 4. Render a minimal placeholder driven by the shared controller to prove lifecycle, state flow, and disposal.
 5. Wire into the factory (`:app` depends on `:screensaver-compose`).
 6. Leak check: start/stop at least 20 cycles in both hosts; confirm no leaked compositions, lifecycle owners, or players (heap dump or LeakCanary in debug).
@@ -235,11 +262,11 @@ This is the riskiest step: the fade/gate timing is today's state machine, so "no
 
 ## Phase 8: Build out the Compose UI (parity)
 
-Maintain `docs/migration/PARITY.md`, one row per feature (not started / in progress / parity / verified on device), seeded from the overlay and workaround lists in AUDIT.md. Include locale, exit semantics (both exit reasons and the `TestActivity` result contract), key/touch input, and the handoff path as rows, not just visuals.
+Maintain `docs/migration/PARITY.md`, one row per feature (not started / in progress / parity / verified on device), seeded from the overlay and workaround lists in AUDIT.md. Include locale, exit semantics (both exit reasons and the `TestActivity` result contract), key/touch input, the handoff path, and `TestActivity`'s phone-only `onPause` stop (`!DeviceHelper.isTV(...)` → stop + `finishWithResult()`), which is easy to lose behind a factory. These are parity rows, not just visuals.
 
 Work in this order, committing per item:
 
-1. **Playback layer (video and images):** wrap the existing `VideoPlayerView` (a Media3 `PlayerView`, SurfaceView by default) and the existing image view/loading path (`ImagePlayerHelper`) in `AndroidView` and **keep them as the default**. Neither player is migrated or rewritten in this plan; only their hosting changes. Do not reimplement playback or its workarounds (portrait rotation/scale fix, tunneling, Philips Dolby Vision renderer, refresh-rate switching, HDR handling). Do **not** switch to TextureView: those workarounds are SurfaceView-sensitive, and nothing animated is composited over the video (fades are on loading/overlay layers). If a Compose requirement appears to need animated alpha/transforms over the video surface, stop and ask.
+1. **Playback layer (video and images):** wrap `:playback`'s existing `VideoPlayerView` (a Media3 `PlayerView`, SurfaceView by default) and the existing image view/loading path (`ImagePlayerHelper`) in `AndroidView` and **keep them as the default**. Neither player is migrated or rewritten in this plan; only their hosting changes. Do not reimplement playback or its workarounds (portrait rotation/scale fix, tunneling, Philips Dolby Vision renderer, refresh-rate switching, HDR handling). Do **not** switch to TextureView: those workarounds are SurfaceView-sensitive, and nothing animated is composited over the video (fades are on loading/overlay layers). If a Compose requirement appears to need animated alpha/transforms over the video surface, stop and ask. The legacy `MetadataOverlay`'s `VideoPlayerView` parameter is legacy-only: Compose overlays take POI data from the shared state, so the player does not leak into the new overlay composables.
 2. **Item transitions**, implementing the Phase 5a transition protocol on the Compose side.
 3. **Overlays**, one at a time, as pure state-to-UI composables with `@Preview`s, fed by the shared overlay state.
 4. **Input handling:** key and touch events and exit behavior, with parity for both hosts.
@@ -266,7 +293,7 @@ Screenshot tests would be **new infrastructure**, not parity work: ask the human
 Do not start without explicit human approval based on crash rates and beta feedback.
 
 1. Flip the default of `useComposeScreensaver` to true. Keep the legacy path and the toggle for one or more release cycles.
-2. Only on explicit approval after a stable period: delete the legacy UI, the factory and fallback, the pref and toggle, and unused resources. `DreamActivity`/`TestActivity` use the Compose UI directly (FQNs unchanged).
+2. Only on explicit approval after a stable period: delete the legacy UI and `ScreenController`'s rendering layer, the factory and fallback, the pref and toggle, and unused resources. **Keep `:playback` and the shared controller**: they are the surviving implementation, not legacy. `DreamActivity`/`TestActivity` use the Compose UI directly (FQNs unchanged).
 3. Re-run the Full gate, including an R8 release build and a leak check.
 
 ---
@@ -287,5 +314,9 @@ Do not start without explicit human approval based on crash rates and beta feedb
 | Device-specific video workarounds drift or break | Keep `PlayerView`-in-`AndroidView` on SurfaceView; no TextureView switch; no playback reimplementation |
 | Low-RAM devices regress | Measure early against Phase 0 baselines (Phases 7, 9) |
 | Crash-loop guard pins users to legacy forever | Reset on success and on app upgrade; user-initiated re-enable |
-| New modules' files unchecked or mis-built | Spotless block per module; matching fallbacks for `:baselineprofile`/`:microbenchmark`; consumer keep rules |
+| New modules' files unchecked or mis-built | Spotless block per module; keep `:core`/`:playback`/`:screensaver-compose` flavorless; consumer keep rules |
 | CI doesn't catch regressions (workflow_dispatch only) | Run/trigger the Full gate explicitly at the listed phases |
+| `:screensaver-compose` cannot reach the players (they live in `:app`) | Shared `:playback` module; Compose overlays take POI data from state, not a `VideoPlayerView` |
+| `DreamServiceCompat` copied verbatim: composition never disposed, ViewModels never cleared | `onDestroy` → `DESTROYED`; store per dream session and cleared; 20-cycle leak check (Phases 6, 7) |
+| Compose UI types leak into `:app` via the compat class | `DreamServiceCompat` exposes owners only; `ComposeView` is built in `:screensaver-compose` |
+| Overlay layout reimplemented in Compose | Overlay-config model extracted in Phase 5a; both renderers consume it |
