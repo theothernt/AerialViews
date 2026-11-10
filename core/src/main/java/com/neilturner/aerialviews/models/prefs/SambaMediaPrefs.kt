@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
-import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.core.R
 
 object SambaMediaPrefs : KotprefModel(), SambaProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"

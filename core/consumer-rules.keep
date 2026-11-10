@@ -2,3 +2,9 @@
 #
 # This project keeps R8 rules in *.keep files (see app/src/main/keepRules). Add a rule here only
 # for a :core symbol that must survive R8 in a consuming app; ordinary library code needs none.
+
+# Model enum constant names
+# Kotpref's enumValuePref/nullableEnumValuePref stores the constant name in SharedPreferences, the
+# playlist cache stores enum names in database columns, and several overlays look constants up with
+# valueOf() at runtime. Renaming a constant would silently reset the setting.
+-keep enum com.neilturner.aerialviews.models.enums.** { *; }

@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.core.R
 import com.neilturner.aerialviews.data.network.JsonHelper.parseJson
 import com.neilturner.aerialviews.data.network.JsonHelper.parseJsonMap
 import com.neilturner.aerialviews.models.enums.AerialMediaSource

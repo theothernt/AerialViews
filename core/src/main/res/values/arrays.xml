@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Preference defaults read by models/prefs, which moved to :core in Phase 3.
+    The matching *_entries and *_values arrays stay in :app because only the settings UI uses them.
+-->
+<resources>
+    <string-array name="video_time_of_day_default" translatable="false">
+        <item>SUNRISE</item>
+        <item>DAY</item>
+        <item>SUNSET</item>
+        <item>NIGHT</item>
+    </string-array>
+
+    <string-array name="comm2_videos_time_of_day_default" translatable="false">
+        <item>DAY</item>
+        <item>SUNSET</item>
+    </string-array>
+
+    <string-array name="video_scene_type_default" translatable="false">
+        <item>NATURE</item>
+        <item>COUNTRYSIDE</item>
+        <item>BEACH</item>
+        <item>CITY</item>
+        <item>SEA</item>
+        <item>SPACE</item>
+    </string-array>
+
+    <string-array name="amazon_video_scene_type_default" translatable="false">
+        <item>NATURE</item>
+        <item>BEACH</item>
+        <item>CITY</item>
+        <item>SEA</item>
+        <item>SPACE</item>
+    </string-array>
+
+    <string-array name="comm2_videos_scene_type_default" translatable="false">
+        <item>NATURE</item>
+        <item>WATERFALL</item>
+        <item>BEACH</item>
+        <item>SEA</item>
+    </string-array>
+
+    <string-array name="samba_videos_smb_dialects_default" translatable="false">
+        <item>SMB_2_1</item>
+        <item>SMB_2_0_2</item>
+    </string-array>
+
+    <string-array name="projectivy_shared_providers_default" translatable="false">
+        <item>AMAZON</item>
+        <item>COMM1</item>
+    </string-array>
+
+    <string-array name="overlay_fade_corners_default" translatable="false">
+        <item>TOP_LEFT</item>
+        <item>TOP_RIGHT</item>
+        <item>BOTTOM_LEFT</item>
+        <item>BOTTOM_RIGHT</item>
+    </string-array>
+</resources>

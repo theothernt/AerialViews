@@ -36,12 +36,8 @@
     @kotlinx.serialization.Serializable *;
 }
 
-# Enum constant names
-# Kotpref's enumValuePref/nullableEnumValuePref stores the constant *name* in
-# SharedPreferences, the playlist cache stores enum names in database columns,
-# and several overlays look constants up with valueOf() at runtime. Renaming a
-# constant would silently reset the setting, so the constants are kept.
--keep enum com.neilturner.aerialviews.models.enums.** { *; }
+# Model enum constant names are kept by :core's consumer rules (core/consumer-rules.keep).
+# Weather enums still live in :app, so their constants are kept here.
 -keep enum com.neilturner.aerialviews.services.weather.** { *; }
 
 # SMB2Dialect constants are stored in preferences by name and looked up with

@@ -64,13 +64,6 @@
         <item>SUNSET</item>
         <item>NIGHT</item>
     </string-array>
-    <string-array name="video_time_of_day_default" translatable="false">
-        <item>SUNRISE</item>
-        <item>DAY</item>
-        <item>SUNSET</item>
-        <item>NIGHT</item>
-    </string-array>
-
     <string name="comm2_time_of_day_day">Day</string>
     <string name="comm2_time_of_day_sunset">Sunset</string>
     <string-array name="comm2_videos_time_of_day_entries" translatable="false">
@@ -81,11 +74,6 @@
         <item>DAY</item>
         <item>SUNSET</item>
     </string-array>
-    <string-array name="comm2_videos_time_of_day_default" translatable="false">
-        <item>DAY</item>
-        <item>SUNSET</item>
-    </string-array>
-
     <!-- Video Scene Type -->
     <string name="scene_nature">Nature</string>
     <string name="scene_countryside">Countryside</string>
@@ -109,15 +97,6 @@
         <item>SEA</item>
         <item>SPACE</item>
     </string-array>
-    <string-array name="video_scene_type_default" translatable="false">
-        <item>NATURE</item>
-        <item>COUNTRYSIDE</item>
-        <item>BEACH</item>
-        <item>CITY</item>
-        <item>SEA</item>
-        <item>SPACE</item>
-    </string-array>
-
     <!-- Amazon Video Scene Type -->
     <string name="amazon_scene_nature">Nature</string>
     <string name="amazon_scene_beach">Beach</string>
@@ -144,14 +123,6 @@
         <item>PATTERNS</item>
         <item>FIRE</item>
     </string-array>
-    <string-array name="amazon_video_scene_type_default" translatable="false">
-        <item>NATURE</item>
-        <item>BEACH</item>
-        <item>CITY</item>
-        <item>SEA</item>
-        <item>SPACE</item>
-    </string-array>
-
     <string name="comm2_scene_nature">Nature</string>
     <string name="comm2_scene_waterfall">Waterfall</string>
     <string name="comm2_scene_beach">Beach</string>
@@ -168,13 +139,6 @@
         <item>BEACH</item>
         <item>SEA</item>
     </string-array>
-    <string-array name="comm2_videos_scene_type_default" translatable="false">
-        <item>NATURE</item>
-        <item>WATERFALL</item>
-        <item>BEACH</item>
-        <item>SEA</item>
-    </string-array>
-
     <!-- Community Videos -->
     <string-array name="comm1_videos_quality_entries" translatable="false">
         <item>1080p H.264</item>
@@ -664,11 +628,6 @@
         <item>SMB_2_1</item>
         <item>SMB_2_0_2</item>
     </string-array>
-    <string-array name="samba_videos_smb_dialects_default" translatable="false">
-        <item>SMB_2_1</item>
-        <item>SMB_2_0_2</item>
-    </string-array>
-
     <!-- Locale options -->
     <string-array name="locale_menu_entries" translatable="false">
         <item>System locale*</item>
@@ -1548,11 +1507,6 @@
         <item>COMM2</item>
         <!--    <item>LOCAL</item>-->
     </string-array>
-    <string-array name="projectivy_shared_providers_default" translatable="false">
-        <item>AMAZON</item>
-        <item>COMM1</item>
-    </string-array>
-
     <!-- Overlay Corner Fade Selection -->
     <string name="fade_corner_top_left">Top left</string>
     <string name="fade_corner_top_right">Top right</string>
@@ -1570,13 +1524,6 @@
         <item>BOTTOM_LEFT</item>
         <item>BOTTOM_RIGHT</item>
     </string-array>
-    <string-array name="overlay_fade_corners_default" translatable="false">
-        <item>TOP_LEFT</item>
-        <item>TOP_RIGHT</item>
-        <item>BOTTOM_LEFT</item>
-        <item>BOTTOM_RIGHT</item>
-    </string-array>
-
     <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
     <string name="overlay_meta_vid_short_desc">Short Description</string>
     <string name="overlay_meta_vid_location">Location (Media/Immich/NC Memories)</string>

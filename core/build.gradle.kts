@@ -37,4 +37,9 @@ dependencies {
     // Used by the non-UI helpers moved in Phase 2 (ContextCompat, Display's media3 Util).
     implementation(libs.core.ktx)
     implementation(libs.media3.common)
+
+    // Prefs moved in Phase 3. The kotpref-initializer is deliberately NOT added here: :app already
+    // ships its ContentProvider, which calls Kotpref.init before any prefs are read.
+    implementation(libs.kotpref)
+    implementation(libs.kotpref.enum.support)
 }
