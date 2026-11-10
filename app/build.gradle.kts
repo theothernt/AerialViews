@@ -245,6 +245,7 @@ dependencies {
 
     implementation(libs.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
+    implementation(project(":core"))
     implementation(project(":projectivyapi"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)

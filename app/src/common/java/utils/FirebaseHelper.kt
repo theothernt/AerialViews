@@ -1,81 +1,39 @@
 package com.neilturner.aerialviews.utils
 
 import android.os.Bundle
-import com.google.firebase.Firebase
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.analytics
-import com.google.firebase.crashlytics.crashlytics
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import com.neilturner.aerialviews.core.telemetry.Telemetry
 
+/**
+ * Compatibility facade for `:app` call sites that have not moved to [Telemetry] yet.
+ *
+ * It adds no behaviour of its own; the Firebase implementation lives in [FirebaseTelemetrySink].
+ * Delete this file once the last `:app` caller is migrated.
+ */
 object FirebaseHelper {
-    private const val LOGGING_END_DATE = "2026-11-01"
-
-    private fun isWithinLoggingPeriod(): Boolean {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val endDate = simpleDateFormat.parse(LOGGING_END_DATE)
-        val currentDate = Calendar.getInstance().time
-        return currentDate.before(endDate)
-    }
-
     fun analyticsScreenView(
         screenName: String,
         screenClass: Any,
-    ) {
-        val parameters =
-            Bundle().apply {
-                putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-                putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName)
-            }
-        Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
-    }
+    ) = Telemetry.screenView(screenName, screenClass)
 
     fun analyticsEvent(
         eventName: String,
         parameters: Bundle,
         alwaysLog: Boolean = false,
-    ) {
-        if (isWithinLoggingPeriod() || alwaysLog) {
-            Firebase.analytics.logEvent(eventName, parameters)
-        }
-    }
+    ) = Telemetry.event(eventName, parameters, alwaysLog)
 
     fun crashlyticsException(
         ex: Throwable?,
         alwaysLog: Boolean = false,
-    ) {
-        if (isWithinLoggingPeriod() || alwaysLog) {
-            ex?.let {
-                Firebase.crashlytics.recordException(ex)
-            }
-        }
-    }
+    ) = Telemetry.recordException(ex, alwaysLog)
 
     fun crashlyticsLogMessage(
         error: String,
         alwaysLog: Boolean = false,
-    ) {
-        if (isWithinLoggingPeriod() || alwaysLog) {
-            Firebase.crashlytics.log(error)
-        }
-    }
+    ) = Telemetry.logMessage(error, alwaysLog)
 
     fun <T> crashlyticsLogKeys(
         key: String,
         value: T,
         alwaysLog: Boolean = false,
-    ) {
-        if (isWithinLoggingPeriod() || alwaysLog) {
-            when (value) {
-                is String -> Firebase.crashlytics.setCustomKey(key, value)
-                is Int -> Firebase.crashlytics.setCustomKey(key, value)
-                is Long -> Firebase.crashlytics.setCustomKey(key, value)
-                is Float -> Firebase.crashlytics.setCustomKey(key, value)
-                is Double -> Firebase.crashlytics.setCustomKey(key, value)
-                is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
-                else -> Firebase.crashlytics.setCustomKey(key, value.toString())
-            }
-        }
-    }
+    ) = Telemetry.logKey(key, value, alwaysLog)
 }

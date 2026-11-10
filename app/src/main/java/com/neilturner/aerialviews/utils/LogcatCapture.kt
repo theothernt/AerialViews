@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.media.MediaScannerConnection
 import android.os.Environment
-import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.core.AppConfig
 import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import timber.log.Timber
@@ -65,7 +65,7 @@ object LogcatCapture {
                     append("=== AerialViews Diagnostic Log ===\n")
                     append("Timestamp: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())}\n")
                     append(
-                        "App Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) - ${BuildConfig.FLAVOR} ${BuildConfig.BUILD_TYPE}\n",
+                        "App Version: ${AppConfig.versionName} (${AppConfig.versionCode}) - ${AppConfig.flavor} ${AppConfig.buildType}\n",
                     )
                     append("Device: ${DeviceHelper.deviceName()}\n")
                     append("Android: ${DeviceHelper.androidVersion()}\n")

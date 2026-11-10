@@ -4,6 +4,8 @@ import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.core.AppConfig
+import com.neilturner.aerialviews.core.telemetry.Telemetry
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -13,10 +15,24 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.LogcatCapture
+import com.neilturner.aerialviews.utils.TelemetryInitializer
 import timber.log.Timber
 
 class AerialApp : Application() {
     override fun onCreate() {
+        AppConfig.initialize(
+            AppConfig.Values(
+                openWeatherApiKey = BuildConfig.OPEN_WEATHER,
+                versionCode = BuildConfig.VERSION_CODE,
+                versionName = BuildConfig.VERSION_NAME,
+                isDebug = BuildConfig.DEBUG,
+                isTestConfig = BuildConfig.TEST_CONFIG,
+                flavor = BuildConfig.FLAVOR,
+                buildType = BuildConfig.BUILD_TYPE,
+            ),
+        )
+        Telemetry.initialize(TelemetryInitializer.create())
+
         DreamTiming.mark("app.create")
         super.onCreate()
         configureLogging()

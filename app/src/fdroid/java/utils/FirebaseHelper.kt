@@ -1,46 +1,39 @@
 package com.neilturner.aerialviews.utils
 
 import android.os.Bundle
+import com.neilturner.aerialviews.core.telemetry.Telemetry
 
+/**
+ * Compatibility facade for the F-Droid flavor. Reporting is a no-op because
+ * [TelemetryInitializer] installs [com.neilturner.aerialviews.core.telemetry.NoOpTelemetrySink].
+ */
 object FirebaseHelper {
-    fun logException(ex: Throwable) {
-        // No op
-    }
+    fun logException(ex: Throwable) = Telemetry.recordException(ex)
 
     fun analyticsScreenView(
         screenName: String,
         screenClass: Any,
-    ) {
-        // No op
-    }
+    ) = Telemetry.screenView(screenName, screenClass)
 
     fun analyticsEvent(
         eventName: String,
         parameters: Bundle,
         alwaysLog: Boolean = false,
-    ) {
-        // No op
-    }
+    ) = Telemetry.event(eventName, parameters, alwaysLog)
 
     fun crashlyticsException(
         ex: Throwable?,
         alwaysLog: Boolean = false,
-    ) {
-        // No op
-    }
+    ) = Telemetry.recordException(ex, alwaysLog)
 
     fun crashlyticsLogMessage(
         error: String,
         alwaysLog: Boolean = false,
-    ) {
-        // No op
-    }
+    ) = Telemetry.logMessage(error, alwaysLog)
 
     fun <T> crashlyticsLogKeys(
         key: String,
         value: T,
         alwaysLog: Boolean = false,
-    ) {
-        // No op
-    }
+    ) = Telemetry.logKey(key, value, alwaysLog)
 }

@@ -1,0 +1,4 @@
+# Consumer keep rules for :core.
+#
+# This project keeps R8 rules in *.keep files (see app/src/main/keepRules). Add a rule here only
+# for a :core symbol that must survive R8 in a consuming app; ordinary library code needs none.
