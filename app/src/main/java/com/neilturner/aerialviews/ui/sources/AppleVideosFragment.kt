@@ -30,7 +30,7 @@ class AppleVideosFragment : MenuStateFragment() {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
 
         lifecycleScope.launch {
-            display = Display.get(activity)
+            display = Display.get(requireContext())
             setupQualityPreference()
             updateDolbyVisionNoticeVisibility()
         }

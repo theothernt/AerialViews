@@ -32,7 +32,7 @@ class CapabilitiesFragment : MenuStateFragment() {
 
         lifecycleScope.launch {
             resources = context?.resources!!
-            display = Display.get(activity)
+            display = Display.get(requireContext())
         }
     }
 

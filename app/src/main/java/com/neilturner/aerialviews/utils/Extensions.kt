@@ -2,10 +2,7 @@
 
 package com.neilturner.aerialviews.utils
 
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.view.View
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -36,17 +33,6 @@ val Uri.filenameWithoutExtension: String
         } else {
             filename
         }
-    }
-
-// https://stackoverflow.com/a/74741495/247257
-fun PackageManager.getPackageInfoCompat(
-    packageName: String,
-    flags: Int = 0,
-): PackageInfo =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-    } else {
-        getPackageInfo(packageName, flags)
     }
 
 // https://stackoverflow.com/a/53428355/247257

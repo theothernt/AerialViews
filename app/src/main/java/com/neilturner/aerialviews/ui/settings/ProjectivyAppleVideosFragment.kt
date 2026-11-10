@@ -25,7 +25,7 @@ class ProjectivyAppleVideosFragment : MenuStateFragment() {
         setPreferencesFromResource(R.xml.settings_projectivy_apple_videos, rootKey)
 
         lifecycleScope.launch {
-            display = Display.get(activity)
+            display = Display.get(requireContext())
             setupQualityPreference()
             updateDolbyVisionNoticeVisibility()
         }

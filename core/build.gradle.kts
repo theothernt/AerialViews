@@ -33,4 +33,8 @@ dependencies {
     api(libs.lifecycle.runtime.ktx)
     api(libs.lifecycle.viewmodel)
     api(libs.savedstate.ktx)
+
+    // Used by the non-UI helpers moved in Phase 2 (ContextCompat, Display's media3 Util).
+    implementation(libs.core.ktx)
+    implementation(libs.media3.common)
 }

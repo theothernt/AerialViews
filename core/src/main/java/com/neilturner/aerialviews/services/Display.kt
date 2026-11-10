@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.services
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.hardware.display.DisplayManager
@@ -173,9 +172,6 @@ class Display
                 val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 return Display(display, windowManager, context)
             }
-
-            @JvmStatic
-            fun get(activity: Activity?): Display = get(activity as Context)
 
             private fun hdrTypeToFormat(value: Int): HDRFormat =
                 when (value) {
