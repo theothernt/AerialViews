@@ -2,19 +2,17 @@ package com.neilturner.aerialviews.ui.screensaver
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.core.ScreenController
-import com.neilturner.aerialviews.ui.helpers.InputHelper
-import com.neilturner.aerialviews.ui.helpers.LocaleHelper
+import com.neilturner.aerialviews.ui.core.ExitReason
+import com.neilturner.aerialviews.ui.core.ScreensaverUi
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
-class DreamActivity : DreamService() {
+class DreamActivity : DreamServiceCompat() {
     companion object {
         // The dream that handed playback over to an activity and is still holding the screen on,
         // so the activity can dismiss it when the viewer exits
@@ -31,7 +29,7 @@ class DreamActivity : DreamService() {
         }
     }
 
-    private lateinit var screenController: ScreenController
+    private var screensaverUi: ScreensaverUi? = null
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -40,6 +38,9 @@ class DreamActivity : DreamService() {
         // Setup
         isFullscreen = true
         isInteractive = true
+
+        // Drop a previous session before a possible reattach on the same service instance.
+        releaseScreensaverUi()
 
         // Some TVs (eg. Philips OLEDs) classify any 3rd-party dream as an on-screen display and
         // drop their own burn-in screensaver over it after a few minutes, whatever the dream shows.
@@ -52,27 +53,17 @@ class DreamActivity : DreamService() {
         // Hide system UI on phones
         hideSystemUI(window)
 
-        if (this::screenController.isInitialized) {
-            Timber.d("onAttachedToWindow called again with an active screenController — releasing it first")
-            screenController.stop()
-        }
-
-        // Start playback, etc
-        screenController =
-            if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
-            } else {
-                val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
-            }
-        setContentView(screenController.view)
+        val host =
+            DreamScreensaverHost(
+                context = screensaverLocaleContext(this),
+                window = window,
+                lifecycleOwner = this,
+                savedStateRegistryOwner = this,
+                viewModelStoreOwner = this,
+                onExit = ::handleExit,
+            )
+        screensaverUi = ScreensaverUiFactory.create(host)
         DreamTiming.mark("dream.contentView")
-
-        InputHelper.setupGestureListener(
-            context = this,
-            controller = screenController,
-            exit = ::altWakeUp,
-        )
     }
 
     override fun onWakeUp() {
@@ -84,6 +75,7 @@ class DreamActivity : DreamService() {
     }
 
     override fun onDreamingStarted() {
+        // DreamServiceCompat marks the owner STARTED here first.
         super.onDreamingStarted()
 
         // Launched from here rather than onAttachedToWindow, so the dream's window is already
@@ -104,7 +96,11 @@ class DreamActivity : DreamService() {
         }
 
         FirebaseHelper.analyticsScreenView("Screensaver", this)
-        // Start playback, etc
+        screensaverUi?.onStart()
+    }
+
+    private fun handleExit(reason: ExitReason) {
+        altWakeUp(reason == ExitReason.EXIT)
     }
 
     private fun altWakeUp(exitApp: Boolean) {
@@ -122,9 +118,7 @@ class DreamActivity : DreamService() {
         }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::altWakeUp)
-        ) {
+        if (screensaverUi?.onKeyEvent(event) == true) {
             return true
         }
 
@@ -139,7 +133,7 @@ class DreamActivity : DreamService() {
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        if (InputHelper.handleGenericMotionEvent(event, ::altWakeUp)) {
+        if (screensaverUi?.onGenericMotionEvent(event) == true) {
             return true
         }
 
@@ -158,17 +152,24 @@ class DreamActivity : DreamService() {
             activeHandoffDream = null
         }
         // Stop playback, animations, etc
-        if (this::screenController.isInitialized) {
-            screenController.stop()
-        }
+        screensaverUi?.onStop()
         super.onDreamingStopped()
     }
 
     override fun onDetachedFromWindow() {
         Timber.d("onDetachedFromWindow")
-        if (this::screenController.isInitialized) {
-            screenController.stop()
-        }
+        releaseScreensaverUi()
         super.onDetachedFromWindow()
+    }
+
+    override fun onDestroy() {
+        releaseScreensaverUi()
+        super.onDestroy()
+    }
+
+    private fun releaseScreensaverUi() {
+        val ui = screensaverUi ?: return
+        screensaverUi = null
+        ScreensaverUiFactory.release(ui)
     }
 }

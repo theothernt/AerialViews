@@ -13,6 +13,11 @@ import timber.log.Timber
 object InputHelper {
     private val keyEventMapper = KeyEventMapper()
 
+    /** Clears the process-global key state at a screensaver session boundary. */
+    fun resetKeyState() {
+        keyEventMapper.reset()
+    }
+
     fun handleGenericMotionEvent(
         event: MotionEvent,
         exit: (shouldExit: Boolean) -> Unit,

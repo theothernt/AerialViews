@@ -10,10 +10,9 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ExitReason
+import com.neilturner.aerialviews.ui.core.ScreensaverUi
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
-import com.neilturner.aerialviews.ui.helpers.InputHelper
-import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -23,10 +22,12 @@ class TestActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_FROM_DREAM = "from_dream"
         const val EXTRA_WAKE_SCREEN = "wake_screen"
+        const val EXTRA_UI_PATH = "ui_path"
         private const val DREAM_HANDOVER_GRACE_MS = 10_000L
     }
 
-    private lateinit var screenController: ScreenController
+    private var screensaverUi: ScreensaverUi? = null
+    private var activityStarted = false
     private var startedAt = 0L
     private var relaunchedToWake = false
 
@@ -80,6 +81,12 @@ class TestActivity : AppCompatActivity() {
     private fun isWaitingForDreamToDismiss(): Boolean =
         startedAt != 0L && SystemClock.elapsedRealtime() - startedAt < DREAM_HANDOVER_GRACE_MS
 
+    override fun onStart() {
+        super.onStart()
+        activityStarted = true
+        screensaverUi?.onStart()
+    }
+
     override fun onResume() {
         super.onResume()
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -92,17 +99,15 @@ class TestActivity : AppCompatActivity() {
 
         // Using OSD TV menus calls suspend but the screensaver is still running
         // So only stop if on phone or tablet
-        if (!DeviceHelper.isTV(this) && this::screenController.isInitialized) {
-            screenController.stop()
+        if (!DeviceHelper.isTV(this) && screensaverUi != null) {
+            screensaverUi?.onStop()
             finishWithResult()
         }
     }
 
     override fun onDestroy() {
+        releaseScreensaverUi()
         super.onDestroy()
-        if (this::screenController.isInitialized) {
-            screenController.stop()
-        }
     }
 
     override fun onAttachedToWindow() {
@@ -111,27 +116,25 @@ class TestActivity : AppCompatActivity() {
         // Hide system UI on phones
         hideSystemUI(window)
 
-        // Start playback, etc
-        screenController =
-            if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
-            } else {
-                val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
-            }
-        setContentView(screenController.view)
+        releaseScreensaverUi()
 
-        InputHelper.setupGestureListener(
-            context = this,
-            controller = screenController,
-            exit = ::finishWithResult,
-        )
+        val host =
+            ActivityScreensaverHost(
+                context = screensaverLocaleContext(this),
+                window = window,
+                lifecycleOwner = this,
+                savedStateRegistryOwner = this,
+                viewModelStoreOwner = this,
+                onExit = ::finishWithReason,
+            )
+        screensaverUi = ScreensaverUiFactory.create(host, requestedUiPath())
+        if (activityStarted) {
+            screensaverUi?.onStart()
+        }
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::finishWithResult)
-        ) {
+        if (screensaverUi?.onKeyEvent(event) == true) {
             return true
         }
 
@@ -139,7 +142,7 @@ class TestActivity : AppCompatActivity() {
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        if (InputHelper.handleGenericMotionEvent(event, ::finishWithResult)) {
+        if (screensaverUi?.onGenericMotionEvent(event) == true) {
             return true
         }
 
@@ -157,10 +160,24 @@ class TestActivity : AppCompatActivity() {
             return
         }
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        if (this::screenController.isInitialized && DeviceHelper.isTV(this)) {
-            screenController.stop()
+        if (DeviceHelper.isTV(this) && screensaverUi != null) {
+            activityStarted = false
+            screensaverUi?.onStop()
             finishAndRemoveTask()
         }
+    }
+
+    private fun requestedUiPath(): ScreensaverUiPath? {
+        val raw = intent.getStringExtra(EXTRA_UI_PATH) ?: return null
+        return ScreensaverUiPath.parse(raw)
+            ?: run {
+                Timber.w("Ignoring unknown screensaver ui_path '$raw'")
+                null
+            }
+    }
+
+    private fun finishWithReason(reason: ExitReason) {
+        finishWithResult(reason == ExitReason.EXIT)
     }
 
     private fun finishWithResult(exitApp: Boolean = false) {
@@ -181,5 +198,11 @@ class TestActivity : AppCompatActivity() {
         // If a dream handed playback over, it is still running underneath holding the screen on
         DreamActivity.dismissHandoffDream()
         finish()
+    }
+
+    private fun releaseScreensaverUi() {
+        val ui = screensaverUi ?: return
+        screensaverUi = null
+        ScreensaverUiFactory.release(ui)
     }
 }
