@@ -38,6 +38,8 @@ class ScreensaverControllerTest {
 
             controller.onMediaVisible()
             assertTrue(controller.state.value.canSkip)
+            assertFalse(controller.state.value.canShowOverlays)
+            controller.onOverlaysReady()
             assertTrue(controller.state.value.canShowOverlays)
 
             controller.onItemFinished()
@@ -309,7 +311,7 @@ class ScreensaverControllerTest {
         }
 
     @Test
-    fun `empty playlist reports an error without starting music`() =
+    fun `empty playlist reports an error and still starts music`() =
         runTest {
             val music = FakeMusic()
             val controller =
@@ -322,7 +324,8 @@ class ScreensaverControllerTest {
 
             assertEquals(ScreensaverPhase.ERROR, controller.state.value.phase)
             assertEquals(ScreensaverError.EMPTY_PLAYLIST, controller.state.value.error)
-            assertEquals(0, music.loads)
+            assertEquals(1, music.loads)
+            assertEquals(1, music.plays)
             controller.release()
         }
 
@@ -388,6 +391,23 @@ class ScreensaverControllerTest {
             assertEquals(MusicMode.FAILED, controller.state.value.music.mode)
             assertTrue(controller.state.value.music.forcedVideoMute)
             assertEquals(1, music.releases)
+            controller.release()
+        }
+
+    @Test
+    fun `overlay animations gate user reveals`() =
+        runTest {
+            val controller = ScreensaverController(this)
+            controller.start(FakePlaylist(listOf(media("a"))))
+            runCurrent()
+            controller.onMediaVisible()
+            controller.onOverlaysReady()
+            assertTrue(controller.state.value.canShowOverlays)
+
+            controller.onOverlaysBusy()
+            assertFalse(controller.state.value.canShowOverlays)
+            controller.onOverlaysReady()
+            assertTrue(controller.state.value.canShowOverlays)
             controller.release()
         }
 

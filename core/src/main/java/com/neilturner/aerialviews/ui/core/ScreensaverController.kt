@@ -218,6 +218,7 @@ class ScreensaverController(
 
         if (playlist.size <= 0) {
             showError(ScreensaverError.EMPTY_PLAYLIST)
+            setupMusic(music, musicResumeIndex)
             return
         }
 
@@ -257,9 +258,35 @@ class ScreensaverController(
             it.copy(
                 phase = ScreensaverPhase.PLAYING,
                 canSkip = true,
-                canShowOverlays = true,
                 error = null,
             )
+        }
+    }
+
+    /**
+     * Called by the renderer while overlay reveal/hide animations are in flight, so user reveals
+     * cannot start a second animation on top of the first.
+     */
+    fun onOverlaysBusy() {
+        if (released) return
+        _state.update {
+            if (it.phase == ScreensaverPhase.LOADING || it.phase == ScreensaverPhase.PLAYING) {
+                it.copy(canShowOverlays = false)
+            } else {
+                it
+            }
+        }
+    }
+
+    /** Called by the renderer when the current overlay animation state is available to reveal. */
+    fun onOverlaysReady() {
+        if (released) return
+        _state.update {
+            if (it.phase == ScreensaverPhase.LOADING || it.phase == ScreensaverPhase.PLAYING) {
+                it.copy(canShowOverlays = true)
+            } else {
+                it
+            }
         }
     }
 

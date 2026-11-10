@@ -63,6 +63,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -100,20 +101,49 @@ class ScreenController(
     private val overlayVisibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
     private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
 
-    private var canShowOverlays = false
-    private var alternate = false
-    private var previousItem = false
-    private var explicitSkip = false
-    private var canSkip = false
+    private val controller =
+        ScreensaverController(
+            scope = mainScope,
+            config =
+                ScreensaverConfig(
+                    cacheResumeDelayMs = CACHE_RESUME_DELAY,
+                    errorRetryDelayMs = ERROR_DELAY,
+                    sleepTimerMinutes = GeneralPrefs.sleepTimer.toLongOrNull() ?: 0L,
+                    scheduledBlackoutEnabled = GeneralPrefs.scheduledBlackoutEnabled,
+                    scheduledBlackoutStart = parseLocalTime(GeneralPrefs.scheduledBlackoutStart),
+                    scheduledBlackoutEnd = parseLocalTime(GeneralPrefs.scheduledBlackoutEnd),
+                    loopUntilSkipped = GeneralPrefs.loopUntilSkipped,
+                    alternateTextPosition = shouldAlternateOverlays,
+                    backgroundMusicEnabled = GeneralPrefs.playsBackgroundMusic,
+                ),
+            overlayStateStore = overlayStateStore,
+            externalTrackControl =
+                object : ExternalTrackControl {
+                    override fun nextTrack() {
+                        nowPlayingService?.nextTrack()
+                    }
+
+                    override fun previousTrack() {
+                        nowPlayingService?.previousTrack()
+                    }
+                },
+        )
+
     private var isPaused = false
-    private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
-    private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
-    private var currentMedia: AerialMedia? = null
     private var forcedMuteVideo = false
     private var userMutedVideo = !GeneralPrefs.playsVideoAudio
+    private var playbackStarted = false
+    private var renderedGeneration = -1L
+    private var handledTransitionId = -1L
+    private var lastBlackoutActive = false
+    private var lastForcedMute: Boolean? = null
+    private var lastError: ScreensaverError? = null
     private val cacheRepository = PlaylistCacheRepository(context)
+
+    private val currentMedia: AerialMedia?
+        get() = controller.state.value.media
     private lateinit var videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
@@ -136,12 +166,10 @@ class ScreenController(
     private val bottomLeftIds: List<Int>
     private val bottomRightIds: List<Int>
 
-    var blackOutMode = false
-        private set
-    var blackOutSource: BlackOutSource = BlackOutSource.NONE
-        private set
-    private var scheduledBlackoutJob: Job? = null
-    private var wasInScheduledBlackoutWindow: Boolean? = null
+    val blackOutMode: Boolean
+        get() = controller.state.value.blackout.active
+    val blackOutSource: BlackOutSource
+        get() = controller.state.value.blackout.source
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -212,6 +240,7 @@ class ScreenController(
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
         bindOverlayState()
+        bindControllerState()
         overlayEventBridge.start()
 
         // Setup progress bar
@@ -290,30 +319,15 @@ class ScreenController(
             DreamTiming.mark("playlist.resolved", "size=${playlist.size};cached=${mediaResult.isFromCache}")
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
-                var startPlayback = true
-                if (mediaResult.isFromCache) {
-                    Timber.i("Playlist restored from cache - delaying ${CACHE_RESUME_DELAY}ms before starting playback")
-                    delay(CACHE_RESUME_DELAY.milliseconds)
-                    // stop() cancels mainScope, so a stopped session cannot be observed here;
-                    // only a blackout entered while waiting should defer playback. Music, weather
-                    // and scheduled blackout must still be set up.
-                    startPlayback = !blackOutMode
-                    if (!startPlayback) {
-                        Timber.i("Blackout entered during cache resume delay, deferring playback start")
-                    }
-                }
-                if (startPlayback) {
-                    DreamTiming.mark("playback.start", "cached=${mediaResult.isFromCache}")
-                    loadNextItem()
-                    scheduleSleepTimer()
-                }
-                scheduleScheduledBlackout()
-            } else {
-                showLoadingError()
             }
 
-            // Setup music service
-            setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
+            val music = createMusicPlayback(mediaResult.musicPlaylist)
+            controller.start(
+                playlist = playlist,
+                fromCache = mediaResult.isFromCache,
+                music = music,
+                musicResumeIndex = mediaResult.musicResumeIndex,
+            )
 
             // Setup weather service
             val hasWeatherNowOverlay = overlayHelper.findOverlay<WeatherNowOverlay>().isNotEmpty()
@@ -335,135 +349,41 @@ class ScreenController(
         // 5. goto 2
     }
 
-    private fun scheduleSleepTimer() {
-        sleepTimerJob?.cancel()
-        val minutes = GeneralPrefs.sleepTimer.toLongOrNull() ?: 0L
-        if (minutes <= 0L) {
-            Timber.i("Sleep timer disabled")
-            return
-        }
-        Timber.i("Scheduling sleep timer for $minutes minute(s)")
-        sleepTimerJob =
-            mainScope.launch {
-                delay((minutes * 60_000L).milliseconds)
-                if (!blackOutMode) {
-                    Timber.i("Sleep timer finished - toggling blackout mode")
-                    toggleBlackOutMode(BlackOutSource.SLEEP_TIMER)
-                }
-            }
-    }
-
-    private fun scheduleScheduledBlackout() {
-        scheduledBlackoutJob?.cancel()
-        wasInScheduledBlackoutWindow = null
-        if (!GeneralPrefs.scheduledBlackoutEnabled) {
-            Timber.i("Scheduled blackout disabled")
-            return
-        }
-        Timber.i("Scheduling blackout check ticker")
-        scheduledBlackoutJob =
-            mainScope.launch {
-                while (true) {
-                    checkScheduledBlackout()
-                    delay(15_000L.milliseconds)
-                }
-            }
-    }
-
-    private fun checkScheduledBlackout() {
-        if (!GeneralPrefs.scheduledBlackoutEnabled) return
-
-        val startTime = parseLocalTime(GeneralPrefs.scheduledBlackoutStart) ?: return
-        val endTime = parseLocalTime(GeneralPrefs.scheduledBlackoutEnd) ?: return
-        val now = java.time.LocalTime.now()
-
-        val isNowInWindow = ScheduledBlackoutWindow.contains(startTime, endTime, now)
-
-        if (wasInScheduledBlackoutWindow == null) {
-            wasInScheduledBlackoutWindow = isNowInWindow
-            if (isNowInWindow && !blackOutMode) {
-                Timber.i("Initial check: inside scheduled blackout window ($startTime to $endTime)")
-                enterBlackOutMode(BlackOutSource.SCHEDULED)
-            }
-        } else if (isNowInWindow != wasInScheduledBlackoutWindow) {
-            wasInScheduledBlackoutWindow = isNowInWindow
-            if (isNowInWindow && !blackOutMode) {
-                Timber.i("Scheduled blackout window started ($startTime to $endTime)")
-                enterBlackOutMode(BlackOutSource.SCHEDULED)
-            } else if (!isNowInWindow && blackOutMode && blackOutSource == BlackOutSource.SCHEDULED) {
-                Timber.i("Scheduled blackout window ended ($startTime to $endTime)")
-                exitBlackOutMode()
-            }
-        }
-    }
-
-    private fun parseLocalTime(timeStr: String): java.time.LocalTime? =
-        try {
-            val parts = timeStr.split(":")
-            if (parts.size == 2) {
-                java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
-
     private fun setVideoForcedMute(enabled: Boolean) {
         forcedMuteVideo = enabled
         videoPlayer.setMuteState(forcedMuteVideo, userMutedVideo)
     }
 
-    private fun setupMusicPlayer(
-        musicPlaylist: MusicPlaylist?,
-        resumeIndex: Int = 0,
+    private fun createMusicPlayback(musicPlaylist: MusicPlaylist?): MusicPlayback? {
+        if (!GeneralPrefs.playsBackgroundMusic || musicPlaylist == null || musicPlaylist.size == 0) {
+            Timber.i("MusicPlayer: no background music playlist available, skipping")
+            return null
+        }
+
+        val player = MusicPlayer(context, musicPlaylist)
+        player.onMediaItemChanged = {
+            saveMusicTrackPosition()
+            controller.onMusicTrackChanged(player.getCurrentTrackIndex())
+        }
+        player.onPlaybackFailed = {
+            controller.onMusicPlaybackFailed()
+            musicPlayer = null
+        }
+        musicPlayer = player
+        return LegacyMusicPlayback(player)
+    }
+
+    private fun loadItem(
+        media: AerialMedia,
+        alternate: Boolean,
     ) {
-        val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-
-        if (!backgroundMusicSelected) {
-            Timber.i("MusicPlayer: background music not selected, skipping")
-            setVideoForcedMute(false)
-            return
-        }
-
-        if (musicPlaylist == null || musicPlaylist.size == 0) {
-            Timber.i("MusicPlayer: no music playlist available, skipping")
-            setVideoForcedMute(false)
-            return
-        }
-
-        setVideoForcedMute(true)
-
-        musicPlayer = MusicPlayer(context, musicPlaylist)
-        musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
-        musicPlayer?.onPlaybackFailed = { handleMusicPlaybackFailed() }
-        musicPlayer?.createPlayer()
-        musicPlayer?.load(resumeIndex)
-        if (blackOutMode) {
-            musicPlayer?.pause()
-            Timber.i("MusicPlayer: not starting while blackout is active")
-        } else {
-            musicPlayer?.play()
-            Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
-        }
-    }
-
-    /**
-     * Background music could not recover from a playback error. Release it and stay silent: the
-     * user asked for background music, so video audio is not restored over the top of it.
-     */
-    private fun handleMusicPlaybackFailed() {
-        Timber.i("MusicPlayer: playback abandoned, staying silent")
-        musicPlayer?.release()
-        musicPlayer = null
-    }
-
-    private fun loadItem(media: AerialMedia) {
         // Reset pause state when loading new item
         isPaused = false
         pauseStartTime = 0
-        currentMedia = media
-        overlayStateStore.resetForNextMedia()
+        if (!playbackStarted) {
+            DreamTiming.mark("playback.start", "cached=${GeneralPrefs.playlistCache}")
+            playbackStarted = true
+        }
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
@@ -492,10 +412,6 @@ class ScreenController(
             topRightIds,
             alternate,
         )
-
-        if (shouldAlternateOverlays) {
-            alternate = !alternate
-        }
 
         // Videos
         if (media.type == AerialMediaType.VIDEO) {
@@ -542,7 +458,6 @@ class ScreenController(
 
         savePlaybackPosition()
 
-        canShowOverlays = false
         var startDelay: Long = 0
         val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
 
@@ -577,7 +492,6 @@ class ScreenController(
                 if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
                     gradientBottomView.alpha = 1f
                 }
-                canShowOverlays = true
             }
 
             "ALWAYS_HIDDEN" -> {
@@ -591,7 +505,6 @@ class ScreenController(
                 ) {
                     gradientBottomView.alpha = 0f
                 }
-                canShowOverlays = true
             }
 
             "HIDE_AFTER_DELAY" -> {
@@ -617,6 +530,7 @@ class ScreenController(
                 ) {
                     gradientBottomView.alpha = 0f
                 }
+                controller.onOverlaysBusy()
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
                     val overlaysToFade = overlayHelper.getOverlaysToFade()
@@ -628,9 +542,12 @@ class ScreenController(
                                 .setStartDelay(0)
                                 .setDuration(overlayFadeIn)
                         if (index == overlaysToFade.lastIndex) {
-                            animator.withEndAction { canShowOverlays = true }
+                            animator.withEndAction { controller.onOverlaysReady() }
                         }
                         animator.start()
+                    }
+                    if (overlaysToFade.isEmpty()) {
+                        controller.onOverlaysReady()
                     }
                     if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
                         gradientTopView
@@ -662,14 +579,14 @@ class ScreenController(
             .withEndAction {
                 loadingView.alpha = 0f
                 loadingView.visibility = View.INVISIBLE
-                canSkip = true
+                controller.onMediaVisible()
+                if (overlayVisibilityMode == "ALWAYS_VISIBLE" || overlayVisibilityMode == "ALWAYS_HIDDEN") {
+                    controller.onOverlaysReady()
+                }
             }.start()
     }
 
-    private fun fadeOutCurrentItem() {
-        if (!canSkip) return
-        canSkip = false
-
+    private fun fadeOutCurrentItem(request: TransitionRequest) {
         overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
         }
@@ -697,34 +614,8 @@ class ScreenController(
                 // Reset pause state when transitioning between items
                 isPaused = false
                 pauseStartTime = 0
-
-                if (!blackOutMode) {
-                    val wasExplicitSkip = explicitSkip
-                    val loadPreviousItem = previousItem
-                    explicitSkip = false
-                    previousItem = false
-
-                    if (wasExplicitSkip) {
-                        loadNextItem(loadPreviousItem)
-                    } else if (loopUntilSkipped && currentMedia != null) {
-                        replayCurrentItem()
-                    } else {
-                        loadNextItem(false)
-                    }
-                } else {
-                    explicitSkip = false
-                    previousItem = false
-                }
+                controller.onTransitionCompleted(request.id)
             }.start()
-    }
-
-    private fun replayCurrentItem() {
-        val media = currentMedia
-        if (media != null) {
-            loadItem(media)
-        } else {
-            loadNextItem()
-        }
     }
 
     private fun showLoadingError() {
@@ -736,10 +627,11 @@ class ScreenController(
         val overlaysToFade = overlayHelper.getOverlaysToFade()
 
         if (overlaysToFade.isEmpty()) {
-            canShowOverlays = true
+            controller.onOverlaysReady()
             return
         }
 
+        controller.onOverlaysBusy()
         overlayHelper.isHidden = true
         setOverlayInstancesHidden(true)
 
@@ -753,7 +645,7 @@ class ScreenController(
 
             // Only set the end action on the last overlay
             if (index == overlaysToFade.lastIndex) {
-                animator.withEndAction { canShowOverlays = true }
+                animator.withEndAction { controller.onOverlaysReady() }
             }
             animator.start()
         }
@@ -798,16 +690,16 @@ class ScreenController(
         if (blackOutMode) return
 
         // If media fading in/out
-        if (!canSkip) return
+        if (!controller.state.value.canSkip) return
 
         // Are overlays already visible
-        if (!canShowOverlays) return
+        if (!controller.state.value.canShowOverlays) return
 
         val overlaysToFade = overlayHelper.getOverlaysToFade()
 
         if (overlaysToFade.isEmpty()) return
 
-        canShowOverlays = false
+        controller.onOverlaysBusy()
         overlayHelper.isHidden = false
         setOverlayInstancesHidden(false)
 
@@ -845,29 +737,6 @@ class ScreenController(
         }
     }
 
-    private fun loadNextItem(previous: Boolean = false) {
-        if (!this::playlist.isInitialized || playlist.size == 0) {
-            Timber.w("ScreenController: Cannot load an item from an empty playlist")
-            showLoadingError()
-            return
-        }
-
-        val media =
-            if (previous) {
-                playlist.previousItem()
-            } else {
-                playlist.nextItem()
-            }
-
-        if (media == null) {
-            Timber.e("ScreenController: Playlist could not supply an item")
-            showLoadingError()
-            return
-        }
-
-        loadItem(media)
-    }
-
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
@@ -898,6 +767,8 @@ class ScreenController(
                 cacheRepository.saveMusicTrackIndex(trackIndex)
             }
         }
+        controller.release()
+        musicPlayer = null
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
         // Release before detaching: View.removeCallbacks() does nothing once mAttachInfo is null,
@@ -911,46 +782,17 @@ class ScreenController(
         nowPlayingService?.stop()
         sonosService?.stop()
         weatherService?.stop()
-        musicPlayer?.pause()
-        musicPlayer?.release()
-        sleepTimerJob?.cancel()
-        scheduledBlackoutJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
         mainScope.cancel()
     }
 
-    fun skipItem(previous: Boolean = false) {
-        explicitSkip = true
-        previousItem = previous
-        fadeOutCurrentItem()
-    }
+    fun skipItem(previous: Boolean = false) = controller.skip(previous)
 
-    fun toggleBlackOutMode(source: BlackOutSource = BlackOutSource.USER) {
-        if (!this::playlist.isInitialized || playlist.size == 0) {
-            return
-        }
+    fun toggleBlackOutMode(source: BlackOutSource = BlackOutSource.USER) = controller.toggleBlackout(source)
 
-        if (!blackOutMode) {
-            enterBlackOutMode(source)
-        } else if (
-            blackOutSource != BlackOutSource.SCHEDULED || source == BlackOutSource.SCHEDULED
-        ) {
-            exitBlackOutMode()
-        }
-    }
-
-    /**
-     * Enters blackout immediately, including during initial media preparation. The normal
-     * fade-out path intentionally requires a fully displayed item, which made scheduled
-     * blackout ineffective when the first item was still loading.
-     */
-    private fun enterBlackOutMode(source: BlackOutSource) {
-        blackOutMode = true
-        blackOutSource = source
-        sleepTimerJob?.cancel()
-        canSkip = false
-
+    /** Applies the controller's active blackout to the legacy views immediately. */
+    private fun enterBlackOutMode() {
         loadingView.animate().cancel()
         loadingView.setBackgroundColor(Color.BLACK)
         loadingContainer.visibility = View.GONE
@@ -967,12 +809,9 @@ class ScreenController(
         progressBarView.visibility = View.INVISIBLE
         brightnessView.visibility = View.INVISIBLE
         notificationContainer.visibility = View.INVISIBLE
-        musicPlayer?.pause()
     }
 
     private fun exitBlackOutMode() {
-        blackOutMode = false
-        blackOutSource = BlackOutSource.NONE
         loadingView.setBackgroundColor(ColourHelper.colourFromString(GeneralPrefs.backgroundLoading))
         overlayView.visibility = View.VISIBLE
         progressBarView.visibility =
@@ -980,30 +819,11 @@ class ScreenController(
         brightnessView.visibility =
             if (GeneralPrefs.videoBrightness == "100") View.GONE else View.VISIBLE
         notificationContainer.visibility = View.VISIBLE
-        loadNextItem()
-        musicPlayer?.resume()
-        scheduleSleepTimer()
     }
 
-    fun nextTrack() {
-        val music = musicPlayer
-        if (music != null && music.hasMusic()) {
-            music.nextTrack()
-            saveMusicTrackPosition()
-        } else {
-            nowPlayingService?.nextTrack()
-        }
-    }
+    fun nextTrack() = controller.nextTrack()
 
-    fun previousTrack() {
-        val music = musicPlayer
-        if (music != null && music.hasMusic()) {
-            music.previousTrack()
-            saveMusicTrackPosition()
-        } else {
-            nowPlayingService?.previousTrack()
-        }
-    }
+    fun previousTrack() = controller.previousTrack()
 
     fun increaseSpeed() {
         if (blackOutMode) {
@@ -1042,12 +862,12 @@ class ScreenController(
     }
 
     fun toggleLooping() {
-        loopUntilSkipped = !loopUntilSkipped
+        val enabled = controller.toggleLoopUntilSkipped()
         // Persist the toggle so the player and the next launch agree on the current state
-        GeneralPrefs.loopUntilSkipped = loopUntilSkipped
+        GeneralPrefs.loopUntilSkipped = enabled
         videoPlayer.refreshFinishTimer()
         val message =
-            if (loopUntilSkipped) {
+            if (enabled) {
                 resources.getString(
                     R.string.playlist_loop_enabled,
                 )
@@ -1151,18 +971,8 @@ class ScreenController(
 
     private fun handleError() {
         if (blackOutMode) return
-
         recreateVideoPlayer()
-
-        mainScope.launch {
-            delay(ERROR_DELAY.milliseconds)
-            if (loadingView.isVisible) {
-                loadNextItem()
-            } else {
-                explicitSkip = true
-                fadeOutCurrentItem()
-            }
-        }
+        controller.onPlaybackError()
     }
 
     private fun installVideoView(
@@ -1203,7 +1013,7 @@ class ScreenController(
     override fun onVideoAlmostFinished() {
         // A video can still report a finish after the screen has moved on to a photo.
         if (!PlaybackCallbacks.videoEventAppliesTo(currentMedia?.type)) return
-        fadeOutCurrentItem()
+        controller.onItemFinished()
     }
 
     override fun onVideoPrepared() {
@@ -1227,7 +1037,7 @@ class ScreenController(
         }
     }
 
-    override fun onImageFinished() = fadeOutCurrentItem()
+    override fun onImageFinished() = controller.onItemFinished()
 
     override fun onImageError() = handleError()
 
@@ -1349,6 +1159,51 @@ class ScreenController(
         }
     }
 
+    private fun bindControllerState() {
+        mainScope.launch {
+            controller.state.collect { state ->
+                if (!isStopped) {
+                    renderControllerState(state)
+                }
+            }
+        }
+    }
+
+    private fun renderControllerState(state: ScreensaverState) {
+        if (state.music.forcedVideoMute != lastForcedMute) {
+            lastForcedMute = state.music.forcedVideoMute
+            setVideoForcedMute(state.music.forcedVideoMute)
+        }
+
+        if (state.blackout.active != lastBlackoutActive) {
+            lastBlackoutActive = state.blackout.active
+            if (state.blackout.active) {
+                enterBlackOutMode()
+            } else {
+                exitBlackOutMode()
+            }
+        }
+
+        if (state.error != lastError) {
+            lastError = state.error
+            if (state.error == ScreensaverError.EMPTY_PLAYLIST || state.error == ScreensaverError.ITEM_UNAVAILABLE) {
+                showLoadingError()
+            }
+        }
+
+        val media = state.media
+        if (media != null && state.itemGeneration != renderedGeneration) {
+            renderedGeneration = state.itemGeneration
+            loadItem(media, state.alternateOverlays)
+        }
+
+        val transition = state.transition
+        if (transition != null && transition.id != handledTransitionId) {
+            handledTransitionId = transition.id
+            fadeOutCurrentItem(transition)
+        }
+    }
+
     private fun renderOverlayState(state: OverlayUiState) {
         renderMetadataOverlays(state)
 
@@ -1378,3 +1233,15 @@ class ScreenController(
         const val CACHE_RESUME_DELAY: Long = 1000 // Delay before starting playback when restoring from cache
     }
 }
+
+private fun parseLocalTime(timeStr: String): java.time.LocalTime? =
+    try {
+        val parts = timeStr.split(":")
+        if (parts.size == 2) {
+            java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
+        } else {
+            null
+        }
+    } catch (e: Exception) {
+        null
+    }
