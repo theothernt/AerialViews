@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
@@ -187,10 +186,6 @@ android {
     }
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
-
 spotless {
     kotlin {
         target("src/**/*.kt")
@@ -223,9 +218,6 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.ktor)
-    implementation(libs.room3.runtime)
-    ksp(libs.room3.compiler)
-    implementation(libs.sqlite.framework)
     implementation(libs.bundles.exoplayer)
     implementation(libs.media3.container)
     implementation(libs.smbj)
@@ -246,6 +238,7 @@ dependencies {
     implementation(libs.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
     implementation(project(":core"))
+    implementation(project(":playback"))
     implementation(project(":projectivyapi"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)

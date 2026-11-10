@@ -1,0 +1,5 @@
+# Consumer keep rules for :playback.
+#
+# The views are referenced from XML layouts and from :app, so ordinary R8 shrinking keeps them
+# through those references. Add a rule here only if a symbol needs to survive a consuming app's R8
+# despite having no Java/Kotlin reference.

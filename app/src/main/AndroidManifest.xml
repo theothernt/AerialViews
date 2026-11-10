@@ -132,17 +132,9 @@
             </intent-filter>
         </service>
 
-        <!-- Called when app is updated so migration code can run -->
-        <receiver android:name=".data.preferences.PackageReplacedReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
-            </intent-filter>
-        </receiver>
-
         <!-- Called when there is a notification by the system -->
         <service
-            android:name=".services.NotificationService"
+            android:name="com.neilturner.aerialviews.services.NotificationService"
             android:exported="false"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:enabled="true">

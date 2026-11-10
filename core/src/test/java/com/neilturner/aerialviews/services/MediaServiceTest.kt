@@ -1,0 +1,472 @@
+package com.neilturner.aerialviews.services
+
+import android.content.Context
+import android.os.Bundle
+import com.neilturner.aerialviews.core.telemetry.Telemetry
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
+import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.TimeOfDayFilter
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
+import com.neilturner.aerialviews.models.music.MusicTrack
+import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
+import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.mockkObject
+import io.mockk.slot
+import io.mockk.unmockkConstructor
+import io.mockk.unmockkObject
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import kotlin.random.Random
+
+internal class MediaServiceTest {
+    private val context = mockk<Context>(relaxed = true)
+
+    @BeforeEach
+    fun setUp() {
+        mockkConstructor(Bundle::class)
+        every { anyConstructed<Bundle>().putString(any(), any()) } returns Unit
+        every { anyConstructed<Bundle>().keySet() } returns emptySet()
+        mockkObject(Telemetry)
+        every { Telemetry.event(any(), any(), any()) } returns Unit
+        mockkObject(NetworkHelper)
+        every { NetworkHelper.isOnWifiOrEthernet(any()) } returns false
+    }
+
+    @AfterEach
+    fun tearDown() {
+        unmockkObject(NetworkHelper)
+        unmockkObject(Telemetry)
+        unmockkConstructor(Bundle::class)
+    }
+
+    @Test
+    fun `returns only visual playlist when no provider exposes music`() =
+        runTest {
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(AerialMedia(mockk(relaxed = true))),
+                            ),
+                        ),
+                    config = defaultConfig(),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, result.mediaPlaylist.size)
+            assertNull(result.musicPlaylist)
+        }
+
+    @Test
+    fun `returns both playlists when provider exposes music tracks`() =
+        runTest {
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(AerialMedia(mockk(relaxed = true))),
+                                tracks = listOf(MusicTrack(uri = mockk(relaxed = true))),
+                            ),
+                        ),
+                    config = defaultConfig(),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, result.mediaPlaylist.size)
+            assertNotNull(result.musicPlaylist)
+            assertEquals(1, result.musicPlaylist?.size)
+        }
+
+    @Test
+    fun `returns null music playlist when providers expose no tracks`() =
+        runTest {
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                tracks = emptyList(),
+                            ),
+                        ),
+                    config = defaultConfig(),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(0, result.mediaPlaylist.size)
+            assertNull(result.musicPlaylist)
+        }
+
+    @Test
+    fun `filters out remote media sources when wifiOnly is true and not on wifi`() =
+        runTest {
+            val appleMedia = testMedia("apple-1", AerialMediaSource.APPLE)
+            val localMedia = testMedia("local-1", AerialMediaSource.LOCAL)
+
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(appleMedia, localMedia),
+                            ),
+                        ),
+                    config = defaultConfig().copy(wifiOnly = true),
+                    hashFn = { "test-hash" },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, result.mediaPlaylist.size)
+            assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem()?.source)
+        }
+
+    /**
+     * Regression: with the playlist cache enabled, the cached list is the source of both the cached
+     * size and the chunk offsets, so remote items must never reach it. They previously did, while
+     * the read path filtered them out in SQL, which left the size counting items the chunk query
+     * could not return.
+     */
+    @Test
+    fun `cache path never caches remote media when wifiOnly is true and not on wifi`() =
+        runTest {
+            val cachedItems = slot<List<AerialMedia>>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(any()) } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val remoteProvider =
+                    FakeMediaProvider(
+                        context = context,
+                        media = listOf(testMedia("apple-1", AerialMediaSource.APPLE)),
+                        type = ProviderSourceType.REMOTE,
+                    )
+                val localProvider =
+                    FakeMediaProvider(
+                        context = context,
+                        media = listOf(testMedia("local-1", AerialMediaSource.LOCAL)),
+                    )
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers = mutableListOf(remoteProvider, localProvider),
+                        config = defaultConfig().copy(playlistCache = true, wifiOnly = true),
+                        hashFn = { "test-hash" },
+                    )
+
+                val result = service.fetchMedia()
+
+                // Remote providers are excluded before anything is fetched.
+                assertEquals(0, remoteProvider.fetchCount, "Remote provider must not be contacted off WiFi")
+                assertEquals(1, localProvider.fetchCount)
+
+                assertEquals(1, cachedItems.captured.size)
+                assertTrue(
+                    cachedItems.captured.none { it.source.requiresNetwork },
+                    "Cached playlist must not contain network sources: ${cachedItems.captured.map { it.source }}",
+                )
+
+                assertEquals(1, result.mediaPlaylist.size)
+                assertEquals(AerialMediaSource.LOCAL, result.mediaPlaylist.nextItem()?.source)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
+        }
+
+    @Test
+    fun `cache path keeps remote media on wifi`() =
+        runTest {
+            every { NetworkHelper.isOnWifiOrEthernet(any()) } returns true
+
+            val cachedItems = slot<List<AerialMedia>>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery { anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), any()) } returns false
+                coEvery { anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(any()) } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers =
+                            mutableListOf(
+                                FakeMediaProvider(
+                                    context = context,
+                                    media =
+                                        listOf(
+                                            testMedia("apple-1", AerialMediaSource.APPLE),
+                                            testMedia("local-1", AerialMediaSource.LOCAL),
+                                        ),
+                                    type = ProviderSourceType.REMOTE,
+                                ),
+                            ),
+                        config = defaultConfig().copy(playlistCache = true, wifiOnly = true),
+                        hashFn = { "test-hash" },
+                    )
+
+                val result = service.fetchMedia()
+
+                assertEquals(2, cachedItems.captured.size)
+                assertTrue(cachedItems.captured.any { it.source.requiresNetwork })
+                assertEquals(2, result.mediaPlaylist.size)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
+        }
+
+    @Test
+    fun `weighted interleaved shuffle preserves all items and mixes sources`() {
+        val media =
+            listOf(
+                testMedia("apple-1", AerialMediaSource.APPLE),
+                testMedia("apple-2", AerialMediaSource.APPLE),
+                testMedia("apple-3", AerialMediaSource.APPLE),
+                testMedia("apple-4", AerialMediaSource.APPLE),
+                testMedia("amazon-1", AerialMediaSource.AMAZON),
+                testMedia("amazon-2", AerialMediaSource.AMAZON),
+                testMedia("local-1", AerialMediaSource.LOCAL),
+            )
+
+        val shuffled = MediaServiceHelper.weightedInterleavedShuffle(media, Random(0))
+
+        assertEquals(media.size, shuffled.size)
+        assertEquals(media.toSet(), shuffled.toSet())
+        assertEquals(4, shuffled.count { it.source == AerialMediaSource.APPLE })
+        assertEquals(2, shuffled.count { it.source == AerialMediaSource.AMAZON })
+        assertEquals(1, shuffled.count { it.source == AerialMediaSource.LOCAL })
+        assertTrue(
+            shuffled
+                .take(4)
+                .map { it.source }
+                .toSet()
+                .size > 1,
+        )
+    }
+
+    @Test
+    fun `cache stores the full playlist and reads it back through the current filter`() =
+        runTest {
+            val cachedItems = slot<List<AerialMedia>>()
+            val lookupFilter = slot<TimeOfDayFilter>()
+            val readFilter = slot<TimeOfDayFilter>()
+            mockkConstructor(PlaylistCacheRepository::class)
+
+            try {
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>().isCacheValid(any(), capture(lookupFilter))
+                } returns false
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>().getCachedPlaylist(capture(readFilter))
+                } returns null
+                coEvery {
+                    anyConstructed<PlaylistCacheRepository>()
+                        .cachePlaylist(capture(cachedItems), any(), any(), any())
+                } just Runs
+
+                val service =
+                    MediaService(
+                        context = context,
+                        providers =
+                            mutableListOf(
+                                FakeMediaProvider(
+                                    context = context,
+                                    media =
+                                        listOf(
+                                            testMedia("day-1", timeOfDay = TimeOfDay.DAY),
+                                            testMedia("night-1", timeOfDay = TimeOfDay.NIGHT),
+                                        ),
+                                ),
+                            ),
+                        config =
+                            defaultConfig().copy(
+                                autoTimeOfDay = true,
+                                playlistCache = true,
+                                playlistTimeOfDayDayIncludes = setOf("SUNRISE"),
+                            ),
+                        hashFn = { "test-hash" },
+                        periodProvider = { TimeOfDay.DAY },
+                    )
+
+                val result = service.fetchMedia()
+
+                // The cache must hold the whole playlist; the time of day is applied on read so a
+                // period change does not force a refetch.
+                assertEquals(
+                    listOf("day-1", "night-1"),
+                    cachedItems.captured.map { it.metadata.title },
+                    "Expected both videos to be cached",
+                )
+
+                val expectedAllowed = setOf(TimeOfDay.UNKNOWN, TimeOfDay.DAY, TimeOfDay.SUNRISE)
+                assertEquals(expectedAllowed, lookupFilter.captured.allowed)
+                assertEquals(expectedAllowed, readFilter.captured.allowed)
+
+                // The mocked read-back returns null, so the in-memory fallback still filters.
+                assertEquals(1, result.mediaPlaylist.size)
+                val next = result.mediaPlaylist.nextItem()
+                assertEquals("day-1", next?.metadata?.title)
+            } finally {
+                unmockkConstructor(PlaylistCacheRepository::class)
+            }
+        }
+
+    @Test
+    fun `filter is applied in memory and the period is evaluated once when the cache is off`() =
+        runTest {
+            var periodEvaluations = 0
+
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media =
+                                    listOf(
+                                        testMedia("day-1", timeOfDay = TimeOfDay.DAY),
+                                        testMedia("night-1", timeOfDay = TimeOfDay.NIGHT),
+                                        testMedia("unknown-1", timeOfDay = TimeOfDay.UNKNOWN),
+                                    ),
+                            ),
+                        ),
+                    config =
+                        defaultConfig().copy(
+                            autoTimeOfDay = true,
+                            playlistTimeOfDayDayIncludes = setOf("SUNRISE"),
+                        ),
+                    hashFn = { "test-hash" },
+                    periodProvider = {
+                        periodEvaluations++
+                        TimeOfDay.DAY
+                    },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(1, periodEvaluations)
+            assertEquals(listOf("day-1", "unknown-1"), result.mediaPlaylist.titles())
+        }
+
+    @Test
+    fun `falls back to the unfiltered list when no video matches the period`() =
+        runTest {
+            val service =
+                MediaService(
+                    context = context,
+                    providers =
+                        mutableListOf(
+                            FakeMediaProvider(
+                                context = context,
+                                media = listOf(testMedia("day-1", timeOfDay = TimeOfDay.DAY)),
+                            ),
+                        ),
+                    config =
+                        defaultConfig().copy(
+                            autoTimeOfDay = true,
+                            playlistTimeOfDayNightIncludes = emptySet(),
+                        ),
+                    hashFn = { "test-hash" },
+                    periodProvider = { TimeOfDay.NIGHT },
+                )
+
+            val result = service.fetchMedia()
+
+            assertEquals(listOf("day-1"), result.mediaPlaylist.titles())
+        }
+
+    private class FakeMediaProvider(
+        context: Context,
+        private val media: List<AerialMedia> = emptyList(),
+        private val tracks: List<MusicTrack> = emptyList(),
+        override val type: ProviderSourceType = ProviderSourceType.LOCAL,
+    ) : MediaProvider(context) {
+        override val enabled: Boolean = true
+
+        var fetchCount: Int = 0
+            private set
+
+        override suspend fun fetch(): ProviderFetchResult {
+            fetchCount++
+            return ProviderFetchResult.Success(media = media, summary = "")
+        }
+
+        override suspend fun fetchMusic(): List<MusicTrack> = tracks
+
+        override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
+
+        override fun settingsHash(): String = "fake"
+    }
+
+    private fun defaultConfig() =
+        MediaService.Config(
+            removeDuplicates = false,
+            ignoreNonManifestVideos = false,
+            autoTimeOfDay = false,
+            playlistTimeOfDayDayIncludes = emptySet(),
+            playlistTimeOfDayNightIncludes = emptySet(),
+            playlistCache = false,
+            shuffleVideos = false,
+            shuffleMusic = false,
+            repeatMusic = false,
+            wifiOnly = false,
+        )
+
+    private fun testMedia(
+        id: String,
+        source: AerialMediaSource = AerialMediaSource.LOCAL,
+        type: AerialMediaType = AerialMediaType.VIDEO,
+        timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
+    ) = AerialMedia(
+        uri = mockk(relaxed = true, name = id),
+        type = type,
+        source = source,
+        metadata = AerialMediaMetadata(timeOfDay = timeOfDay, title = id),
+    )
+
+    private fun MediaPlaylist.titles(): List<String?> = List(size) { nextItem()?.metadata?.title }
+}

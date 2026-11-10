@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="local_media_test_summary1">Files found: %1$s</string>
+<string name="local_media_test_summary2">Unsupported files: %1$s</string>
+<string name="local_media_test_summary3">Videos found: %1$s</string>
+<string name="local_media_test_summary4">Photos found: %1$s</string>
+<string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+<string name="local_media_test_summary6">Selected for playback: %1$s</string>
+<string name="local_videos_legacy_no_files_found">No files found</string>
+<string name="local_videos_legacy_no_folder">Folder not specified</string>
+<string name="local_videos_legacy_no_volume">Volume not specified</string>
+<string name="local_videos_media_store_no_folder">No folder specified for filter</string>
+<string name="samba_media_test_summary1">Files found: %1$s</string>
+<string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+<string name="samba_media_test_summary3">Videos found: %1$s</string>
+<string name="samba_media_test_summary4">Photos found: %1$s</string>
+<string name="samba_media_test_summary5">Music found: %1$s</string>
+<string name="samba_media_test_summary6">Selected for playback: %1$s</string>
+<string name="webdav_media_test_summary1">Files found: %1$s</string>
+<string name="webdav_media_test_summary2">Unsupported files: %1$s</string>
+<string name="webdav_media_test_summary3">Videos found: %1$s</string>
+<string name="webdav_media_test_summary4">Photos found: %1$s</string>
+<string name="webdav_media_test_summary5">Selected for playback: %1$s</string>
+</resources>

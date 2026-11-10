@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.spotless)
 }
 
@@ -19,6 +22,10 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 spotless {
     kotlin {
         target("src/**/*.kt")
@@ -34,12 +41,49 @@ dependencies {
     api(libs.lifecycle.viewmodel)
     api(libs.savedstate.ktx)
 
-    // Used by the non-UI helpers moved in Phase 2 (ContextCompat, Display's media3 Util).
+    implementation(libs.bundles.kotlin)
     implementation(libs.core.ktx)
+    implementation(libs.exifinterface)
+    implementation(libs.preference.ktx)
     implementation(libs.media3.common)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.rtsp)
+    implementation(libs.media3.container)
+
+    // Data layer: HTTP clients, SMB, JSON, Room and the Ktor message API.
+    implementation(libs.bundles.retrofit)
+    implementation(libs.smbj)
+    api(libs.room3.runtime)
+    ksp(libs.room3.compiler)
+    implementation(libs.sqlite.framework)
+    implementation(libs.bundles.ktor)
+    implementation(libs.bundles.flowbus)
+    implementation(libs.timber)
+    implementation(libs.slf4j.simple)
+
+    // MigrationHelper clears the Coil disk cache on upgrade.
+    implementation(libs.coil)
 
     // Prefs moved in Phase 3. The kotpref-initializer is deliberately NOT added here: :app already
     // ships its ContentProvider, which calls Kotpref.init before any prefs are read.
-    implementation(libs.kotpref)
-    implementation(libs.kotpref.enum.support)
+    api(libs.kotpref)
+    api(libs.kotpref.enum.support)
+
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.sqlite.bundled.jvm)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        events("started", "skipped", "passed", "failed")
+        showStandardStreams = true
+    }
 }

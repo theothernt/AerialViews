@@ -365,19 +365,7 @@
         <item>1.8x</item>
         <item>2x</item>
     </string-array>
-    <string-array name="playback_speed_values" translatable="false">
-        <item>0.2</item>
-        <item>0.4</item>
-        <item>0.6</item>
-        <item>0.8</item>
-        <item>1</item>
-        <item>1.2</item>
-        <item>1.4</item>
-        <item>1.6</item>
-        <item>1.8</item>
-        <item>2</item>
-    </string-array>
-    <string name="playback_speed_default" translatable="false">1</string>
+<string name="playback_speed_default" translatable="false">1</string>
 
     <string name="audio_mode_mute_videos">Mute audio from videos</string>
     <string name="audio_mode_play_video_audio">Play audio from videos</string>
@@ -440,22 +428,7 @@
         <item>18sp*</item>
         <item>15sp</item>
     </string-array>
-    <string-array name="text_size_values" translatable="false">
-        <item>72</item>
-        <item>66</item>
-        <item>60</item>
-        <item>54</item>
-        <item>48</item>
-        <item>42</item>
-        <item>36</item>
-        <item>32</item>
-        <item>28</item>
-        <item>24</item>
-        <item>21</item>
-        <item>18</item>
-        <item>15</item>
-    </string-array>
-    <string name="text_size_default" translatable="false">18</string>
+<string name="text_size_default" translatable="false">18</string>
 
     <!-- Font selection -->
     <string name="font_open_sans" translatable="false">Open Sans</string>
@@ -494,18 +467,7 @@
         <item>@string/weight_800_extra_bold</item>
         <item>@string/weight_900_heavy</item>
     </string-array>
-    <string-array name="text_weight_values" translatable="false">
-        <item>100</item>
-        <item>200</item>
-        <item>300</item>
-        <item>400</item>
-        <item>500</item>
-        <item>600</item>
-        <item>700</item>
-        <item>800</item>
-        <item>900</item>
-    </string-array>
-    <string name="text_weight_default" translatable="false">300</string>
+<string name="text_weight_default" translatable="false">300</string>
 
     <!-- Max. video length -->
     <string name="maxvid_no_limit">No limit*</string>
@@ -674,22 +636,7 @@
         <item>Simplified Chinese</item>
         <item>Random</item>
     </string-array>
-    <string-array name="locale_screensaver_values" translatable="false">
-        <item>default</item>
-        <item>en</item>
-        <item>de</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>it</item>
-        <item>he</item>
-        <item>ro</item>
-        <item>ru</item>
-        <item>tr</item>
-        <item>uk</item>
-        <item>zh-CN</item>
-        <item>random</item>
-    </string-array>
-    <string name="locale_screensaver_default" translatable="false">default</string>
+<string name="locale_screensaver_default" translatable="false">default</string>
 
     <!-- Slideshow speed -->
     <string name="slideshow_5s">5 seconds</string>

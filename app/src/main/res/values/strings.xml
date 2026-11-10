@@ -216,9 +216,8 @@
 
     <string name="local_videos_media_store_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_media_store_filter_folder_summary">If you store media in e.g. /Videos/Aerial/ using \'Aerial\' will filter out media from other folders</string>
-    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos &amp; photos are stored</string>
+<string name="local_videos_legacy_summary">Specify a single folder where videos &amp; photos are stored</string>
 
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>
@@ -229,19 +228,10 @@
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
     <string name="local_videos_legacy_search_subfolders_title">Search subfolders</string>
 
-    <string name="local_videos_legacy_no_volume">Volume not specified</string>
-    <string name="local_videos_legacy_no_folder">Folder not specified</string>
-    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
-    <string name="local_videos_legacy_no_files_found">No files found</string>
 
-    <string name="local_media_test_summary1">Files found: %1$s</string>
-    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="local_media_test_summary3">Videos found: %1$s</string>
-    <string name="local_media_test_summary4">Photos found: %1$s</string>
-    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
-    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
+<string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
 
-    <string name="local_videos_permission_denied">Permission Denied</string>
+<string name="local_videos_permission_denied">Permission Denied</string>
     <string name="local_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / Samba videos -->
@@ -277,14 +267,13 @@
     <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
 
     <string name="samba_videos_test_results">Test results</string>
-    <string name="samba_media_test_summary1">Files found: %1$s</string>
-    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="samba_media_test_summary3">Videos found: %1$s</string>
-    <string name="samba_media_test_summary4">Photos found: %1$s</string>
-    <string name="samba_media_test_summary5">Music found: %1$s</string>
-    <string name="samba_media_test_summary6">Selected for playback: %1$s</string>
 
-    <string name="samba_media_wol_title">Wake on LAN settings</string>
+
+
+
+
+
+<string name="samba_media_wol_title">Wake on LAN settings</string>
     <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
 
     <!-- Main / Video Sources / Samba videos / Wake on LAN -->
@@ -321,13 +310,12 @@
     <string name="webdav_media_password_title">Password</string>
     <string name="webdav_media_password_summary">Not set. Optional</string>
 
-    <string name="webdav_media_test_summary1">Files found: %1$s</string>
-    <string name="webdav_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="webdav_media_test_summary3">Videos found: %1$s</string>
-    <string name="webdav_media_test_summary4">Photos found: %1$s</string>
-    <string name="webdav_media_test_summary5">Selected for playback: %1$s</string>
 
-    <string name="webdav_media_search_subfolders_title">Search subfolders</string>
+
+
+
+
+<string name="webdav_media_search_subfolders_title">Search subfolders</string>
     <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
     <string name="webdav_media_test_results">Test results</string>
 
