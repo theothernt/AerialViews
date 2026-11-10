@@ -1,8 +1,8 @@
-# AerialViews: Gradual Compose Screensaver Migration (v3)
+# AerialViews: Gradual Compose Screensaver Migration (v4)
 
 Plan for an LLM coding agent. Read this whole file before starting. Work on **one phase at a time** and **stop at the end of each phase** for human review.
 
-v2 incorporated a validation pass against the actual codebase. v3 adds the shared `:playback` module, separates host lifecycle ownership from Compose view creation, adds the overlay-config extraction, and corrects the Phase 1 flavor and lifecycle-dependency details. Where this plan and the code disagree, the code wins: stop and report.
+v2 incorporated a validation pass against the actual codebase; v3 added `:playback`, the `DreamServiceCompat` contract and the overlay-config extraction. v4 applies the Phase 0 audit (`docs/migration/AUDIT.md`) to the plan: Phases 2-4 now follow the audit's 15-step move order, the four missing `ui/helpers` files are in the `:core` inventory, the `MusicPlayer -> VideoPlayerHelper` inversion is called out, and the resource, Room/KSP and telemetry gaps are closed. Where this plan and the code disagree, the code wins: stop and report.
 
 ## Goal
 
@@ -35,7 +35,8 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 
 ```
 :core                  models, enums, prefs, providers, services, data, utils,
-                       shared screensaver controller / state (UI-agnostic)
+                       four non-UI ui/helpers, shared screensaver controller / state
+                       (UI-agnostic)
 :playback              the existing video and image playback layer: VideoPlayerView,
                        ImagePlayerView, VideoPlayerHelper, ImagePlayerHelper and their
                        device-specific workarounds. Depends on :core ONLY.
@@ -47,12 +48,13 @@ Add a new Jetpack Compose screensaver implementation that users can opt into, ru
 Dependency rules (enforce in every phase):
 - `:core` depends on neither `:app`, `:playback` nor `:screensaver-compose`.
 - `:core` contains no `Activity`, `DreamService`, `View` implementation, or Compose code, and (see Phase 1) no direct Firebase calls. It **may declare host/UI contracts** (framework types such as `Context`, `Window`, `KeyEvent`, and the lifecycle owners) as long as it implements no UI. That is why `:core` takes `androidx.lifecycle` and `androidx.savedstate` dependencies in Phase 1.
-- `:playback` depends on `:core` only. It holds the player/image Views and their workarounds, and no screensaver orchestration.
+- `:playback` depends on `:core` only. It holds the player/image Views and their workarounds, and no screensaver orchestration. It consumes the telemetry seam declared in `:core`, never Firebase directly.
 - `:screensaver-compose` never imports from `:app` and never depends on Firebase.
 
 ## Verified facts about the project (reviewed against the codebase; re-verify cheaply, don't redo)
 
 - Modules: `:app`, `:projectivyapi` (AIDL library), `:baselineprofile`, `:microbenchmark`. One `version` flavor dimension: `github`, `beta`, `googleplay`, `googleplaybeta`, `amazon`, `fdroid`. minSdk 24, targetSdk 37, AGP 9.5.1, Kotlin 2.4.21.
+- **Phase 0 result:** `docs/migration/AUDIT.md` is authoritative for the dependency closure, the 15-step move order, the manifest inventory and the baselines. Its section 7 lists every place this plan originally disagreed with the code; those corrections are already applied below.
 - Version catalog already exists (`gradle/libs.versions.toml`). `android.nonTransitiveRClass=true` and `nonFinalResIds=true` are already set. Do not "enable" them.
 - `AGENTS.md` defines the build/test/lint commands (see Standard gate below).
 - Entry points: `DreamActivity : DreamService` and `TestActivity : AppCompatActivity`, both manifest-declared; `DreamActivity` is exported with `BIND_DREAM_SERVICE`. `NotificationService` (notification listener) grant is stored by component name.
@@ -115,7 +117,7 @@ Dependency rules (enforce in every phase):
 
 ## Phase 0: Confirm and fill gaps (read-only)
 
-The broad audit has been done (see "Verified facts"). Produce a short `docs/migration/AUDIT.md` that records those facts and adds only what's missing:
+**Status: complete.** `docs/migration/AUDIT.md` was produced on 2026-11-10; it records the verified facts, the dependency closure, the 15-step move order, the manifest inventory, the Firebase/`BuildConfig` call sites and the baselines. The numbered items below are kept as the record of what it had to answer:
 
 1. **Dependency-closure map** for the planned `:core` contents: for every package slated to move, list what it imports from packages that are not yet moved (e.g. prefs → weather unit enums), and derive a **move order in which `:core` compiles at every commit**.
 2. Android-framework coupling in that closure (`Activity`, `Window`, `View`, `Context`-capturing singletons) that blocks extraction.
@@ -125,18 +127,18 @@ The broad audit has been done (see "Verified facts"). Produce a short `docs/migr
 6. Baselines: APK size per flavor, and (if a device/emulator is available) idle memory while the screensaver runs; otherwise mark "to be measured by the human".
 7. Any place where the plan contradicts the code.
 
-**Gate:** AUDIT.md exists; the Standard gate commands were run on the untouched tree and results recorded. **STOP.**
+**Gate (passed):** AUDIT.md exists; the Standard gate ran on the untouched tree (`BUILD SUCCESSFUL`, 537 tests passed, 0 failed) and all six debug APK sizes are recorded. **STOP.**
 
 ## Phase 1: `:core` foundation and the three structural decisions
 
 Create the module, then resolve the decisions that define `:core`'s whole dependency surface. **Stop for human confirmation on decisions 1 to 3 before moving any code.** Recommended defaults are given.
 
-1. **Firebase / source-set swap (decision).** Recommended: define a small telemetry interface in `:core` (crash/non-fatal logging, performance traces, analytics calls used today), with the Firebase implementation and the no-op implementation supplied from `:app` per flavor via the existing `common`/`fdroid` source sets, injected at startup. `:core` has no Firebase dependency. The alternative (replicating the source-set swap inside `:core`) requires giving `:core` the `version` dimension and the same `sourceSets` wiring; only choose it if the interface approach proves unworkable.
-2. **`BuildConfig` values (decision).** Recommended: `:core` reads them through an `AppConfig` abstraction initialized by `:app` (OPEN_WEATHER key, VERSION_CODE, DEBUG, TEST_CONFIG, FLAVOR), so secrets/`secrets.properties` plumbing and the `testConfig` property are **not** duplicated into the library. Don't enable `buildConfig` in `:core` unless it truly needs its own constants.
+1. **Firebase / source-set swap (decision).** Recommended: define a small telemetry interface in `:core` (crash/non-fatal logging, performance traces, analytics calls used today), with the Firebase implementation and the no-op implementation supplied from `:app` per flavor via the existing `common`/`fdroid` source sets, injected at startup. `:core` has no Firebase dependency. The alternative (replicating the source-set swap inside `:core`) requires giving `:core` the `version` dimension and the same `sourceSets` wiring; only choose it if the interface approach proves unworkable. **The same seam serves `:playback`:** `VideoPlayerView`, `ImagePlayerView` and `ImagePlayerHelper` all report to Crashlytics (AUDIT.md section 4.1), so the interface must live in `:core`, and neither library may depend on Firebase directly.
+2. **`BuildConfig` values (decision).** Recommended: `:core` reads them through an `AppConfig` abstraction initialized by `:app` (`OPEN_WEATHER`, `VERSION_CODE`, `VERSION_NAME`, `DEBUG`, `TEST_CONFIG`, `FLAVOR`, `BUILD_TYPE`), so secrets/`secrets.properties` plumbing and the `testConfig` property are **not** duplicated into the library. `VERSION_NAME`/`BUILD_TYPE` are needed by `LogcatCapture` and are easy to miss; `HttpLogging` reads `DEBUG` before the first HTTP client exists, so the seam is set at startup. Don't enable `buildConfig` in `:core` unless it truly needs its own constants.
 3. **`:projectivyapi` (decision).** Recommended: `WallpaperProviderService` stays in `:app` (manifest entry unchanged) unless the Phase 0 closure shows `:core` code needs it; if `:core` must expose it, `:core` takes the `:projectivyapi` dependency and `buildFeatures.aidl` accordingly.
 
 Then implement:
-4. Create the `:core` Android library (distinct namespace), register it in `settings.gradle.kts`, add it to `:app`.
+4. Create the `:core` Android library (distinct namespace, assumed `com.neilturner.aerialviews.core`; flag it if you want another), register it in `settings.gradle.kts`, add it to `:app`.
 5. Keep `:core` **flavorless** (no `version` dimension). A flavorless library needs no `missingDimensionStrategy` when consumed by a flavored `:app`, and it needs only the default `debug`/`release` build types. Do not add flavor machinery to `:core`, `:baselineprofile` (which declares the six flavors itself) or `:microbenchmark` (which has no flavor dimension).
 6. Add the catalog entries `:core` needs for the `ScreensaverHost` owner types (`androidx.lifecycle:lifecycle-runtime-ktx`, `androidx.lifecycle:lifecycle-viewmodel`, `androidx.savedstate:savedstate-ktx`) now, so the contracts in Phase 6 are pure addition. Do not enable `buildConfig` in `:core`.
 7. Add `consumerProguardFiles` for `:core` (the project has no `proguard-rules.pro`; existing keep rules live in `app/src/main/keepRules/*.keep`, so check which of those must be moved or duplicated as code moves).
@@ -146,33 +148,49 @@ Then implement:
 
 **Gate:** Full gate. F-Droid has no Firebase. **STOP.**
 
-## Phase 2: Move the leaf closure (types, enums, models)
+## Phase 2: Move the leaf closure (enums, music, weather units, four helpers)
 
-1. Using the Phase 0 map, move leaf types first: enums, models, and **every type prefs/models transitively reach**, including `TemperatureUnit` and `WindSpeedUnit` currently under `services/weather`. Keep package names.
-2. Each commit must leave `:core` compiling and `:app` building. `:core` will not compile until the closure of whatever it contains is inside it, so choose commit boundaries accordingly.
-3. Anything that cannot move cleanly stays in `:app`. List it in the stop report instead of refactoring it.
+`docs/migration/AUDIT.md` section 1.3 is authoritative; only true leaves move here.
+
+1. Move `models/enums` and `models/music`.
+2. Move `services/weather/TemperatureUnit.kt` and `WindSpeedUnit.kt` (pure enums) so `models/prefs` can follow in Phase 3. This temporarily splits one package across two modules; that is allowed and intended.
+3. Move the four non-UI helpers that `data`, `providers`, `services` and `utils` depend on: `ui/helpers/DeviceHelper`, `PackageHelper`, `VolumeHelper`, `PermissionHelper`.
+4. Move `services/Display` with `DeviceHelper`, dropping or relocating its `Activity` overload (only settings fragments pass an `Activity`).
+5. Keep package names. Anything that does not move cleanly stays in `:app` and is listed in the stop report.
+6. Do **not** move `models/videos` or `models` (they need `utils`), `models/prefs` (needs resources), or `utils` (needs the data layer). Those belong to Phases 3-4.
 
 **Gate:** Standard gate. **STOP.**
 
-## Phase 3: Move prefs, utils, and shared resources
+## Phase 3: Resources, prefs, and the preference receiver
 
-1. Move the Kotpref-based prefs layer and utils. Preserve the Kotpref initialization mechanism exactly and document how `:core` gets initialized.
-2. Replace `BuildConfig` reads in moved code with `AppConfig` (Phase 1 decision 2), keeping behavior identical.
-3. Move resources needed by both paths into `:core`; settings-only resources stay in `:app`. Fix R references and watch for name collisions.
-4. Move `PackageReplacedReceiver` together with its migration code **only** with its fully-qualified manifest entry and a clean merged-manifest diff (ground rule 5). If that is too invasive, leave the receiver and its three files in `:app` and note it.
-5. Add or move consumer keep rules for moved code.
+`utils` does **not** move here: it depends on `data/network` and `data/storage` (AUDIT.md section 1.2) and moves with the data layer in Phase 4.
+
+1. Move the resources moved code needs into `:core` **before** the code: the `R.array.*` pref defaults, the provider `raw` JSON (`fireos8[_strings]`, `tvos26[_strings]`, `comm1[_strings]`, `comm2[_strings]`) and the provider/service strings used by Phase 4 code. Settings-only resources stay in `:app`; never duplicate a resource across both modules.
+2. Change every moved file's `R` import to `:core`'s R. The earlier "imports only change if packages change" rule does not apply to `R`.
+3. Move the Kotpref prefs layer. Preserve the initialization mechanism (the `kotpref-initializer` ContentProvider) and document it.
+4. Replace `BuildConfig` reads in moved code with `AppConfig` (Phase 1 decision 2 and AUDIT.md section 4.2), including `VERSION_NAME`/`BUILD_TYPE`; keep behavior identical.
+5. Move `PackageReplacedReceiver` and its migration code with a fully-qualified manifest entry and a clean merged-manifest diff (ground rule 5). If that proves invasive, leave the receiver and its three files in `:app` and say so.
+6. Add or move consumer keep rules for moved code.
 
 **Gate:** Standard gate, merged-manifest diff, plus an R8 release build of one Firebase flavor. Smoke test of screensaver start/stop (human-verified). **STOP.**
 
-## Phase 4: Move data, providers, and services
+## Phase 4: Data, providers, services, and `:playback`
 
-1. Move providers (Immich, WebDAV/Nextcloud, Plex, Samba, etc.), the data layer, and non-UI services, in small per-package batches so regressions are bisectable. Route Firebase usage (`MediaService`, `VideoPlayerHelper`, `MediaServiceHelper`, `VideoPlayerView`, etc.) through the telemetry interface.
-2. `NotificationService`, `WallpaperProviderService` and any other manifest components: follow ground rule 5. Keep FQNs and manifest names fully qualified; verify with the merged-manifest diff.
-3. Move tests alongside moved code.
-4. Create `:playback` (flavorless, depends on `:core` only, Spotless block, consumer keep rules). Move the playback Views and anything that holds one: `VideoPlayerView`, `ImagePlayerView`, `VideoPlayerHelper`, `ImagePlayerHelper`, `BackgroundBlurHelper`. Package names are unchanged, so `MetadataOverlay`'s `VideoPlayerView` parameter still compiles and `:app` depends on `:playback`.
-5. Move the pure playback helpers (`PlaybackCallbacks`, `PlaybackTiming`, `PortraitVideoOrientation`, `ScheduledBlackoutWindow`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`) into `:core` here or in Phase 5a: pick one and record it, do not move them twice.
+Follow the audit's commit order (AUDIT.md section 1.3, steps 5-14); every commit must compile.
 
-**Gate:** Full gate, merged-manifest diff for every flavor, moved providers' unit tests pass, `:app` assembles against `:playback`, and a smoke run of playback in the legacy screensaver (human-verified). **STOP.**
+1. **`data/network`** (needs prefs). Route `BuildConfig.DEBUG` in `HttpLogging` through `AppConfig`, which must be set before the first HTTP client is constructed.
+2. **`utils` + `data/storage` in one commit.** They form a cycle (`MediaTypeResolver` -> `FileHelper`; `FileHelper` -> `utils` extensions). Split `utils/Extensions.kt` first: pure extensions go to `:core`, `View.delayOnLifecycle` and the `MultiSelectListPreference` extension stay in `:app`. `utils` also needs `NetworkHelper` (step 1) and `DeviceHelper` (Phase 2).
+3. **`models/videos`, then `models`** (both need `utils`).
+4. **`data/preferences`** (migration helpers; `PackageHelper` is already in `:core`).
+5. **`data`** (Room DB, DAO, repository, entities). Apply the KSP plugin and Room compiler in `:core`, and decide the schema location: move `app/schemas` to `core/schemas` (commit the JSON) or point `:core`'s `room.schemaLocation` at the existing directory. Keep `fallbackToDestructiveMigration` behavior identical.
+6. **`providers`** (all subpackages), now that data/models/prefs/utils are in `:core` and the `raw` JSON moved in Phase 3. Move their unit tests too, and apply the JUnit 5 plugin (`de.mannodermaus.android-junit5`) plus `useJUnitPlatform()` in `:core`, or the tests silently do not run.
+7. **`services/weather`** (`WeatherService`; the unit enums already moved in Phase 2).
+8. **Extract the audio functions first, then move `services`.** `services/MusicPlayer` imports `ui/core/VideoPlayerHelper` and uses exactly `buildAudioPlayer` and `createAudioMediaSource`; move those two into `:core` (for example `AudioPlayerFactory`) before moving `services`, or `:core` would depend on `:playback`. Then move the rest of `services` (philips, sonos, playback, music, Ktor, notification) through the telemetry interface.
+9. **`:playback`**: create the module (flavorless, depends on `:core` only, Spotless block, consumer keep rules) and move `VideoPlayerView`, `ImagePlayerView`, `VideoPlayerHelper`, `ImagePlayerHelper`, `BackgroundBlurHelper`, `PlaybackDiagnosticsListener`. `:playback` consumes the telemetry seam too (AUDIT.md section 4.1). Package names are unchanged, so `MetadataOverlay`'s `VideoPlayerView` parameter still compiles and `:app` depends on `:playback`.
+10. **Manifest components**: `NotificationService` and `WallpaperProviderService` follow ground rule 5. Keep `WallpaperProviderService` in `:app` per AUDIT.md section 5; moving it would pull `:projectivyapi` and AIDL into `:core` for no benefit. `TestConfigReceiver` also stays in `:app`: its action (`com.neilturner.aerialviews.testconfig.APPLY`) is referenced by the ADB commands in `docs/testing/README.md`, and it depends on `BuildConfig.TEST_CONFIG`.
+11. Move the pure playback helpers (`PlaybackCallbacks`, `PlaybackTiming`, `PortraitVideoOrientation`, `ScheduledBlackoutWindow`, `MetadataResolver`, `TrackMetadataExtractor`, `VideoMetadataHandler`) into `:core` here or in Phase 5a: pick one and record it, do not move them twice.
+
+**Gate:** Full gate, merged-manifest diff for every flavor, moved providers' unit tests pass (and actually execute under JUnit 5), `:app` assembles against `:playback`, and a smoke run of playback in the legacy screensaver (human-verified). **STOP.**
 
 ## Phase 5a: Extract the shared controller (no view changes)
 
@@ -283,7 +301,7 @@ Screenshot tests would be **new infrastructure**, not parity work: ask the human
 1. Add an "experimental" toggle in settings (in `:app`) bound to `useComposeScreensaver`, with clear preview wording.
 2. Ensure **both** preview/test paths use the chosen implementation, including `MainActivity`'s `startScreensaverOnLaunch` / `exit_app` round trip with `TestActivity`.
 3. Verify the `ui_path` key is on crash reports and non-fatals, and demonstrate the fallback and crash-loop guard (simulate failures, including the reset rules).
-4. Measure on the lowest-RAM supported devices (memory, cold start, dropped frames/jank) versus the Phase 0 baselines; record in `docs/migration/PERF.md`.
+4. Measure on the lowest-RAM supported devices (memory, cold start, dropped frames/jank) versus the Phase 0 baselines; record in `docs/migration/PERF.md`. Phase 0 captured APK sizes and an empty-state PSS only (no providers configured on the device), so a **configured-session idle-playback baseline** must be captured before this comparison; the empty-state figure is not a substitute.
 5. Draft release notes and a feedback prompt.
 
 **Gate:** Full gate; guard behavior demonstrated; perf comparison reviewed by the human. **STOP.**
@@ -304,6 +322,7 @@ Do not start without explicit human approval based on crash rates and beta feedb
 |---|---|
 | `:core` pulls in Firebase and defeats the F-Droid build | Telemetry interface; F-Droid dependency check in the Full gate (Phases 1, 4, 7, 9, 10) |
 | `:core` won't compile mid-move (prefs → services enums) | Phase 0 closure map; leaf-first ordering; every commit compiles |
+| Move order breaks on package cycles (prefs ↔ weather, utils ↔ storage, services → ui/core) | AUDIT.md section 1.3 order; one-commit pairs; audio extraction before `services` |
 | Library manifest silently changes component names | FQN rule, fully-qualified `android:name`, merged-manifest diff per flavor |
 | Phase 5 is a rewrite disguised as a refactor | Split 5a (unit-test-gated controller) / 5b (device-verified view adoption); transition protocol; per-feature before/after table |
 | Duplicated state model next to `OverlayStateStore` | Seed from and extend the existing overlay state |
