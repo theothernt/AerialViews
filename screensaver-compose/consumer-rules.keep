@@ -1,0 +1,8 @@
+# Consumer keep rules for :screensaver-compose.
+#
+# :app constructs this renderer from its ComposeScreensaverUiFactory lambda. Keep the public entry
+# point if a consuming app's R8 sees the class only through reflection or a library boundary.
+-keep class com.neilturner.aerialviews.screensaver.compose.ComposeScreensaverUi { public *; }
+
+# ViewModelProvider creates this class by reflection; keep its no-arg constructor in minified builds.
+-keep class com.neilturner.aerialviews.screensaver.compose.ScreensaverViewModel { <init>(); }

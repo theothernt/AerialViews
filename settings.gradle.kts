@@ -31,6 +31,7 @@ rootProject.name = "Aerial Views"
 include(":app")
 include(":core")
 include(":playback")
+include(":screensaver-compose")
 include(":projectivyapi")
 include(":baselineprofile")
 include(":microbenchmark")

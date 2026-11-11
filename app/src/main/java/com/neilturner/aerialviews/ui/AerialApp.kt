@@ -12,7 +12,9 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.screensaver.compose.ComposeScreensaverUi
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
+import com.neilturner.aerialviews.ui.screensaver.ScreensaverUiFactory
 import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.LogcatCapture
 import com.neilturner.aerialviews.utils.TelemetryInitializer
@@ -32,6 +34,9 @@ class AerialApp : Application() {
             ),
         )
         Telemetry.initialize(TelemetryInitializer.create())
+        ScreensaverUiFactory.registerComposeUiFactory { onFirstItemDisplayed ->
+            ComposeScreensaverUi(onFirstItemDisplayed)
+        }
 
         DreamTiming.mark("app.create")
         super.onCreate()

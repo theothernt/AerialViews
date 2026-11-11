@@ -239,6 +239,7 @@ dependencies {
     "baselineProfile"(project(":baselineprofile"))
     implementation(project(":core"))
     implementation(project(":playback"))
+    implementation(project(":screensaver-compose"))
     implementation(project(":projectivyapi"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
