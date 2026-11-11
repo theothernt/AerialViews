@@ -23,14 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -458,11 +459,10 @@ private fun overlayTextStyle(
     alphaMultiplier: Float = 1f,
 ): TextStyle =
     TextStyle(
-        // Custom bundled fonts live in :app; the shared config carries the choice, but the
-        // Compose renderer uses the platform default until that resource is moved to a library.
-        fontFamily = FontFamily.Default,
+        fontFamily = ScreensaverFonts.family(config.fontTypeface),
         fontSize = (slot.typography.sizeSp * sizeMultiplier).sp,
         fontWeight = FontWeight(slot.typography.weight),
+        shadow = Shadow(Color.Black, Offset(1f, 1f), blurRadius = 1f),
         color =
             overlayColour(config).copy(
                 alpha = config.layout.visibleAlpha * alphaMultiplier,

@@ -233,7 +233,9 @@ touch gestures, blackout, music, or the full binding matrix.
 
 - Added a session loading-status flow from `MediaService` and a Compose status layer inside the
   black loading fade. It shows the legacy loading labels, an empty/provider-failure message, or a
-  playback-error message, with a Compose-drawn spinner and no new UI dependency.
+  playback-error message, with a framework `ProgressBar` matching the legacy spinner and no new UI
+  dependency. A follow-up also moved the bundled fonts to `:core` and matched the loading row's
+  font, size, weight, visibility, spacing and background.
 - Added background music to the Compose session using the shared `MusicPlayer` and a local
   `MusicPlayback` adapter. The fetched music playlist and resume index are passed to the controller,
   track changes are persisted through `PlaylistCacheRepository`, and the controller owns pause,
@@ -248,8 +250,8 @@ touch gestures, blackout, music, or the full binding matrix.
 
 ### Remaining gaps after batch 5
 
-- Custom bundled fonts remain in `:app`; Compose uses `FontFamily.Default` with the resolved colour,
-  size and weight.
+- Font and loading-row parity are implemented, but still need human visual verification. The
+  loading text has a 4px baseline difference from the legacy view.
 - Metadata is a subset: current media short description/POI is published to every metadata slot;
   per-slot selection, geocoding, EXIF/date rules, the video metadata listener and exact video-position
   POI cycling remain.

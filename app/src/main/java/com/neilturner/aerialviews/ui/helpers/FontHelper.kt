@@ -5,7 +5,7 @@ import android.graphics.Typeface
 import android.text.TextPaint
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.TypefaceCompat
-import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.core.R
 import timber.log.Timber
 
 object FontHelper {

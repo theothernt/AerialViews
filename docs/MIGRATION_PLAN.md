@@ -302,7 +302,7 @@ Work in this order, committing per item:
 
 Performance rules: avoid per-frame recomposition, use `graphicsLayer` for animated properties, read state as late as possible, keep the tree small.
 
-Screenshot tests would be **new infrastructure**, not parity work: ask the human first, and keep them out of the parity gate.
+Screenshot tests are now an explicit Phase 9a device check (added 2026-11-11). They remain manual evidence, not CI infrastructure, and must not be presented as human verification.
 
 **Gate (per batch):** Standard gate; PARITY.md updated; "verified" only if checked on a real device (human-verified). **STOP after each logical batch** (playback layer; transitions; overlays; input; edge cases).
 
@@ -313,15 +313,55 @@ Screenshot tests would be **new infrastructure**, not parity work: ask the human
 3. Verify the `ui_path` key is on crash reports and non-fatals, and demonstrate the fallback and crash-loop guard (simulate failures, including the reset rules).
 4. Measure on the lowest-RAM supported devices (memory, cold start, dropped frames/jank) versus the Phase 0 baselines; record in `docs/migration/PERF.md`. Phase 0 captured APK sizes and an empty-state PSS only (no providers configured on the device), so a **configured-session idle-playback baseline** must be captured before this comparison; the empty-state figure is not a substitute.
 5. Draft release notes and a feedback prompt.
+6. Capture every overlay type on both renderers at the same layout and compare; see Phase 9a.
 
 **Phase 9 implementation notes (2026-11-11):** the beta is exposed under Appearance > Startup >
 Experimental, and explicit re-enable resets the persisted failure count. The guard fallback, version
 reset, settings reset and `MainActivity` round trip were exercised on the attached Chromecast. The
 full gate passed; `PERF.md` records the comparison and an unresolved empty-state PSS increase. The
-performance comparison and the Phase 6/7/8 human checks remain open, so the gate is not signed off.
-No commit was created. See `docs/migration/PHASE9.md`.
+performance comparison, the Phase 9a overlay screenshots and the Phase 6/7/8 human checks remain
+open, so the gate is not signed off. No commit was created. See `docs/migration/PHASE9.md`.
 
-**Gate:** Full gate; guard behavior demonstrated; perf comparison reviewed by the human. **STOP.**
+**Gate:** Full gate; guard behavior demonstrated; perf comparison and Phase 9a overlay matrix
+reviewed by the human. **STOP.**
+
+## Phase 9a: Overlay screenshot parity (added 2026-11-11)
+
+Phase 9's build and performance evidence does not prove that overlays look or behave the same. This
+is a gate addendum, not a new implementation phase. Do not start Phase 10 until the human has
+reviewed the matrix.
+
+1. Use the debuggable `betaDebug` build and a controlled single-media fixture so legacy and Compose
+   see the same background and metadata. Keep the 1920x1080 display state fixed.
+2. Back up the device preferences before the run; restore and hash-check them afterwards. Do not
+   leave test slots, test credentials or test feeds on the user's device.
+3. Capture layout A (clock, date, weather now/forecast, metadata 1/2, message 1, countdown) and
+   layout B (metadata 3/4, music 1/2, messages 2/3/4, one empty slot). Together these cover every
+   visual `OverlayType`: clock, date, metadata 1-4, weather 1/2, music 1/2, message 1-4 and
+   countdown.
+4. Launch `TestActivity` with an explicit `ui_path=legacy` and `ui_path=compose`, wait for the first
+   item and overlays, then capture the full display. Keep the same media item and slot layout for
+   both. Record the actual weather, now-playing metadata and clock/countdown values with each pair.
+5. Capture the separate progress-bar view and all overlay visibility modes (`ALWAYS_VISIBLE`,
+   `ALWAYS_HIDDEN`, `HIDE_AFTER_DELAY`, `SHOW_AFTER_DELAY`, and input reveal). If Compose does not
+   implement a mode or the progress bar, record it as missing, not as parity.
+6. Put the captures in `build/phase9/overlays/` and maintain `docs/migration/OVERLAYS.md` with one row
+   per overlay, the legacy/Compose files, and a classification: match, intentional difference,
+   known gap, or bug. Include a side-by-side HTML report for the human.
+7. Do not mark `PARITY.md` rows verified from these agent captures. The human reviews the report and
+   decides which differences block the beta.
+
+**Gate:** Every overlay type has a legacy and Compose capture; the progress bar and visibility modes
+have an explicit result; differences are classified; preferences are restored; the human has
+reviewed the report. **STOP.**
+
+**Phase 9a implementation notes (2026-11-11):** all 15 visual `OverlayType` values were captured on
+both renderers using a local still and a live London weather response. The current captures expose a
+legacy now-playing overflow into the metadata column, opaque legacy forecast-icon tiles versus
+Compose tinted icons, and the font gap observed at capture time. A later follow-up moved the bundled
+fonts into `:core`, applied the configured family in Compose and matched the loading row; see
+`PARITY.md`. The progress bar and visibility modes remain open. See `docs/migration/OVERLAYS.md` and
+`build/phase9/overlays/report/index.html`. No code was changed for the original evidence pass.
 
 ## Phase 10: Stabilize, flip default, retire legacy
 

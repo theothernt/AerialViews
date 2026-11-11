@@ -71,6 +71,12 @@ internal fun ComposePlaybackLayer(
                 ?.coerceAtLeast(0)
                 ?.toInt() ?: 0
         }
+    val loadingBackground =
+        remember {
+            runCatching {
+                Color(android.graphics.Color.parseColor(GeneralPrefs.backgroundLoading))
+            }.getOrDefault(Color.Black)
+        }
 
     val controls =
         remember {
@@ -254,7 +260,7 @@ internal fun ComposePlaybackLayer(
                 Modifier
                     .fillMaxSize()
                     .graphicsLayer { alpha = loadingAlpha.value }
-                    .background(Color.Black),
+                    .background(loadingBackground),
         ) {
             loadingContent()
         }

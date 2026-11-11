@@ -2,8 +2,8 @@
 
 **Status:** implementation and the automated full gate are complete. The settings toggle, guard,
 reset rules and `MainActivity` round trip were exercised on the attached Chromecast. The Phase 9
-gate is **not signed off**: the performance comparison needs human review, and the Phase 6, 7 and 8
-human checks remain open. No commit was created.
+gate is **not signed off**: the performance comparison and the Phase 9a overlay screenshot matrix
+need human review, and the Phase 6, 7 and 8 human checks remain open. No commit was created.
 
 ## What changed
 
@@ -109,6 +109,35 @@ Release build (`betaRelease`, R8):
 - The release package's existing Apple-only playlist (139 videos) was used; its prefs were not
   changed. A release empty-state run is still missing.
 
+## Overlay screenshot parity (Phase 9a)
+
+Phase 9a is a gate addendum added after the initial review. All 15 visual `OverlayType` values were
+captured on both renderers using a single local still, live London weather and a live Spotify track.
+The captures cover clock, date, weather now/forecast, metadata 1-4, message 1-4, music 1-2 and
+countdown; both gradients and one empty slot are included.
+
+The side-by-side report is `build/phase9/overlays/report/index.html`; the raw PNGs and logs are in
+`build/phase9/overlays/captures/`. The test prefs were restored exactly
+(`06698a865445c451b367693ecfff1f9c66c9a9344ef044df12144eaa987bd6cc`).
+
+Findings:
+
+- Long legacy now-playing text can overflow into the metadata column; Compose stayed in the right
+  column in the captured run.
+- Legacy forecast icons have opaque coloured tiles; Compose uses transparent tinted icons.
+- At capture time Compose used the platform default font, while legacy used the configured Google
+  Sans. A follow-up now shares the bundled fonts and uses the configured family in Compose.
+- The progress bar and the four visibility modes are not captured yet. The progress bar is not
+  implemented in Compose, so it must be recorded as missing rather than parity.
+- Clock and countdown values differ by a minute because the captures use live time. This is not a
+  pixel-identical comparison.
+
+See `docs/migration/OVERLAYS.md` for the method, matrix, limitations and gate. No `PARITY.md` row is
+marked verified by this evidence.
+
+A font/loading follow-up after these captures is recorded in `OVERLAYS.md` and `PARITY.md`; it does
+not close the Phase 9a gate.
+
 ## Draft release notes
 
 > **Try the new screensaver (beta)**
@@ -146,7 +175,9 @@ Release build (`betaRelease`, R8):
 | Reset rules | User re-enable and version reset passed |
 | Full gate | Passed |
 | Performance comparison | Debug and release agent-collected; **human review pending** |
+| Overlay screenshot matrix | All 15 types captured; **human review pending** |
+| Progress bar / visibility modes | **Open in Phase 9a** |
 | Human parity/device checks | **Open from Phases 6, 7 and 8** |
 
-**Stop here.** Phase 10 must not start until the human reviews the performance data and the beta
-feedback/crash data supports flipping the default.
+**Stop here.** Phase 10 must not start until the human reviews the performance data, the Phase 9a
+overlay report, and the beta feedback/crash data supports flipping the default.

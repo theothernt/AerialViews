@@ -29,6 +29,8 @@ feature checked on a real device by a human. This agent has not marked any row v
 | Now-playing and music overlays | in progress | Batch 3 renderer and notification-listener feed start when a music slot is configured; batch 5 adds background-music playback and track persistence. |
 | Message API overlay | in progress | Batch 3 renderer and optional Ktor server are wired to the shared store; not device-verified. |
 | Overlay visibility modes | in progress | Batch 3 implements always visible/hidden and delayed show/hide; batch 4 adds input reveal with the configured timeout. Not device-verified. |
+| Bundled Google Sans / Open Sans font | in progress | Fonts now live in `:core` and both renderers use the configured family. Compose loading glyphs matched legacy exactly in an aligned crop. Not human-verified. |
+| Loading screen layout/text | in progress | Bottom-left 24dp spinner/gap, 32dp/26dp padding, configured size/weight/font/visibility and loading background. Not human-verified. |
 | Progress bar | not started | Deferred past batch 3; the shared progress state and event bridge exist. |
 | Gradients, brightness, notifications | in progress | Top/bottom gradients are rendered; brightness and notification overlays remain. |
 | Blackout, sleep timer, scheduled blackout | in progress | Batch 5 maps the prefs, renders a black overlay, stops the hosted players and lets the controller pause/resume music. Not device-verified. |
@@ -80,3 +82,19 @@ Chromecast. The pref-selected Compose path reached its first item, the failure-l
 Compose and fell back to legacy, the settings toggle reset the failure count, and the
 `MainActivity` start-on-launch/Back round trip produced `exit_app=true`. These are agent smoke
 checks; no row above changes status and no row is marked verified. See `PHASE9.md` and `PERF.md`.
+
+**Phase 9a overlay screenshots (2026-11-11):** all 15 visual `OverlayType` values were captured on
+legacy and Compose with a single still, live weather and a live Spotify track. The report is
+`build/phase9/overlays/report/index.html`; the matrix and limitations are in `OVERLAYS.md`. This
+confirms the metadata, message, music, clock/date, weather and countdown paths render, but it does
+not verify visual parity: the long legacy now-playing line overflowed into the metadata column,
+forecast icon backgrounds differ, and the progress bar and visibility modes are not captured. At
+capture time Compose still used the default font; a subsequent font/loading follow-up is recorded
+below. No row above is marked verified.
+
+**Font/loading follow-up (2026-11-11):** Google Sans and Open Sans moved to `:core`; Compose now
+uses the configured family and weight, and its loading row follows the legacy spinner, spacing,
+visibility and font prefs. A forced-loading capture measured identical 151x36px text bounds and a
+pixel-identical aligned glyph crop (`AE 0`), with a 4px baseline offset remaining. The side-by-side
+is `build/phase10/loading/loading-side-by-side.png`. This is agent evidence; the rows remain in
+progress and no row is marked verified.
