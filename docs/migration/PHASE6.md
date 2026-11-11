@@ -63,14 +63,15 @@ count as human verification.
 
 ## Crash-loop guard
 
-- `use_compose_screensaver` defaults to `false` and is not exposed in settings yet.
+- `use_compose_screensaver` defaults to `false`; Phase 9 exposes it under Appearance > Startup >
+  Experimental.
 - A pref-selected Compose session increments `compose_screensaver_failure_count` when it starts.
   The count is reset when the Compose UI reports its first displayed item, and when the app version
   code changes.
 - After three consecutive failures, the opt-in is disabled and the session uses legacy. An explicit
   `ui_path=compose` test override bypasses this guard and does not change the persisted count.
-- `ScreensaverUiFactory.resetComposeFailureCount()` exists for the Phase 9 user-initiated
-  re-enable path.
+- `ScreensaverUiFactory.resetComposeFailureCount()` is called when the Phase 9 settings toggle is
+  explicitly switched on.
 
 ## Gate evidence
 

@@ -25,6 +25,14 @@
                     app:summary="@string/appearance_loading_show_summary" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_experimental">
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="use_compose_screensaver"
+                    app:title="@string/appearance_compose_screensaver_title"
+                    app:summary="@string/appearance_compose_screensaver_summary" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_typography">
                 <ListPreference
                     app:defaultValue="@string/text_size_default"

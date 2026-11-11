@@ -314,6 +314,13 @@ Screenshot tests would be **new infrastructure**, not parity work: ask the human
 4. Measure on the lowest-RAM supported devices (memory, cold start, dropped frames/jank) versus the Phase 0 baselines; record in `docs/migration/PERF.md`. Phase 0 captured APK sizes and an empty-state PSS only (no providers configured on the device), so a **configured-session idle-playback baseline** must be captured before this comparison; the empty-state figure is not a substitute.
 5. Draft release notes and a feedback prompt.
 
+**Phase 9 implementation notes (2026-11-11):** the beta is exposed under Appearance > Startup >
+Experimental, and explicit re-enable resets the persisted failure count. The guard fallback, version
+reset, settings reset and `MainActivity` round trip were exercised on the attached Chromecast. The
+full gate passed; `PERF.md` records the comparison and an unresolved empty-state PSS increase. The
+performance comparison and the Phase 6/7/8 human checks remain open, so the gate is not signed off.
+No commit was created. See `docs/migration/PHASE9.md`.
+
 **Gate:** Full gate; guard behavior demonstrated; perf comparison reviewed by the human. **STOP.**
 
 ## Phase 10: Stabilize, flip default, retire legacy

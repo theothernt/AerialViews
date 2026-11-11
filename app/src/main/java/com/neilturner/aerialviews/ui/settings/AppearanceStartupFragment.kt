@@ -2,10 +2,12 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.ui.screensaver.ScreensaverUiFactory
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
@@ -23,6 +25,7 @@ class AppearanceStartupFragment :
         super.onResume()
         FirebaseHelper.analyticsScreenView("Startup", this)
         showStartScreensaverOnLaunchOption()
+        configureComposeScreensaverPreference()
     }
 
     override fun onDestroy() {
@@ -35,6 +38,17 @@ class AppearanceStartupFragment :
         key: String?,
     ) {
         showStartScreensaverOnLaunchOption()
+    }
+
+    private fun configureComposeScreensaverPreference() {
+        findPreference<CheckBoxPreference>("use_compose_screensaver")?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue == true) {
+                // The guard switches Compose off after repeated startup failures. Explicitly
+                // re-enabling the beta must clear that old count so it gets a fresh chance.
+                ScreensaverUiFactory.resetComposeFailureCount()
+            }
+            true
+        }
     }
 
     private fun showStartScreensaverOnLaunchOption() {

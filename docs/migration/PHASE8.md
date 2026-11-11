@@ -202,18 +202,28 @@ still has no test sources. Log: `build/phase8-batch45-standard-gate.log`.
 
 ### Device smoke (agent-run, not parity verification)
 
-The final `betaDebug` APK attached the Compose path, completed the empty playlist request, accepted
-`KEYCODE_BACK`, logged `Compose screensaver playback released`, and left no resumed
-`TestActivity`. No fatal exception or ANR appeared. Log: `build/phase8-batch45-smoke.log`. The empty
-library means key actions beyond exit, gestures, overlay reveal and the input-to-playback controls
-were not exercised.
+The first run used the device's existing empty playlist: the final `betaDebug` APK attached the
+Compose path, accepted `KEYCODE_BACK`, logged `Compose screensaver playback released`, and left no
+resumed `TestActivity`. No fatal exception or ANR appeared. Log:
+`build/phase8-batch45-smoke.log`.
+
+A second run temporarily enabled the built-in Apple, Amazon, Comm1 and Comm2 feeds (the original
+preferences were backed up and restored afterward). `MediaService` fetched **262 videos** (Comm1
+20, Comm2 18, Amazon 85, Apple 139). Compose logged `first item displayed`; `VideoPlayerView`
+buffered, prepared and played a 1920x1080 HEVC video (duration 1m45s). A `KEYCODE_DPAD_RIGHT` press
+triggered a second playlist transition and prepared/played another video (duration 1m29s). Back
+released the session cleanly, with no fatal exception or ANR. Logs:
+`build/phase8-default-provider-smoke.log` and
+`build/phase8-default-provider-input-smoke.log`. This verifies built-in provider fetch, first-video
+startup, default right-skip input, transition and release; it does not verify visual overlay parity,
+touch gestures, blackout, music, or the full binding matrix.
 
 ### Remaining gaps after batch 4
 
 - Brightness increase/decrease currently update no visible state; the legacy notification and
   brightness overlay are not reproduced. Toggle-looping also has no notification.
-- Key, gesture and mouse behavior has only been smoke-tested for Back/exit; the full binding matrix
-  and both hosts still need a human check.
+- Key, gesture and mouse behavior has only been smoke-tested for Back/exit and the default
+  right-skip binding; touch gestures and the full binding matrix still need a human check.
 - Overlay reveal works through the controller gate, but its exact timing against the legacy view
   path is unverified.
 
@@ -252,4 +262,5 @@ were not exercised.
 ### Recommended next step
 
 Stop at the combined batch 4/5 gate. The human should verify batches 3-5 on a non-empty playlist and
-close the still-open Phase 6/7 gates before starting Phase 9 (opt-in beta). No commit was created.
+close the still-open Phase 6/7 gates. Phase 9's opt-in beta is recorded separately in `PHASE9.md`;
+its performance review and the Phase 8 human checks remain open. No commit was created.

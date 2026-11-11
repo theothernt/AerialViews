@@ -149,7 +149,7 @@ object GeneralPrefs : KotprefModel() {
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
 
-    // Screensaver UI migration. The Compose path is opt-in and unavailable until Phase 7.
+    // Screensaver UI migration. The Compose path is opt-in from Appearance > Startup > Experimental.
     var useComposeScreensaver by booleanPref(false, "use_compose_screensaver")
     var composeScreensaverFailureCount by intPref(0, "compose_screensaver_failure_count")
     var composeScreensaverFailureVersionCode by intPref(0, "compose_screensaver_failure_version_code")

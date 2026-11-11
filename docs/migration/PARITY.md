@@ -8,7 +8,7 @@ feature checked on a real device by a human. This agent has not marked any row v
 
 | Feature | Status | Notes |
 |---|---|---|
-| Video playback via `VideoPlayerView` | in progress | Hosted in `AndroidView`; first-item path is wired to the shared controller. Not yet verified against the legacy player on a device. |
+| Video playback via `VideoPlayerView` | in progress | Hosted in `AndroidView`; default-provider smoke prepared and played a 1920x1080 HEVC item. Not yet compared visually against the legacy player. |
 | Image playback via `ImagePlayerView` | in progress | Hosted in `AndroidView`; reuses `ImagePlayerHelper` and Coil loading. Not yet verified. |
 | Warm video player between items | in progress | Both views stay in the hierarchy; the video is suspended while an image is visible. |
 | Video finish callback | in progress | `VideoPlayerView.onVideoAlmostFinished` starts a controller transition; the overlay fade completes it. Not device-verified. |
@@ -23,7 +23,7 @@ feature checked on a real device by a human. This agent has not marked any row v
 | Feature | Status | Notes |
 |---|---|---|
 | Fade-in/fade-out and transition protocol | in progress | Batch 2: overlay fade-in after the player is prepared, fade-out on `state.transition`, then `onTransitionCompleted`. Not device-verified. |
-| Skip, previous, loop, next | in progress | Batch 4 input maps skip/previous and loop; controller transition path handles all. Not device-verified. |
+| Skip, previous, loop, next | in progress | Batch 4 input maps skip/previous and loop; default-provider smoke used D-pad right to prepare a second video. Not fully device-verified. |
 | Metadata overlays and POI | in progress | Batch 3 renderer and state are wired. Subset feed: media short description/POI only; per-slot selection, geocoding, EXIF and exact video-position POIs remain. |
 | Weather now/forecast overlays | in progress | Batch 3 composables render the shared weather/forecast state; `WeatherService` starts for configured slots. Not device-verified. |
 | Now-playing and music overlays | in progress | Batch 3 renderer and notification-listener feed start when a music slot is configured; batch 5 adds background-music playback and track persistence. |
@@ -32,9 +32,9 @@ feature checked on a real device by a human. This agent has not marked any row v
 | Progress bar | not started | Deferred past batch 3; the shared progress state and event bridge exist. |
 | Gradients, brightness, notifications | in progress | Top/bottom gradients are rendered; brightness and notification overlays remain. |
 | Blackout, sleep timer, scheduled blackout | in progress | Batch 5 maps the prefs, renders a black overlay, stops the hosted players and lets the controller pause/resume music. Not device-verified. |
-| Key-event input | in progress | Batch 4 installs `ComposeScreensaverInput` over the shared mapper and bindings; only Back/exit was smoke-tested. |
+| Key-event input | in progress | Batch 4 installs `ComposeScreensaverInput` over the shared mapper; Back/exit and default D-pad right-skip passed smoke tests. Full binding matrix remains. |
 | Touch/mouse input | in progress | Batch 4 shares `SwipeGestureListener` through `:core` and preserves mouse exit; gestures are not device-verified. |
-| Exit reasons and `TestActivity` result | in progress | Batch 4 routes both reasons through `ScreensaverHost`; Back exited in the smoke. Exit-to-settings and the round trip remain human checks. |
+| Exit reasons and `TestActivity` result | in progress | Batch 4 routes both reasons through `ScreensaverHost`; Back exited and released in smoke tests. Exit-to-settings and the round trip remain human checks. |
 | Philips handoff path | not started | The host/factory placement exists; no Compose-specific handoff verification. |
 | `TestActivity` phone-only pause stop | in progress | The activity's existing `!DeviceHelper.isTV` pause/finish path is retained; not device-verified. |
 | Screensaver locale | in progress | The host still supplies the locale-wrapped context; the Compose playback path has not been checked. |
@@ -65,5 +65,18 @@ the overlay layer without a fatal/ANR. Log: `build/phase8-batch3-smoke.log`.
 
 **Batches 4/5 agent smoke (2026-11-11):** the final APK attached, completed the empty playlist
 request, accepted `KEYCODE_BACK`, released the Compose UI and left no resumed `TestActivity`; no
-fatal/ANR appeared. The empty library means gestures, reveal, playback actions, music, blackout and
-the status UI were not exercised. Log: `build/phase8-batch45-smoke.log`.
+fatal/ANR appeared. Log: `build/phase8-batch45-smoke.log`.
+
+**Default-provider agent smoke (2026-11-11):** after backing up prefs, the built-in Apple, Amazon,
+Comm1 and Comm2 feeds were enabled. `MediaService` fetched 262 videos (20/18/85/139). Compose
+reported the first item displayed; a 1920x1080 HEVC video buffered, prepared and played. D-pad right
+triggered a second transition and a 1m29s video. Back released cleanly and the original prefs were
+restored. Logs: `build/phase8-default-provider-smoke.log` and
+`build/phase8-default-provider-input-smoke.log`. Visual overlay parity, touch, blackout, music and
+the full binding matrix remain human checks.
+
+**Phase 9 beta exposure (2026-11-11):** the experimental toggle was exercised on the attached
+Chromecast. The pref-selected Compose path reached its first item, the failure-limit guard disabled
+Compose and fell back to legacy, the settings toggle reset the failure count, and the
+`MainActivity` start-on-launch/Back round trip produced `exit_app=true`. These are agent smoke
+checks; no row above changes status and no row is marked verified. See `PHASE9.md` and `PERF.md`.

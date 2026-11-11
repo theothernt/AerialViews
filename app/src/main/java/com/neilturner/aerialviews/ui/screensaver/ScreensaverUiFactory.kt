@@ -46,7 +46,7 @@ object ScreensaverUiFactory {
     private var activeHost: ScreensaverHost? = null
     private var activePath: ScreensaverUiPath? = null
 
-    /** Phase 7 registers the Compose renderer here once its module exists. */
+    /** The application composition root registers the Compose renderer here. */
     fun registerComposeUiFactory(factory: ComposeScreensaverUiFactory?) {
         composeUiFactory = factory
     }
