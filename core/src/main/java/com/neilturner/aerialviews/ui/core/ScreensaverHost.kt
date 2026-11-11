@@ -50,5 +50,8 @@ interface ScreensaverUi {
     /** Preserves mouse-to-exit behavior until the Compose input path replaces it. */
     fun onGenericMotionEvent(event: MotionEvent): Boolean = false
 
+    /** Touch is host-dispatched so the renderer can consume gestures without a view listener. */
+    fun onTouchEvent(event: MotionEvent): Boolean = false
+
     fun release()
 }

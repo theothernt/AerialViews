@@ -230,13 +230,3 @@ object InputHelper {
         return true
     }
 }
-
-enum class GestureType {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    TAP,
-    DOUBLE_TAP,
-    TAP_HOLD,
-}

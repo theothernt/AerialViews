@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -42,13 +43,18 @@ internal fun ComposePlaybackLayer(
     state: ScreensaverState,
     hostStarted: Boolean,
     modifier: Modifier = Modifier,
+    onActionsReady: (ComposePlaybackControls?) -> Unit = {},
     overlayContent: @Composable BoxScope.() -> Unit = {},
+    loadingContent: @Composable BoxScope.() -> Unit = {},
 ) {
     val currentState by rememberUpdatedState(state)
     val videoPlayer = remember { mutableStateOf<VideoPlayerView?>(null) }
     val imagePlayer = remember { mutableStateOf<ImagePlayerView?>(null) }
     var renderedGeneration by remember { mutableLongStateOf(-1L) }
     var pausedAt by remember { mutableLongStateOf(0L) }
+    var userPaused by remember { mutableStateOf(false) }
+    var userPausedAt by remember { mutableLongStateOf(0L) }
+    var userMuted by remember { mutableStateOf(!GeneralPrefs.playsVideoAudio) }
     var mediaReady by remember { mutableStateOf(false) }
     val loadingAlpha = remember { Animatable(1f) }
     val fadeInDuration =
@@ -65,6 +71,90 @@ internal fun ComposePlaybackLayer(
                 ?.coerceAtLeast(0)
                 ?.toInt() ?: 0
         }
+
+    val controls =
+        remember {
+            object : ComposePlaybackControls {
+                override fun togglePause() {
+                    val video = videoPlayer.value
+                    val image = imagePlayer.value
+                    if (userPaused) {
+                        val pausedFor = (System.currentTimeMillis() - userPausedAt).coerceAtLeast(0L)
+                        if (currentState.media?.type == AerialMediaType.VIDEO) {
+                            video?.resume()
+                        } else {
+                            image?.resumeTimer(pausedFor)
+                        }
+                        userPaused = false
+                        userPausedAt = 0L
+                    } else {
+                        userPausedAt = System.currentTimeMillis()
+                        userPaused = true
+                        if (currentState.media?.type == AerialMediaType.VIDEO) {
+                            video?.pause()
+                        } else {
+                            image?.pauseTimer()
+                        }
+                    }
+                }
+
+                override fun toggleMute() {
+                    val video = videoPlayer.value ?: return
+                    video.toggleMute()
+                    userMuted = video.mutedState
+                    video.setMuteState(currentState.music.forcedVideoMute, userMuted)
+                }
+
+                override fun increaseSpeed() {
+                    if (currentState.media?.type == AerialMediaType.VIDEO && !currentState.blackout.active) {
+                        videoPlayer.value?.increaseSpeed()
+                    }
+                }
+
+                override fun decreaseSpeed() {
+                    if (currentState.media?.type == AerialMediaType.VIDEO && !currentState.blackout.active) {
+                        videoPlayer.value?.decreaseSpeed()
+                    }
+                }
+
+                override fun seekForward() {
+                    if (currentState.media?.type == AerialMediaType.VIDEO && !currentState.blackout.active) {
+                        videoPlayer.value?.seekForward()
+                    }
+                }
+
+                override fun seekBackward() {
+                    if (currentState.media?.type == AerialMediaType.VIDEO && !currentState.blackout.active) {
+                        videoPlayer.value?.seekBackward()
+                    }
+                }
+
+                override fun restartVideo() {
+                    if (currentState.media?.type != AerialMediaType.VIDEO || currentState.blackout.active) return
+                    if (userPaused) {
+                        val pausedFor = (System.currentTimeMillis() - userPausedAt).coerceAtLeast(0L)
+                        videoPlayer.value?.resume()
+                        imagePlayer.value?.resumeTimer(pausedFor)
+                        userPaused = false
+                        userPausedAt = 0L
+                    }
+                    videoPlayer.value?.restart()
+                }
+
+                override fun refreshFinishTimer() {
+                    videoPlayer.value?.refreshFinishTimer()
+                }
+
+                override fun increaseBrightness() = Unit
+
+                override fun decreaseBrightness() = Unit
+            }
+        }
+
+    DisposableEffect(controls) {
+        onActionsReady(controls)
+        onDispose { onActionsReady(null) }
+    }
 
     Box(modifier = modifier) {
         AndroidView(
@@ -165,7 +255,9 @@ internal fun ComposePlaybackLayer(
                     .fillMaxSize()
                     .graphicsLayer { alpha = loadingAlpha.value }
                     .background(Color.Black),
-        )
+        ) {
+            loadingContent()
+        }
     }
 
     LaunchedEffect(state.itemGeneration, videoPlayer.value, imagePlayer.value) {
@@ -173,6 +265,8 @@ internal fun ComposePlaybackLayer(
         if (renderedGeneration == state.itemGeneration) return@LaunchedEffect
 
         mediaReady = false
+        userPaused = false
+        userPausedAt = 0L
         loadingAlpha.snapTo(1f)
 
         when (media.type) {
@@ -232,6 +326,26 @@ internal fun ComposePlaybackLayer(
             pausedAt = 0L
             video?.resume()
             image?.resumeTimer(pausedFor)
+        }
+    }
+
+    LaunchedEffect(state.music.forcedVideoMute, userMuted) {
+        videoPlayer.value?.setMuteState(state.music.forcedVideoMute, userMuted)
+    }
+
+    LaunchedEffect(state.blackout.active) {
+        if (state.blackout.active) {
+            videoPlayer.value?.stop()
+            imagePlayer.value?.stop()
+        }
+    }
+
+    LaunchedEffect(state.error) {
+        if (state.error != null) {
+            loadingAlpha.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 200, easing = LinearEasing),
+            )
         }
     }
 }

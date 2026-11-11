@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.screensaver.compose
 
+import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -10,23 +11,28 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.core.ExitReason
 import com.neilturner.aerialviews.ui.core.ScreensaverHost
 import com.neilturner.aerialviews.ui.core.ScreensaverUi
+import com.neilturner.aerialviews.ui.helpers.GestureType
+import com.neilturner.aerialviews.ui.helpers.SwipeGestureListener
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 
 /**
  * Compose renderer for the shared screensaver host.
  *
- * Phase 8 hosts the existing playback views and the controller-driven transitions. Overlays and
- * input are added in later batches; returning false lets the host retain its existing key and
- * motion handling until then.
+ * The host dispatches key and touch events here. The screen installs the controller-aware handler
+ * once its composition is ready; before that, events fall through to the host's existing behavior.
  */
 class ComposeScreensaverUi(
     private val onFirstItemDisplayed: () -> Unit,
 ) : ScreensaverUi {
     private var host: ScreensaverHost? = null
     private var composeView: ComposeView? = null
+    private var inputHandler: ComposeScreensaverInputHandler? = null
+    private var gestureListener: SwipeGestureListener? = null
     private var released = false
     private val hostStarted = MutableStateFlow(false)
 
@@ -46,6 +52,18 @@ class ComposeScreensaverUi(
             setViewTreeViewModelStoreOwner(host.viewModelStoreOwner)
         }
 
+        gestureListener =
+            SwipeGestureListener(
+                context = host.context,
+                onSwipeUp = { inputHandler?.onGesture(GestureType.UP) },
+                onSwipeDown = { inputHandler?.onGesture(GestureType.DOWN) },
+                onSwipeLeft = { inputHandler?.onGesture(GestureType.LEFT) },
+                onSwipeRight = { inputHandler?.onGesture(GestureType.RIGHT) },
+                onTap = { inputHandler?.onGesture(GestureType.TAP) },
+                onDoubleTap = { inputHandler?.onGesture(GestureType.DOUBLE_TAP) },
+                onLongTap = { inputHandler?.onGesture(GestureType.TAP_HOLD) },
+            )
+
         val view =
             ComposeView(host.context).apply {
                 // The dream owner reaches DESTROYED on teardown, so this strategy disposes the
@@ -60,6 +78,8 @@ class ComposeScreensaverUi(
                     ComposeScreensaverScreen(
                         hostStarted = started,
                         onFirstItemDisplayed = onFirstItemDisplayed,
+                        onExit = ::reportExit,
+                        onInputReady = { inputHandler = it },
                     )
                 }
             }
@@ -79,11 +99,25 @@ class ComposeScreensaverUi(
         hostStarted.value = false
     }
 
-    override fun onKeyEvent(event: KeyEvent): Boolean = false
+    override fun onKeyEvent(event: KeyEvent): Boolean = inputHandler?.onKeyEvent(event) ?: false
 
-    override fun onGenericMotionEvent(event: MotionEvent): Boolean = false
+    override fun onGenericMotionEvent(event: MotionEvent): Boolean {
+        if (GeneralPrefs.exitOnMouseMovement &&
+            event.actionMasked == MotionEvent.ACTION_HOVER_MOVE &&
+            event.isFromSource(InputDevice.SOURCE_MOUSE)
+        ) {
+            reportExit(ExitReason.EXIT)
+            return true
+        }
+        return false
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean = gestureListener?.onTouch(null, event) == true
 
     private fun disposeView() {
+        inputHandler?.reset()
+        inputHandler = null
+        gestureListener = null
         val view = composeView ?: return
         composeView = null
         view.disposeComposition()
@@ -97,5 +131,9 @@ class ComposeScreensaverUi(
         disposeView()
         host = null
         Timber.i("Compose screensaver playback released")
+    }
+
+    private fun reportExit(reason: ExitReason) {
+        host?.exit(reason)
     }
 }

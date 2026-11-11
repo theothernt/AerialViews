@@ -107,8 +107,12 @@ class DreamActivity : DreamServiceCompat() {
         if (exitApp) wakeUp()
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean =
-        try {
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (screensaverUi?.onTouchEvent(event) == true) {
+            return true
+        }
+
+        return try {
             super.dispatchTouchEvent(event)
         } catch (e: SecurityException) {
             // Android bug: DreamService internally reads a restricted settings key
@@ -116,6 +120,7 @@ class DreamActivity : DreamServiceCompat() {
             // but the dream will continue running.
             true
         }
+    }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (screensaverUi?.onKeyEvent(event) == true) {

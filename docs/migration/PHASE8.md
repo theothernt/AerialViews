@@ -1,8 +1,9 @@
 # Phase 8: Compose UI parity
 
-**Status:** batches 1 (playback layer), 2 (transitions) and 3 (overlays) are implemented and their
-standard gates pass. Phase 8 is not complete; input and edge cases remain. No row in `PARITY.md` is
-marked verified until a human checks it on a device.
+**Status:** batches 1 (playback layer), 2 (transitions), 3 (overlays), 4 (input) and 5 (edge cases)
+are implemented and their standard gates pass. Phase 8 is not complete: the remaining rows still
+need human device verification. No row in `PARITY.md` is marked verified until a human checks it on a
+device.
 
 ## Batch 1: playback layer
 
@@ -165,23 +166,90 @@ still had **0 media items**, so no item, overlay or fade was visible. No fatal e
 appeared. Log: `build/phase8-batch3-smoke.log`. Visible overlay parity needs a human test with a
 non-empty playlist.
 
-### Remaining gaps after batch 3
+## Batch 4: input
 
-- Custom bundled fonts remain in `:app`; Compose currently uses `FontFamily.Default`. The colour,
-  size and weight are resolved from prefs.
-- Metadata production is a subset: the session publishes the current media's short description and
-  POI map to all metadata slots, but does not yet apply the per-slot selection, geocoding, photo
-  EXIF/date rules or the video metadata listener. POI changes cycle from item elapsed time rather
-  than the video's exact current position.
-- Message and weather content update without the legacy cross-fade/ChangeBounds animation;
-  countdown unit labels are not localized, and no `@Preview` harness was added.
-- The progress bar, loading text/spinner, error/empty-state UI, brightness, notifications and
-  blackout visuals are not implemented.
-- Compose key/touch input and both exit reasons are still unimplemented; skip/previous are only
-  reachable through the controller API today.
-- Music playback start/stop and network/error handling remain batch 5.
+### What changed
+
+- Moved the existing `SwipeGestureListener` and `GestureType` into `:core` under their existing
+  package, so the legacy and Compose paths share one gesture implementation. `ScreensaverUi` now
+  exposes `onTouchEvent`; `TestActivity` and `DreamActivity` dispatch touch into the active UI.
+- Added `ComposeScreensaverInput`, which reuses the shared `KeyEventMapper`, preference bindings and
+  blackout wake rule. It handles presses, long presses, hold-repeat, media passthrough, both exit
+  reasons and gesture actions.
+- The screen installs one controller-aware input handler for the life of the composition and resets
+  it on disposal. Playback actions are delegated to `ComposePlaybackLayer`: pause/resume, mute,
+  speed, seek, restart, and refreshing the video finish timer after a loop toggle.
+- Added overlay reveal from input. `ComposeOverlayLayer` accepts a reveal key, shows the configured
+  corner group, and re-runs the legacy reveal timeout before auto-hiding again. The reveal resets
+  for each item.
+- Preserved mouse-to-exit through `onGenericMotionEvent`, and routed both exit reasons through the
+  existing host contract rather than finishing the activity from the renderer.
+- `TestActivity`'s phone-only `onPause` stop remains intact; the Compose UI uses the same host
+  lifecycle and result contract as the legacy UI.
+
+### Standard gate (batches 4 and 5)
+
+These two batches were implemented in one request, so they share the final gate:
+
+```sh
+./gradlew --no-daemon :core:testDebugUnitTest :screensaver-compose:testDebugUnitTest \
+  :app:testBetaDebugUnitTest :core:spotlessCheck :playback:spotlessCheck \
+  :screensaver-compose:spotlessCheck :app:spotlessCheck :app:assembleBetaDebug
+```
+
+Result: `BUILD SUCCESSFUL` (1m 54s). Existing `:core` and `:app` suites passed; the Compose module
+still has no test sources. Log: `build/phase8-batch45-standard-gate.log`.
+
+### Device smoke (agent-run, not parity verification)
+
+The final `betaDebug` APK attached the Compose path, completed the empty playlist request, accepted
+`KEYCODE_BACK`, logged `Compose screensaver playback released`, and left no resumed
+`TestActivity`. No fatal exception or ANR appeared. Log: `build/phase8-batch45-smoke.log`. The empty
+library means key actions beyond exit, gestures, overlay reveal and the input-to-playback controls
+were not exercised.
+
+### Remaining gaps after batch 4
+
+- Brightness increase/decrease currently update no visible state; the legacy notification and
+  brightness overlay are not reproduced. Toggle-looping also has no notification.
+- Key, gesture and mouse behavior has only been smoke-tested for Back/exit; the full binding matrix
+  and both hosts still need a human check.
+- Overlay reveal works through the controller gate, but its exact timing against the legacy view
+  path is unverified.
+
+## Batch 5: edge cases
+
+### What changed
+
+- Added a session loading-status flow from `MediaService` and a Compose status layer inside the
+  black loading fade. It shows the legacy loading labels, an empty/provider-failure message, or a
+  playback-error message, with a Compose-drawn spinner and no new UI dependency.
+- Added background music to the Compose session using the shared `MusicPlayer` and a local
+  `MusicPlayback` adapter. The fetched music playlist and resume index are passed to the controller,
+  track changes are persisted through `PlaylistCacheRepository`, and the controller owns pause,
+  resume, failure and release. Video is forced-muted while background music is active.
+- Mapped the sleep timer and scheduled-blackout preferences into `ScreensaverConfig`. The Compose
+  screen renders a full-screen blackout, suppresses overlays and stops the hosted players while
+  blackout is active; the controller resumes with a new item and music after wake.
+- Provider failure and an empty fetched playlist now reach the same `ScreensaverError` UI. Playback
+  errors continue through the controller's retry/advance policy without leaving a blank screen.
+- No dedicated connectivity monitor was added: network loss is handled through provider/playlist
+  failure and media playback errors, as in the existing service layer.
+
+### Remaining gaps after batch 5
+
+- Custom bundled fonts remain in `:app`; Compose uses `FontFamily.Default` with the resolved colour,
+  size and weight.
+- Metadata is a subset: current media short description/POI is published to every metadata slot;
+  per-slot selection, geocoding, EXIF/date rules, the video metadata listener and exact video-position
+  POI cycling remain.
+- Message/weather transitions, countdown localization and a `@Preview` harness remain.
+- The progress bar, brightness visuals, notification toasts, Sonos integration and blackout
+  notifications are not implemented. No dedicated no-network UI exists.
+- All visual, input, blackout, music and error behavior still needs human device verification;
+  no row is marked verified.
 
 ### Recommended next step
 
-Implement batch 4 (input handling) with the shared key mapper, touch/motion handling, overlay
-reveal commands, and both host exit paths.
+Stop at the combined batch 4/5 gate. The human should verify batches 3-5 on a non-empty playlist and
+close the still-open Phase 6/7 gates before starting Phase 9 (opt-in beta). No commit was created.

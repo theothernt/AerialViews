@@ -149,6 +149,14 @@ class TestActivity : AppCompatActivity() {
         return super.dispatchGenericMotionEvent(event)
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (screensaverUi?.onTouchEvent(event) == true) {
+            return true
+        }
+
+        return super.dispatchTouchEvent(event)
+    }
+
     override fun onStop() {
         super.onStop()
         // Stop playback, animations, etc

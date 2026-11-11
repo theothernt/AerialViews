@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_title">Loading…</string>
+    <string name="loading_building">Building playlist…</string>
+    <string name="loading_resuming">Resuming playlist…</string>
+    <string name="loading_error">No videos or photos found, please check your settings</string>
+    <string name="playback_error">Unable to play this item, trying another…</string>
+</resources>

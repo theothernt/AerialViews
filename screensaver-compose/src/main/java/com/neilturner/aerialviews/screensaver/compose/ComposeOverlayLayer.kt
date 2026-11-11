@@ -53,6 +53,7 @@ internal fun ComposeOverlayLayer(
     controller: ScreensaverController,
     state: ScreensaverState,
     overlayState: OverlayUiState,
+    revealKey: Int = 0,
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
@@ -76,12 +77,18 @@ internal fun ComposeOverlayLayer(
             }
         val fadeInMs = remember { GeneralPrefs.overlayFadeInDuration.toLongOrNull()?.coerceAtLeast(0) ?: 0L }
         val fadeOutMs = remember { GeneralPrefs.overlayFadeOutDuration.toLongOrNull()?.coerceAtLeast(0) ?: 0L }
+        val overlayRevealTimeoutMs =
+            remember { (GeneralPrefs.overlayRevealTimeout.toLongOrNull() ?: 0L) * 1_000L }
         val hasTopFade = layout.any { it.corner.isTop && it.corner in fadeCorners }
         val hasTopPersistent = layout.any { it.corner.isTop && it.corner !in fadeCorners }
         val hasBottomFade = layout.any { !it.corner.isTop && it.corner in fadeCorners }
         val hasBottomPersistent = layout.any { !it.corner.isTop && it.corner !in fadeCorners }
 
-        LaunchedEffect(state.itemGeneration, state.canSkip, config, layout) {
+        LaunchedEffect(state.itemGeneration, state.canSkip, revealKey, config, layout) {
+            if (state.blackout.active) {
+                fadeAlpha.snapTo(0f)
+                return@LaunchedEffect
+            }
             if (!state.canSkip) return@LaunchedEffect
 
             if (fadeSlots.isEmpty()) {
@@ -90,6 +97,7 @@ internal fun ComposeOverlayLayer(
                 return@LaunchedEffect
             }
 
+            val revealed = revealKey > 0
             when (visibilityMode) {
                 "ALWAYS_VISIBLE" -> {
                     fadeAlpha.snapTo(1f)
@@ -97,30 +105,57 @@ internal fun ComposeOverlayLayer(
                 }
 
                 "ALWAYS_HIDDEN" -> {
-                    fadeAlpha.snapTo(0f)
-                    controller.onOverlaysReady()
+                    if (!revealed) {
+                        fadeAlpha.snapTo(0f)
+                        controller.onOverlaysReady()
+                    } else {
+                        revealAndAutoHide(
+                            controller = controller,
+                            fadeAlpha = fadeAlpha,
+                            revealTimeoutMs = overlayRevealTimeoutMs,
+                            fadeOutMs = fadeOutMs,
+                        )
+                    }
                 }
 
                 "HIDE_AFTER_DELAY" -> {
-                    fadeAlpha.snapTo(1f)
-                    delay(overlayDelayMs)
-                    controller.onOverlaysBusy()
-                    fadeAlpha.animateTo(
-                        targetValue = 0f,
-                        animationSpec = tween(durationMillis = fadeOutMs.toInt(), easing = LinearEasing),
-                    )
-                    controller.onOverlaysReady()
+                    if (revealed) {
+                        revealAndAutoHide(
+                            controller = controller,
+                            fadeAlpha = fadeAlpha,
+                            revealTimeoutMs = overlayRevealTimeoutMs,
+                            fadeOutMs = fadeOutMs,
+                        )
+                    } else {
+                        fadeAlpha.snapTo(1f)
+                        delay(overlayDelayMs)
+                        controller.onOverlaysBusy()
+                        fadeAlpha.animateTo(
+                            targetValue = 0f,
+                            animationSpec = tween(durationMillis = fadeOutMs.toInt(), easing = LinearEasing),
+                        )
+                        controller.onOverlaysReady()
+                    }
                 }
 
                 "SHOW_AFTER_DELAY" -> {
-                    fadeAlpha.snapTo(0f)
-                    controller.onOverlaysBusy()
-                    delay(overlayDelayMs)
-                    fadeAlpha.animateTo(
-                        targetValue = 1f,
-                        animationSpec = tween(durationMillis = fadeInMs.toInt(), easing = LinearEasing),
-                    )
-                    controller.onOverlaysReady()
+                    if (revealed) {
+                        revealAndAutoHide(
+                            controller = controller,
+                            fadeAlpha = fadeAlpha,
+                            revealTimeoutMs = overlayRevealTimeoutMs,
+                            fadeOutMs = fadeOutMs,
+                        )
+                    } else {
+                        fadeAlpha.snapTo(0f)
+                        controller.onOverlaysBusy()
+                        delay(overlayDelayMs)
+                        fadeAlpha.animateTo(
+                            targetValue = 1f,
+                            animationSpec = tween(durationMillis = fadeInMs.toInt(), easing = LinearEasing),
+                        )
+                        controller.onOverlaysReady()
+                    }
                 }
 
                 else -> {
@@ -238,6 +273,22 @@ private fun BoxScope.OverlayCornerColumn(
                 )
             }
     }
+}
+
+private suspend fun revealAndAutoHide(
+    controller: ScreensaverController,
+    fadeAlpha: Animatable<Float, *>,
+    revealTimeoutMs: Long,
+    fadeOutMs: Long,
+) {
+    fadeAlpha.snapTo(1f)
+    controller.onOverlaysBusy()
+    delay(revealTimeoutMs)
+    fadeAlpha.animateTo(
+        targetValue = 0f,
+        animationSpec = tween(durationMillis = fadeOutMs.toInt(), easing = LinearEasing),
+    )
+    controller.onOverlaysReady()
 }
 
 private fun OverlayCorner.alignment(): Alignment =

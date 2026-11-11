@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.savedstate.ktx)
     implementation(libs.media3.common)
+    implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
     implementation(libs.timber)
 }

@@ -21,6 +21,7 @@ class ScreensaverViewModel(
 
     val state: StateFlow<ScreensaverState> = session.controller.state
     val overlayState: StateFlow<OverlayUiState> = session.controller.overlayState
+    val loadingStatus = session.loadingStatus
 
     /** Shared controller used by the playback layer for the transition protocol. */
     internal val controller: ScreensaverController
