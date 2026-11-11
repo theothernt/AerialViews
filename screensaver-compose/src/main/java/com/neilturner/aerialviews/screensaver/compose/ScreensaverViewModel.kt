@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.screensaver.compose
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import com.neilturner.aerialviews.ui.core.ScreensaverController
 import com.neilturner.aerialviews.ui.core.ScreensaverState
 import kotlinx.coroutines.flow.StateFlow
@@ -10,14 +11,23 @@ import kotlinx.coroutines.flow.StateFlow
  *
  * The controller keeps its own coroutine scope and timers; this ViewModel deliberately does not
  * use `viewModelScope` and does not add state or logic of its own. The host's ViewModelStore is
- * cleared when a dream session ends, which reaches [onCleared] and releases the controller.
+ * cleared when a dream session ends, which reaches [onCleared] and releases the session.
  */
-class ScreensaverViewModel : ViewModel() {
-    private val controller = ScreensaverController()
+class ScreensaverViewModel(
+    application: Application,
+) : AndroidViewModel(application) {
+    private val session = ScreensaverSession(application)
 
-    val state: StateFlow<ScreensaverState> = controller.state
+    val state: StateFlow<ScreensaverState> = session.controller.state
+
+    /** Shared controller used by the playback layer for the transition protocol. */
+    internal val controller: ScreensaverController
+        get() = session.controller
+
+    fun start() = session.start()
 
     override fun onCleared() {
-        controller.release()
+        session.release()
+        super.onCleared()
     }
 }

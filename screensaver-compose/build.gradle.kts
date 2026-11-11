@@ -39,8 +39,11 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
     implementation(libs.compose.foundation.layout)
+    implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.savedstate.ktx)
+    implementation(libs.media3.common)
+    implementation(libs.media3.ui)
     implementation(libs.timber)
 }

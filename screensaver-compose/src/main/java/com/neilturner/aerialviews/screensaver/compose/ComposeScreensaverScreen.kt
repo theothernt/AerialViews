@@ -1,29 +1,29 @@
 package com.neilturner.aerialviews.screensaver.compose
 
+import android.app.Application
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import timber.log.Timber
 
 /**
- * Phase 7 placeholder. It deliberately shows the shared controller's phase rather than any
- * playback UI; Phase 8 replaces this composable with the real screen.
+ * Phase 8 playback-layer screen. It hosts the existing players and reports the first item that
+ * actually becomes visible; transitions, overlays and input are added in later batches.
  */
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -31,41 +31,54 @@ internal fun ComposeScreensaverScreen(
     hostStarted: Boolean,
     onFirstItemDisplayed: () -> Unit,
 ) {
-    val viewModel: ScreensaverViewModel = viewModel()
+    val context = LocalContext.current
+    val application =
+        context.applicationContext as? Application
+            ?: error("Compose screensaver requires an Application context")
+    val factory = remember(application) { screensaverViewModelFactory(application) }
+    val viewModel: ScreensaverViewModel = viewModel(factory = factory)
     val state by viewModel.state.collectAsState()
+    val reportFirstItem by rememberUpdatedState(onFirstItemDisplayed)
 
-    // The placeholder is the only content in Phase 7; its first frame is the successful display
-    // that lets the Phase 6 crash-loop guard reset after a Compose session starts.
-    LaunchedEffect(Unit) {
-        withFrameNanos { }
-        Timber.i("Compose screensaver placeholder displayed")
-        onFirstItemDisplayed()
+    LaunchedEffect(hostStarted) {
+        if (hostStarted) {
+            viewModel.start()
+        }
+    }
+
+    var firstItemReported by remember { mutableStateOf(false) }
+    LaunchedEffect(state.canSkip, state.media) {
+        if (!firstItemReported && state.canSkip && state.media != null) {
+            // Reset the Phase 6 guard only after the controller has accepted a prepared item.
+            withFrameNanos { }
+            firstItemReported = true
+            Timber.i("Compose screensaver first item displayed")
+            reportFirstItem()
+        }
     }
 
     Box(
         modifier =
             Modifier
                 .fillMaxSize()
-                .background(Color.Black)
-                .padding(48.dp),
-        contentAlignment = Alignment.Center,
+                .background(Color.Black),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            BasicText(
-                text = "Compose screensaver placeholder",
-                style = TextStyle(color = Color.White, fontSize = 32.sp),
-            )
-            BasicText(
-                text = "Controller phase: ${state.phase.name}",
-                style = TextStyle(color = Color.LightGray, fontSize = 18.sp),
-            )
-            BasicText(
-                text = if (hostStarted) "Host started" else "Host waiting",
-                style = TextStyle(color = Color.Gray, fontSize = 16.sp),
-            )
-        }
+        ComposePlaybackLayer(
+            controller = viewModel.controller,
+            state = state,
+            hostStarted = hostStarted,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
+
+private fun screensaverViewModelFactory(application: Application): ViewModelProvider.Factory =
+    object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            require(modelClass.isAssignableFrom(ScreensaverViewModel::class.java)) {
+                "Unsupported ViewModel: ${modelClass.name}"
+            }
+            return ScreensaverViewModel(application) as T
+        }
+    }

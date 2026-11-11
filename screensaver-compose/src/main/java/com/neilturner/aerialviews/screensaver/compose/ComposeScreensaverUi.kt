@@ -18,8 +18,9 @@ import timber.log.Timber
 /**
  * Compose renderer for the shared screensaver host.
  *
- * Phase 7 renders a placeholder on top of the shared controller. Input and playback are added in
- * Phase 8; returning false lets the host retain its existing key and motion handling until then.
+ * Phase 8 batch 1 hosts the existing playback views. Transitions, overlays and input are added in
+ * later batches; returning false lets the host retain its existing key and motion handling until
+ * then.
  */
 class ComposeScreensaverUi(
     private val onFirstItemDisplayed: () -> Unit,
@@ -65,7 +66,7 @@ class ComposeScreensaverUi(
 
         composeView = view
         host.window.setContentView(view)
-        Timber.i("Compose screensaver placeholder attached")
+        Timber.i("Compose screensaver playback attached")
     }
 
     override fun onStart() {
@@ -95,6 +96,6 @@ class ComposeScreensaverUi(
         hostStarted.value = false
         disposeView()
         host = null
-        Timber.i("Compose screensaver placeholder released")
+        Timber.i("Compose screensaver playback released")
     }
 }
