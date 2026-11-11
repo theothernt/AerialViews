@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.neilturner.aerialviews.ui.core.ScreensaverController
 import com.neilturner.aerialviews.ui.core.ScreensaverState
+import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -19,6 +20,7 @@ class ScreensaverViewModel(
     private val session = ScreensaverSession(application)
 
     val state: StateFlow<ScreensaverState> = session.controller.state
+    val overlayState: StateFlow<OverlayUiState> = session.controller.overlayState
 
     /** Shared controller used by the playback layer for the transition protocol. */
     internal val controller: ScreensaverController

@@ -171,7 +171,7 @@ data class ScreensaverState(
 class ScreensaverController(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
     private val config: ScreensaverConfig = ScreensaverConfig(),
-    private val overlayStateStore: OverlayStateStore = OverlayStateStore(),
+    val overlayStateStore: OverlayStateStore = OverlayStateStore(),
     private val externalTrackControl: ExternalTrackControl? = null,
     private val now: () -> LocalTime = { LocalTime.now() },
 ) {

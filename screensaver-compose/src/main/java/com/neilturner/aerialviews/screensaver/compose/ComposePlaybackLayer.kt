@@ -1,7 +1,12 @@
 package com.neilturner.aerialviews.screensaver.compose
 
 import android.view.View
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,8 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.viewinterop.AndroidView
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ExtractedVideoMetadata
 import com.neilturner.aerialviews.ui.core.ImagePlayerView
 import com.neilturner.aerialviews.ui.core.PlaybackCallbacks
@@ -22,11 +30,10 @@ import com.neilturner.aerialviews.ui.core.ScreensaverState
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
 
 /**
- * Hosts the existing playback views without modifying them.
+ * Hosts the existing playback views and drives the controller's transition protocol.
  *
  * Both views stay in the hierarchy so the video codec can stay warm between items, matching the
- * legacy renderer. Only visibility changes as the controller loads another item; no animation is
- * applied to the player surface itself.
+ * legacy renderer. Fades are applied to the black loading overlay, never to the SurfaceView.
  */
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -35,12 +42,29 @@ internal fun ComposePlaybackLayer(
     state: ScreensaverState,
     hostStarted: Boolean,
     modifier: Modifier = Modifier,
+    overlayContent: @Composable BoxScope.() -> Unit = {},
 ) {
     val currentState by rememberUpdatedState(state)
     val videoPlayer = remember { mutableStateOf<VideoPlayerView?>(null) }
     val imagePlayer = remember { mutableStateOf<ImagePlayerView?>(null) }
     var renderedGeneration by remember { mutableLongStateOf(-1L) }
     var pausedAt by remember { mutableLongStateOf(0L) }
+    var mediaReady by remember { mutableStateOf(false) }
+    val loadingAlpha = remember { Animatable(1f) }
+    val fadeInDuration =
+        remember {
+            GeneralPrefs.mediaFadeInDuration
+                .toLongOrNull()
+                ?.coerceAtLeast(0)
+                ?.toInt() ?: 0
+        }
+    val fadeOutDuration =
+        remember {
+            GeneralPrefs.mediaFadeOutDuration
+                .toLongOrNull()
+                ?.coerceAtLeast(0)
+                ?.toInt() ?: 0
+        }
 
     Box(modifier = modifier) {
         AndroidView(
@@ -62,7 +86,7 @@ internal fun ComposePlaybackLayer(
 
                             override fun onVideoPrepared() {
                                 if (PlaybackCallbacks.videoEventAppliesTo(currentState.media?.type)) {
-                                    controller.onMediaVisible()
+                                    mediaReady = true
                                 }
                             }
 
@@ -108,7 +132,7 @@ internal fun ComposePlaybackLayer(
 
                             override fun onImagePrepared() {
                                 if (currentState.media?.type == AerialMediaType.IMAGE) {
-                                    controller.onMediaVisible()
+                                    mediaReady = true
                                 }
                             }
                         },
@@ -130,11 +154,26 @@ internal fun ComposePlaybackLayer(
             },
             modifier = Modifier.fillMaxSize(),
         )
+
+        // Overlays sit above the players but below the loading layer, matching aerial_activity.xml.
+        overlayContent()
+
+        // Fade only this layer: the player SurfaceView must not receive an animated alpha.
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { alpha = loadingAlpha.value }
+                    .background(Color.Black),
+        )
     }
 
     LaunchedEffect(state.itemGeneration, videoPlayer.value, imagePlayer.value) {
         val media = state.media ?: return@LaunchedEffect
         if (renderedGeneration == state.itemGeneration) return@LaunchedEffect
+
+        mediaReady = false
+        loadingAlpha.snapTo(1f)
 
         when (media.type) {
             AerialMediaType.VIDEO -> {
@@ -152,6 +191,32 @@ internal fun ComposePlaybackLayer(
                 renderedGeneration = state.itemGeneration
             }
         }
+    }
+
+    LaunchedEffect(state.itemGeneration, mediaReady) {
+        if (!mediaReady) return@LaunchedEffect
+
+        loadingAlpha.animateTo(
+            targetValue = 0f,
+            animationSpec = tween(durationMillis = fadeInDuration, easing = LinearEasing),
+        )
+        controller.onMediaVisible()
+    }
+
+    LaunchedEffect(state.transition?.id) {
+        val transition = state.transition ?: return@LaunchedEffect
+        mediaReady = false
+
+        if (state.media?.type == AerialMediaType.VIDEO) {
+            videoPlayer.value?.fadeOutAudio(fadeOutDuration.toLong())
+        }
+
+        loadingAlpha.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = fadeOutDuration, easing = LinearEasing),
+        )
+        imagePlayer.value?.stop()
+        controller.onTransitionCompleted(transition.id)
     }
 
     LaunchedEffect(hostStarted, videoPlayer.value, imagePlayer.value) {

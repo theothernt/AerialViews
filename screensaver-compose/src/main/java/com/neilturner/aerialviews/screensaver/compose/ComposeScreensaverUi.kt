@@ -18,9 +18,9 @@ import timber.log.Timber
 /**
  * Compose renderer for the shared screensaver host.
  *
- * Phase 8 batch 1 hosts the existing playback views. Transitions, overlays and input are added in
- * later batches; returning false lets the host retain its existing key and motion handling until
- * then.
+ * Phase 8 hosts the existing playback views and the controller-driven transitions. Overlays and
+ * input are added in later batches; returning false lets the host retain its existing key and
+ * motion handling until then.
  */
 class ComposeScreensaverUi(
     private val onFirstItemDisplayed: () -> Unit,

@@ -22,8 +22,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import timber.log.Timber
 
 /**
- * Phase 8 playback-layer screen. It hosts the existing players and reports the first item that
- * actually becomes visible; transitions, overlays and input are added in later batches.
+ * Phase 8 screen. It hosts the existing players, drives the controller transitions, renders the
+ * shared overlay state and reports the first item that actually becomes visible; input is added in
+ * a later batch.
  */
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -38,6 +39,7 @@ internal fun ComposeScreensaverScreen(
     val factory = remember(application) { screensaverViewModelFactory(application) }
     val viewModel: ScreensaverViewModel = viewModel(factory = factory)
     val state by viewModel.state.collectAsState()
+    val overlayState by viewModel.overlayState.collectAsState()
     val reportFirstItem by rememberUpdatedState(onFirstItemDisplayed)
 
     LaunchedEffect(hostStarted) {
@@ -68,7 +70,14 @@ internal fun ComposeScreensaverScreen(
             state = state,
             hostStarted = hostStarted,
             modifier = Modifier.fillMaxSize(),
-        )
+        ) {
+            ComposeOverlayLayer(
+                controller = viewModel.controller,
+                state = state,
+                overlayState = overlayState,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 
