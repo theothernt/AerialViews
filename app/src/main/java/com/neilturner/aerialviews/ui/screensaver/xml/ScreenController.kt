@@ -328,14 +328,7 @@ class ScreenController(
             val mediaResult =
                 MediaService(context).fetchMedia { status ->
                     mainScope.launch {
-                        setLoadingText(
-                            when (status) {
-                                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
-                                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
-                                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
-                            },
-                        )
-                        setLoadingSpinnerVisible(true)
+                        onLoadingStatus(status)
                     }
                 }
             playlist = mediaResult.mediaPlaylist
@@ -1519,6 +1512,27 @@ class ScreenController(
             .setDuration(if (alpha >= 1f) overlayFadeIn else overlayFadeOut)
             .start()
     }
+
+    /**
+     * Applies a playlist fetch status to the loading indicator.
+     *
+     * A named function rather than a body inlined into the MediaService callback, so the loading
+     * state can be driven from a unit test without running a fetch.
+     */
+    internal fun onLoadingStatus(status: LoadingStatus) {
+        setLoadingText(
+            when (status) {
+                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
+                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
+                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
+            },
+        )
+        setLoadingSpinnerVisible(true)
+    }
+
+    /** Whether the Compose loading indicator is showing. Used by the loading indicator test. */
+    internal val composeLoadingIndicatorVisible: Boolean
+        get() = composeLoadingSpinner.value
 
     private fun setLoadingText(text: String) {
         if (!useComposeOverlays) {

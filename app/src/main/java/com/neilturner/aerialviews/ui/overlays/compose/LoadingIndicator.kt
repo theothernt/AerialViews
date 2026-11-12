@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.overlays.compose
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
@@ -14,6 +15,11 @@ import com.neilturner.aerialviews.ui.overlays.compose.components.OverlayText
 
 private val spinnerSize = 24.dp
 private val spinnerGap = 12.dp
+
+// The platform ProgressBar draws its ring inset within the 24dp view, while material3's
+// CircularProgressIndicator fills the space it is given and reads noticeably heavier beside it.
+// Padding the drawing area keeps the 24dp box (so the label does not move) but insets the ring.
+private val spinnerInset = 2.dp
 
 /**
  * The startup / changeover indicator: spinner plus status text, in the bottom left corner of the
@@ -32,7 +38,7 @@ fun LoadingIndicator(
     Row(verticalAlignment = Alignment.CenterVertically) {
         if (spinnerVisible) {
             CircularProgressIndicator(
-                modifier = Modifier.size(spinnerSize),
+                modifier = Modifier.size(spinnerSize).padding(spinnerInset),
                 color = Color.White,
                 strokeWidth = 2.dp,
             )
