@@ -48,6 +48,21 @@ fun overlayCorners(
     )
 }
 
+/**
+ * Whether a row's gradient should fade out with the overlays.
+ *
+ * True only when the row has overlays that fade and none that stay: a single persistent overlay
+ * keeps its gradient, because the gradient is still backing something the viewer can see. This is
+ * the Compose equivalent of OverlayHelper.hasTopOverlaysToFade() plus hasTopPersistentOverlays(),
+ * which cannot be used here because there are no Views to inspect.
+ */
+fun shouldFadeRow(
+    row: List<OverlayCorner>,
+    fadeCorners: Set<String>,
+): Boolean =
+    row.any { it.types.isNotEmpty() && it.fadeKey in fadeCorners } &&
+        row.none { it.types.isNotEmpty() && it.fadeKey !in fadeCorners }
+
 private fun corner(
     slots: List<SlotPref>,
     fadeKey: String,

@@ -65,6 +65,8 @@ import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.EnabledOverlays
 import com.neilturner.aerialviews.ui.overlays.compose.LoadingIndicator
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverOverlays
+import com.neilturner.aerialviews.ui.overlays.compose.overlayCorners
+import com.neilturner.aerialviews.ui.overlays.compose.shouldFadeRow
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
@@ -629,6 +631,16 @@ class ScreenController(
                 else -> 0f
             }
 
+        // The View predicates in the switch below cannot see the Compose layer, so its gradient
+        // alphas are restored from the same mode here. Without this a gradient faded out by
+        // hideOverlays() would never come back.
+        if (useComposeOverlays) {
+            setComposeGradientAlpha(
+                alpha = if (overlayVisibilityMode == "ALWAYS_VISIBLE" || overlayVisibilityMode == "HIDE_AFTER_DELAY") 1f else 0f,
+                animate = false,
+            )
+        }
+
         when (overlayVisibilityMode) {
             "ALWAYS_VISIBLE" -> {
                 // Overlays stay visible, no hiding
@@ -797,6 +809,7 @@ class ScreenController(
     private fun hideOverlays(delay: Long = 0L) {
         if (useComposeOverlays) {
             setComposeFadeAlpha(0f, delay)
+            fadeComposeGradients(visible = false, delay = delay)
             canShowOverlays = true
             return
         }
@@ -876,9 +889,11 @@ class ScreenController(
         if (useComposeOverlays) {
             canShowOverlays = false
             setComposeFadeAlpha(overlayVisibleAlpha)
+            fadeComposeGradients(visible = true)
             mainScope.launch {
                 delay(overlayRevealTimeout * 1000)
                 setComposeFadeAlpha(0f)
+                fadeComposeGradients(visible = false)
                 canShowOverlays = true
             }
             return
@@ -1452,13 +1467,72 @@ class ScreenController(
 
     private fun currentVideoPosition(): Long = if (this::videoPlayer.isInitialized) videoPlayer.currentPosition.toLong() else 0L
 
+    /** Fades the gradient Views along with the Compose overlay layer. */
+    private fun fadeComposeGradients(
+        visible: Boolean,
+        delay: Long = 0L,
+    ) {
+        setComposeGradientAlpha(if (visible) 1f else 0f, animate = true, delay = delay)
+    }
+
+    /**
+     * Sets the gradient alphas for the Compose overlay layer.
+     *
+     * The XML path asks OverlayHelper, which inspects the instantiated overlay Views to decide
+     * whether a row has anything to fade and whether anything stays visible. There are no such
+     * Views in Compose mode, so the same questions are answered from the slot preferences. A row
+     * is only managed when its overlays fade: with a persistent overlay the gradient has to stay,
+     * so it is left alone at whatever alpha it already had.
+     */
+    private fun setComposeGradientAlpha(
+        alpha: Float,
+        animate: Boolean,
+        delay: Long = 0L,
+    ) {
+        val corners = overlayCorners(slotPrefs, alternate)
+
+        if (GeneralPrefs.showTopGradient && shouldFadeRow(listOf(corners.topStart, corners.topEnd), fadeCorners)) {
+            applyGradientAlpha(gradientTopView, alpha, animate, delay)
+        }
+
+        if (GeneralPrefs.showBottomGradient && shouldFadeRow(listOf(corners.bottomStart, corners.bottomEnd), fadeCorners)) {
+            applyGradientAlpha(gradientBottomView, alpha, animate, delay)
+        }
+    }
+
+    private fun applyGradientAlpha(
+        view: View,
+        alpha: Float,
+        animate: Boolean,
+        delay: Long,
+    ) {
+        if (!animate) {
+            view.animate().cancel()
+            view.alpha = alpha
+            return
+        }
+
+        view
+            .animate()
+            .alpha(alpha)
+            .setStartDelay(delay)
+            .setDuration(if (alpha >= 1f) overlayFadeIn else overlayFadeOut)
+            .start()
+    }
+
     private fun setLoadingText(text: String) {
-        loadingText.text = text
+        if (!useComposeOverlays) {
+            loadingText.text = text
+        }
         composeLoadingText.value = text
     }
 
     private fun setLoadingSpinnerVisible(visible: Boolean) {
-        loadingSpinner.visibility = if (visible) View.VISIBLE else View.GONE
+        // installComposeLoading() hides the XML spinner and label, and the Compose indicator
+        // replaces them. Re-showing the View here would draw a second spinner beside it.
+        if (!useComposeOverlays) {
+            loadingSpinner.visibility = if (visible) View.VISIBLE else View.GONE
+        }
         composeLoadingSpinner.value = visible
     }
 

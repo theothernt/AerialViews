@@ -9,14 +9,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayPaddingHelper
 import com.neilturner.aerialviews.ui.theme.OverlayShadow
 
 /** Text and icon colour from the OverlayColour preference. */
@@ -81,3 +84,27 @@ fun fontMetricOffset(sizeSp: Float): Dp {
 /** Applies the font-metric compensation for text of [sizeSp]. */
 @Composable
 fun Modifier.overlayFontOffset(sizeSp: Float): Modifier = offset(y = fontMetricOffset(sizeSp))
+
+/**
+ * The widest an overlay line may be: the screen less the user's horizontal padding on both sides.
+ *
+ * This is the Compose counterpart of the TextView.maxWidth the View layer applies to the now
+ * playing overlay. Without it a long point of interest runs under the opposite edge instead of
+ * wrapping at the padding.
+ *
+ * Null when the layer has not been laid out yet, so callers do not clamp to zero.
+ */
+@Composable
+fun overlayMaxTextWidth(): Dp? {
+    val density = LocalDensity.current
+    val containerWidthPx = LocalWindowInfo.current.containerSize.width
+    val horizontalPadding = OverlayPaddingHelper.horizontalDp(GeneralPrefs.overlayPaddingHorizontal)
+
+    return remember(density, containerWidthPx, horizontalPadding) {
+        if (containerWidthPx <= 0) {
+            null
+        } else {
+            with(density) { containerWidthPx.toDp() } - horizontalPadding.dp * 2
+        }
+    }
+}

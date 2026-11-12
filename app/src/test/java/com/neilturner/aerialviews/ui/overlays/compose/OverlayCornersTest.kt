@@ -4,6 +4,8 @@ import com.neilturner.aerialviews.models.SlotPref
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class OverlayCornersTest {
@@ -58,6 +60,24 @@ class OverlayCornersTest {
         // drawn in the top right column
         assertEquals(FADE_TOP_LEFT, corners.topEnd.fadeKey)
         assertEquals(FADE_TOP_RIGHT, corners.topStart.fadeKey)
+    }
+
+    @Test
+    fun `a row fades only when it has fading overlays and nothing persistent`() {
+        val fadingOnly = listOf(OverlayCorner(listOf(OverlayType.CLOCK), FADE_BOTTOM_LEFT))
+        val fadingAndPersistent =
+            listOf(
+                OverlayCorner(listOf(OverlayType.CLOCK), FADE_BOTTOM_LEFT),
+                OverlayCorner(listOf(OverlayType.MESSAGE1), FADE_BOTTOM_RIGHT),
+            )
+        val persistentOnly = listOf(OverlayCorner(listOf(OverlayType.MESSAGE1), FADE_BOTTOM_RIGHT))
+        val fadeCorners = setOf(FADE_BOTTOM_LEFT)
+
+        assertTrue(shouldFadeRow(fadingOnly, fadeCorners))
+        // The message stays visible, so the gradient has to stay with it
+        assertFalse(shouldFadeRow(fadingAndPersistent, fadeCorners))
+        assertFalse(shouldFadeRow(persistentOnly, fadeCorners))
+        assertFalse(shouldFadeRow(emptyList(), fadeCorners))
     }
 
     @Test
