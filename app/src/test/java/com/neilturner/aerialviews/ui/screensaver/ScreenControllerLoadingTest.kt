@@ -12,6 +12,11 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.screensaver.xml.ScreenController
+import com.neilturner.aerialviews.utils.FirebaseHelper
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -40,6 +45,16 @@ class ScreenControllerLoadingTest {
         // ContentProvider. A plain Application is used in @Config so nothing else touches prefs.
         Kotpref.init(context)
         GeneralPrefs.showLoadingText = true
+        // ScreenController tags the engine it built for crash/analytics attribution. Object-mock the
+        // helper so building one does not reach for a live FirebaseApp in a JVM test.
+        mockkObject(FirebaseHelper)
+        every { FirebaseHelper.analyticsUserProperty(any(), any(), any()) } returns Unit
+        every { FirebaseHelper.crashlyticsLogKeys(any(), any<Boolean>(), any()) } returns Unit
+    }
+
+    @After
+    fun tearDown() {
+        unmockkObject(FirebaseHelper)
     }
 
     private fun controller(composeEngine: Boolean): ScreenController {

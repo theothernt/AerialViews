@@ -85,6 +85,7 @@ import com.neilturner.aerialviews.ui.overlays.xml.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.xml.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.theme.AerialTheme
 import com.neilturner.aerialviews.utils.DreamTiming
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -191,6 +192,21 @@ class ScreenController(
     private var wasInScheduledBlackoutWindow: Boolean? = null
 
     init {
+        // Which engine this session built. Without it a beta crash report or a "the clock looks
+        // wrong" report cannot be attributed to the Compose path, which is the point of shipping
+        // the toggle to beta at all. Logged unconditionally: the logging window in FirebaseHelper
+        // closed on 2026-11-01, and an attribution tag that never fires cannot do its job.
+        FirebaseHelper.analyticsUserProperty(
+            name = "use_compose_screensaver",
+            value = useComposeOverlays.toString(),
+            alwaysLog = true,
+        )
+        FirebaseHelper.crashlyticsLogKeys(
+            key = "use_compose_screensaver",
+            value = useComposeOverlays,
+            alwaysLog = true,
+        )
+
         val inflater = LayoutInflater.from(context)
         val binding = AerialActivityBinding.inflate(inflater)
 

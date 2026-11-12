@@ -41,6 +41,20 @@ object FirebaseHelper {
         }
     }
 
+    /**
+     * Categorical attribute attached to every subsequent event, so reports can be filtered by it
+     * (for example which screensaver engine a session ran).
+     */
+    fun analyticsUserProperty(
+        name: String,
+        value: String,
+        alwaysLog: Boolean = false,
+    ) {
+        if (isWithinLoggingPeriod() || alwaysLog) {
+            Firebase.analytics.setUserProperty(name, value)
+        }
+    }
+
     fun crashlyticsException(
         ex: Throwable?,
         alwaysLog: Boolean = false,

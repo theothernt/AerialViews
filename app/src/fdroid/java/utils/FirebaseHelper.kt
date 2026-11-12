@@ -22,6 +22,14 @@ object FirebaseHelper {
         // No op
     }
 
+    fun analyticsUserProperty(
+        name: String,
+        value: String,
+        alwaysLog: Boolean = false,
+    ) {
+        // No op
+    }
+
     fun crashlyticsException(
         ex: Throwable?,
         alwaysLog: Boolean = false,

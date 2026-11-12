@@ -768,7 +768,7 @@ Both sawtooth at every photo boundary. The XML run logged five `Starting progres
 
 **Decision: both engines ship, permanently.** `use_compose_screensaver` stays as a user-facing setting in Settings → Appearance → Startup. Nothing is deleted — the XML overlays, `OverlayHelper`, `overlay_view.xml` and `loading_view.xml` all remain as the fallback engine.
 
-The toggle defaults to `false`. Flipping the default to `true` is a separate, later change gated on:
+The toggle defaults to `false`, and this plan now leaves it there: flipping the default is the maintainer's own change, made later and outside this document (agreed 2026-11-12). These are the readiness criteria that were recorded for it:
 
 - [x] Every overlay in Phase 7 passes the comparison checklist on a physical device — every Phase 7 overlay is measured in 9.4 and the dream path in 9.6; the forecast closed in 9.5 with only a 1px centring difference left
 - [x] Loading indicator matches, including with `showLoadingText = false`
@@ -778,7 +778,7 @@ The toggle defaults to `false`. Flipping the default to `true` is a separate, la
 - [x] No measure/layout regression: check `DreamTiming` marks (`screen.built`, `dream.contentView`) against the XML baseline, since Compose adds inflate/first-composition cost on a cold screensaver start — measured in 9.6: attach→contentView 1892ms (Compose) vs 2193ms (XML), attach→first frame 13434 vs 13156ms. Single samples on a network playlist, so this says "no regression", not "faster".
 - [x] A minified release build succeeds — `./gradlew --no-daemon :app:assembleBetaRelease` ran `minifyBetaReleaseWithR8` and finished `BUILD SUCCESSFUL in 4m 8s`, producing a 9.9MB signed APK (`app/build/outputs/apk/beta/release/app-beta-release.apk`, `apksigner verify` reports `CN=Neil Turner`). No R8 missing-class or Compose/reflection warnings; the only Kotlin warning is an unused `Unit` expression at `compose/OverlaySlotContent.kt:24`
 
-Until the default flips, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path behaviourally equivalent.
+For as long as the default is `false`, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path behaviourally equivalent.
 
 ### 11.1 Getting it in front of users
 
@@ -786,25 +786,34 @@ The toggle defaulting to `false` is what makes a wide beta safe, and the `beta` 
 
 Two things are worth doing **before** that beta goes out, because without them the feedback is much weaker:
 
-1. **Tag the engine in telemetry.** `ScreenController` should record which engine it built as a Firebase Analytics user property and a Crashlytics custom key (`use_compose_screensaver`). Both providers are already wired via `FirebaseHelper`, and the F-Droid flavour substitutes a no-op helper, so the call site is safe everywhere. Without this, a crash report or a "the clock is wrong" report cannot be attributed to the Compose path, which undermines the whole point of a beta.
-2. **Ask beta users to compare specific things.** A short checklist converts vague feedback into actionable data: clock/date legibility at 10 feet, whether text is still readable with overlays auto-hidden then revealed, whether long POI text wraps instead of running off the edge, and whether the screensaver looks right after `runAsActivity` handoff.
+1. **Tag the engine in telemetry — done.** `ScreenController.init` sets a Firebase Analytics user property and a Crashlytics custom key, both named `use_compose_screensaver` (`"true"`/`"false"` for the property, a Boolean for the key), so a crash or a "the clock looks wrong" report can be attributed to one engine. This needed one new helper, `FirebaseHelper.analyticsUserProperty(name, value, alwaysLog)`, with the F-Droid variant as a no-op like every other method. Both calls pass `alwaysLog = true`, deliberately: `FirebaseHelper.LOGGING_END_DATE` is 2026-11-01, so the helper currently suppresses everything it sends, and an attribution tag that never fires cannot do its job — flip that argument to `false` if the logging window is meant to stay shut. Verified locally as far as it can be: the call path runs on both engines without crashing (`ScreenControllerLoadingTest` object-mocks the helper, since a JVM test has no `FirebaseApp`), but the values themselves only show up in the Firebase console or the Analytics debug view, so nothing here proves they arrive.
+2. **Ask beta users to compare specific things — done: the checklist below is ready to ship with the beta notes.**
 
-### 11.2 Default flip
+> **Trying the new screensaver UI (beta)**
+>
+> Settings → Appearance → Startup → *New screensaver UI (beta)*, then let the screensaver start. It applies from
+> the next start, not immediately.
+>
+> Things worth a look, with the setting on:
+>
+> - **Clock and date** — still easy to read from across the room? They should sit in the same corner, at the same size.
+> - **Auto-hide and reveal** — when the overlays fade out and come back, does the text return to full brightness, and do
+>   the top/bottom gradients return with it?
+> - **Long place names and now-playing titles** — do they wrap at the screen padding instead of running under the
+>   opposite edge?
+> - **Weather** — current conditions and the multi-day row: does the row line up with the day labels above it and the
+>   temperatures below?
+> - **Music** — do artist and track still update when the track changes, and does the per-line dimming look the same?
+> - **Messages** — send one to the message API (default port 8081): does it appear in the right corner and clear itself?
+> - **Remote** — pause/resume, skip and blackout: still responsive, and is nothing left on screen afterwards?
+> - **Coming back from an app** — with `runAsActivity` handoff, does it look right when the screensaver returns?
+>
+> Then turn the setting back off and compare. If something looks different, the most useful thing to include is **which
+> engine you had it on** — that is exactly what the telemetry tag above records.
 
-`useComposeScreensaver` flips to `true` only when all the criteria in this phase pass, and stays a setting regardless.
+### 11.2 Default flip — not part of this plan
 
-Verification:
-
-```sh
-./gradlew --no-daemon :app:testBetaDebugUnitTest
-./gradlew --no-daemon :app:spotlessApply
-./gradlew --no-daemon :app:spotlessCheck
-./gradlew --no-daemon :app:assembleBetaDebug
-./gradlew --no-daemon :app:installBetaDebug
-android screen capture -o local/screenshots/final_compose.png
-```
-
-Plus one minified build (`assembleBetaRelease`, or `minifyBetaRelease` if signing material is absent) to confirm R8 does not strip anything Compose needs.
+Removed on 2026-11-12. Flipping `useComposeScreensaver` to `true` is the maintainer's own change, made later, and the plan no longer prescribes it or the verification run that went with it (the standard commands in AGENTS.md cover it). The criteria above are what this document records in support of that decision. The setting stays user-facing whether the default is `true` or `false`.
 
 ---
 
@@ -848,7 +857,7 @@ Plus one minified build (`assembleBetaRelease`, or `minifyBetaRelease` if signin
 Settled:
 
 1. **Toggle lifetime** — permanent, user-facing, in Settings → Appearance → Startup. XML is not deleted.
-2. **Default** — `false` until every overlay is signed off, then flip to `true` (Phase 11 criteria).
+2. **Default** — stays `false` in this plan. Flipping it is the maintainer's own change, made later and outside this document (2026-11-12).
 3. **Phase 1.2** — do it: `ScreenController` moves to `ui/screensaver/xml/`.
 4. **Material3** — yes, BOM-managed, for `Text` and `CircularProgressIndicator`.
 5. **Test device** — physical TV/streamer for all visual verification.
