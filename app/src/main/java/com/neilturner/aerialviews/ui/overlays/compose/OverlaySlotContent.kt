@@ -21,7 +21,7 @@ fun OverlaySlotContent(
 ) {
     when (type) {
         OverlayType.EMPTY -> {
-            Unit
+            // Nothing is assigned to this slot
         }
 
         OverlayType.CLOCK -> {
