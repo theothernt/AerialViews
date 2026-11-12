@@ -642,20 +642,41 @@ Toggle `use_compose_screensaver` in Settings → Appearance → Startup, reinsta
 
 ### 9.3 Comparison checklist
 
-- [ ] Text colour matches (`overlayColour`, not hard-coded white)
-- [ ] Shadow present and of matching intensity
-- [ ] Font weight/size identical, from the per-overlay prefs
-- [ ] Vertical text position identical (font-metric offset reproduced)
-- [ ] Corner position correct
-- [ ] Padding from screen edge matches, including non-default `overlayPaddingHorizontal/Vertical`
-- [ ] Multi-line blocks stack with a 3dp gap
-- [ ] Long text wraps at the horizontal padding instead of running under the opposite edge
-- [ ] Alternating position still alternates per item
-- [ ] Auto-hide/reveal fades both the overlays and the gradients
-- [ ] Overlay opacity setting affects both engines identically
-- [ ] Blackout mode hides everything
+Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) against the XML engine as baseline, 2026-11-12.
+
+**How to read the measurements.** Each figure is an ImageMagick ink box (`-colorspace gray -threshold 55% -format "%@"`) taken from the same crop of each engine's screenshot, so a shared box means text, icon and padding positions agree to the pixel. Frames were only captured after the platform logged `ScreenController: Loading:` — fixed sleeps were too short and produced loading-screen captures instead of overlays. Two traps worth remembering: `startup_show_loading` is not written until the setting is touched, so a pref edit that only rewrites existing keys silently does nothing; and LeakCanary's heads-up notification can draw over the screensaver on this device and pollute a capture.
+
+- [x] Font weight/size identical, from the per-overlay prefs — clock `80x27` (Compose) vs `79x27` (XML), date `122x27` in both, at default size and weight.
+- [x] Vertical text position identical (font-metric offset reproduced) — clock and date baselines both at y=58.
+- [x] Corner position correct — clock ink starts at x=66, date at x=733, in both engines.
+- [x] Multi-line blocks stack with a 3dp gap — a message block stacked above the metadata block in the same corner; combined ink `1788x130+66+113` in both engines. The gap itself was not measured in pixels.
+- [x] Long text wraps at the horizontal padding instead of running under the opposite edge — a 121-character POI wrapped onto a second line and the second line stopped inside the right padding; identical in both engines.
+- [x] Alternating position still alternates per item — item 1: clock `80x27+66`, date `122x27+733`; after a skip, item 2: date `122x27+66`, clock `80x27+775`. Same numbers in both engines.
+- [x] Auto-hide/reveal fades both the overlays and the gradients — auto-hidden frames carry no overlay ink and a reveal restores `1789x27+66+58` in both; gradients measured separately (bottom strip 0.5177 visible vs reference 0.5278; 0.531373 vs 0.531373 once faded out).
+- [x] Overlay opacity setting affects both engines identically — at `overlay_opacity = 50` neither engine has any pixel above 90% brightness in the clock box (470 Compose / 464 XML at 100%), and the text reads grey in both.
+- [x] Blackout mode hides everything — sampled pixels are `srgba(0,0,0)` across the frame with no overlay ink, identical in both engines.
+- [ ] Text colour matches (`overlayColour`, not hard-coded white) — not exercised; every check above ran at the default white.
+- [ ] Shadow present and of matching intensity — not measured.
+- [ ] Padding from screen edge matches, including non-default `overlayPaddingHorizontal/Vertical` — default padding matches (x=66 / x=733 / y=58 in both); the non-default padding range is outstanding.
+
+### 9.4 Per-overlay results from this pass
+
+| Overlay | Result |
+|---|---|
+| Message | ✅ messages 1–2 posted through the Ktor API rendered in both engines; the bottom block measured `1788x130+66+113` in both. |
+| Weather (current) | ✅ real data rendered (`7° [icon] Clear sky`): `236x34+65+65` Compose vs `236x36+65+66` XML. |
+| Weather (forecast) | ❌ open — see 9.5. |
+| Now playing | ⚠️ unverified — see 9.5. |
+| Loading indicator with `showLoadingText = false` | ✅ the loading area is empty in both engines. |
+| Weather service and Ktor API in Compose mode | ✅ Compose-mode run logged `WeatherService: Processed forecast: 3 days for London`, and API messages reached the Compose layer. |
 
 `magick compare local/screenshots/xml_<overlay>.png local/screenshots/compose_<overlay>.png local/screenshots/diff_<overlay>.png` when ImageMagick is available.
+
+### 9.5 Open items
+
+- **Weather forecast does not match.** Compose `267x113+588+57` vs XML `261x115+592+61`: about 4px further right and higher, and ~6px narrower, with the XML day labels reading slightly heavier in a side-by-side crop (`local/screenshots/cmp2_forecast.png`). The coloured chips seen during this pass were debug-only backgrounds inside `WeatherForecastOverlay` (`BuildConfig.DEBUG`) and have since been removed; they were not the cause of the offset, and the measurements are unchanged after removal. Phase 7.9 stays open.
+- **Now playing is unverified.** The overlay renders from `MusicEvent`, which `NowPlayingService` feeds from `MediaSessionManager` via `NotificationService`; nothing on the test TV has an active media session, so both engines show an empty event and there is nothing to compare. Needs a device with music playing.
+- **`DreamActivity` is still unverified (9.1).** `cmd dreams start-dreaming` requires root on this TV, and `TestActivity` cannot prove the hand-installed lifecycle owners. Needs Aerial Views selected as the TV's screensaver on an idle device, or root.
 
 ---
 
