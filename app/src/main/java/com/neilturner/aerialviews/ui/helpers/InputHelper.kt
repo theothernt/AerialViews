@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.screensaver.xml.ScreenController
 import timber.log.Timber
 
 object InputHelper {

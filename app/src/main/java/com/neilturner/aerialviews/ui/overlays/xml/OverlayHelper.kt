@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.helpers
+package com.neilturner.aerialviews.ui.overlays.xml
 
 import android.content.Context
 import android.util.TypedValue
@@ -12,14 +12,11 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.overlays.ClockOverlay
-import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
-import com.neilturner.aerialviews.ui.overlays.DateOverlay
-import com.neilturner.aerialviews.ui.overlays.MessageOverlay
-import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
-import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
+import com.neilturner.aerialviews.ui.helpers.ColourHelper
+import com.neilturner.aerialviews.ui.helpers.FontHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
+import com.neilturner.aerialviews.ui.helpers.OverlayPaddingHelper
+import com.neilturner.aerialviews.ui.helpers.SlotHelper
 
 class OverlayHelper(
     private val context: Context,

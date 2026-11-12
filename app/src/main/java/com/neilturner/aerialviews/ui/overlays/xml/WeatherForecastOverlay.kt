@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.overlays
+package com.neilturner.aerialviews.ui.overlays.xml
 
 import android.content.Context
 import android.graphics.Color
@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.services.weather.ForecastDay
 import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
+import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.ui.overlays.state.ForecastOverlayState
 import timber.log.Timber
 

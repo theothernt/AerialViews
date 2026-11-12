@@ -24,9 +24,9 @@ import org.junit.jupiter.api.Test
  * [android.content.Context] is required.
  *
  * The "configured + enabled" surface under test here is the routing module itself — i.e. a server
- * that has been wired up by [com.neilturner.aerialviews.ui.core.ScreenController], which only starts
+ * that has been wired up by [com.neilturner.aerialviews.ui.screensaver.xml.ScreenController], which only starts
  * [KtorServer] when a MessageOverlay slot is laid out and `message_api_enabled` is true (see
- * [com.neilturner.aerialviews.ui.core.ScreenController]). That enablement gate needs Android Views, so
+ * [com.neilturner.aerialviews.ui.screensaver.xml.ScreenController]). That enablement gate needs Android Views, so
  * it is covered by the runtime TestConfig loop ([com.neilturner.aerialviews.testconfig.TestConfigApplier],
  * [docs/testing/README.md]); these tests assert what the HTTP endpoint does once it is running.
  */

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.overlays
+package com.neilturner.aerialviews.ui.overlays.xml
 
 import android.content.Context
 import android.util.AttributeSet

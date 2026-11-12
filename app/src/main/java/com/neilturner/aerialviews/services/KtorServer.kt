@@ -37,7 +37,7 @@ import java.net.BindException
  * Process-wide owner of the bundled message API server.
  *
  * The server binds a fixed TCP port, so at most one instance may exist per process. A
- * [com.neilturner.aerialviews.ui.core.ScreenController] is created and destroyed on every
+ * [com.neilturner.aerialviews.ui.screensaver.xml.ScreenController] is created and destroyed on every
  * screensaver start/stop; an un-synchronised start/stop pair let the outgoing server keep its
  * socket while the incoming one tried to bind the same port, which the CIO engine reports as a
  * [BindException] from a coroutine this app does not own.

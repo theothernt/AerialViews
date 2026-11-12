@@ -7,6 +7,7 @@ ksp = "2.3.13"
 coroutines = "1.11.0"
 core-ktx = "1.19.1"
 activity-ktx = "1.13.0"
+activity-compose = "1.13.0"
 constraintlayout = "2.2.2"
 appcompat = "1.8.0"
 exifinterface = "1.4.2"
@@ -26,6 +27,9 @@ leakcanary = "3.0-alpha-8"
 leanback = "1.2.0"
 leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
+
+compose-bom = "2026.09.00"
+lifecycle = "2.11.0"
 
 okhttp = "5.5.1"
 retrofit = "3.0.0"
@@ -61,6 +65,7 @@ coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
@@ -86,6 +91,15 @@ ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref 
 leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
 preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 
 flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
 flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
@@ -143,6 +157,7 @@ ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation"
 android-application = { id = "com.android.application", version.ref = "agp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

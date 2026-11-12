@@ -149,6 +149,9 @@ object GeneralPrefs : KotprefModel() {
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
 
+    // Screensaver UI engine
+    var useComposeScreensaver by booleanPref(false, "use_compose_screensaver")
+
     // Startup + Shutdown
     var showLoadingText by booleanPref(true, "startup_show_loading")
     var startScreensaverOnLaunch by booleanPref(false, "startup_screensaver_on_launch")
