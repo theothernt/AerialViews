@@ -648,15 +648,15 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 
 Two more surfaced in the follow-up pass on 2026-11-12. Screencap PNGs keep an alpha channel, so `%[fx:mean]` on a `graya` crop is not the grey level: it averages the grey and the alpha (`(grey + 1) / 2`, so a pure black frame reports 0.5). Count pixels from a `txt:` dump instead. And the bottom gradient darkens the rows the progress bar occupies, so a single threshold cannot cover both edges: the bar was counted above 30% at the bottom (white at 50% over a ~14 grey background reads 134) and above 160 at the top, where the grey fixture is 128.
 
-- [x] Font weight/size identical, from the per-overlay prefs — clock `80x27` (Compose) vs `79x27` (XML), date `122x27` in both, at default size and weight.
-- [x] Vertical text position identical (font-metric offset reproduced) — clock and date baselines both at y=58.
+- [x] Font weight/size taken from the per-overlay prefs — clock `80x27` (Compose) vs `79x27` (XML), date `122x27` in both, at default size and weight. Close, not identical: the clock is 1px wider in Compose, which is glyph rounding rather than a match.
+- [x] Vertical text position matches (font-metric offset reproduced) — the clock and date ink boxes both start at y=58.
 - [x] Corner position correct — clock ink starts at x=66, date at x=733, in both engines.
 - [x] Multi-line blocks stack with a 3dp gap — a message block stacked above the metadata block in the same corner; combined ink `1788x130+66+113` in both engines. The gap itself was not measured in pixels.
-- [x] Long text wraps at the horizontal padding instead of running under the opposite edge — a 121-character POI wrapped onto a second line and the second line stopped inside the right padding; identical in both engines.
+- [x] Long text wraps at the horizontal padding instead of running under the opposite edge — a 121-character POI wrapped onto a second line in both engines and the second line stopped inside the right padding. The wrap point was inspected in the captures, not measured.
 - [x] Alternating position still alternates per item — item 1: clock `80x27+66`, date `122x27+733`; after a skip, item 2: date `122x27+66`, clock `80x27+775`. Same numbers in both engines.
 - [x] Auto-hide/reveal fades both the overlays and the gradients — auto-hidden frames carry no overlay ink and a reveal restores `1789x27+66+58` in both; gradients measured separately (bottom strip 0.5177 visible vs reference 0.5278; 0.531373 vs 0.531373 once faded out).
-- [x] Overlay opacity setting affects both engines identically — at `overlay_opacity = 50` neither engine has any pixel above 90% brightness in the clock box (470 Compose / 464 XML at 100%), and the text reads grey in both.
-- [x] Blackout mode hides everything — sampled pixels are `srgba(0,0,0)` across the frame with no overlay ink, identical in both engines.
+- [x] Overlay opacity setting affects both engines the same way — at `overlay_opacity = 50` neither engine has any pixel above 90% brightness in the clock box, and the text reads grey in both. At 100% the bright-pixel counts are close but not equal (470 Compose / 464 XML).
+- [x] Blackout mode hides everything — every sampled pixel is `srgba(0,0,0)` across the frame with no overlay ink, in both captures.
 - [x] Text colour matches (`overlayColour`, not hard-coded white) — at `overlay_colour = #FF0000` the green-channel maximum in the clock crop is 0.501961 in both engines (1.0 would mean white text), and the ink box sits at the same x/y.
 - [x] Shadow present and of matching intensity — dark pixels (below 100) in the same 900×220 clock crop: 300 in XML, 326 in Compose. Comparable rather than pixel-identical, and the two captures clocked different minutes (`17:37` vs `17:46`, ink `81x34` vs `85x33`), so glyph coverage differs slightly too.
 - [x] Padding from screen edge matches, including non-default `overlayPaddingHorizontal/Vertical` — at `60`/`40` the clock ink starts at x=120, y=83 in both engines (60dp and 40dp at density 2, plus the same 3px font-metric offset), and the date's right edge lands at 1800 in XML and 1803 in Compose.
@@ -667,29 +667,47 @@ Two more surfaced in the follow-up pass on 2026-11-12. Screencap PNGs keep an al
 |---|---|
 | Message | ✅ messages 1–2 posted through the Ktor API rendered in both engines; the bottom block measured `1788x130+66+113` in both. |
 | Weather (current) | ✅ real data rendered (`7° [icon] Clear sky`): `236x34+65+65` Compose vs `236x36+65+66` XML. |
-| Weather (forecast) | ⚠️ horizontal error fixed, ~6px of height left — see 9.5. |
+| Weather (forecast) | ✅ multi-day row measured on the grey fixture with identical data (`Thu/Fri/Sat`, `5° 4°`, `8° 2°`, `8° 1°`): ink `257x115+66+206` XML vs `258x115+66+206` Compose — same height, same top edge, 1px wider because a centred child rounds differently (9.5). `local/screenshots/geo_xml.png`, `geo_compose.png`. |
 | Now playing | ✅ Spotify (`com.spotify.tv.android`) playing through `NowPlayingService`: `Can’t You See · Bonobo, Aanya Martin` in XML and `Atlantic – Ambient Revisit · Jaytech` in Compose (the track changed between runs). Bright-pixel ink `596x34+66+989` and `553x34+65+989` in a `1000x260+0+820` crop, i.e. x 66/65 and the same y=989 and 34px height; widths differ only because the strings do. |
 | Loading indicator with `showLoadingText = false` | ✅ the loading area is empty in both engines. |
 | Weather service and Ktor API in Compose mode | ✅ Compose-mode run logged `WeatherService: Processed forecast: 3 days for London`, and API messages reached the Compose layer. |
 
 `magick compare local/screenshots/xml_<overlay>.png local/screenshots/compose_<overlay>.png local/screenshots/diff_<overlay>.png` when ImageMagick is available.
 
-### 9.5 Open items
+### 9.5 Closed items
 
-- **Weather forecast: horizontal offset fixed, ~6px of height left.** The 2026-11-12 investigation compared the two implementations and found the Compose version had drifted from the View version in three places. All three are corrected in `ui/overlays/compose/WeatherForecastOverlay.kt`:
-  1. **Icon size came from the wrong text size.** The View version sizes the icon from the *full* overlay size (`calculateIconSize(size)`); Compose measured it at `size * TEMP_SIZE_RATIO`, making every icon 20% too small. It is now measured from the paint metrics at the full size, the same way the View version does. On its own this makes the block ~7px taller.
-  2. **The temperature separator was a Material `Text(" ")`.** The View version uses an unstyled `TextView` (14sp, font padding); Material3's `Text` merges `LocalTextStyle` and took a 24sp line height. It is now a spacer whose width is measured from a 14sp space. On its own this removes ~7px of row height — exactly what the icon fix adds — so the two cancel in the total and the net height does not move; both were real divergences and both needed fixing.
-  3. **The 2dp "superscript" shift was missing.** The View version pads every forecast text `+2dp` top and `-2dp` bottom, which leaves the box height unchanged but pushes glyphs down 2dp (4px at density 2) to clear the degree symbol. Negative padding is not available in Compose, so the shift is now an `offset`.
+- **Weather forecast — closed.** Fixed on 2026-11-12 in two passes, both in `ui/overlays/compose/WeatherForecastOverlay.kt`.
 
-  Both engines were then measured on the same grey fixture with identical forecast data (`Thu/Fri/Sat`, `5° 4°`, `8° 2°`, `8° 1°`). **x is now identical at 66 and the width within 1px (257 XML vs 258 Compose)**, down from 4px and 6px. The per-row ink bands put each element within 1–2px (label 23/22, icon 36/34, temperatures 23/22), but the *gaps between* them are 4px and 3px wider in Compose, so the block is 7px taller (115 vs 122 by ink box) and its top edge sits 6px higher (906 vs 900). The remaining error is entirely vertical and has a fourth cause that is not yet identified.
-  Next step: ink boxes can no longer say *which* box is bigger, so this needs box-level numbers — add temporary `onSizeChanged` logging to the Compose column and its three children and compare against the View heights. The current suspicion is that a Compose paragraph line box is a couple of px taller than a `TextView` with `includeFontPadding = false`, which an `offset` cannot correct because it moves ink without changing layout height; if so the fix is an explicit `lineHeight`. Phase 7.9 stays open on this.
+  The first pass read the two implementations side by side and found three divergences from the View version:
+  1. **Icon size came from the wrong text size.** The View version sizes the icon from the *full* overlay size (`calculateIconSize(size)`); Compose measured it at `size * TEMP_SIZE_RATIO`. Now measured from the paint font metrics at the full size, and both engines log `iconSize=49`.
+  2. **The temperature separator was a Material `Text(" ")`.** The View version uses an unstyled `TextView`; Material3's `Text` merges `LocalTextStyle` and took a 24sp line height. It is now a spacer measured from a 14sp space.
+  3. **The 2dp "superscript" shift was missing.** The View pads every forecast text `+2dp` top and `-2dp` bottom, which leaves the box height alone but pushes glyphs down 4px at density 2 to clear the degree symbol. Negative padding does not exist in Compose, so the shift is an `offset`.
+
+  That still left the block 7px too tall with its top edge 6px too high, and ink boxes cannot say *which* box is responsible — so both engines were instrumented with temporary geometry logging (the View's column children via `addOnLayoutChangeListener`, the Compose ones via `onGloballyPositioned`) and run against the same grey fixture. Per day column, in pixels:
+
+  | box | View | Compose before | Compose after |
+  |---|---|---|---|
+  | column | `60x131` | `60x137` | `60x131` |
+  | day label | `47x36` top y=0 | `47x44` top y=0 | `47x40` top y=0 |
+  | icon | `49x49` top y=40 | `49x57` top y=44 | `49x53` top y=40 |
+  | temperatures | `60x38` top y=93 | `60x36` top y=101 | `60x38` top y=93 |
+
+  The Compose label and icon heights include the 4px bottom gap that the View applies as `bottomMargin`, so the meaningful comparison is the tops and the column total. The text line boxes themselves already matched: 36px for the label in both.
+
+  **Cause: the View version applies `elementMargin` as raw pixels.** It declares `private val elementMargin = 4` and puts it straight on `bottomMargin`, unlike `cellSpacing`, which it *does* scale (`(cellSpacing * density).toInt()`). Compose had `4.dp`, i.e. 8px on this 2x display, so both gaps were 4px too wide — +8px. The other half was the separator: the View's plain `TextView` contributes its own 14sp line box (38px) to the temperature row, while the Compose spacer had no height, leaving the row 2px short. +8 − 2 = the 6px the column was too tall.
+
+  **Fix:** `ELEMENT_MARGIN_PX = 4` converted with the current density, so the gap is 4 raw pixels like the View's, and the separator spacer now carries the measured 14sp line height with the temperature row centre-aligned. Logged values after the fix: `iconSize=49 space=7 sepHeight=38 margin=4`, against the View's `49` icon, 38px row and 4px gaps.
+
+  **Result:** matching box geometry (column 131px in both, children at y=0/40/93, from the temporary logging) and ink `257x115+66+206` (View) vs `258x115+66+206` (Compose). Per-row ink bands: label `252x21` at x+71/x+72, icon `238x31` at x+83/x+84, temperatures `234x16` at x+66 in both.
+
+  **The 1px of width** is the only residual. The label and icon are centred in a 60px column, and a 47px label leaves 6.5px either side: the View does `(width - childWidth) / 2` in Int maths and floors to 6, Compose aligns with floats and rounds to 7. So the label and icon sit 1px right and the ink box is 1px wider; height, top edge and left edge all match. That is the same magnitude as the current-weather line above and not worth a custom `Layout` to floor a half pixel.
 
 ### 9.6 Dream path verification
 
 Phase 9.1 asked for the real `DreamActivity`, which `TestActivity` cannot prove. The debug build was registered as the TV's screensaver (`settings put secure screensaver_components com.neilturner.aerialviews.debug/com.neilturner.aerialviews.ui.screensaver.DreamActivity`) and started the way the device does: `KEYCODE_HOME`, then `KEYCODE_BACK` on the launcher. Each engine ran cold (`am force-stop` first).
 
 - [x] `DreamActivity` runs the screensaver in both engines — every `AerialDreamTiming` mark fires: `app.create` → `dream.attach` → `screen.built` → `dream.contentView` → `playlist.resolved` (139 Apple videos, `cached=false`) → `playback.start` → `video.firstFrame` → `video.prepared`, and `dream.stop` on exit. No `FATAL EXCEPTION` in either run.
-- [x] Overlays render identically inside the dream — clock ink `84x26+66+58` and date ink `121x26+513+58` (absolute x=1733) in both engines, with the progress bar at the bottom edge (75px in XML vs 76px in Compose at capture). Frame mean `0.528091` in both, against the TestActivity video baseline of `0.5277`.
+- [x] Overlays land in the same place inside the dream — the clock ink box is `84x26+66+58` and the date `121x26+513+58` (absolute x=1733) in both engines. The progress bar sits at the bottom edge but its visible height differs by 1px at capture (75 XML vs 76 Compose), so this is an ink-box match, not a pixel match. Frame mean `0.528091` in both, against the TestActivity video baseline of `0.5277`.
 - [x] No startup regression from Compose — attach→contentView 2193ms (XML) vs 1892ms (Compose); contentView→`playback.start` 8642 vs 8901 (network-bound on the Apple feed); `playback.start`→`video.firstFrame` 2321 vs 2641. Attach→first frame is 13156 vs 13434ms, about 2% apart.
 
 Method notes. LeakCanary's heads-up notification ("1 retained objects…") draws over the dream and spoiled the first captures — wait for the banner to clear. And the Apple playlist takes ~8.6s to resolve, so a capture 8s after `dream.attach` still shows the loading indicator; wait ~20s, or poll for `video.firstFrame`.
@@ -752,15 +770,15 @@ Both sawtooth at every photo boundary. The XML run logged five `Starting progres
 
 The toggle defaults to `false`. Flipping the default to `true` is a separate, later change gated on:
 
-- [ ] Every overlay in Phase 7 passes the comparison checklist on a physical device — now-playing and the dream path pass (9.4, 9.6); the weather forecast offset in 9.5 is the remaining blocker
+- [x] Every overlay in Phase 7 passes the comparison checklist on a physical device — every Phase 7 overlay is measured in 9.4 and the dream path in 9.6; the forecast closed in 9.5 with only a 1px centring difference left
 - [x] Loading indicator matches, including with `showLoadingText = false`
 - [x] Progress bar matches, including pause/resume/reset and blackout
 - [x] Auto-hide/reveal, alternation, opacity and blackout verified in both engines
 - [x] Weather service and Ktor message API start in Compose mode
 - [x] No measure/layout regression: check `DreamTiming` marks (`screen.built`, `dream.contentView`) against the XML baseline, since Compose adds inflate/first-composition cost on a cold screensaver start — measured in 9.6: attach→contentView 1892ms (Compose) vs 2193ms (XML), attach→first frame 13434 vs 13156ms. Single samples on a network playlist, so this says "no regression", not "faster".
-- [ ] A minified release build succeeds
+- [x] A minified release build succeeds — `./gradlew --no-daemon :app:assembleBetaRelease` ran `minifyBetaReleaseWithR8` and finished `BUILD SUCCESSFUL in 4m 8s`, producing a 9.9MB signed APK (`app/build/outputs/apk/beta/release/app-beta-release.apk`, `apksigner verify` reports `CN=Neil Turner`). No R8 missing-class or Compose/reflection warnings; the only Kotlin warning is an unused `Unit` expression at `compose/OverlaySlotContent.kt:24`
 
-Until the default flips, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path byte-for-byte equivalent in behaviour.
+Until the default flips, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path behaviourally equivalent.
 
 ### 11.1 Getting it in front of users
 
@@ -811,17 +829,17 @@ Plus one minified build (`assembleBetaRelease`, or `minifyBetaRelease` if signin
 
 - [x] Compose toolchain builds (compiler plugin, BOM 2026.09.00, material3, no `composeOptions`)
 - [x] `use_compose_screensaver` toggle in Settings → Appearance → Startup, defaulting to `false`
-- [ ] The `false` path is unchanged — XML screensaver still behaves exactly as the Phase 0 baseline
+- [x] The `false` path is unchanged — verified by source diff plus a device run. No Phase 0 screenshot was kept, so there is no baseline image to diff against. Every XML-engine file was diffed against the pre-migration commit (`7d8b99a7`): `ClockOverlay`, `CountdownOverlay`, `DateOverlay`, `MessageOverlay`, `MetadataOverlay`, `OverlayHelper` and `WeatherNowOverlay` have no changes other than `package`/`import` lines; `NowPlayingOverlay`'s formatting moved into `utils/NowPlayingFormatter` with the same branches, separator and blank handling; `xml/WeatherForecastOverlay` only lost its `BuildConfig.DEBUG` coloured debug backgrounds. In the shared host, `ScreenController` gained `useComposeOverlays` gates but the `else` branch calls the same methods as before (`overlayHelper.buildOverlaysAndIds`, the same progress-bar setup); the only changes on that branch are `progressBarLocation`/`progressBarOpacity` hoisted to fields read at construction instead of inside `setupViews`, and the message-API/weather predicates asked of slot prefs (`EnabledOverlays`) instead of instantiated Views. Device run on the XML engine (custom feed, clock+date, forecast, message slot, bar `BOTTOM` at 50%): no `FATAL EXCEPTION`, `Progress bar: 0.5, BOTTOM`, `Playlist size: 1`, `WeatherService: Processed forecast: 3 days for London`, and the forecast ink box `257x115+66+206`, the same box measured for the XML engine in the same fixture configuration earlier in this migration. That is an ink-box comparison only: the pixels of the two captures were never diffed, and the clock/date ink in this run (`81x28+66+57`) was taken at a different time of day from the 9.4/9.6 captures (`84x26+66+58`), so it is not a like-for-like figure. With `message_api_enabled = true` the Ktor server starts (`Ktor server listening on port 8081`) and `GET /status` returns 200, which is the branch the predicate rewrite touched
 - [x] Compose renders inside the real `DreamActivity`, not just `TestActivity`
-- [ ] Every overlay in Phase 7 passes the on-device comparison checklist — blocked only by the weather forecast offset (9.5)
+- [x] Every overlay in Phase 7 passes the on-device comparison checklist — results in 9.4, forecast closure and the 1px centring rounding in 9.5
 - [x] Loading indicator matches Phase 8
 - [x] Progress bar matches the XML behaviour (Phase 10)
-- [x] Auto-hide/reveal, alternation, opacity, blackout all behave identically in both engines
+- [x] Auto-hide/reveal, alternation, opacity, blackout all behave the same way in both engines — see the checklist above, where some of those comparisons are exact ink boxes and others are close-but-not-equal counts
 - [x] Weather service and Ktor message API still start in Compose mode
 - [x] `testBetaDebugUnitTest` passes
 - [x] `spotlessCheck` passes
 - [x] `assembleBetaDebug` succeeds
-- [ ] A minified release build succeeds
+- [x] A minified release build succeeds — `./gradlew --no-daemon :app:assembleBetaRelease` ran `minifyBetaReleaseWithR8` and finished `BUILD SUCCESSFUL in 4m 8s`, producing a 9.9MB signed APK (`app/build/outputs/apk/beta/release/app-beta-release.apk`, `apksigner verify` reports `CN=Neil Turner`). No R8 missing-class or Compose/reflection warnings; the only Kotlin warning is an unused `Unit` expression at `compose/OverlaySlotContent.kt:24`
 
 ---
 

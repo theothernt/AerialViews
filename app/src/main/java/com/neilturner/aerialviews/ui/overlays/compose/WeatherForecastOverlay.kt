@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -29,7 +30,16 @@ import com.neilturner.aerialviews.ui.overlays.compose.components.overlayTextStyl
 import com.neilturner.aerialviews.ui.overlays.state.ForecastOverlayState
 
 private val cellSpacing = 24.dp
-private val elementMargin = 4.dp
+
+/**
+ * The gap between label, icon and temperatures.
+ *
+ * The View version declares `private val elementMargin = 4` and puts it straight on `bottomMargin`
+ * without multiplying by density, so the gap is 4 raw pixels at any display density - unlike
+ * `cellSpacing`, which it does scale. Mirroring that is what makes the block heights match: as 4dp
+ * the two gaps came to 8px each on a 2x display and the column was 8px taller than the View one.
+ */
+private const val ELEMENT_MARGIN_PX = 4
 
 private const val ICON_SCALE = 1.1f
 private const val LABEL_SIZE_RATIO = 0.8f
@@ -108,14 +118,14 @@ fun WeatherForecastOverlay(
             with(density) { (textHeightPx * ICON_SCALE).toInt().toDp() }
         }
 
-    val spaceWidth =
-        with(density) {
-            measurer
-                .measure(AnnotatedString(" "), separatorStyle)
-                .size.width
-                .toFloat()
-                .toDp()
-        }
+    val elementMargin = with(density) { ELEMENT_MARGIN_PX.toDp() }
+
+    // The View version's separator is a plain TextView, so it contributes its own line box to the
+    // temperature row: 38px against the 36px of the temperature text. Without it the row is 2px
+    // short and the column does not match.
+    val separatorSize = measurer.measure(AnnotatedString(" "), separatorStyle).size
+    val spaceWidth = with(density) { separatorSize.width.toFloat().toDp() }
+    val separatorHeight = with(density) { separatorSize.height.toFloat().toDp() }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         days.forEachIndexed { index, day ->
@@ -140,7 +150,7 @@ fun WeatherForecastOverlay(
                     )
                 }
 
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     OverlayText(
                         text = day.tempHigh,
                         sizeSp = sizeSp * TEMP_SIZE_RATIO,
@@ -148,7 +158,11 @@ fun WeatherForecastOverlay(
                         modifier = Modifier.offset(y = superscriptExtra),
                         colour = highColour,
                     )
-                    Spacer(Modifier.width(spaceWidth))
+                    Spacer(
+                        Modifier
+                            .width(spaceWidth)
+                            .height(separatorHeight),
+                    )
                     OverlayText(
                         text = day.tempLow,
                         sizeSp = sizeSp * TEMP_SIZE_RATIO,
