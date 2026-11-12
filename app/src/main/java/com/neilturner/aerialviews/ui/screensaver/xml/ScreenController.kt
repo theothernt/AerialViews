@@ -63,6 +63,7 @@ import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.SlotHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.EnabledOverlays
+import com.neilturner.aerialviews.ui.overlays.compose.LoadingIndicator
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverOverlays
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
@@ -132,6 +133,8 @@ class ScreenController(
     private val fadeCorners = GeneralPrefs.overlayFadeCornersSelection
     private val composeAlternate = MutableStateFlow(false)
     private val composeFadeAlpha = MutableStateFlow(overlayVisibleAlpha)
+    private val composeLoadingText = MutableStateFlow("")
+    private val composeLoadingSpinner = MutableStateFlow(true)
     private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
 
     private var canShowOverlays = false
@@ -238,6 +241,10 @@ class ScreenController(
             loadingContainer.visibility = View.INVISIBLE
         }
 
+        if (useComposeOverlays) {
+            installComposeLoading()
+        }
+
         // Setup overlays and set initial positions
         overlayHelper = OverlayHelper(context, GeneralPrefs)
         val overlayIds =
@@ -319,13 +326,14 @@ class ScreenController(
             val mediaResult =
                 MediaService(context).fetchMedia { status ->
                     mainScope.launch {
-                        loadingText.text =
+                        setLoadingText(
                             when (status) {
                                 LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
                                 LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
                                 LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
-                            }
-                        loadingSpinner.visibility = View.VISIBLE
+                            },
+                        )
+                        setLoadingSpinnerVisible(true)
                     }
                 }
             playlist = mediaResult.mediaPlaylist
@@ -782,8 +790,8 @@ class ScreenController(
     }
 
     private fun showLoadingError() {
-        loadingText.text = resources.getString(R.string.loading_error)
-        loadingSpinner.visibility = View.GONE
+        setLoadingText(resources.getString(R.string.loading_error))
+        setLoadingSpinnerVisible(false)
     }
 
     private fun hideOverlays(delay: Long = 0L) {
@@ -1442,6 +1450,57 @@ class ScreenController(
         progressBarView.render(state.progress)
     }
 
+    private fun currentVideoPosition(): Long = if (this::videoPlayer.isInitialized) videoPlayer.currentPosition.toLong() else 0L
+
+    private fun setLoadingText(text: String) {
+        loadingText.text = text
+        composeLoadingText.value = text
+    }
+
+    private fun setLoadingSpinnerVisible(visible: Boolean) {
+        loadingSpinner.visibility = if (visible) View.VISIBLE else View.GONE
+        composeLoadingSpinner.value = visible
+    }
+
+    /**
+     * The Compose counterpart of loading_view.xml's spinner and status text.
+     *
+     * Added inside the existing loading_container so its visibility, margins and fade out keep
+     * working unchanged: the View animations still drive the parent, and the Compose content goes
+     * with it.
+     */
+    private fun installComposeLoading() {
+        loadingSpinner.visibility = View.GONE
+        loadingText.visibility = View.GONE
+
+        val sizeSp = GeneralPrefs.loadingTextSize.toFloat()
+        val weight = GeneralPrefs.loadingTextWeight
+        val composeView =
+            ComposeView(context).apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+                layoutParams =
+                    ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                    )
+                setContent {
+                    val text by composeLoadingText.collectAsStateWithLifecycle()
+                    val spinner by composeLoadingSpinner.collectAsStateWithLifecycle()
+
+                    AerialTheme {
+                        LoadingIndicator(
+                            text = text,
+                            spinnerVisible = spinner,
+                            sizeSp = sizeSp,
+                            weight = weight,
+                        )
+                    }
+                }
+            }
+
+        (loadingContainer as? ViewGroup)?.addView(composeView)
+    }
+
     /**
      * Hosts the Compose overlay layer inside overlay_view.
      *
@@ -1475,6 +1534,7 @@ class ScreenController(
                             slots = slotPrefs,
                             alternate = alternatePosition,
                             visibleAlpha = overlayVisibleAlpha,
+                            videoPosition = ::currentVideoPosition,
                             fadeAlpha = fade,
                             fadeDurationMillis = overlayFadeOut.toInt(),
                             fadeCorners = fadeCorners,

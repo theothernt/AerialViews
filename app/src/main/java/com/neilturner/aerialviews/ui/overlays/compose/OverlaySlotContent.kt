@@ -2,54 +2,120 @@ package com.neilturner.aerialviews.ui.overlays.compose
 
 import androidx.compose.runtime.Composable
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
+import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 
 /**
  * Renders one slot's overlay.
  *
- * Phase 7 replaces each branch with its composable. Until a branch is implemented the slot
- * renders nothing, so with use_compose_screensaver on the overlay layer is wired up but empty.
- * Leave the setting off until the branches are ported.
+ * The slot decides which preferences apply: every overlay type has its own size and weight, so
+ * the lookup is by type here rather than inside each leaf composable.
  */
 @Composable
 fun OverlaySlotContent(
     type: OverlayType,
     state: OverlayUiState,
+    videoPosition: () -> Long,
 ) {
     when (type) {
-        OverlayType.EMPTY -> Unit
+        OverlayType.EMPTY -> {
+            Unit
+        }
 
-        OverlayType.CLOCK -> Unit
+        OverlayType.CLOCK -> {
+            ClockOverlay(GeneralPrefs.clockSize.toFloat(), GeneralPrefs.clockWeight)
+        }
 
-        // Phase 7.1
-        OverlayType.DATE -> Unit
+        OverlayType.DATE -> {
+            DateOverlay(GeneralPrefs.dateSize.toFloat(), GeneralPrefs.dateWeight)
+        }
 
-        // Phase 7.2
-        OverlayType.METADATA1,
-        OverlayType.METADATA2,
-        OverlayType.METADATA3,
-        OverlayType.METADATA4,
-        -> Unit
+        OverlayType.METADATA1 -> {
+            MetadataOverlay(
+                state = state.metadata[type] ?: MetadataOverlayState(),
+                sizeSp = GeneralPrefs.overlayMetadata1Size.toFloat(),
+                weight = GeneralPrefs.overlayMetadata1Weight,
+                videoPosition = videoPosition,
+            )
+        }
 
-        // Phase 7.3
+        OverlayType.METADATA2 -> {
+            MetadataOverlay(
+                state = state.metadata[type] ?: MetadataOverlayState(),
+                sizeSp = GeneralPrefs.overlayMetadata2Size.toFloat(),
+                weight = GeneralPrefs.overlayMetadata2Weight,
+                videoPosition = videoPosition,
+            )
+        }
+
+        OverlayType.METADATA3 -> {
+            MetadataOverlay(
+                state = state.metadata[type] ?: MetadataOverlayState(),
+                sizeSp = GeneralPrefs.overlayMetadata3Size.toFloat(),
+                weight = GeneralPrefs.overlayMetadata3Weight,
+                videoPosition = videoPosition,
+            )
+        }
+
+        OverlayType.METADATA4 -> {
+            MetadataOverlay(
+                state = state.metadata[type] ?: MetadataOverlayState(),
+                sizeSp = GeneralPrefs.overlayMetadata4Size.toFloat(),
+                weight = GeneralPrefs.overlayMetadata4Weight,
+                videoPosition = videoPosition,
+            )
+        }
+
         OverlayType.MESSAGE1,
         OverlayType.MESSAGE2,
         OverlayType.MESSAGE3,
         OverlayType.MESSAGE4,
-        -> Unit
+        -> {
+            MessageOverlay(state.message[type] ?: MessageOverlayState())
+        }
 
-        // Phase 7.4
-        OverlayType.COUNTDOWN -> Unit
+        OverlayType.COUNTDOWN -> {
+            CountdownOverlay(
+                sizeSp = GeneralPrefs.countdownSize.toFloat(),
+                weight = GeneralPrefs.countdownWeight,
+            )
+        }
 
-        // Phase 7.5
-        OverlayType.MUSIC1,
-        OverlayType.MUSIC2,
-        -> Unit
+        OverlayType.MUSIC1 -> {
+            NowPlayingOverlay(
+                state = state.nowPlaying,
+                format = GeneralPrefs.nowPlayingLine1,
+                sizeSp = GeneralPrefs.nowPlayingSize1.toFloat(),
+                weight = GeneralPrefs.nowPlayingWeight1,
+            )
+        }
 
-        // Phase 7.6
-        OverlayType.WEATHER1 -> Unit
+        OverlayType.MUSIC2 -> {
+            NowPlayingOverlay(
+                state = state.nowPlaying,
+                format = GeneralPrefs.nowPlayingLine2,
+                sizeSp = GeneralPrefs.nowPlayingSize2.toFloat(),
+                weight = GeneralPrefs.nowPlayingWeight2,
+            )
+        }
 
-        // Phase 7.8
-        OverlayType.WEATHER2 -> Unit // Phase 7.9
+        OverlayType.WEATHER1 -> {
+            WeatherNowOverlay(
+                state = state.weather,
+                layout = GeneralPrefs.weatherLine1Layout,
+                sizeSp = GeneralPrefs.weatherLine1Size.toFloat(),
+                weight = GeneralPrefs.weatherLine1Weight,
+            )
+        }
+
+        OverlayType.WEATHER2 -> {
+            WeatherForecastOverlay(
+                state = state.forecast,
+                sizeSp = GeneralPrefs.weatherLine2Size.toFloat(),
+                weight = GeneralPrefs.weatherLine2Weight,
+            )
+        }
     }
 }

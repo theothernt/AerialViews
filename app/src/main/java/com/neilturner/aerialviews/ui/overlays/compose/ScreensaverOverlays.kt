@@ -34,6 +34,7 @@ private val cornerGap = 3.dp
 fun ScreensaverOverlays(
     state: OverlayUiState,
     slots: List<SlotPref>,
+    videoPosition: () -> Long,
     alternate: Boolean,
     visibleAlpha: Float,
     fadeAlpha: Float,
@@ -73,6 +74,7 @@ fun ScreensaverOverlays(
         OverlayCorner(
             corner = topStart,
             state = state,
+            videoPosition = videoPosition,
             alpha = topStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.TopStart),
@@ -80,6 +82,7 @@ fun ScreensaverOverlays(
         OverlayCorner(
             corner = topEnd,
             state = state,
+            videoPosition = videoPosition,
             alpha = topEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.TopEnd),
@@ -87,6 +90,7 @@ fun ScreensaverOverlays(
         OverlayCorner(
             corner = bottomStart,
             state = state,
+            videoPosition = videoPosition,
             alpha = bottomStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.BottomStart),
@@ -94,6 +98,7 @@ fun ScreensaverOverlays(
         OverlayCorner(
             corner = bottomEnd,
             state = state,
+            videoPosition = videoPosition,
             alpha = bottomEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.BottomEnd),
@@ -105,6 +110,7 @@ fun ScreensaverOverlays(
 private fun OverlayCorner(
     corner: Corner,
     state: OverlayUiState,
+    videoPosition: () -> Long,
     alpha: Float,
     horizontalAlignment: Alignment.Horizontal,
     modifier: Modifier = Modifier,
@@ -115,7 +121,7 @@ private fun OverlayCorner(
         horizontalAlignment = horizontalAlignment,
     ) {
         corner.types.forEach { type ->
-            OverlaySlotContent(type = type, state = state)
+            OverlaySlotContent(type = type, state = state, videoPosition = videoPosition)
         }
     }
 }

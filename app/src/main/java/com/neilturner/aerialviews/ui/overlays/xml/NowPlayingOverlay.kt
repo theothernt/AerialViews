@@ -23,7 +23,7 @@ import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
-import com.neilturner.aerialviews.ui.overlays.utils.TrackNameShortener
+import com.neilturner.aerialviews.ui.overlays.utils.NowPlayingFormatter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -186,7 +186,13 @@ class NowPlayingOverlay
         }
 
         private fun updateContent(): Boolean {
-            val updatedText = formatNowPlaying(trackInfo)
+            val updatedText =
+                NowPlayingFormatter.format(
+                    artist = trackInfo.artist,
+                    song = trackInfo.song,
+                    format = format,
+                    shortenTrackName = prefs.nowPlayingShortenTrackName,
+                )
             val hasText = updatedText.isNotBlank()
             if (hasText) {
                 Timber.i("$type: Set new track info...")
@@ -223,39 +229,4 @@ class NowPlayingOverlay
             TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics)
                 .toInt()
-
-        private fun formatNowPlaying(trackInfo: MusicEvent): String {
-            val (artist, song) = trackInfo
-            val processedSong = if (prefs.nowPlayingShortenTrackName) TrackNameShortener.shortenTrackName(song) else song
-
-            return when (format) {
-                NowPlayingFormat.SONG_ARTIST -> {
-                    if (processedSong.isNotBlank() && artist.isNotBlank()) {
-                        "$processedSong · $artist"
-                    } else {
-                        processedSong.takeIf { it.isNotBlank() } ?: artist
-                    }
-                }
-
-                NowPlayingFormat.ARTIST_SONG -> {
-                    if (artist.isNotBlank() && processedSong.isNotBlank()) {
-                        "$artist · $processedSong"
-                    } else {
-                        artist.takeIf { it.isNotBlank() } ?: processedSong
-                    }
-                }
-
-                NowPlayingFormat.ARTIST -> {
-                    artist
-                }
-
-                NowPlayingFormat.SONG -> {
-                    processedSong
-                }
-
-                else -> {
-                    ""
-                }
-            }
-        }
     }
