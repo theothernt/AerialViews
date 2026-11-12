@@ -475,17 +475,76 @@ Add a phase-5 sub-task: expose an `overlayAlpha: StateFlow<Float>` (0f…visible
 
 ---
 
+## Compose architecture — state, hoisting, and what we deliberately skip
+
+### Unidirectional data flow, already in place
+
+`OverlayStateStore` is the state holder: a `MutableStateFlow<OverlayUiState>` fed by `OverlayEventBridge` (FlowBus events) and owned by `ScreenController`. Compose consumes it one way only — collect, render, no writes back:
+
+```
+GlobalBus ─► OverlayEventBridge ─► OverlayStateStore ─► collectAsStateWithLifecycle ─► composables
+                                          ▲
+                                          └── ScreenController (setMetadata/resetForNextMedia)
+```
+
+Overlay composables never read prefs, players or services. The container resolves the slot and padding prefs **once** (via `SlotHelper.slotPrefs` and `OverlayPaddingHelper`) and passes concrete values down; the leaves take text, style and size as parameters and render. That is the property that matters: it is what makes them previewable and screenshot-comparable.
+
+### State hoisting is explicit, not incidental
+
+`ScreensaverOverlays` takes **state**, not the store:
+
+```kotlin
+@Composable
+fun ScreensaverOverlays(
+    state: OverlayUiState,
+    alternate: Boolean,
+    modifier: Modifier = Modifier,
+)
+```
+
+and the caller (`ScreenController`'s `setContent { }`) does the single `collectAsStateWithLifecycle()`. Individual overlays are stateless (`ClockOverlay(text: String, style: TextStyle)`), with the ticking/countdown/animation done in an effect *inside* the leaf so it cancels with the composition.
+
+### Effects, not handlers
+
+Every periodic update becomes a Compose effect bound to the composition: `LaunchedEffect` / `produceState` / `rememberInfiniteTransition`. Clock, date and countdown tickers cancel automatically when the `ComposeView` detaches, instead of relying on `onDetachedFromWindow` bookkeeping the way `DateOverlay` and `CountdownOverlay` do today.
+
+### Immutability and stability
+
+`OverlayUiState` and its members are rebuilt with `copy()` and never mutated in place (the `toMutableMap().apply { }` in the store already produces a new map), so mark `OverlayUiState` and the per-overlay state classes `@Immutable`. Without it, `Map`/`List` fields make every composable that takes a state unstable and unskippable. Eight small texts make the cost irrelevant today, but the annotation is free and stops future readers copying the wrong pattern.
+
+### Previews instead of round trips
+
+`ui-tooling-preview` is already in the dependency list. Add a `SampleOverlayUiState` (one instance per overlay type, plausible English text) so each overlay has a `@Preview`. With no emulator attached and verification requiring a physical device, previews are the only fast layout iteration loop — use them for composition and typography, and treat them as unverified for exact pixel metrics.
+
+### Testing: keep composables thin
+
+The repo has no instrumentation tests (`app/src/androidTest` is empty) and JVM tests cannot touch Android framework classes. So do not introduce Compose UI tests for this migration. Instead keep all formatting and decision logic in pure code that the existing JVM suite covers — `CountdownFormatter`, `CountdownTimeParser`, `TrackNameShortener`, `OverlayPaddingHelper`, `OverlayOpacityHelper`, `ScheduledBlackoutWindow` are the model to follow. If a Composable contains an `if` worth testing, the condition belongs in a pure function.
+
+### What we deliberately do **not** add
+
+| Not used | Why |
+|---|---|
+| **`ViewModel`** | `OverlayStateStore` already is the observable state holder, and it outlives nothing that a ViewModel would help with. `DreamService` has no `ViewModelStoreOwner`, so it would mean hand-rolling a `ViewModelStore` and clearing it manually — real cost, pass-through benefit. No config-change recreation, no back stack, no navigation, no process-death restore worth having in a screensaver. |
+| **Hilt / DI** | The repo uses none; `ScreenController` is constructed directly by two activities. Introducing a DI graph for one screen is pure overhead. |
+| **Navigation** | Single screen, no destinations. |
+| **LiveData / `observeAsState`** | The store is already a `StateFlow`; `collectAsStateWithLifecycle` is the current recommendation. |
+| **A prefs-observable state layer** | Both engines freeze `GeneralPrefs` at `ScreenController` construction. Making Compose live-reactive to prefs would make the two engines behave differently and break the A/B comparison. If live pref updates are wanted later, that is a separate change affecting both paths. |
+
+> [!NOTE]
+> If a future phase migrates the settings screens (currently out of scope), *that* is where a `ViewModel` earns its place — real navigation, real config changes, real saved state. Nothing here precludes it.
+
+---
+
 ## Phase 6 — Compose Overlay Container
 
 ```kotlin
 @Composable
 fun ScreensaverOverlays(
-    stateStore: OverlayStateStore,
+    state: OverlayUiState,
     alternate: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val state by stateStore.uiState.collectAsStateWithLifecycle()
-    ...
+    // corners from SlotHelper.slotPrefs(context), rendered from `state`
 }
 ```
 
@@ -629,6 +688,19 @@ The toggle defaults to `false`. Flipping the default to `true` is a separate, la
 
 Until the default flips, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path byte-for-byte equivalent in behaviour.
 
+### 11.1 Getting it in front of users
+
+The toggle defaulting to `false` is what makes a wide beta safe, and the `beta` / `googleplaybeta` flavours (already shipping with `versionNameSuffix = "-betaN"`) are the natural channel — the XML engine stays the default for everyone who does not opt in.
+
+Two things are worth doing **before** that beta goes out, because without them the feedback is much weaker:
+
+1. **Tag the engine in telemetry.** `ScreenController` should record which engine it built as a Firebase Analytics user property and a Crashlytics custom key (`use_compose_screensaver`). Both providers are already wired via `FirebaseHelper`, and the F-Droid flavour substitutes a no-op helper, so the call site is safe everywhere. Without this, a crash report or a "the clock is wrong" report cannot be attributed to the Compose path, which undermines the whole point of a beta.
+2. **Ask beta users to compare specific things.** A short checklist converts vague feedback into actionable data: clock/date legibility at 10 feet, whether text is still readable with overlays auto-hidden then revealed, whether long POI text wraps instead of running off the edge, and whether the screensaver looks right after `runAsActivity` handoff.
+
+### 11.2 Default flip
+
+`useComposeScreensaver` flips to `true` only when all the criteria in this phase pass, and stays a setting regardless.
+
 Verification:
 
 ```sh
@@ -694,3 +766,137 @@ Still open (decide when the relevant phase starts):
 - **Gradients and brightness dimmer** — out of scope for this migration; they stay XML View layers. Revisit only if the Compose layer needs to own them.
 - **`ProgressBarType` (elapsed vs remaining)** — resolve how `VideoPlayerView` applies it before Phase 10, since the Compose bar has to split the same way.
 - **POI position source** — the Compose metadata overlay needs video position; decide between a `StateFlow<Long>` on the store (pushed by `ScreenController`'s existing playback callbacks) or passing the player down. The former keeps the Composable testable.
+
+---
+
+## Appendix — Option B: ViewModel-centric architecture
+
+Not the recommended path for the port itself, but worth having written down: if you'd rather rewrite the overlay layer around a `ViewModel` instead of porting it View-for-View, this is the shape it takes.
+
+### B.1 Scope the ViewModel correctly
+
+The mistake to avoid is a `ScreensaverViewModel` that owns the whole session. A ViewModel must not hold `ExoPlayer`, `ImageView` bitmaps or anything else with a View/Activity lifetime — `ScreenController` stays the host and owns every player.
+
+What the ViewModel owns is **overlay presentation state**, replacing `OverlayStateStore` outright (not wrapping it — two holders is worse than either one):
+
+```kotlin
+@Immutable
+data class ScreensaverUiState(
+    val metadata: Map<OverlayType, MetadataOverlayState> = emptyMap(),
+    val message: Map<OverlayType, MessageOverlayState> = emptyMap(),
+    val nowPlaying: NowPlayingOverlayState = NowPlayingOverlayState(),
+    val weather: WeatherOverlayState = WeatherOverlayState(),
+    val forecast: ForecastOverlayState = ForecastOverlayState(),
+    val clock: String = "",
+    val date: String = "",
+    val countdown: String = "",
+    val progress: ProgressOverlayState = ProgressOverlayState(),
+    val alternate: Boolean = false,
+    val overlayAlpha: Float = 1f,
+)
+
+class ScreensaverViewModel(
+    private val formatter: OverlayTextFormatter,   // strings/dates/countdown, no Context
+    private val positionSource: PositionSource,    // video position, adapter over VideoPlayerView
+    private val clock: Clock = Clock.systemDefaultZone(),
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ScreensaverUiState())
+    val uiState: StateFlow<ScreensaverUiState> = _uiState.asStateFlow()
+
+    init {
+        // Own the FlowBus subscription, so it dies with onCleared()
+        viewModelScope.launch { events.collect(::apply) }
+        viewModelScope.launch { tickClock() }
+        viewModelScope.launch { tickDate() }
+    }
+
+    fun onItemChanged() { … }        // reset metadata/progress, flip alternate
+    fun onMessage(type: OverlayType, state: MessageOverlayState) { … }  // starts/stops the auto-clear job
+    fun onOverlayVisibility(mode: String, fadeCorners: Set<String>) { … }
+    override fun onCleared() { … }   // nothing else to release; players are not ours
+}
+```
+
+Logic that today lives inside View classes moves here and becomes JVM-testable with `kotlinx-coroutines-test`: message auto-clear after `duration`, POI rotation given a position, countdown completion, `alternate` flipping per item, "weather unchanged ⇒ don't re-emit".
+
+### B.2 Wiring it into a DreamService
+
+This is the part with actual friction. `viewModel()` inside composition needs `ViewTreeViewModelStoreOwner` (and the `lifecycle-viewmodel-compose` artifact). A `DreamService` provides nothing, so the recipe is to own the store yourself and clear it explicitly:
+
+```kotlin
+class DreamActivity : DreamService(), LifecycleOwner, SavedStateRegistryOwner, ViewModelStoreOwner {
+    private val store = ViewModelStore()
+    override val viewModelStore: ViewModelStore get() = store
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        savedStateRegistryController.performRestore(null)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        window?.decorView?.let {
+            it.setViewTreeLifecycleOwner(this)
+            it.setViewTreeSavedStateRegistryOwner(this)
+            it.setViewTreeViewModelStoreOwner(this)   // required for viewModel()
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        store.clear()                                  // fires onCleared(), cancels viewModelScope
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        super.onDetachedFromWindow()
+    }
+}
+```
+
+`TestActivity` needs none of this — `AppCompatActivity` is already a `ViewModelStoreOwner` and installs the view-tree owners.
+
+> [!CAUTION]
+> Forgetting `store.clear()` leaks the ViewModel and its coroutines for the process lifetime — and `viewModelScope` never cancels. `ScreenController.stop()` is the other place worth calling it, since `stop()` is idempotent and is reached from both the dream and the activity.
+
+If you'd rather avoid `ViewTreeViewModelStoreOwner` altogether, construct the ViewModel explicitly in `ScreenController` instead:
+
+```kotlin
+private val store = ViewModelStore()
+private val vm = ViewModelProvider(store, factory)[ScreensaverViewModel::class.java]
+// stop(): store.clear()
+```
+
+Same lifecycle guarantees, no owner plumbing, no `lifecycle-viewmodel-compose` dependency — you just hand `vm.uiState` to the composition as a parameter. For a single screen this is the smaller change.
+
+### B.3 The constraint that decides everything: no `Context` in the ViewModel
+
+For the ViewModel to be unit-testable on the JVM, it cannot touch `Context`/`Resources`. Today the overlay Views do exactly that:
+
+| View code | Must become |
+|---|---|
+| `resources.getQuantityString(part.unit.pluralsRes, …)` in `CountdownOverlay` | an injected formatter returning `String` |
+| `DateHelper.formatDate(context, type, custom)` in `DateOverlay` | injected formatter, `Context` resolved once outside the VM |
+| `LocaleHelper`'s alternate-locale `Context` | kept in `ScreenController`; the VM receives formatted strings or a locale-aware formatter |
+| `videoPlayer.currentPosition` in `MetadataOverlay` | `PositionSource` interface |
+
+If you skip this and pass a `Context` into the ViewModel, you get a leak (`Context` outliving the screen) *and* lose the JVM test suite in one go. This is the single most important design rule in Option B.
+
+### B.4 What Option B buys and costs
+
+| Gains | Costs |
+|---|---|
+| One state holder instead of two (`OverlayStateStore` disappears) | ViewModelStore plumbing on `DreamService`, easy to get wrong |
+| Overlay logic becomes JVM-testable: timers, POI rotation, auto-clear, alternation | A formatter/position abstraction layer that does not exist today |
+| Both engines can render from the same ViewModel, so XML-vs-Compose comparisons differ only in rendering | More indirection for ~8 small text overlays |
+| Natural fit if the settings screens are migrated later | Loses the "prefs frozen at construction" simplicity — prefs become an injected dependency |
+
+### B.5 If you take this path, sequence it
+
+> [!NOTE]
+> This appendix assumes the state refactor and the port land together. The recommended order is the opposite: **port the UI first, ship it behind the toggle, gather feedback, then do this.** One consequence — the clock, date, countdown and POI tickers get written once in Compose effects (Phase 7) and then *relocated* into `viewModelScope` here. That is fine provided you follow the Phase 7 rule of pushing decisions into pure functions (`countdownText(state, now)`, `poiTextAt(position, poi)`): the pure functions survive the move untouched, and only the ticking loop relocates. Reimplementing them with logic inline in the composables is what would make this order expensive.
+
+If you do the two in one change, do not combine it with the port. Keep tests green at every step, especially since CI is `workflow_dispatch` only:
+
+1. Extract `OverlayTextFormatter` + `PositionSource`; move the pure text logic there. Existing tests keep passing.
+2. Introduce `ScreensaverViewModel` as a **thin facade over `OverlayStateStore`** — same observable output, no behaviour change. XML engine untouched.
+3. Move the FlowBus subscription from `OverlayEventBridge` into the ViewModel.
+4. Move tickers and POI rotation into the ViewModel; delete the timer code from the Views.
+5. Delete `OverlayStateStore`; both engines now render from `vm.uiState`.
+6. *Then* start the Compose port (Phases 2-10) against a ViewModel that is already settled and tested.
+
+Steps 1-5 are the "rewrite the overlay code" part and are largely view-layer-neutral: they'd improve the XML engine whether or not Compose ever lands.
