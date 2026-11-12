@@ -684,12 +684,50 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 
 Independent of the overlay layer, and the state already exists: `ProgressBarEvent` (posted on `GlobalBus`) → `OverlayEventBridge` → `OverlayStateStore.setProgress` → `OverlayUiState.progress: ProgressOverlayState` (`state`, `position`, `duration`), consumed today by `ProgressBar.render()` via `ScreenController.renderOverlayState()`.
 
-- `progressBarLocation` (`DISABLED`/`TOP`/`BOTTOM`) sets visibility and gravity at init and is re-applied on blackout exit.
-- `progressBarType` (`BOTH`/`ELAPSED`/`REMAINING`) — check `ProgressBar` and `VideoPlayerView` for where the elapsed/remaining split is applied before porting.
-- `progressBarOpacity` → alpha.
-- Animation is a `ValueAnimator` growing width from `position/duration` to full over `duration` ms, with `PAUSE`/`RESUME`/`RESET` states. Compose equivalent: an `Animatable` fraction started in a `LaunchedEffect(state, position, duration)`, drawn as a `Box` with `fillMaxWidth(fraction)`, or a custom `LinearProgressIndicator`.
+### 10.1 What the XML bar actually does
 
-Keep the XML `ProgressBar` view for the XML path; add a Compose one behind the same toggle.
+- `progressBarLocation` (`DISABLED`/`TOP`/`BOTTOM`) sets visibility and gravity at init and is re-applied when blackout ends.
+- `progressBarType` (`BOTH`/`VIDEOS`/`PHOTOS`) is **not** an elapsed/remaining split. Each player evaluates it once at construction to decide whether it posts progress events at all: `VideoPlayerView` posts unless the type is `PHOTOS` (`VideoPlayerView.kt:76-77`), `ImagePlayerView` unless it is `VIDEOS` (`ImagePlayerView.kt:88-90`). The split therefore lives at the event source and both engines inherit it, so neither has to re-implement it.
+- `progressBarOpacity` → `alpha`.
+- `ProgressBar.render(state)` (`ProgressBarView.kt:32`) handles `START` (`animateWidth(position, duration)`: a `ValueAnimator` growing the width from `position/duration` to full over `duration` ms, linear), `PAUSE` (cancels the animator and keeps the width reached), `RESUME` (restarts it for the time left) and `RESET` (width back to zero).
+
+### 10.2 Compose implementation
+
+- **`ui/overlays/compose/ProgressBarMotion.kt`** — pure, and the only part with logic worth testing. `progressFraction(position, duration): Float?` returns null everywhere `animateWidth` would bail (no duration, position outside the item), and `progressBarMotion(state, position, duration)` maps `ProgressState` onto `Animate(from, to, durationMillis)`, `Pause`, `Resume` or `Reset`. Seven Jupiter tests in `ProgressBarMotionTest`.
+- **`ui/overlays/compose/ProgressBarOverlay.kt`** — a 1dp white `Box` whose filled fraction is an `Animatable`: `Animate` snaps to `from` and tweens to `to` linearly, `Pause` is the effect being cancelled (the `Animatable` keeps the value it reached, which is what a paused `ValueAnimator` leaves behind), `Resume` continues from the current fraction to full over the time left, `Reset` snaps to 0. Height, alpha and alignment come from the prefs.
+- **`ScreenController`** — the bar lives in the existing overlay `ComposeView` but in its own full-size `Box` beside `ScreensaverOverlays` rather than inside it, so the overlay auto-hide fade does not touch it; it hides with blackout because that layer goes `INVISIBLE`. In Compose mode the XML `ProgressBar` is kept `GONE` at init and again after blackout, and `renderOverlayState()` skips `progressBarView.render()`, otherwise both bars would animate.
+
+### 10.3 Comparison checklist
+
+Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) against the XML engine, 2026-11-12. Widths are ImageMagick counts of bright pixels in the bar's rows; the frame is 1920 wide, so a fraction of the clip is `pixels / 1920`.
+
+- [x] Height and edge match — the bar occupies rows 1078–1079 in both engines, i.e. 1dp at density 2.0 flush with the bottom edge for `BOTTOM`.
+- [x] Filled width tracks playback — over 7s the filled width grew 20→76px (Compose) and 29→85px (XML) on the same 283s clip (`ProgressBar: Starting progress bar animation: 0s, 283s`), ~7px/s against the 1920/283 ≈ 6.8px/s the clip predicts. The constant ~30–90px offset between the two rows is each run's start instant relative to the first sample, not a rate difference.
+- [x] Pause freezes and resume continues — with `button_up_press = TOGGLE_PAUSE`, the bottom-strip mean went 0.5088 (playing) → 0.5176 (paused) → **0.5176 after 4s paused** → 0.5205 (resumed) → 0.5295 (4s later). The identical middle pair is the bar holding still.
+- [x] Reset empties the bar between items — in the two-photo run in 10.4 the Compose bar reads 0px at one boundary and both engines fall back towards 0 at every 10s boundary.
+- [ ] Opacity at a non-default value — only `progress_bar_opacity = 100` was measured (fully white).
+- [ ] `TOP` location — every run used `BOTTOM`.
+- [ ] Hiding the bar in blackout mode — not captured. It follows from the bar sitting on the overlay layer, which `enterBlackOutMode` sets `INVISIBLE`, but that is code-path reasoning, not a measurement.
+- [ ] `progressBarType` gating in Compose mode — `PHOTOS` while a video plays and `VIDEOS` while photos show are unexercised. Both engines inherit the gate from the players, so a regression would surface in the XML engine too.
+
+### 10.4 Identical consecutive items
+
+Two items with the same `position` and `duration` — consecutive photos, which both post `START(0, duration)` — cannot stall, and both engines were measured doing it. `ProgressOverlayState` is a data class behind a `MutableStateFlow`, so an equal state is conflated and never reaches the collector. What keeps the bar restarting is `ScreenController.loadItem()`: it calls `overlayStateStore.resetForNextMedia()` and posts a `RESET` before every item, so a `START` is never adjacent to an identical `START`.
+
+Two 10s photos from a local feed, bar width sampled every 2s:
+
+```
+compose:  987 1656 301 1012 1694 420 1083 1746 525 1192 0 570
+xml:     1149 1803 409 1095 1752 461 1121 1780 467 1130 1803 515
+```
+
+Both sawtooth at every photo boundary. The XML run logged five `Starting progress bar animation` lines; the Compose run logs none, by design, because that `Timber` call sits in the `GONE` XML view. The guarantee is structural rather than local: a path that starts an item without going through `loadItem()`, or re-posts `START` with unchanged values, would be swallowed by the same equality check in both engines.
+
+### 10.5 Open items
+
+- The four unticked checks in 10.3: non-default opacity, `TOP`, blackout, and `progressBarType` gating.
+- The composable's own pause/resume timing is verified only on the device. `ProgressBarMotionTest` covers the pure mapping; nothing asserts the fraction after advancing a Compose clock.
+- No test pins the emission behaviour in 10.4. A store test — `setProgress(START, 0, 5000)`, `resetForNextMedia()`, `setProgress(START, 0, 5000)` again, expecting three emissions — would catch a refactor that drops the reset.
 
 ---
 
@@ -700,10 +738,10 @@ Keep the XML `ProgressBar` view for the XML path; add a Compose one behind the s
 The toggle defaults to `false`. Flipping the default to `true` is a separate, later change gated on:
 
 - [ ] Every overlay in Phase 7 passes the comparison checklist on a physical device
-- [ ] Loading indicator matches, including with `showLoadingText = false`
+- [x] Loading indicator matches, including with `showLoadingText = false`
 - [ ] Progress bar matches, including pause/resume/reset and blackout
-- [ ] Auto-hide/reveal, alternation, opacity and blackout verified in both engines
-- [ ] Weather service and Ktor message API start in Compose mode
+- [x] Auto-hide/reveal, alternation, opacity and blackout verified in both engines
+- [x] Weather service and Ktor message API start in Compose mode
 - [ ] No measure/layout regression: check `DreamTiming` marks (`screen.built`, `dream.contentView`) against the XML baseline, since Compose adds inflate/first-composition cost on a cold screensaver start
 - [ ] A minified release build succeeds
 
@@ -756,18 +794,18 @@ Plus one minified build (`assembleBetaRelease`, or `minifyBetaRelease` if signin
 
 ## Completion criteria
 
-- [ ] Compose toolchain builds (compiler plugin, BOM 2026.09.00, material3, no `composeOptions`)
-- [ ] `use_compose_screensaver` toggle in Settings → Appearance → Startup, defaulting to `false`
+- [x] Compose toolchain builds (compiler plugin, BOM 2026.09.00, material3, no `composeOptions`)
+- [x] `use_compose_screensaver` toggle in Settings → Appearance → Startup, defaulting to `false`
 - [ ] The `false` path is unchanged — XML screensaver still behaves exactly as the Phase 0 baseline
 - [ ] Compose renders inside the real `DreamActivity`, not just `TestActivity`
 - [ ] Every overlay in Phase 7 passes the on-device comparison checklist
-- [ ] Loading indicator matches Phase 8
+- [x] Loading indicator matches Phase 8
 - [ ] Progress bar matches the XML behaviour (Phase 10)
-- [ ] Auto-hide/reveal, alternation, opacity, blackout all behave identically in both engines
-- [ ] Weather service and Ktor message API still start in Compose mode
-- [ ] `testBetaDebugUnitTest` passes
-- [ ] `spotlessCheck` passes
-- [ ] `assembleBetaDebug` succeeds
+- [x] Auto-hide/reveal, alternation, opacity, blackout all behave identically in both engines
+- [x] Weather service and Ktor message API still start in Compose mode
+- [x] `testBetaDebugUnitTest` passes
+- [x] `spotlessCheck` passes
+- [x] `assembleBetaDebug` succeeds
 - [ ] A minified release build succeeds
 
 ---
@@ -781,11 +819,12 @@ Settled:
 3. **Phase 1.2** — do it: `ScreenController` moves to `ui/screensaver/xml/`.
 4. **Material3** — yes, BOM-managed, for `Text` and `CircularProgressIndicator`.
 5. **Test device** — physical TV/streamer for all visual verification.
+6. **`ProgressBarType`** — resolved: it is not an elapsed/remaining split. `BOTH`/`VIDEOS`/`PHOTOS`
+   decides which players post progress events, evaluated once per player at construction (10.1).
 
 Still open (decide when the relevant phase starts):
 
 - **Gradients and brightness dimmer** — out of scope for this migration; they stay XML View layers. Revisit only if the Compose layer needs to own them.
-- **`ProgressBarType` (elapsed vs remaining)** — resolve how `VideoPlayerView` applies it before Phase 10, since the Compose bar has to split the same way.
 - **POI position source** — the Compose metadata overlay needs video position; decide between a `StateFlow<Long>` on the store (pushed by `ScreenController`'s existing playback callbacks) or passing the player down. The former keeps the Composable testable.
 
 ---
