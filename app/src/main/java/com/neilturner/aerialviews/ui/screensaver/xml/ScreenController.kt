@@ -9,7 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +69,7 @@ import com.neilturner.aerialviews.ui.helpers.SlotHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.EnabledOverlays
 import com.neilturner.aerialviews.ui.overlays.compose.LoadingIndicator
+import com.neilturner.aerialviews.ui.overlays.compose.ProgressBarOverlay
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverOverlays
 import com.neilturner.aerialviews.ui.overlays.compose.overlayCorners
 import com.neilturner.aerialviews.ui.overlays.compose.shouldFadeRow
@@ -127,6 +133,8 @@ class ScreenController(
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
     private val overlayVisibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
+    private val progressBarLocation = GeneralPrefs.progressBarLocation ?: ProgressBarLocation.DISABLED
+    private val progressBarOpacity = GeneralPrefs.progressBarOpacity.toFloat() / 100
 
     // Which engine draws the overlays, and the state the Compose layer observes
     private val useComposeOverlays = GeneralPrefs.useComposeScreensaver
@@ -264,13 +272,15 @@ class ScreenController(
         overlayEventBridge.start()
 
         // Setup progress bar
-        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
+        if (useComposeOverlays) {
+            // The Compose layer draws the bar, so the View stays out of the way entirely.
+            progressBarView.visibility = View.GONE
+        } else if (progressBarLocation != ProgressBarLocation.DISABLED) {
+            val gravity = if (progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (progressBarView.layoutParams as FrameLayout.LayoutParams).gravity = gravity
 
-            val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
-            progressBarView.alpha = alpha
-            Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
+            progressBarView.alpha = progressBarOpacity
+            Timber.i("Progress bar: $progressBarOpacity, $progressBarLocation")
 
             progressBarView.visibility = View.VISIBLE
         }
@@ -1063,7 +1073,7 @@ class ScreenController(
         loadingView.setBackgroundColor(ColourHelper.colourFromString(GeneralPrefs.backgroundLoading))
         overlayView.visibility = View.VISIBLE
         progressBarView.visibility =
-            if (GeneralPrefs.progressBarLocation == ProgressBarLocation.DISABLED) View.GONE else View.VISIBLE
+            if (useComposeOverlays || progressBarLocation == ProgressBarLocation.DISABLED) View.GONE else View.VISIBLE
         brightnessView.visibility =
             if (GeneralPrefs.videoBrightness == "100") View.GONE else View.VISIBLE
         notificationContainer.visibility = View.VISIBLE
@@ -1455,7 +1465,11 @@ class ScreenController(
             overlay.render(state.message[overlay.type] ?: MessageOverlayState())
         }
 
-        progressBarView.render(state.progress)
+        // The Compose bar animates itself from state.progress; driving the View as well would
+        // animate a second, hidden bar.
+        if (!useComposeOverlays) {
+            progressBarView.render(state.progress)
+        }
     }
 
     private fun currentVideoPosition(): Long = if (this::videoPlayer.isInitialized) videoPlayer.currentPosition.toLong() else 0L
@@ -1617,16 +1631,36 @@ class ScreenController(
                     val fade by composeFadeAlpha.collectAsStateWithLifecycle()
 
                     AerialTheme {
-                        ScreensaverOverlays(
-                            state = state,
-                            slots = slotPrefs,
-                            alternate = alternatePosition,
-                            visibleAlpha = overlayVisibleAlpha,
-                            videoPosition = ::currentVideoPosition,
-                            fadeAlpha = fade,
-                            fadeDurationMillis = overlayFadeOut.toInt(),
-                            fadeCorners = fadeCorners,
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            ScreensaverOverlays(
+                                state = state,
+                                slots = slotPrefs,
+                                alternate = alternatePosition,
+                                visibleAlpha = overlayVisibleAlpha,
+                                videoPosition = ::currentVideoPosition,
+                                fadeAlpha = fade,
+                                fadeDurationMillis = overlayFadeOut.toInt(),
+                                fadeCorners = fadeCorners,
+                            )
+
+                            // Outside ScreensaverOverlays so the bar tracks playback rather than
+                            // the overlay fade, and hidden with the layer during blackout.
+                            ProgressBarOverlay(
+                                state = state.progress,
+                                location = progressBarLocation,
+                                opacity = progressBarOpacity,
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .align(
+                                            if (progressBarLocation == ProgressBarLocation.TOP) {
+                                                Alignment.TopCenter
+                                            } else {
+                                                Alignment.BottomCenter
+                                            },
+                                        ),
+                            )
+                        }
                     }
                 }
             }
