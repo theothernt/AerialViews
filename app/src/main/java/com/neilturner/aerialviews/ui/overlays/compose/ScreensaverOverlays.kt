@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.neilturner.aerialviews.models.SlotPref
-import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.OverlayPaddingHelper
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
@@ -53,17 +51,7 @@ fun ScreensaverOverlays(
         label = "overlayFadeAlpha",
     )
 
-    val topLeft = corner("TOP_LEFT", slots, SlotType.SLOT_TOP_LEFT1, SlotType.SLOT_TOP_LEFT2)
-    val topRight = corner("TOP_RIGHT", slots, SlotType.SLOT_TOP_RIGHT1, SlotType.SLOT_TOP_RIGHT2)
-    val bottomLeft = corner("BOTTOM_LEFT", slots, SlotType.SLOT_BOTTOM_LEFT1, SlotType.SLOT_BOTTOM_LEFT2)
-    val bottomRight = corner("BOTTOM_RIGHT", slots, SlotType.SLOT_BOTTOM_RIGHT1, SlotType.SLOT_BOTTOM_RIGHT2)
-
-    // Alternating position swaps the left and right columns of both rows, which is what
-    // OverlayHelper.assignOverlaysAndIds() does by swapping the Flow referenced ids.
-    val topStart = if (alternate) topRight else topLeft
-    val topEnd = if (alternate) topLeft else topRight
-    val bottomStart = if (alternate) bottomRight else bottomLeft
-    val bottomEnd = if (alternate) bottomLeft else bottomRight
+    val corners = overlayCorners(slots, alternate)
 
     Box(
         modifier =
@@ -71,35 +59,35 @@ fun ScreensaverOverlays(
                 .fillMaxSize()
                 .padding(horizontal = horizontal, vertical = vertical),
     ) {
-        OverlayCorner(
-            corner = topStart,
+        OverlayCornerColumn(
+            corner = corners.topStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = topStart.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.topStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.TopStart),
         )
-        OverlayCorner(
-            corner = topEnd,
+        OverlayCornerColumn(
+            corner = corners.topEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = topEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.topEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.TopEnd),
         )
-        OverlayCorner(
-            corner = bottomStart,
+        OverlayCornerColumn(
+            corner = corners.bottomStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = bottomStart.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.bottomStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.BottomStart),
         )
-        OverlayCorner(
-            corner = bottomEnd,
+        OverlayCornerColumn(
+            corner = corners.bottomEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = bottomEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.bottomEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.BottomEnd),
         )
@@ -107,8 +95,8 @@ fun ScreensaverOverlays(
 }
 
 @Composable
-private fun OverlayCorner(
-    corner: Corner,
+private fun OverlayCornerColumn(
+    corner: OverlayCorner,
     state: OverlayUiState,
     videoPosition: () -> Long,
     alpha: Float,
@@ -131,30 +119,8 @@ private fun OverlayCorner(
  * configured, not by the screen position: alternating position moves the overlay without moving
  * the corner's fade behaviour, matching getOverlaysToFade().
  */
-private fun Corner.alpha(
+private fun OverlayCorner.alpha(
     fadeAlpha: Float,
     visibleAlpha: Float,
     fadeCorners: Set<String>,
 ): Float = if (fadeKey in fadeCorners) fadeAlpha else visibleAlpha
-
-private fun corner(
-    fadeKey: String,
-    slots: List<SlotPref>,
-    lower: SlotType,
-    upper: SlotType,
-): Corner =
-    Corner(
-        // Display order matches OverlayHelper.buildReferenceIds: the upper slot renders above
-        // the lower slot in every corner.
-        types =
-            listOfNotNull(
-                slots.find { it.type == upper }?.pref,
-                slots.find { it.type == lower }?.pref,
-            ).filter { it != OverlayType.EMPTY },
-        fadeKey = fadeKey,
-    )
-
-private data class Corner(
-    val types: List<OverlayType>,
-    val fadeKey: String,
-)

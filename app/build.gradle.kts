@@ -64,6 +64,13 @@ android {
         abortOnError = false
     }
 
+    testOptions {
+        unitTests {
+            // Compose overlay tests run on Robolectric, which needs the real resources
+            isIncludeAndroidResources = true
+        }
+    }
+
     bundle {
         // Trying this fix for reported crashes
         // https://stackoverflow.com/questions/50471888/android-app-bundle-introduces-resource-not-found-crash-in-android-app
@@ -255,6 +262,15 @@ dependencies {
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.ktor.client.content.negotiation)
     testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // Compose UI tests. createComposeRule() is a JUnit 4 rule and Robolectric's runner is JUnit 4,
+    // so the vintage engine is needed alongside Jupiter on the JUnit Platform.
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.junit.junit)
+    testImplementation(libs.junit)
+    testRuntimeOnly(libs.junit.vintage.engine)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(libs.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
