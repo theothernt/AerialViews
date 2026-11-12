@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
-import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -32,20 +31,6 @@ class WeatherForecastOverlay
         var type = OverlayType.WEATHER2
         private var previousDays: List<ForecastDay>? = null
         var isHidden = false
-
-        // When enabled (debug builds only), each part of the overlay gets a
-        // semi-transparent coloured background so padding/margins can be
-        // inspected visually.
-        private val debugVisualizeBounds = BuildConfig.DEBUG
-        private val debugBackgrounds =
-            mapOf(
-                "root" to Color.argb(40, 255, 0, 0), // red
-                "column" to Color.argb(40, 0, 255, 0), // green
-                "dayLabel" to Color.argb(60, 0, 0, 255), // blue
-                "icon" to Color.argb(60, 255, 255, 0), // yellow
-                "tempContainer" to Color.argb(60, 180, 0, 255), // purple
-                "spacer" to Color.argb(80, 255, 128, 0), // orange
-            )
 
         // Layout constants
         private val fadeAnimationDuration = 300L
@@ -83,7 +68,6 @@ class WeatherForecastOverlay
             orientation = HORIZONTAL
             gravity = Gravity.CENTER
             // Alpha is assigned by OverlayHelper for every slot, so it is not set here.
-            applyDebugBackgrounds("root")
         }
 
         // Keeps the per-element dimming while using the user's overlay colour
@@ -91,15 +75,6 @@ class WeatherForecastOverlay
             colour: Int,
             alpha: Int,
         ): Int = Color.argb(alpha, Color.red(colour), Color.green(colour), Color.blue(colour))
-
-        private fun applyDebugBackgrounds(
-            key: String?,
-            view: View = this,
-        ) {
-            if (!debugVisualizeBounds) return
-            val color = debugBackgrounds[key] ?: return
-            view.setBackgroundColor(color)
-        }
 
         fun style(
             font: String,
@@ -174,7 +149,6 @@ class WeatherForecastOverlay
                         View(context).apply {
                             layoutParams = LayoutParams(spacingPx, 0)
                         }
-                    applyDebugBackgrounds("spacer", spacer)
                     addView(spacer)
                 }
             }
@@ -195,7 +169,6 @@ class WeatherForecastOverlay
                     gravity = Gravity.CENTER_HORIZONTAL
                     layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 }
-            applyDebugBackgrounds("column", column)
 
             val dayLabel =
                 TextView(context).apply {
@@ -209,7 +182,6 @@ class WeatherForecastOverlay
             val dayLabelOffset = FontHelper.getFontVerticalOffset(context, GeneralPrefs.fontTypeface, dayLabel.textSize)
             dayLabel.setPadding(0, dayLabelOffset + superscriptExtraPx, 0, -(dayLabelOffset + superscriptExtraPx))
             dayLabel.setTextColor(withAlpha(colour, dayLabelAlpha))
-            applyDebugBackgrounds("dayLabel", dayLabel)
             val labelParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             labelParams.bottomMargin = elementMargin
             dayLabel.layoutParams = labelParams
@@ -226,7 +198,6 @@ class WeatherForecastOverlay
                 iconParams.bottomMargin = elementMargin
                 iconView.layoutParams = iconParams
                 iconView.scaleType = ImageView.ScaleType.FIT_CENTER
-                applyDebugBackgrounds("icon", iconView)
                 column.addView(iconView)
             }
 
@@ -236,7 +207,6 @@ class WeatherForecastOverlay
                     gravity = Gravity.CENTER
                     layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 }
-            applyDebugBackgrounds("tempContainer", tempContainer)
 
             val highTemp =
                 TextView(context).apply {
