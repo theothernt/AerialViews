@@ -507,6 +507,46 @@ reveal path running with `canShowOverlays` true — the thing that never happene
 Top-strip mean 0.0627 hidden vs 0.0667 shown: the gradients move with the overlays, though the
 video was dark enough for that to be a small number. Screenshots: `local/screenshots/show_*.png`.
 
+**Refactored to one target per mode (2026-11-12).** The seeding block and the four-branch `when` are
+gone. `overlayVisibilityPlan(mode, overlayOpacity)` (`ui/overlays/OverlayVisibilityPlan.kt`) returns
+one `OverlayVisibilityTarget` - overlay alpha plus gradient alpha - per mode, the target to move to
+after the delay, and whether a reveal may run while waiting. `ScreenController` applies a target
+through `applyOverlayTarget` (settle immediately) and `animateOverlayTarget` (fade), which set the
+View alphas, the gradients and the Compose fade from the same two numbers; `hideOverlays` and
+`showOverlays` are thin wrappers over the same pair, so the mode and the reveal path can no longer
+disagree either.
+
+Two things the refactor turned up. The delay now lives in one coroutine at the call site: the first
+attempt passed it down as an animator `startDelay`, and a zero-length gradient animator ignores that,
+so the gradient jumped up while the overlays were still hidden (caught by
+`ScreenControllerFadeTest`). And the XML gradient rule is now the same in both directions - a row
+moves only when it has fading overlays and nothing persistent - where the old show branch also set
+rows with a persistent overlay to 1; those rows were already at 1, so nothing moved on screen.
+
+`OverlayVisibilityPlanTest` pins the mapping: each mode's start and end target, that the two delayed
+modes are each other's opposite, that an unknown mode settles hidden, and that a gradient is up
+exactly when its overlays are. Re-checked on the TV in both engines after the refactor: Compose
+`SHOW_AFTER_DELAY` has no overlay ink at +2s and `1789x27+66+38` at +6s; XML `HIDE_AFTER_DELAY` has
+`1789x27+66+38` at +2s and none at +6s (`local/screenshots/mode_*_early.png` / `_late.png`).
+
+XML reveal after the delay, same run settings plus `button_down_press = SHOW_OVERLAYS`: the press logs
+`InputHelper: Action: SHOW_OVERLAYS, ButtonPressType: PRESS`, one second later the top strip carries
+`1789x27+66+38` and the strip mean rises 0.0627 -> 0.0666 (overlays and gradient up). Four seconds
+after the press the mean is 0.0648 with no ink above threshold - the fade-out in progress - and at
+press+10s it is back to 0.0627 with no ink: the reveal timeout took them down again. The activity was
+still the resumed window at the end, so the last frame is the screensaver, not another screen
+(`local/screenshots/x2_*.png`). An earlier attempt was discarded because the activity finished at the
+press (`Duplicate finish request` in logcat) and the capture that should have shown the timeout
+showed the launcher instead.
+
+The fade-out itself was caught as a frame rather than a mean: with `overlay_fade_out_duration` raised
+to 2000ms (the default 600ms gives too narrow a window for `screencap`) and a capture 5.2s after
+the press, the clock peaks at 104/255 - about 37% of its full brightness, top-strip mean 0.0642
+against 0.0666 up and 0.0627 down - so the overlays and the gradient are visibly mid-fade; the
+frame 3s later is back to background (peak 16/255, mean 0.0627). `local/screenshots/xmid2_half.png`,
+with full / mid / gone stacked in `xmid2_compare.png`. The earlier attempt at the default 600ms
+landed only ~20% into the fade (peak 212/255), which is why the longer fade was used.
+
 ---
 
 ## Compose architecture — state, hoisting, and what we deliberately skip

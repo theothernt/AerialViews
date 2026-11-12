@@ -68,15 +68,20 @@ import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.SlotHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.EnabledOverlays
+import com.neilturner.aerialviews.ui.overlays.MODE_ALWAYS_VISIBLE
+import com.neilturner.aerialviews.ui.overlays.OverlayVisibilityTarget
 import com.neilturner.aerialviews.ui.overlays.compose.LoadingIndicator
 import com.neilturner.aerialviews.ui.overlays.compose.ProgressBarOverlay
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverOverlays
 import com.neilturner.aerialviews.ui.overlays.compose.overlayCorners
 import com.neilturner.aerialviews.ui.overlays.compose.shouldFadeRow
+import com.neilturner.aerialviews.ui.overlays.hiddenOverlayTarget
+import com.neilturner.aerialviews.ui.overlays.overlayVisibilityPlan
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
+import com.neilturner.aerialviews.ui.overlays.visibleOverlayTarget
 import com.neilturner.aerialviews.ui.overlays.xml.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.xml.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.xml.NowPlayingOverlay
@@ -633,123 +638,26 @@ class ScreenController(
             view.clearAnimation()
         }
 
-        // Hide overlays immediately
-//        if (autoHideOverlayDelay.toInt() == 0) {
-//            overlayHelper.isHidden = true
-//            setOverlayInstancesHidden(true)
-//            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-//            // Also hide gradients immediately if they have fading overlays
-//            // AND no persistent overlays
-//            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-//                gradientTopView.alpha = 0f
-        // Seed the Compose layer from the same mode; hideOverlays()/showOverlays() drive the
-        // transitions after this, exactly as they drive the View alphas.
-        composeFadeAlpha.value =
-            when (overlayVisibilityMode) {
-                "ALWAYS_VISIBLE", "HIDE_AFTER_DELAY" -> overlayVisibleAlpha
-                else -> 0f
-            }
+        // What this mode asks for, described once and applied by both engines: the Compose layer,
+        // the View overlays and the gradients all take their numbers from the same plan. Seeding the
+        // Compose values in a block of their own is what once left SHOW_AFTER_DELAY hidden.
+        val plan = overlayVisibilityPlan(overlayVisibilityMode, overlayVisibleAlpha)
+        applyOverlayTarget(plan.start)
 
-        // The View predicates in the switch below cannot see the Compose layer, so its gradient
-        // alphas are restored from the same mode here. Without this a gradient faded out by
-        // hideOverlays() would never come back.
-        if (useComposeOverlays) {
-            setComposeGradientAlpha(
-                alpha = if (overlayVisibilityMode == "ALWAYS_VISIBLE" || overlayVisibilityMode == "HIDE_AFTER_DELAY") 1f else 0f,
-                animate = false,
-            )
+        if (plan.revealsWhileWaiting) {
+            canShowOverlays = true
         }
 
-        when (overlayVisibilityMode) {
-            "ALWAYS_VISIBLE" -> {
-                // Overlays stay visible, no hiding
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
-                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                    gradientTopView.alpha = 1f
-                }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                    gradientBottomView.alpha = 1f
-                }
-                canShowOverlays = true
-            }
-
-            "ALWAYS_HIDDEN" -> {
-                // Hide overlays immediately, only show on user reveal
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-                    gradientTopView.alpha = 0f
-                }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
-                    !overlayHelper.hasBottomPersistentOverlays()
-                ) {
-                    gradientBottomView.alpha = 0f
-                }
-                canShowOverlays = true
-            }
-
-            "HIDE_AFTER_DELAY" -> {
-                // Show overlays, then hide after delay
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = overlayVisibleAlpha }
-                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                    gradientTopView.alpha = 1f
-                }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                    gradientBottomView.alpha = 1f
-                }
-                hideOverlays(overlayDelay)
-            }
-
-            "SHOW_AFTER_DELAY" -> {
-                // Hide overlays initially, show after delay, stay visible
-                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-                    gradientTopView.alpha = 0f
-                }
-                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
-                    !overlayHelper.hasBottomPersistentOverlays()
-                ) {
-                    gradientBottomView.alpha = 0f
-                }
+        plan.afterDelay?.let { target ->
+            // One scheduler for the delay: the View animators, the gradients and the Compose fade
+            // all start from here, rather than from a startDelay each. A zero-length gradient
+            // animator ignores its startDelay, which made the gradient jump ahead of the overlays.
+            if (overlayDelay <= 0L) {
+                animateOverlayTarget(target) { canShowOverlays = true }
+            } else {
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
-                    // The Compose layer is seeded to 0 in this mode and there are no Views for the
-                    // animations below to move, so it is brought up explicitly. `canShowOverlays`
-                    // is set here too: the end action below only runs when there is a View to
-                    // animate, and until it runs a user reveal is refused.
-                    if (useComposeOverlays) {
-                        setComposeFadeAlpha(overlayVisibleAlpha)
-                        fadeComposeGradients(visible = true)
-                        canShowOverlays = true
-                    }
-                    val overlaysToFade = overlayHelper.getOverlaysToFade()
-                    overlaysToFade.forEachIndexed { index, view ->
-                        val animator =
-                            view
-                                .animate()
-                                .alpha(overlayVisibleAlpha)
-                                .setStartDelay(0)
-                                .setDuration(overlayFadeIn)
-                        if (index == overlaysToFade.lastIndex) {
-                            animator.withEndAction { canShowOverlays = true }
-                        }
-                        animator.start()
-                    }
-                    if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                        gradientTopView
-                            .animate()
-                            .alpha(1f)
-                            .setStartDelay(0)
-                            .setDuration(overlayFadeIn)
-                            .start()
-                    }
-                    if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                        gradientBottomView
-                            .animate()
-                            .alpha(1f)
-                            .setStartDelay(0)
-                            .setDuration(overlayFadeIn)
-                            .start()
-                    }
+                    animateOverlayTarget(target) { canShowOverlays = true }
                 }
             }
         }
@@ -834,56 +742,15 @@ class ScreenController(
         setLoadingSpinnerVisible(false)
     }
 
-    private fun hideOverlays(delay: Long = 0L) {
-        if (useComposeOverlays) {
-            setComposeFadeAlpha(0f, delay)
-            fadeComposeGradients(visible = false, delay = delay)
-            canShowOverlays = true
+    /** Hides both layers, optionally after [delayMillis], then lets a reveal through. */
+    private fun hideOverlays(delayMillis: Long = 0L) {
+        if (delayMillis <= 0L) {
+            animateOverlayTarget(hiddenOverlayTarget) { canShowOverlays = true }
             return
         }
-
-        val overlaysToFade = overlayHelper.getOverlaysToFade()
-
-        if (overlaysToFade.isEmpty()) {
-            canShowOverlays = true
-            return
-        }
-
-        overlayHelper.isHidden = true
-        setOverlayInstancesHidden(true)
-
-        overlaysToFade.forEachIndexed { index, view ->
-            val animator =
-                view
-                    .animate()
-                    .alpha(0f)
-                    .setStartDelay(delay)
-                    .setDuration(overlayFadeOut)
-
-            // Only set the end action on the last overlay
-            if (index == overlaysToFade.lastIndex) {
-                animator.withEndAction { canShowOverlays = true }
-            }
-            animator.start()
-        }
-
-        // Fade out gradients if their corresponding region has fading overlays
-        // AND no persistent overlays (otherwise gradient should stay visible)
-        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-            gradientTopView
-                .animate()
-                .alpha(0f)
-                .setStartDelay(delay)
-                .setDuration(overlayFadeOut)
-                .start()
-        }
-        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
-            gradientBottomView
-                .animate()
-                .alpha(0f)
-                .setStartDelay(delay)
-                .setDuration(overlayFadeOut)
-                .start()
+        mainScope.launch {
+            delay(delayMillis.milliseconds)
+            animateOverlayTarget(hiddenOverlayTarget) { canShowOverlays = true }
         }
     }
 
@@ -901,7 +768,7 @@ class ScreenController(
 
     fun showOverlays() {
         // Only allow reveal when overlays can be hidden
-        if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
+        if (overlayVisibilityMode == MODE_ALWAYS_VISIBLE) return
 
         // If blackout mode is on, exit
         if (blackOutMode) return
@@ -912,58 +779,11 @@ class ScreenController(
         // Are overlays already visible
         if (!canShowOverlays) return
 
-        val overlaysToFade = overlayHelper.getOverlaysToFade()
-
-        if (useComposeOverlays) {
-            canShowOverlays = false
-            setComposeFadeAlpha(overlayVisibleAlpha)
-            fadeComposeGradients(visible = true)
-            mainScope.launch {
-                delay(overlayRevealTimeout * 1000)
-                setComposeFadeAlpha(0f)
-                fadeComposeGradients(visible = false)
-                canShowOverlays = true
-            }
-            return
-        }
-
-        if (overlaysToFade.isEmpty()) return
-
         canShowOverlays = false
-        overlayHelper.isHidden = false
-        setOverlayInstancesHidden(false)
-
-        overlaysToFade.forEachIndexed { index, view ->
-            val animator =
-                view
-                    .animate()
-                    .alpha(overlayVisibleAlpha)
-                    .setStartDelay(0)
-                    .setDuration(overlayFadeIn)
-
-            // Only set the end action on the last overlay
-            if (index == overlaysToFade.lastIndex) {
-                animator.withEndAction { hideOverlays(overlayRevealTimeout * 1000) }
-            }
-            animator.start()
-        }
-
-        // Fade in gradients if their corresponding region has fading overlays
-        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-            gradientTopView
-                .animate()
-                .alpha(1f)
-                .setStartDelay(0)
-                .setDuration(overlayFadeIn)
-                .start()
-        }
-        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-            gradientBottomView
-                .animate()
-                .alpha(1f)
-                .setStartDelay(0)
-                .setDuration(overlayFadeIn)
-                .start()
+        animateOverlayTarget(visibleOverlayTarget(overlayVisibleAlpha)) {
+            // A revealed overlay goes again after the timeout, the manual equivalent of
+            // HIDE_AFTER_DELAY
+            hideOverlays(overlayRevealTimeout * 1000)
         }
     }
 
@@ -1499,12 +1319,73 @@ class ScreenController(
 
     private fun currentVideoPosition(): Long = if (this::videoPlayer.isInitialized) videoPlayer.currentPosition.toLong() else 0L
 
-    /** Fades the gradient Views along with the Compose overlay layer. */
-    private fun fadeComposeGradients(
-        visible: Boolean,
-        delay: Long = 0L,
+    /** Puts both layers straight into [target]: the state a mode starts in, not a transition. */
+    private fun applyOverlayTarget(target: OverlayVisibilityTarget) {
+        overlayHelper.getOverlaysToFade().forEach { it.alpha = target.alpha }
+        setGradients(target, animate = false)
+        setComposeFadeAlpha(target.alpha)
+    }
+
+    /**
+     * Moves both layers to [target] with the usual fade. Callers own the delay, so the View
+     * animators, the gradients and the Compose fade cannot start at different times.
+     *
+     * [onSettled] runs when the transition is over, which is straight away in Compose mode: the
+     * layer has no Views to animate.
+     */
+    private fun animateOverlayTarget(
+        target: OverlayVisibilityTarget,
+        onSettled: (() -> Unit)? = null,
     ) {
-        setComposeGradientAlpha(if (visible) 1f else 0f, animate = true, delay = delay)
+        val hiding = target.alpha <= 0f
+        overlayHelper.isHidden = hiding
+        setOverlayInstancesHidden(hiding)
+
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+        if (overlaysToFade.isEmpty()) {
+            onSettled?.invoke()
+        } else {
+            overlaysToFade.forEachIndexed { index, view ->
+                val animator =
+                    view
+                        .animate()
+                        .alpha(target.alpha)
+                        .setStartDelay(0)
+                        .setDuration(if (hiding) overlayFadeOut else overlayFadeIn)
+
+                // Only set the end action on the last overlay
+                if (index == overlaysToFade.lastIndex) {
+                    animator.withEndAction { onSettled?.invoke() }
+                }
+                animator.start()
+            }
+        }
+
+        setGradients(target, animate = true)
+        setComposeFadeAlpha(target.alpha)
+    }
+
+    /**
+     * Applies [target]'s gradient to the rows that follow the overlays. Both engines are given the
+     * same number; what differs is only how a row is asked whether it should move at all.
+     */
+    private fun setGradients(
+        target: OverlayVisibilityTarget,
+        animate: Boolean,
+    ) {
+        if (useComposeOverlays) {
+            setComposeGradientAlpha(target.gradient, animate)
+            return
+        }
+
+        // A row is only managed when its overlays fade and none of them stay: a persistent overlay
+        // keeps the gradient it is backed by.
+        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+            applyGradientAlpha(gradientTopView, target.gradient, animate)
+        }
+        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+            applyGradientAlpha(gradientBottomView, target.gradient, animate)
+        }
     }
 
     /**
@@ -1519,16 +1400,15 @@ class ScreenController(
     private fun setComposeGradientAlpha(
         alpha: Float,
         animate: Boolean,
-        delay: Long = 0L,
     ) {
         val corners = overlayCorners(slotPrefs, alternate)
 
         if (GeneralPrefs.showTopGradient && shouldFadeRow(listOf(corners.topStart, corners.topEnd), fadeCorners)) {
-            applyGradientAlpha(gradientTopView, alpha, animate, delay)
+            applyGradientAlpha(gradientTopView, alpha, animate)
         }
 
         if (GeneralPrefs.showBottomGradient && shouldFadeRow(listOf(corners.bottomStart, corners.bottomEnd), fadeCorners)) {
-            applyGradientAlpha(gradientBottomView, alpha, animate, delay)
+            applyGradientAlpha(gradientBottomView, alpha, animate)
         }
     }
 
@@ -1536,7 +1416,6 @@ class ScreenController(
         view: View,
         alpha: Float,
         animate: Boolean,
-        delay: Long,
     ) {
         if (!animate) {
             view.animate().cancel()
@@ -1547,7 +1426,7 @@ class ScreenController(
         view
             .animate()
             .alpha(alpha)
-            .setStartDelay(delay)
+            .setStartDelay(0)
             .setDuration(if (alpha >= 1f) overlayFadeIn else overlayFadeOut)
             .start()
     }
@@ -1706,19 +1585,9 @@ class ScreenController(
         }
     }
 
-    private fun setComposeFadeAlpha(
-        alpha: Float,
-        delayMillis: Long = 0L,
-    ) {
+    private fun setComposeFadeAlpha(alpha: Float) {
         if (!useComposeOverlays) return
-        if (delayMillis <= 0L) {
-            composeFadeAlpha.value = alpha
-        } else {
-            mainScope.launch {
-                delay(delayMillis.milliseconds)
-                composeFadeAlpha.value = alpha
-            }
-        }
+        composeFadeAlpha.value = alpha
     }
 
     companion object {
