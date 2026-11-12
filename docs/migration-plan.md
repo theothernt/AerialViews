@@ -646,6 +646,8 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 
 **How to read the measurements.** Each figure is an ImageMagick ink box (`-colorspace gray -threshold 55% -format "%@"`) taken from the same crop of each engine's screenshot, so a shared box means text, icon and padding positions agree to the pixel. Frames were only captured after the platform logged `ScreenController: Loading:` — fixed sleeps were too short and produced loading-screen captures instead of overlays. Two traps worth remembering: `startup_show_loading` is not written until the setting is touched, so a pref edit that only rewrites existing keys silently does nothing; and LeakCanary's heads-up notification can draw over the screensaver on this device and pollute a capture.
 
+Two more surfaced in the follow-up pass on 2026-11-12. Screencap PNGs keep an alpha channel, so `%[fx:mean]` on a `graya` crop is not the grey level: it averages the grey and the alpha (`(grey + 1) / 2`, so a pure black frame reports 0.5). Count pixels from a `txt:` dump instead. And the bottom gradient darkens the rows the progress bar occupies, so a single threshold cannot cover both edges: the bar was counted above 30% at the bottom (white at 50% over a ~14 grey background reads 134) and above 160 at the top, where the grey fixture is 128.
+
 - [x] Font weight/size identical, from the per-overlay prefs — clock `80x27` (Compose) vs `79x27` (XML), date `122x27` in both, at default size and weight.
 - [x] Vertical text position identical (font-metric offset reproduced) — clock and date baselines both at y=58.
 - [x] Corner position correct — clock ink starts at x=66, date at x=733, in both engines.
@@ -655,9 +657,9 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 - [x] Auto-hide/reveal fades both the overlays and the gradients — auto-hidden frames carry no overlay ink and a reveal restores `1789x27+66+58` in both; gradients measured separately (bottom strip 0.5177 visible vs reference 0.5278; 0.531373 vs 0.531373 once faded out).
 - [x] Overlay opacity setting affects both engines identically — at `overlay_opacity = 50` neither engine has any pixel above 90% brightness in the clock box (470 Compose / 464 XML at 100%), and the text reads grey in both.
 - [x] Blackout mode hides everything — sampled pixels are `srgba(0,0,0)` across the frame with no overlay ink, identical in both engines.
-- [ ] Text colour matches (`overlayColour`, not hard-coded white) — not exercised; every check above ran at the default white.
-- [ ] Shadow present and of matching intensity — not measured.
-- [ ] Padding from screen edge matches, including non-default `overlayPaddingHorizontal/Vertical` — default padding matches (x=66 / x=733 / y=58 in both); the non-default padding range is outstanding.
+- [x] Text colour matches (`overlayColour`, not hard-coded white) — at `overlay_colour = #FF0000` the green-channel maximum in the clock crop is 0.501961 in both engines (1.0 would mean white text), and the ink box sits at the same x/y.
+- [x] Shadow present and of matching intensity — dark pixels (below 100) in the same 900×220 clock crop: 300 in XML, 326 in Compose. Comparable rather than pixel-identical, and the two captures clocked different minutes (`17:37` vs `17:46`, ink `81x34` vs `85x33`), so glyph coverage differs slightly too.
+- [x] Padding from screen edge matches, including non-default `overlayPaddingHorizontal/Vertical` — at `60`/`40` the clock ink starts at x=120, y=83 in both engines (60dp and 40dp at density 2, plus the same 3px font-metric offset), and the date's right edge lands at 1800 in XML and 1803 in Compose.
 
 ### 9.4 Per-overlay results from this pass
 
@@ -665,8 +667,8 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 |---|---|
 | Message | ✅ messages 1–2 posted through the Ktor API rendered in both engines; the bottom block measured `1788x130+66+113` in both. |
 | Weather (current) | ✅ real data rendered (`7° [icon] Clear sky`): `236x34+65+65` Compose vs `236x36+65+66` XML. |
-| Weather (forecast) | ❌ open — see 9.5. |
-| Now playing | ⚠️ unverified — see 9.5. |
+| Weather (forecast) | ⚠️ horizontal error fixed, ~6px of height left — see 9.5. |
+| Now playing | ✅ Spotify (`com.spotify.tv.android`) playing through `NowPlayingService`: `Can’t You See · Bonobo, Aanya Martin` in XML and `Atlantic – Ambient Revisit · Jaytech` in Compose (the track changed between runs). Bright-pixel ink `596x34+66+989` and `553x34+65+989` in a `1000x260+0+820` crop, i.e. x 66/65 and the same y=989 and 34px height; widths differ only because the strings do. |
 | Loading indicator with `showLoadingText = false` | ✅ the loading area is empty in both engines. |
 | Weather service and Ktor API in Compose mode | ✅ Compose-mode run logged `WeatherService: Processed forecast: 3 days for London`, and API messages reached the Compose layer. |
 
@@ -674,9 +676,23 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 
 ### 9.5 Open items
 
-- **Weather forecast does not match.** Compose `267x113+588+57` vs XML `261x115+592+61`: about 4px further right and higher, and ~6px narrower, with the XML day labels reading slightly heavier in a side-by-side crop (`local/screenshots/cmp2_forecast.png`). The coloured chips seen during this pass were debug-only backgrounds inside `WeatherForecastOverlay` (`BuildConfig.DEBUG`) and have since been removed; they were not the cause of the offset, and the measurements are unchanged after removal. Phase 7.9 stays open.
-- **Now playing is unverified.** The overlay renders from `MusicEvent`, which `NowPlayingService` feeds from `MediaSessionManager` via `NotificationService`; nothing on the test TV has an active media session, so both engines show an empty event and there is nothing to compare. Needs a device with music playing.
-- **`DreamActivity` is still unverified (9.1).** `cmd dreams start-dreaming` requires root on this TV, and `TestActivity` cannot prove the hand-installed lifecycle owners. Needs Aerial Views selected as the TV's screensaver on an idle device, or root.
+- **Weather forecast: horizontal offset fixed, ~6px of height left.** The 2026-11-12 investigation compared the two implementations and found the Compose version had drifted from the View version in three places. All three are corrected in `ui/overlays/compose/WeatherForecastOverlay.kt`:
+  1. **Icon size came from the wrong text size.** The View version sizes the icon from the *full* overlay size (`calculateIconSize(size)`); Compose measured it at `size * TEMP_SIZE_RATIO`, making every icon 20% too small. It is now measured from the paint metrics at the full size, the same way the View version does. On its own this makes the block ~7px taller.
+  2. **The temperature separator was a Material `Text(" ")`.** The View version uses an unstyled `TextView` (14sp, font padding); Material3's `Text` merges `LocalTextStyle` and took a 24sp line height. It is now a spacer whose width is measured from a 14sp space. On its own this removes ~7px of row height — exactly what the icon fix adds — so the two cancel in the total and the net height does not move; both were real divergences and both needed fixing.
+  3. **The 2dp "superscript" shift was missing.** The View version pads every forecast text `+2dp` top and `-2dp` bottom, which leaves the box height unchanged but pushes glyphs down 2dp (4px at density 2) to clear the degree symbol. Negative padding is not available in Compose, so the shift is now an `offset`.
+
+  Both engines were then measured on the same grey fixture with identical forecast data (`Thu/Fri/Sat`, `5° 4°`, `8° 2°`, `8° 1°`). **x is now identical at 66 and the width within 1px (257 XML vs 258 Compose)**, down from 4px and 6px. The per-row ink bands put each element within 1–2px (label 23/22, icon 36/34, temperatures 23/22), but the *gaps between* them are 4px and 3px wider in Compose, so the block is 7px taller (115 vs 122 by ink box) and its top edge sits 6px higher (906 vs 900). The remaining error is entirely vertical and has a fourth cause that is not yet identified.
+  Next step: ink boxes can no longer say *which* box is bigger, so this needs box-level numbers — add temporary `onSizeChanged` logging to the Compose column and its three children and compare against the View heights. The current suspicion is that a Compose paragraph line box is a couple of px taller than a `TextView` with `includeFontPadding = false`, which an `offset` cannot correct because it moves ink without changing layout height; if so the fix is an explicit `lineHeight`. Phase 7.9 stays open on this.
+
+### 9.6 Dream path verification
+
+Phase 9.1 asked for the real `DreamActivity`, which `TestActivity` cannot prove. The debug build was registered as the TV's screensaver (`settings put secure screensaver_components com.neilturner.aerialviews.debug/com.neilturner.aerialviews.ui.screensaver.DreamActivity`) and started the way the device does: `KEYCODE_HOME`, then `KEYCODE_BACK` on the launcher. Each engine ran cold (`am force-stop` first).
+
+- [x] `DreamActivity` runs the screensaver in both engines — every `AerialDreamTiming` mark fires: `app.create` → `dream.attach` → `screen.built` → `dream.contentView` → `playlist.resolved` (139 Apple videos, `cached=false`) → `playback.start` → `video.firstFrame` → `video.prepared`, and `dream.stop` on exit. No `FATAL EXCEPTION` in either run.
+- [x] Overlays render identically inside the dream — clock ink `84x26+66+58` and date ink `121x26+513+58` (absolute x=1733) in both engines, with the progress bar at the bottom edge (75px in XML vs 76px in Compose at capture). Frame mean `0.528091` in both, against the TestActivity video baseline of `0.5277`.
+- [x] No startup regression from Compose — attach→contentView 2193ms (XML) vs 1892ms (Compose); contentView→`playback.start` 8642 vs 8901 (network-bound on the Apple feed); `playback.start`→`video.firstFrame` 2321 vs 2641. Attach→first frame is 13156 vs 13434ms, about 2% apart.
+
+Method notes. LeakCanary's heads-up notification ("1 retained objects…") draws over the dream and spoiled the first captures — wait for the banner to clear. And the Apple playlist takes ~8.6s to resolve, so a capture 8s after `dream.attach` still shows the loading indicator; wait ~20s, or poll for `video.firstFrame`.
 
 ---
 
@@ -705,10 +721,10 @@ Verified on the Chromecast (`sabrina`, 1920×1080, density 2.0, `betaDebug`) aga
 - [x] Filled width tracks playback — over 7s the filled width grew 20→76px (Compose) and 29→85px (XML) on the same 283s clip (`ProgressBar: Starting progress bar animation: 0s, 283s`), ~7px/s against the 1920/283 ≈ 6.8px/s the clip predicts. The constant ~30–90px offset between the two rows is each run's start instant relative to the first sample, not a rate difference.
 - [x] Pause freezes and resume continues — with `button_up_press = TOGGLE_PAUSE`, the bottom-strip mean went 0.5088 (playing) → 0.5176 (paused) → **0.5176 after 4s paused** → 0.5205 (resumed) → 0.5295 (4s later). The identical middle pair is the bar holding still.
 - [x] Reset empties the bar between items — in the two-photo run in 10.4 the Compose bar reads 0px at one boundary and both engines fall back towards 0 at every 10s boundary.
-- [ ] Opacity at a non-default value — only `progress_bar_opacity = 100` was measured (fully white).
-- [ ] `TOP` location — every run used `BOTTOM`.
-- [ ] Hiding the bar in blackout mode — not captured. It follows from the bar sitting on the overlay layer, which `enterBlackOutMode` sets `INVISIBLE`, but that is code-path reasoning, not a measurement.
-- [ ] `progressBarType` gating in Compose mode — `PHOTOS` while a video plays and `VIDEOS` while photos show are unexercised. Both engines inherit the gate from the players, so a regression would surface in the XML engine too.
+- [x] Opacity at a non-default value — at `progress_bar_opacity = 50` the bar samples `srgba(134,134,134)` in both engines against a 14–19 grey background, i.e. 50% white, and the width measurement needed a lower threshold as a result.
+- [x] `TOP` location — the bar occupies rows 0–1 and nothing from row 2 down, in both engines, with the same 2px height as at the bottom. Fill rate is offset-independent, so it was compared as a slope: XML `0→24→44px` and Compose `11→31→52px` over ~4s captures, about 6px/s against the 1920/300 = 6.4px/s the clip predicts.
+- [x] Hiding the bar in blackout mode — six burst captures in each engine show a uniform frame with no ink box and no bar, and Compose samples `srgba(0,0,0)` at the centre and at the bar's own row. Exiting blackout calls `loadNextItem()`, so the overlays and bar return after the normal load delay rather than instantly.
+- [x] `progressBarType` gating in Compose mode — with `VIDEOS` and a photo showing, and with `PHOTOS` and a video playing, rows 1078–1079 stay at 0px in both engines. The gate lives in the players, so the Compose bar simply never receives a `START`.
 
 ### 10.4 Identical consecutive items
 
@@ -725,7 +741,6 @@ Both sawtooth at every photo boundary. The XML run logged five `Starting progres
 
 ### 10.5 Open items
 
-- The four unticked checks in 10.3: non-default opacity, `TOP`, blackout, and `progressBarType` gating.
 - The composable's own pause/resume timing is verified only on the device. `ProgressBarMotionTest` covers the pure mapping; nothing asserts the fraction after advancing a Compose clock.
 - No test pins the emission behaviour in 10.4. A store test — `setProgress(START, 0, 5000)`, `resetForNextMedia()`, `setProgress(START, 0, 5000)` again, expecting three emissions — would catch a refactor that drops the reset.
 
@@ -737,12 +752,12 @@ Both sawtooth at every photo boundary. The XML run logged five `Starting progres
 
 The toggle defaults to `false`. Flipping the default to `true` is a separate, later change gated on:
 
-- [ ] Every overlay in Phase 7 passes the comparison checklist on a physical device
+- [ ] Every overlay in Phase 7 passes the comparison checklist on a physical device — now-playing and the dream path pass (9.4, 9.6); the weather forecast offset in 9.5 is the remaining blocker
 - [x] Loading indicator matches, including with `showLoadingText = false`
-- [ ] Progress bar matches, including pause/resume/reset and blackout
+- [x] Progress bar matches, including pause/resume/reset and blackout
 - [x] Auto-hide/reveal, alternation, opacity and blackout verified in both engines
 - [x] Weather service and Ktor message API start in Compose mode
-- [ ] No measure/layout regression: check `DreamTiming` marks (`screen.built`, `dream.contentView`) against the XML baseline, since Compose adds inflate/first-composition cost on a cold screensaver start
+- [x] No measure/layout regression: check `DreamTiming` marks (`screen.built`, `dream.contentView`) against the XML baseline, since Compose adds inflate/first-composition cost on a cold screensaver start — measured in 9.6: attach→contentView 1892ms (Compose) vs 2193ms (XML), attach→first frame 13434 vs 13156ms. Single samples on a network playlist, so this says "no regression", not "faster".
 - [ ] A minified release build succeeds
 
 Until the default flips, both engines must keep working: every phase's change has to leave the `use_compose_screensaver = false` path byte-for-byte equivalent in behaviour.
@@ -797,10 +812,10 @@ Plus one minified build (`assembleBetaRelease`, or `minifyBetaRelease` if signin
 - [x] Compose toolchain builds (compiler plugin, BOM 2026.09.00, material3, no `composeOptions`)
 - [x] `use_compose_screensaver` toggle in Settings → Appearance → Startup, defaulting to `false`
 - [ ] The `false` path is unchanged — XML screensaver still behaves exactly as the Phase 0 baseline
-- [ ] Compose renders inside the real `DreamActivity`, not just `TestActivity`
-- [ ] Every overlay in Phase 7 passes the on-device comparison checklist
+- [x] Compose renders inside the real `DreamActivity`, not just `TestActivity`
+- [ ] Every overlay in Phase 7 passes the on-device comparison checklist — blocked only by the weather forecast offset (9.5)
 - [x] Loading indicator matches Phase 8
-- [ ] Progress bar matches the XML behaviour (Phase 10)
+- [x] Progress bar matches the XML behaviour (Phase 10)
 - [x] Auto-hide/reveal, alternation, opacity, blackout all behave identically in both engines
 - [x] Weather service and Ktor message API still start in Compose mode
 - [x] `testBetaDebugUnitTest` passes
