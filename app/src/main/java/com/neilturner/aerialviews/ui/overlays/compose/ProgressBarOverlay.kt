@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,7 +18,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.ui.overlays.state.ProgressOverlayState
 
@@ -83,7 +88,18 @@ fun ProgressBarOverlay(
         }
     }
 
-    Box(modifier = modifier.height(barHeight).alpha(opacity)) {
+    // The filled fraction is the bar's state and the description names it, so a screen reader says
+    // "Playback progress, 45 percent" rather than a bare percentage. Tests read both back.
+    val description = LocalContext.current.resources.getString(R.string.progress_bar_content_description)
+
+    Box(
+        modifier =
+            modifier
+                .height(barHeight)
+                .alpha(opacity)
+                .semantics { contentDescription = description }
+                .progressSemantics(fraction.value),
+    ) {
         Box(
             modifier =
                 Modifier

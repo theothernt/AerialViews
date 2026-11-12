@@ -63,6 +63,17 @@ fun shouldFadeRow(
     row.any { it.types.isNotEmpty() && it.fadeKey in fadeCorners } &&
         row.none { it.types.isNotEmpty() && it.fadeKey !in fadeCorners }
 
+/**
+ * The alpha a corner draws at: a corner the user set to fade follows [fadeAlpha], while one left
+ * persistent keeps the overlay opacity so it stays legible under the gradients. Keyed by [fadeKey]
+ * rather than by screen position, so alternating position does not change the behaviour.
+ */
+fun OverlayCorner.alpha(
+    fadeAlpha: Float,
+    visibleAlpha: Float,
+    fadeCorners: Set<String>,
+): Float = if (fadeKey in fadeCorners) fadeAlpha else visibleAlpha
+
 private fun corner(
     slots: List<SlotPref>,
     fadeKey: String,

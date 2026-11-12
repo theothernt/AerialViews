@@ -473,6 +473,40 @@ Today, `GeneralPrefs.overlayVisibility` (`ALWAYS_VISIBLE` / `ALWAYS_HIDDEN` / `H
 
 Add a phase-5 sub-task: expose an `overlayAlpha: StateFlow<Float>` (0f…visibleAlpha) on the store or a sibling holder, plus per-corner "is this corner fading?" flags derived from the same prefs, and have the Compose layer animate with it. Gradients keep their existing View alpha animation, driven by the same flags.
 
+**Covered headlessly (2026-11-12).** `ScreenControllerFadeTest` builds the controller in Compose mode
+and drives both transitions through the public paths: `onImagePrepared()` in `HIDE_AFTER_DELAY`
+mode fades the layer towards 0 and the gradient of the row that fades to 0, leaving the row with
+nothing in it at 1; `showOverlays()` returns both to `overlayOpacity`; and with
+`overlayVisibilityDelay = 3` the layer is still at full opacity after 2s and at 0 by 3.5s. The
+per-corner rule (a fading corner follows the fade, a persistent one keeps the opacity, keyed by
+slot rather than position) is now a pure function, `OverlayCorner.alpha`, tested in
+`OverlayCornersTest`. Still not covered headlessly: the Compose tween itself
+(`animateFloatAsState`) and the drawn pixels, so a fade that ramps at the wrong *speed* would
+still only show up on the TV, not in the suite.
+
+**All four visibility modes are pinned (2026-11-12).** `ScreenControllerFadeTest` covers each mode
+through the controller's own entry points: `ALWAYS_VISIBLE` keeps the layer at `overlayOpacity`
+with its gradient up; `ALWAYS_HIDDEN` leaves layer and gradient at 0 until `showOverlays()`;
+`HIDE_AFTER_DELAY` fades both out after the delay; `SHOW_AFTER_DELAY` holds both down and brings
+them up when the delay elapses (still 0 at 2s, up by 3.5s with a 3s delay).
+
+Writing the `SHOW_AFTER_DELAY` test found a real bug in Compose mode: the branch seeded the layer
+and its gradients to 0 and never restored them, because its delayed block only animated
+`overlayHelper.getOverlaysToFade()` — empty when there are no Views — and `canShowOverlays` was
+only set by that animation's end action, so a user reveal was refused as well. The overlays stayed
+hidden for as long as that mode was selected. Fixed in the same branch: once the delay elapses it
+sets the layer to `overlayOpacity`, fades the gradients up and sets `canShowOverlays`.
+
+**Checked on the TV (2026-11-12).** Chromecast `sabrina`, Apple video, Compose engine,
+`overlay_visibility = SHOW_AFTER_DELAY`, `overlay_visibility_delay = 3`, clock top left, date top
+right, both gradients on. The capture 3s after the first frame has no overlay ink in the top strip
+(`0x0`); the capture 2s later carries `1789x27+66+38` and still does at +13s, so the delay is
+honoured and the overlays stay up afterwards. Pressing DPAD_DOWN (bound to `showOverlays` for that
+run) left them in place and the 4s reveal timeout then removed them (`0x0` again), which is the
+reveal path running with `canShowOverlays` true — the thing that never happened before the fix.
+Top-strip mean 0.0627 hidden vs 0.0667 shown: the gradients move with the overlays, though the
+video was dark enough for that to be a small number. Screenshots: `local/screenshots/show_*.png`.
+
 ---
 
 ## Compose architecture — state, hoisting, and what we deliberately skip
@@ -700,6 +734,12 @@ Two more surfaced in the follow-up pass on 2026-11-12. Screencap PNGs keep an al
 
   **Result:** matching box geometry (column 131px in both, children at y=0/40/93, from the temporary logging) and ink `257x115+66+206` (View) vs `258x115+66+206` (Compose). Per-row ink bands: label `252x21` at x+71/x+72, icon `238x31` at x+83/x+84, temperatures `234x16` at x+66 in both.
 
+  **Pinned by a test:** `WeatherForecastOverlayTest` renders the column and measures the gap under the
+  day name on a 2x and a 3x display (`xhdpi`/`xxhdpi`), 7px in both; it also asserts the stacking
+  (day name above the temperatures, high left of low, the 24dp cell gap between days). The guard
+  was checked by mutation, not assumed: converting `ELEMENT_MARGIN_PX` to `4.dp` again makes both
+  density tests fail (11px at 2x, 15px at 3x) and restoring the px conversion makes them pass.
+
   **The 1px of width** is the only residual. The label and icon are centred in a 60px column, and a 47px label leaves 6.5px either side: the View does `(width - childWidth) / 2` in Int maths and floors to 6, Compose aligns with floats and rounds to 7. So the label and icon sit 1px right and the ink box is 1px wider; height, top edge and left edge all match. That is the same magnitude as the current-weather line above and not worth a custom `Layout` to floor a half pixel.
 
 ### 9.6 Dream path verification
@@ -757,10 +797,34 @@ xml:     1149 1803 409 1095 1752 461 1121 1780 467 1130 1803 515
 
 Both sawtooth at every photo boundary. The XML run logged five `Starting progress bar animation` lines; the Compose run logs none, by design, because that `Timber` call sits in the `GONE` XML view. The guarantee is structural rather than local: a path that starts an item without going through `loadItem()`, or re-posts `START` with unchanged values, would be swallowed by the same equality check in both engines.
 
-### 10.5 Open items
+### 10.5 Closed items
 
-- The composable's own pause/resume timing is verified only on the device. `ProgressBarMotionTest` covers the pure mapping; nothing asserts the fraction after advancing a Compose clock.
-- No test pins the emission behaviour in 10.4. A store test — `setProgress(START, 0, 5000)`, `resetForNextMedia()`, `setProgress(START, 0, 5000)` again, expecting three emissions — would catch a refactor that drops the reset.
+Both gaps recorded here were closed on 2026-11-12.
+
+- **Progress bar timing is covered headlessly.** `ProgressBarOverlayTest` renders the real
+  composable and drives Compose's test clock: a start from zero fills 0 → 1 over the item's duration
+  (0.25 / 0.5 / 1.0 at 1s / 2s / 4s of a 4s item), a start part-way through snaps to its position and
+  then grows from there (0.25 → 0.4375 after 1s), pause holds the fraction across a second of clock,
+  resume advances at the remaining-time rate (0.125 per 500ms while 0.75 of the bar and 3s are left)
+  and goes on to full width, a start with an impossible position empties the bar, and a reset empties
+  a filled one. Reading the fraction needed one production addition: `ProgressBarOverlay` now
+  publishes `progressSemantics(fraction.value)`, which is also what a screen reader announces. On
+  the TV (2026-11-12, real Apple video, bar at `BOTTOM`, opacity 100, type `BOTH`) the modifier
+  changes nothing on screen: the bar is two pure-white rows at y=1078-1079 starting at x=0, in the
+  XML engine (29 / 65 / 100px across three captures), in the Compose engine with the line
+  (35 / 71 / 107px) and in the same build with the line reverted (42 / 82 / 118px). Growth per
+  capture was 35-40px in every run; the absolute widths differ only because each run samples a
+  different moment of the playlist. The description is real on the device too: with the video
+  paused, `uiautomator dump` of the screensaver window shows the `ComposeView` holding a
+  `ProgressBar` node at `[0,1078][1920,1080]` whose child carries
+  `content-desc="Playback progress"` — the same two rows the pixels show. TalkBack is not the
+  active accessibility service on that device (tvQuickActions is), so the tree was checked but
+  no spoken announcement was heard.
+- **The emission behaviour in 10.4 is pinned.** `OverlayStateStoreProgressTest` collects the store's
+  flow across `setProgress(START, 0, 5000)` → `resetForNextMedia()` → `setProgress(START, 0, 5000)` and
+  expects three updates after the initial value. The two starts carry equal state, so a refactor that
+  drops the reset leaves `MutableStateFlow` conflating them and only two updates arrive.
+
 
 ---
 
@@ -786,7 +850,7 @@ The toggle defaulting to `false` is what makes a wide beta safe, and the `beta` 
 
 Both things that were worth doing before that beta goes out are now in place:
 
-1. **Tag the engine in telemetry — done.** `ScreenController.init` sets a Firebase Analytics user property and a Crashlytics custom key, both named `use_compose_screensaver` (`"true"`/`"false"` for the property, a Boolean for the key), so a crash or a "the clock looks wrong" report can be attributed to one engine. This needed one new helper, `FirebaseHelper.analyticsUserProperty(name, value, alwaysLog)`, with the F-Droid variant as a no-op like every other method. Both calls pass `alwaysLog = true`, deliberately: `FirebaseHelper.LOGGING_END_DATE` is 2026-11-01, so the helper currently suppresses everything it sends, and an attribution tag that never fires cannot do its job — flip that argument to `false` if the logging window is meant to stay shut. Verified locally as far as it can be: the call path runs on both engines without crashing (`ScreenControllerLoadingTest` object-mocks the helper, since a JVM test has no `FirebaseApp`), but the values themselves only show up in the Firebase console or the Analytics debug view, so nothing here proves they arrive.
+1. **Tag the engine in telemetry — done.** `ScreenController.init` sets a Firebase Analytics user property and a Crashlytics custom key, both named `use_compose_screensaver` (`"true"`/`"false"` for the property, a Boolean for the key), so a crash or a "the clock looks wrong" report can be attributed to one engine. This needed one new helper, `FirebaseHelper.analyticsUserProperty(name, value, alwaysLog)`, with the F-Droid variant as a no-op like every other method. Both calls pass `alwaysLog = true`, deliberately: `FirebaseHelper.LOGGING_END_DATE` is 2026-11-01, so the helper currently suppresses everything it sends, and an attribution tag that never fires cannot do its job — flip that argument to `false` if the logging window is meant to stay shut. The arguments are pinned by `ScreenControllerLoadingTest`: it object-mocks the helper (a JVM test has no `FirebaseApp`) and verifies `analyticsUserProperty("use_compose_screensaver", "true"|"false", true)` and `crashlyticsLogKeys("use_compose_screensaver", true|false, true)` exactly once per engine, so a renamed key, a dropped call or a swapped value fails the suite. Delivery is the part no local test can prove: the values only show up in the Firebase console or the Analytics debug view.
 2. **Ask beta users to compare specific things — done: the checklist below is ready to ship with the beta notes.**
 
 > **Trying the new screensaver UI (beta)**

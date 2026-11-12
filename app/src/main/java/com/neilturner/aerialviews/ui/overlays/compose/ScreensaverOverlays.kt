@@ -113,14 +113,3 @@ private fun OverlayCornerColumn(
         }
     }
 }
-
-/**
- * Corners in a row share one fade setting, but the setting is keyed by the slot the user
- * configured, not by the screen position: alternating position moves the overlay without moving
- * the corner's fade behaviour, matching getOverlaysToFade().
- */
-private fun OverlayCorner.alpha(
-    fadeAlpha: Float,
-    visibleAlpha: Float,
-    fadeCorners: Set<String>,
-): Float = if (fadeKey in fadeCorners) fadeAlpha else visibleAlpha

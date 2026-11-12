@@ -81,6 +81,28 @@ class OverlayCornersTest {
     }
 
     @Test
+    fun `a fading corner follows the fade value and a persistent one keeps the opacity`() {
+        val fading = OverlayCorner(listOf(OverlayType.CLOCK), FADE_BOTTOM_LEFT)
+        val persistent = OverlayCorner(listOf(OverlayType.MESSAGE1), FADE_BOTTOM_RIGHT)
+        val fadeCorners = setOf(FADE_BOTTOM_LEFT)
+
+        assertEquals(0f, fading.alpha(fadeAlpha = 0f, visibleAlpha = 0.85f, fadeCorners = fadeCorners), 0.001f)
+        assertEquals(0.4f, fading.alpha(fadeAlpha = 0.4f, visibleAlpha = 0.85f, fadeCorners = fadeCorners), 0.001f)
+        // A message the user asked to stay visible ignores the fade entirely
+        assertEquals(0.85f, persistent.alpha(fadeAlpha = 0f, visibleAlpha = 0.85f, fadeCorners = fadeCorners), 0.001f)
+    }
+
+    @Test
+    fun `the fade value follows the slot after alternating position`() {
+        val corners = overlayCorners(slots, alternate = true)
+        val fadeCorners = setOf(FADE_BOTTOM_LEFT)
+
+        // The bottom-left slot is drawn in the bottom end column after alternating, and still fades
+        assertEquals(0f, corners.bottomEnd.alpha(fadeAlpha = 0f, visibleAlpha = 1f, fadeCorners = fadeCorners), 0.001f)
+        assertEquals(1f, corners.bottomStart.alpha(fadeAlpha = 0f, visibleAlpha = 1f, fadeCorners = fadeCorners), 0.001f)
+    }
+
+    @Test
     fun `a corner with nothing configured is empty`() {
         val corners = overlayCorners(emptyList(), alternate = false)
 

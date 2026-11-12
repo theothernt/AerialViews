@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
+import io.mockk.verify
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -111,6 +112,23 @@ class ScreenControllerLoadingTest {
             1,
             controller.composeIndicators().size,
         )
+    }
+
+    @Test
+    fun `building the compose engine tags analytics and crash reports with true`() {
+        controller(composeEngine = true)
+
+        // Once per session, so a crash or a report can be attributed to one engine.
+        verify(exactly = 1) { FirebaseHelper.analyticsUserProperty("use_compose_screensaver", "true", true) }
+        verify(exactly = 1) { FirebaseHelper.crashlyticsLogKeys("use_compose_screensaver", true, true) }
+    }
+
+    @Test
+    fun `building the xml engine tags analytics and crash reports with false`() {
+        controller(composeEngine = false)
+
+        verify(exactly = 1) { FirebaseHelper.analyticsUserProperty("use_compose_screensaver", "false", true) }
+        verify(exactly = 1) { FirebaseHelper.crashlyticsLogKeys("use_compose_screensaver", false, true) }
     }
 
     @Test

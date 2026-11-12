@@ -712,6 +712,15 @@ class ScreenController(
                 }
                 mainScope.launch {
                     delay(overlayDelay.milliseconds)
+                    // The Compose layer is seeded to 0 in this mode and there are no Views for the
+                    // animations below to move, so it is brought up explicitly. `canShowOverlays`
+                    // is set here too: the end action below only runs when there is a View to
+                    // animate, and until it runs a user reveal is refused.
+                    if (useComposeOverlays) {
+                        setComposeFadeAlpha(overlayVisibleAlpha)
+                        fadeComposeGradients(visible = true)
+                        canShowOverlays = true
+                    }
                     val overlaysToFade = overlayHelper.getOverlaysToFade()
                     overlaysToFade.forEachIndexed { index, view ->
                         val animator =
@@ -1563,6 +1572,10 @@ class ScreenController(
     /** Whether the Compose loading indicator is showing. Used by the loading indicator test. */
     internal val composeLoadingIndicatorVisible: Boolean
         get() = composeLoadingSpinner.value
+
+    /** The alpha the Compose overlay layer is fading towards, for the fade/reveal tests. */
+    internal val composeFade: Float
+        get() = composeFadeAlpha.value
 
     private fun setLoadingText(text: String) {
         if (!useComposeOverlays) {
