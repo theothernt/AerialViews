@@ -9,7 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -18,6 +23,7 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
@@ -54,7 +60,10 @@ import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayOpacityHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
+import com.neilturner.aerialviews.ui.helpers.SlotHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
+import com.neilturner.aerialviews.ui.overlays.EnabledOverlays
+import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverOverlays
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
@@ -65,12 +74,14 @@ import com.neilturner.aerialviews.ui.overlays.xml.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.xml.OverlayHelper
 import com.neilturner.aerialviews.ui.overlays.xml.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.xml.WeatherNowOverlay
+import com.neilturner.aerialviews.ui.theme.AerialTheme
 import com.neilturner.aerialviews.utils.DreamTiming
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -113,6 +124,14 @@ class ScreenController(
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
     private val overlayVisibleAlpha = OverlayOpacityHelper.visibleAlpha(context)
+
+    // Which engine draws the overlays, and the state the Compose layer observes
+    private val useComposeOverlays = GeneralPrefs.useComposeScreensaver
+    private val enabledOverlays = EnabledOverlays.types(context)
+    private val slotPrefs = SlotHelper.slotPrefs(context)
+    private val fadeCorners = GeneralPrefs.overlayFadeCornersSelection
+    private val composeAlternate = MutableStateFlow(false)
+    private val composeFadeAlpha = MutableStateFlow(overlayVisibleAlpha)
     private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
 
     private var canShowOverlays = false
@@ -221,7 +240,13 @@ class ScreenController(
 
         // Setup overlays and set initial positions
         overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
+        val overlayIds =
+            if (useComposeOverlays) {
+                installComposeOverlays()
+                OverlayIds(emptyList(), emptyList(), emptyList(), emptyList())
+            } else {
+                overlayHelper.buildOverlaysAndIds(overlayViewBinding)
+            }
         this.bottomLeftIds = overlayIds.bottomLeftIds
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
@@ -282,7 +307,9 @@ class ScreenController(
                 }
             }
 
-            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
+            // Asked of the slot preferences, not of instantiated Views: with the Compose overlay
+            // layer there are no MessageOverlay Views, and the API would silently never start.
+            if (enabledOverlays.any { it in MESSAGE_OVERLAYS } && GeneralPrefs.messageApiEnabled) {
                 KtorServer.start(context) { messageEvent ->
                     GlobalBus.post(messageEvent)
                 }
@@ -331,8 +358,8 @@ class ScreenController(
             setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
 
             // Setup weather service
-            val hasWeatherNowOverlay = overlayHelper.findOverlay<WeatherNowOverlay>().isNotEmpty()
-            val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
+            val hasWeatherNowOverlay = OverlayType.WEATHER1 in enabledOverlays
+            val hasForecastOverlay = OverlayType.WEATHER2 in enabledOverlays
             if (hasWeatherNowOverlay || hasForecastOverlay) {
                 weatherService =
                     WeatherService(context).apply {
@@ -508,6 +535,10 @@ class ScreenController(
             alternate,
         )
 
+        // The value used for this item, before the flip below - the same corner order the XML
+        // path hands to assignOverlaysAndIds()
+        composeAlternate.value = alternate
+
         if (shouldAlternateOverlays) {
             alternate = !alternate
         }
@@ -582,6 +613,14 @@ class ScreenController(
 //            // AND no persistent overlays
 //            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
 //                gradientTopView.alpha = 0f
+        // Seed the Compose layer from the same mode; hideOverlays()/showOverlays() drive the
+        // transitions after this, exactly as they drive the View alphas.
+        composeFadeAlpha.value =
+            when (overlayVisibilityMode) {
+                "ALWAYS_VISIBLE", "HIDE_AFTER_DELAY" -> overlayVisibleAlpha
+                else -> 0f
+            }
+
         when (overlayVisibilityMode) {
             "ALWAYS_VISIBLE" -> {
                 // Overlays stay visible, no hiding
@@ -748,6 +787,12 @@ class ScreenController(
     }
 
     private fun hideOverlays(delay: Long = 0L) {
+        if (useComposeOverlays) {
+            setComposeFadeAlpha(0f, delay)
+            canShowOverlays = true
+            return
+        }
+
         val overlaysToFade = overlayHelper.getOverlaysToFade()
 
         if (overlaysToFade.isEmpty()) {
@@ -819,6 +864,17 @@ class ScreenController(
         if (!canShowOverlays) return
 
         val overlaysToFade = overlayHelper.getOverlaysToFade()
+
+        if (useComposeOverlays) {
+            canShowOverlays = false
+            setComposeFadeAlpha(overlayVisibleAlpha)
+            mainScope.launch {
+                delay(overlayRevealTimeout * 1000)
+                setComposeFadeAlpha(0f)
+                canShowOverlays = true
+            }
+            return
+        }
 
         if (overlaysToFade.isEmpty()) return
 
@@ -1386,10 +1442,81 @@ class ScreenController(
         progressBarView.render(state.progress)
     }
 
+    /**
+     * Hosts the Compose overlay layer inside overlay_view.
+     *
+     * Not at the root of aerial_activity: a FrameLayout draws children in order, so appending it
+     * there would put the overlays above the brightness dimmer and above the notification toasts.
+     * Living under overlayView also means blackout mode hides them, as it hides the XML overlays.
+     */
+    private fun installComposeOverlays() {
+        val composeView =
+            ComposeView(context).apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+                layoutParams =
+                    ConstraintLayout
+                        .LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                        ).apply {
+                            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                            startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+                        }
+                setContent {
+                    val state by overlayStateStore.uiState.collectAsStateWithLifecycle()
+                    val alternatePosition by composeAlternate.collectAsStateWithLifecycle()
+                    val fade by composeFadeAlpha.collectAsStateWithLifecycle()
+
+                    AerialTheme {
+                        ScreensaverOverlays(
+                            state = state,
+                            slots = slotPrefs,
+                            alternate = alternatePosition,
+                            visibleAlpha = overlayVisibleAlpha,
+                            fadeAlpha = fade,
+                            fadeDurationMillis = overlayFadeOut.toInt(),
+                            fadeCorners = fadeCorners,
+                        )
+                    }
+                }
+            }
+
+        overlayViewBinding.layout.addView(composeView)
+
+        // The Compose layer replaces the four XML corners. The gradients stay Views so their own
+        // fade behaviour keeps working while the overlays move to Compose.
+        with(overlayViewBinding) {
+            flowTopLeft.visibility = View.GONE
+            flowTopRight.visibility = View.GONE
+            flowBottomLeft.visibility = View.GONE
+            flowBottomRight.visibility = View.GONE
+        }
+    }
+
+    private fun setComposeFadeAlpha(
+        alpha: Float,
+        delayMillis: Long = 0L,
+    ) {
+        if (!useComposeOverlays) return
+        if (delayMillis <= 0L) {
+            composeFadeAlpha.value = alpha
+        } else {
+            mainScope.launch {
+                delay(delayMillis.milliseconds)
+                composeFadeAlpha.value = alpha
+            }
+        }
+    }
+
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 1000 // Delay before loading next item, after error
         const val CACHE_RESUME_DELAY: Long = 1000 // Delay before starting playback when restoring from cache
+
+        private val MESSAGE_OVERLAYS =
+            setOf(OverlayType.MESSAGE1, OverlayType.MESSAGE2, OverlayType.MESSAGE3, OverlayType.MESSAGE4)
     }
 }

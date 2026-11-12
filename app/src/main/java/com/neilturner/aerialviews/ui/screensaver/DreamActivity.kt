@@ -5,6 +5,14 @@ import android.content.Intent
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
@@ -14,7 +22,10 @@ import com.neilturner.aerialviews.utils.DreamTiming
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
-class DreamActivity : DreamService() {
+class DreamActivity :
+    DreamService(),
+    LifecycleOwner,
+    SavedStateRegistryOwner {
     companion object {
         // The dream that handed playback over to an activity and is still holding the screen on,
         // so the activity can dismiss it when the viewer exits
@@ -33,6 +44,17 @@ class DreamActivity : DreamService() {
 
     private lateinit var screenController: ScreenController
 
+    // Compose needs a LifecycleOwner and SavedStateRegistryOwner above the ComposeView, and a
+    // DreamService provides neither. TestActivity gets both from AppCompatActivity.
+    private val lifecycleRegistry = LifecycleRegistry(this)
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
+
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
+
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
         DreamTiming.mark("dream.attach")
@@ -40,6 +62,15 @@ class DreamActivity : DreamService() {
         // Setup
         isFullscreen = true
         isInteractive = true
+
+        // Must happen before setContentView() below: AbstractComposeView resolves the view-tree
+        // owners when it attaches, and throws if there are none.
+        savedStateRegistryController.performRestore(null)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        window?.decorView?.let {
+            it.setViewTreeLifecycleOwner(this)
+            it.setViewTreeSavedStateRegistryOwner(this)
+        }
 
         // Some TVs (eg. Philips OLEDs) classify any 3rd-party dream as an on-screen display and
         // drop their own burn-in screensaver over it after a few minutes, whatever the dream shows.
@@ -85,6 +116,8 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
         // Launched from here rather than onAttachedToWindow, so the dream's window is already
         // showing - an app without a visible window is not allowed to start an activity
@@ -161,6 +194,12 @@ class DreamActivity : DreamService() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+        // Guarded because a dream that never reached onDreamingStarted() has nothing to pause,
+        // and LifecycleRegistry rejects events that would move the state backwards.
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+        }
         super.onDreamingStopped()
     }
 
@@ -168,6 +207,9 @@ class DreamActivity : DreamService() {
         Timber.d("onDetachedFromWindow")
         if (this::screenController.isInitialized) {
             screenController.stop()
+        }
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         }
         super.onDetachedFromWindow()
     }
