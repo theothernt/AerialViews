@@ -412,35 +412,37 @@ The vertical-offset hack exists because Open Sans and Google Sans have different
 - `OverlayFade(fadeMillis)` — the alpha `Animatable` behind the "fade out, swap the content, fade back" sequence both engines use on a change: `fadeOut()`, `fadeIn()`, plus `snapHidden()` for an arrival from nothing and `reset()`. POI text uses 1000ms and now playing and messages 300ms, matching their View counterparts, and the `CubicBezierEasing(0.4f, 0f, 0.6f, 1f)` curve reproduces `AccelerateDecelerateInterpolator`. Tests hold the same instance the composable draws with, because `captureToImage()` cannot see a node's own `Modifier.alpha` under Robolectric (9.7).
 - `OverlayIcon(resId, colour, size)` — `AndroidView` wrapping `SvgImageView` + `setSvgResource` + `setTintColour`. Used by the weather overlays now; replaced by a proper SVG/KMP path later.
 
-**The fade's alpha is read in a `graphicsLayer` block, not in composition.** Each overlay draws its
-line with `Modifier.graphicsLayer { alpha = fade.alpha.value }`, and `ScreensaverOverlays` keeps its
-`animateFloatAsState` as a State object and hands each corner a `() -> Float` that the corner's layer
-block evaluates. Reading `alpha.value` at the call site, as `Modifier.alpha(...)` forced, recomposes the
-overlay subtree on every frame of a fade; reading it inside the block only redraws the layer. The values,
-curve and durations are unchanged, and `ProgressBarOverlay`'s `.alpha(opacity)` was left alone because
-that opacity is a preference, not an animation.
+**Alpha is applied with `Modifier.alpha`, after a device A/B decided against `graphicsLayer`.** The
+overlay fades were briefly switched to `Modifier.graphicsLayer { alpha = ... }` so the animation read
+happened in the layer block instead of in composition, including a `() -> Float` per corner in
+`ScreensaverOverlays`. The pre-change code was then rebuilt from `0e07f29d^` as a signed `betaRelease` and
+both builds were measured on the TV with one protocol: Compose overlays on, Overlay visibility "Hide after
+delay" (4s), 600ms fades, `TestActivity` restarted per capture, `dumpsys gfxinfo framestats` polled through
+startup so the fade burst could be picked out afterwards - 36-37 frames at 16.7ms spacing over 0.60s, the
+whole fade, on a static photo where nothing else drew. Eight captures per build in two interleaved blocks
+(before, after, before, after, swapping the two APKs):
 
-**What was measured, and only that.** On the `betaRelease` build (R8, 1.8.6-beta4, the build with this
-change) on the TV, Compose overlays on, Overlay visibility "Hide after delay" (4s) and 600ms fades, eight
-`TestActivity` captures windowed around the fade with `dumpsys gfxinfo framestats` returned 41 frames in
-total, the largest contiguous burst in any one capture 35 frames over 0.58s; a whole-session dump of the
-same build reported 193 frames, 9 janky (4.7%), 50th percentile 28ms, 90th 44ms, and ~4.4-5.2ms recording
-draw commands. Nothing there is a before/after. An earlier set of eight captures of the then-installed build
-gave 136 frames with a 37-frame/0.60s largest burst and a 39.7ms 50th percentile - a different number of
-frames with different burst lengths, from a build that has since been replaced - so the two sets do not
-compare. Without rebuilding the old one there is no controlled A/B, and no frame saving is claimed either
-way: the overlay fade sits far below this device's own ~28-40ms frame budget, which is the size of the
-spread between captures of a single build.
+| fade, 8 captures each | frames | frame duration p50 | draw-record p50 | spacing p50 |
+|---|---|---|---|---|
+| `Modifier.alpha` | 36-37 | 20.78ms | 0.295ms (0.281-0.314) | 16.68ms |
+| `graphicsLayer` | 36-37 | 20.79ms | 0.327ms (0.298-0.357) | 16.68ms |
 
-**The trade-off: a layer at rest.** `Modifier.alpha` costs nothing at alpha 1 - `Modifier.alpha(1f)` returns
-`Modifier` itself in this Compose version (checked in a throwaway unit test, where `alpha(0.5f)` returned a
-`GraphicsLayerElement`), and the API docs describe the modifier as allocating a layer for alpha below 1
-only. `Modifier.graphicsLayer { }` allocates one regardless, because no `layerRequired` is passed. Overlays
-spend nearly all their time at alpha 1, so each fading corner column and each fade-drawn line now carries a
-render node that it did not carry before, in exchange for the fade no longer recomposing them. That resting
-cost is unmeasured. A smaller consequence of the same swap: `alpha`'s layer sets `clip = true` while
-`graphicsLayer`'s defaults to false, so content overhanging a fading overlay's bounds is no longer clipped -
-the lines size to their text, so nothing is expected to overhang.
+Pacing and frame duration are identical: the recomposition the deferred read avoids was never on the
+critical path, because a 20.8ms frame against a 16.7ms cadence leaves slack and an overlay is a few dozen
+composables. The one axis that moved is the time spent recording draw commands, up 0.03ms per frame (about
+1.2ms across the fade), which is the layer being present at alpha 1 on the overlays that are not themselves
+fading. That is paid on every frame the overlay layer draws, while the recomposition it avoids happens only
+during a 300-1000ms fade - and `Modifier.alpha` allocates nothing at alpha 1 (`Modifier.alpha(1f)` returns
+`Modifier` itself, checked in a throwaway unit test where `alpha(0.5f)` returned a `GraphicsLayerElement`)
+and a layer only while fading. The trade was therefore a small loss, so all four sites, and the corner's
+lambda and State plumbing with them, went back to `Modifier.alpha(...)` and `by animateFloatAsState`.
+
+Compose's guidance to use `graphicsLayer` for animated alpha still holds as a principle - it keeps the
+animation out of composition - and nothing here contradicted it; this overlay simply never had the
+recomposition cost the guidance targets. Revisit if a profile shows overlay recomposition inside a fade
+window mattering: the deferred-read form is the fix, at the price of one graphics layer per overlay at rest.
+One difference to remember if that happens is that `alpha`'s layer sets `clip = true` while `graphicsLayer`
+leaves it false.
 
 ---
 

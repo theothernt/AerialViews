@@ -8,9 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.neilturner.aerialviews.models.SlotPref
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -44,15 +45,11 @@ fun ScreensaverOverlays(
     val horizontal = OverlayPaddingHelper.horizontalDp(GeneralPrefs.overlayPaddingHorizontal).dp
     val vertical = OverlayPaddingHelper.verticalDp(GeneralPrefs.overlayPaddingVertical).dp
 
-    // Kept as a State object rather than read here: the alpha is read inside each corner's
-    // graphicsLayer block, so the fade invalidates the layers it draws and does not recompose the
-    // overlays underneath it on every frame.
-    val animatedFade =
-        animateFloatAsState(
-            targetValue = fadeAlpha,
-            animationSpec = tween(durationMillis = fadeDurationMillis),
-            label = "overlayFadeAlpha",
-        )
+    val animatedFade by animateFloatAsState(
+        targetValue = fadeAlpha,
+        animationSpec = tween(durationMillis = fadeDurationMillis),
+        label = "overlayFadeAlpha",
+    )
 
     val corners = overlayCorners(slots, alternate)
 
@@ -66,7 +63,7 @@ fun ScreensaverOverlays(
             corner = corners.topStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = { corners.topStart.alpha(animatedFade.value, visibleAlpha, fadeCorners) },
+            alpha = corners.topStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.TopStart),
         )
@@ -74,7 +71,7 @@ fun ScreensaverOverlays(
             corner = corners.topEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = { corners.topEnd.alpha(animatedFade.value, visibleAlpha, fadeCorners) },
+            alpha = corners.topEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.TopEnd),
         )
@@ -82,7 +79,7 @@ fun ScreensaverOverlays(
             corner = corners.bottomStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = { corners.bottomStart.alpha(animatedFade.value, visibleAlpha, fadeCorners) },
+            alpha = corners.bottomStart.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.BottomStart),
         )
@@ -90,7 +87,7 @@ fun ScreensaverOverlays(
             corner = corners.bottomEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = { corners.bottomEnd.alpha(animatedFade.value, visibleAlpha, fadeCorners) },
+            alpha = corners.bottomEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.BottomEnd),
         )
@@ -102,12 +99,12 @@ private fun OverlayCornerColumn(
     corner: OverlayCorner,
     state: OverlayUiState,
     videoPosition: () -> Long,
-    alpha: () -> Float,
+    alpha: Float,
     horizontalAlignment: Alignment.Horizontal,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.graphicsLayer { this.alpha = alpha() },
+        modifier = modifier.alpha(alpha),
         verticalArrangement = Arrangement.spacedBy(cornerGap),
         horizontalAlignment = horizontalAlignment,
     ) {

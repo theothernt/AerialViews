@@ -8,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.compose.components.OverlayText
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
@@ -66,7 +66,7 @@ fun MessageOverlay(
     }
 
     if (displayed.isNotBlank()) {
-        Box(modifier = Modifier.graphicsLayer { alpha = fade.alpha.value }) {
+        Box(modifier = Modifier.alpha(fade.alpha.value)) {
             OverlayText(
                 text = displayed,
                 sizeSp = sizeSp,
