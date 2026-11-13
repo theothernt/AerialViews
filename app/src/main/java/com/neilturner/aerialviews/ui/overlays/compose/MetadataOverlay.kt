@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.ui.overlays.compose.components.OverlayText
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
@@ -113,6 +113,8 @@ fun MetadataOverlay(
         text = text,
         sizeSp = sizeSp,
         weight = weight,
-        modifier = Modifier.alpha(fade.alpha.value),
+        // graphicsLayer defers the animation read to the layer block, so a fade redraws the layer
+        // instead of recomposing the overlay on every frame.
+        modifier = Modifier.graphicsLayer { alpha = fade.alpha.value },
     )
 }

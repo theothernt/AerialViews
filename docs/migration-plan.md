@@ -412,6 +412,36 @@ The vertical-offset hack exists because Open Sans and Google Sans have different
 - `OverlayFade(fadeMillis)` — the alpha `Animatable` behind the "fade out, swap the content, fade back" sequence both engines use on a change: `fadeOut()`, `fadeIn()`, plus `snapHidden()` for an arrival from nothing and `reset()`. POI text uses 1000ms and now playing and messages 300ms, matching their View counterparts, and the `CubicBezierEasing(0.4f, 0f, 0.6f, 1f)` curve reproduces `AccelerateDecelerateInterpolator`. Tests hold the same instance the composable draws with, because `captureToImage()` cannot see a node's own `Modifier.alpha` under Robolectric (9.7).
 - `OverlayIcon(resId, colour, size)` — `AndroidView` wrapping `SvgImageView` + `setSvgResource` + `setTintColour`. Used by the weather overlays now; replaced by a proper SVG/KMP path later.
 
+**The fade's alpha is read in a `graphicsLayer` block, not in composition.** Each overlay draws its
+line with `Modifier.graphicsLayer { alpha = fade.alpha.value }`, and `ScreensaverOverlays` keeps its
+`animateFloatAsState` as a State object and hands each corner a `() -> Float` that the corner's layer
+block evaluates. Reading `alpha.value` at the call site, as `Modifier.alpha(...)` forced, recomposes the
+overlay subtree on every frame of a fade; reading it inside the block only redraws the layer. The values,
+curve and durations are unchanged, and `ProgressBarOverlay`'s `.alpha(opacity)` was left alone because
+that opacity is a preference, not an animation.
+
+**What was measured, and only that.** On the `betaRelease` build (R8, 1.8.6-beta4, the build with this
+change) on the TV, Compose overlays on, Overlay visibility "Hide after delay" (4s) and 600ms fades, eight
+`TestActivity` captures windowed around the fade with `dumpsys gfxinfo framestats` returned 41 frames in
+total, the largest contiguous burst in any one capture 35 frames over 0.58s; a whole-session dump of the
+same build reported 193 frames, 9 janky (4.7%), 50th percentile 28ms, 90th 44ms, and ~4.4-5.2ms recording
+draw commands. Nothing there is a before/after. An earlier set of eight captures of the then-installed build
+gave 136 frames with a 37-frame/0.60s largest burst and a 39.7ms 50th percentile - a different number of
+frames with different burst lengths, from a build that has since been replaced - so the two sets do not
+compare. Without rebuilding the old one there is no controlled A/B, and no frame saving is claimed either
+way: the overlay fade sits far below this device's own ~28-40ms frame budget, which is the size of the
+spread between captures of a single build.
+
+**The trade-off: a layer at rest.** `Modifier.alpha` costs nothing at alpha 1 - `Modifier.alpha(1f)` returns
+`Modifier` itself in this Compose version (checked in a throwaway unit test, where `alpha(0.5f)` returned a
+`GraphicsLayerElement`), and the API docs describe the modifier as allocating a layer for alpha below 1
+only. `Modifier.graphicsLayer { }` allocates one regardless, because no `layerRequired` is passed. Overlays
+spend nearly all their time at alpha 1, so each fading corner column and each fade-drawn line now carries a
+render node that it did not carry before, in exchange for the fade no longer recomposing them. That resting
+cost is unmeasured. A smaller consequence of the same swap: `alpha`'s layer sets `clip = true` while
+`graphicsLayer`'s defaults to false, so content overhanging a fading overlay's bounds is no longer clipped -
+the lines size to their text, so nothing is expected to overhang.
+
 ---
 
 ## Phase 5 — Host Wiring in ScreenController
