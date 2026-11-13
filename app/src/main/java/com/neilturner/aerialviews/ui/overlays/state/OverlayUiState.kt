@@ -15,6 +15,9 @@ data class OverlayUiState(
     val weather: WeatherOverlayState = WeatherOverlayState(),
     val forecast: ForecastOverlayState = ForecastOverlayState(),
     val progress: ProgressOverlayState = ProgressOverlayState(),
+    // Set while the current item is fading out, so the POI line stops rotating as the View version
+    // does; cleared when the next item's metadata lands
+    val fadingOutMedia: Boolean = false,
 )
 
 data class MetadataOverlayState(

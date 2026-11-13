@@ -683,6 +683,12 @@ class ScreenController(
         overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
         }
+        // Same guard for the Compose metadata line, which has no View to flag. Only in Compose mode:
+        // the store emission re-renders the View overlays, and their updateLocationData clears the flag
+        // it has just been given.
+        if (useComposeOverlays) {
+            overlayStateStore.setFadingOutMedia(true)
+        }
 
         if (currentMedia?.type == AerialMediaType.VIDEO) {
             videoPlayer.fadeOutAudio(mediaFadeOut)

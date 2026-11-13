@@ -38,6 +38,7 @@ fun OverlaySlotContent(
                 sizeSp = GeneralPrefs.overlayMetadata1Size.toFloat(),
                 weight = GeneralPrefs.overlayMetadata1Weight,
                 videoPosition = videoPosition,
+                fadingOutMedia = state.fadingOutMedia,
             )
         }
 
@@ -47,6 +48,7 @@ fun OverlaySlotContent(
                 sizeSp = GeneralPrefs.overlayMetadata2Size.toFloat(),
                 weight = GeneralPrefs.overlayMetadata2Weight,
                 videoPosition = videoPosition,
+                fadingOutMedia = state.fadingOutMedia,
             )
         }
 
@@ -56,6 +58,7 @@ fun OverlaySlotContent(
                 sizeSp = GeneralPrefs.overlayMetadata3Size.toFloat(),
                 weight = GeneralPrefs.overlayMetadata3Weight,
                 videoPosition = videoPosition,
+                fadingOutMedia = state.fadingOutMedia,
             )
         }
 
@@ -65,6 +68,7 @@ fun OverlaySlotContent(
                 sizeSp = GeneralPrefs.overlayMetadata4Size.toFloat(),
                 weight = GeneralPrefs.overlayMetadata4Weight,
                 videoPosition = videoPosition,
+                fadingOutMedia = state.fadingOutMedia,
             )
         }
 

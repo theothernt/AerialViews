@@ -408,7 +408,8 @@ The vertical-offset hack exists because Open Sans and Google Sans have different
 
 ### 4.2 Other primitives
 
-- `OverlayText(text, style, modifier)` — a thin wrapper over `BasicText`/`Text` that applies the style and the `OverlayOpacityHelper.visibleAlpha` alpha.
+- `OverlayText(text, sizeSp, weight, modifier, colour, textAlign, maxLines)` — a thin wrapper over `Text` that applies the style, the font-metric offset and the width clamp. It does not apply opacity: the corner's `visibleAlpha`/auto-hide alpha is folded in by `ScreensaverOverlays` through `OverlayCorner.alpha`.
+- `OverlayFade(fadeMillis)` — the alpha `Animatable` behind the "fade out, swap the content, fade back" sequence both engines use on a change: `fadeOut()`, `fadeIn()`, plus `snapHidden()` for an arrival from nothing and `reset()`. POI text uses 1000ms and now playing and messages 300ms, matching their View counterparts, and the `CubicBezierEasing(0.4f, 0f, 0.6f, 1f)` curve reproduces `AccelerateDecelerateInterpolator`. Tests hold the same instance the composable draws with, because `captureToImage()` cannot see a node's own `Modifier.alpha` under Robolectric (9.7).
 - `OverlayIcon(resId, colour, size)` — `AndroidView` wrapping `SvgImageView` + `setSvgResource` + `setTintColour`. Used by the weather overlays now; replaced by a proper SVG/KMP path later.
 
 ---
@@ -592,7 +593,24 @@ Every periodic update becomes a Compose effect bound to the composition: `Launch
 
 ### Testing: keep composables thin
 
-The repo has no instrumentation tests (`app/src/androidTest` is empty) and JVM tests cannot touch Android framework classes. So do not introduce Compose UI tests for this migration. Instead keep all formatting and decision logic in pure code that the existing JVM suite covers — `CountdownFormatter`, `CountdownTimeParser`, `TrackNameShortener`, `OverlayPaddingHelper`, `OverlayOpacityHelper`, `ScheduledBlackoutWindow` are the model to follow. If a Composable contains an `if` worth testing, the condition belongs in a pure function.
+The repo has no instrumentation tests (`app/src/androidTest` is empty), but Robolectric runs the framework on
+the JVM, and seven composables are covered that way: `ScreensaverOverlaysTest`, `WeatherForecastOverlayTest`,
+`ProgressBarOverlayTest`, `LoadingIndicatorTest` and the three fade tests - `MetadataOverlayFadeTest`,
+`NowPlayingOverlayFadeTest`, `MessageOverlayFadeTest`. Keep formatting and decision logic in pure code, where the
+existing JVM suite already covers it - `CountdownFormatter`, `CountdownTimeParser`, `TrackNameShortener`,
+`OverlayPaddingHelper`, `OverlayOpacityHelper`, `ScheduledBlackoutWindow` are the model to follow. Reach for a
+Robolectric compose test only for what a pure function cannot express: layout geometry, and animation timing.
+
+Three things worth knowing before writing another one:
+
+- **`captureToImage()` does not see a node's own `Modifier.alpha`** under Robolectric - it reads 1.0
+  throughout. Alphas are therefore read from an `OverlayFade` the test constructs and passes in, which is why
+  the fade durations are parameters of the composables and the constants are `internal`.
+- **A state change needs `waitForIdle()` before the clock moves, then one frame.** The first attempt advanced a
+  frame straight after the state write and read alpha 1.0 at +150ms, i.e. the effect had not started; the
+  mirror-image mistake, `waitForIdle()` with no frame, reads the fade one frame short (0.62 instead of 0.5).
+- **`delay` is not driven by the Compose test clock**, so poll and timer intervals are parameters
+  (`MetadataOverlay`'s `pollMillis`) rather than constants a test has to wait out.
 
 ### What we deliberately do **not** add
 
@@ -643,9 +661,9 @@ Order: simplest → most complex. For each: create the Composable, wire it into 
 | 7.1 | **Clock** | `compose/ClockOverlay.kt` | A ticker (no `TextClock` in Compose). `ClockType.DEFAULT` follows the system 12/24h setting; `HOUR_12` → `h:mm a`, `HOUR_24` → `HH:mm`. `clockForceLatinDigits` is applied by `LocaleHelper` via the process default locale — verify it survives into the composition. |
 | 7.2 | **Date** | `compose/DateOverlay.kt` | 1-second ticker + `DateHelper.formatDate(context, dateFormat, dateCustom)`. |
 | 7.3 | **Metadata** | `compose/MetadataOverlay.kt` | Static vs POI text from `state.metadata[type]`; POI rotation needs a **video position source** (`MetadataOverlay` reads `videoPlayer.currentPosition / 1000`) and the 1 s / 3 s poll and cross-fade from the XML version. `isFadingOutMedia` suppresses POI changes while the item is fading out. |
-| 7.4 | **Message** | `compose/MessageOverlay.kt` | Per-message size/weight overrides from `MessageOverlayState`; blank text ⇒ hidden; `duration` auto-clear; `messageAnimateChanges` fade path (`ChangeBounds` + `Fade` transitions in the XML version → `AnimatedVisibility`). |
+| 7.4 | **Message** | `compose/MessageOverlay.kt` | Per-message size/weight overrides from `MessageOverlayState`; blank text ⇒ hidden; `duration` auto-clear; `messageAnimateChanges` has the two modes the View has - off shows and hides the line outright (the View's `applyVisibilityImmediate`), on fades out 300ms, swaps the message while invisible and fades back in via `OverlayFade(300)`, with `snapHidden()` for an arrival from nothing. No `ChangeBounds` equivalent, so neighbours reflow instantly where the View animates the layout. Pinned by `MessageOverlayFadeTest`, both modes. |
 | 7.5 | **Countdown** | `compose/CountdownOverlay.kt` | Reuse `CountdownTimeParser` / `CountdownFormatter` (shared, unit-tested) + the `countdown_target_message` / `countdown_label` strings; 1-second tick until completion. |
-| 7.6 | **Now Playing** | `compose/NowPlayingOverlay.kt` | `NowPlayingFormat` string assembly + `TrackNameShortener`; album art is a `Bitmap` on `MusicEvent` → `Image(bitmap.asImageBitmap())`, sized `lineHeight × 2.5` with a 12dp leading margin on the text. |
+| 7.6 | **Now Playing** | `compose/NowPlayingOverlay.kt` | `NowPlayingFormat` string assembly + `TrackNameShortener`; album art is a `Bitmap` on `MusicEvent` → `Image(bitmap.asImageBitmap())`, sized `lineHeight × 2.5` with a 12dp leading margin on the text. A track change runs the View's fade - `OverlayFade(300)` out, swap track and art while invisible, in - and `snapHidden()` when nothing was on screen, pinned by `NowPlayingOverlayFadeTest` (9.7). Album art is the one part no capture has exercised: the device's Spotify sessions report `albumArt=null`. |
 | 7.7 | **Loading indicator** | `compose/LoadingIndicator.kt` | See Phase 8. |
 | 7.8 | **Weather (current)** | `compose/WeatherNowOverlay.kt` | `weatherLine1Layout` is a comma-separated `ForecastType` list (`CITY`, `TEMPERATURE`, `ICON`, `SUMMARY`) rendered as a horizontal row with 16dp gaps (no gap after an icon) and icons sized `1.3 × text height`. Icons are SVG → `AndroidView(SvgImageView)`. Needs the extra 2dp top padding for the degree symbol. |
 | 7.9 | **Weather (forecast)** | `compose/WeatherForecastOverlay.kt` | Multi-day row, `weatherLine2Days`, icon alignment, per-day cell layout. Most complex. |
@@ -739,12 +757,14 @@ Two more surfaced in the follow-up pass on 2026-11-12. Screencap PNGs keep an al
 
 | Overlay | Result |
 |---|---|
-| Message | ✅ messages 1–2 posted through the Ktor API rendered in both engines; the bottom block measured `1788x130+66+113` in both. |
+| Message | ✅ messages 1–2 posted through the Ktor API rendered in both engines; the bottom block measured `1788x130+66+113` in both. Layout only - the show/hide animation is in 9.7. |
 | Weather (current) | ✅ real data rendered (`7° [icon] Clear sky`): `236x34+65+65` Compose vs `236x36+65+66` XML. |
 | Weather (forecast) | ✅ multi-day row measured on the grey fixture with identical data (`Thu/Fri/Sat`, `5° 4°`, `8° 2°`, `8° 1°`): ink `257x115+66+206` XML vs `258x115+66+206` Compose — same height, same top edge, 1px wider because a centred child rounds differently (9.5). `local/screenshots/geo_xml.png`, `geo_compose.png`. |
-| Now playing | ✅ Spotify (`com.spotify.tv.android`) playing through `NowPlayingService`: `Can’t You See · Bonobo, Aanya Martin` in XML and `Atlantic – Ambient Revisit · Jaytech` in Compose (the track changed between runs). Bright-pixel ink `596x34+66+989` and `553x34+65+989` in a `1000x260+0+820` crop, i.e. x 66/65 and the same y=989 and 34px height; widths differ only because the strings do. |
+| Now playing | ✅ Spotify (`com.spotify.tv.android`) playing through `NowPlayingService`: `Can’t You See · Bonobo, Aanya Martin` in XML and `Atlantic – Ambient Revisit · Jaytech` in Compose (the track changed between runs). Bright-pixel ink `596x34+66+989` and `553x34+65+989` in a `1000x260+0+820` crop, i.e. x 66/65 and the same y=989 and 34px height; widths differ only because the strings do. The track-change fade is in 9.7. |
 | Loading indicator with `showLoadingText = false` | ✅ the loading area is empty in both engines. |
 | Weather service and Ktor API in Compose mode | ✅ Compose-mode run logged `WeatherService: Processed forecast: 3 days for London`, and API messages reached the Compose layer. |
+| Metadata (POI rotation) | ✅ a local feed with POIs at 0/8/16/24s rotated through the same strings in both engines (ink `257x34+67+58`, `259x34+65+58`), and after the 2026-11-12 fade change the transition between POIs matches too: ~1.8s both ways, text blank in the middle (9.7). |
+| Countdown | ✅ same layout in both engines (`284x26+67+58` XML vs `283x26+67+58` Compose), ticking, and the completion message at the target time (`92x26+67+58` in both); see 9.7. |
 
 `magick compare local/screenshots/xml_<overlay>.png local/screenshots/compose_<overlay>.png local/screenshots/diff_<overlay>.png` when ImageMagick is available.
 
@@ -791,6 +811,144 @@ Phase 9.1 asked for the real `DreamActivity`, which `TestActivity` cannot prove.
 - [x] No startup regression from Compose — attach→contentView 2193ms (XML) vs 1892ms (Compose); contentView→`playback.start` 8642 vs 8901 (network-bound on the Apple feed); `playback.start`→`video.firstFrame` 2321 vs 2641. Attach→first frame is 13156 vs 13434ms, about 2% apart.
 
 Method notes. LeakCanary's heads-up notification ("1 retained objects…") draws over the dream and spoiled the first captures — wait for the banner to clear. And the Apple playlist takes ~8.6s to resolve, so a capture 8s after `dream.attach` still shows the loading indicator; wait ~20s, or poll for `video.firstFrame`.
+
+### 9.7 POI rotation, overlay fades and countdown — what 9.4 did not measure
+
+The POI and countdown captures were made on 2026-11-12 on the Chromecast (`sabrina`, 1920x1080, `betaDebug`),
+engines run cold (`am force-stop` first), against fixtures served over `adb reverse tcp:8765` from a local
+HTTP server (`local/poi-feed/`), so the same media and the same metadata ran in both engines. The fade work
+was done on 2026-11-13.
+
+**Metadata / POI rotation.** The fixture is the 30s clip with `pointsOfInterest` in the feed JSON at
+0/8/16/24s ("Piccadilly Circus", "Trafalgar Square", "Tower Bridge", "The Shard"), `METADATA1` in
+`slot_top_left1`, every other slot empty, alternation off, overlays always visible, both gradients off.
+The strings match: at +2s the ink box is `257x34+67+58` in both engines, at +16s `259x34+65+58` in both.
+(The +25s captures read `210x34+65+58` in XML and `156x26+65+58` in Compose because they straddled the 24s
+boundary at different poll phases — "Tower Bridge" against "The Shard", visible in `poi_texts.png` — not a
+layout mismatch.)
+
+The **transition between POIs** was first measured as a mismatch and then changed to match.
+`screenrecord` of the boundary, pulled apart with `ffmpeg`, measuring the peak brightness of a
+`1000x200+0+20` crop (255 is white text, ~17 the video behind it), 5fps:
+
+| engine | frame peaks across the change |
+|---|---|
+| XML | 255 ... 249 202 132 72 20 19 (min) 62 133 199 250 255 |
+| Compose, before the change (`Crossfade(tween(300))`) | 255 ... 231 255 — one frame, never blank |
+| Compose, after the change | 255 ... 228 176 94 37 17 (min) 34 103 189 225 255 |
+
+At 30fps over the same crop, frame index of the first value below 250 to the first back at/above 250:
+
+| | span | trough (peak <= 25) | shape |
+|---|---|---|---|
+| XML | 189-243, 55 frames (~1.8s) | 212-222, ~0.33s | slow start, minimum 17 |
+| Compose, after the change | 181-234, 54 frames (~1.8s) | 204-211, ~0.23s | slow start, minimum 17 |
+
+The change: `compose/MetadataOverlay.kt` lost the `Crossfade` and now drives an `Animatable` alpha - fade to
+0 over `POI_FADE_MILLIS = 1000`, swap the text at zero, fade back to 1 over another 1000ms - which is what the
+View does with `animate().alpha(0f)` then `alpha(visibleAlpha)` in the end action. A first build with the
+default `tween` easing came out front-loaded (peaks 235 135 69 25 17 on the way down against the View's 249 202
+132 72 20) because Compose's default is fast-out-slow-in while `ViewPropertyAnimator` defaults to
+`AccelerateDecelerateInterpolator`; the fade now uses `CubicBezierEasing(0.4f, 0f, 0.6f, 1f)` to match, which
+is the run in the tables above. The remaining difference is the ~0.1s narrower trough, consistent with the
+View chaining its second animation from the first one's end action rather than running them back to back.
+
+**Pinned by a test.** `MetadataOverlayFadeTest` drives the real composable on Compose's test clock and asserts
+alpha 1.0 at the change, 0.5 at +500ms, 0 at +1s, the swap landing on the next frame at alpha 0 (a blank gap,
+not a crossfade of the two strings), 0.5 at +1.5s and 1.0 at +2s. Two structural notes came out of writing it.
+The curve lives in `OverlayFade`, so the test can hold the same `Animatable` the overlay draws with -
+`captureToImage()` was tried first and reads alpha as 1.0 throughout, because a node's own `Modifier.alpha`
+layer is not part of its captured bitmap under Robolectric. And the poll's `delay` is not driven by the
+Compose test clock, so `MetadataOverlay` takes `pollMillis` (default 1s) and the test passes 0 to reach the
+first check without waiting a real second; the 1s and 3s intervals themselves are only pinned by the
+constants. Mutation-checked: with `POI_FADE_MILLIS` set to 300 the test fails at 0.642 instead of 0.5.
+
+**Now playing.** The View version has a second fade the Compose one did not: on a track change it fades the
+line out over 300ms, swaps track and art while it is invisible, then fades it back in - `AnimatedVisibility`
+in Compose only covered the line appearing and disappearing, so a track change swapped its text instantly at
+full brightness. `compose/NowPlayingOverlay.kt` now holds the displayed track (text and art together) and runs
+`OverlayFade(300)` - the same helper the POI line uses, with its own duration - out, swap, in.
+
+Checked on the TV with Spotify playing (`com.spotify.tv.android`, `STATE_PLAYING`) and `KEYCODE_MEDIA_NEXT`
+every 5s, `screenrecord` for 24s, peak brightness of a `1200x120+0+0` crop at 10 and 30fps:
+
+| engine | 30fps across one skip: ramp out | blank | ramp in |
+|---|---|---|---|
+| XML | 449-456 (~230ms) | 457-488 (~1.1s) | 489-498 (~330ms) |
+| Compose | 463-469 (~200ms) | 470-517 (~1.6s) | 518-523 (~200ms) |
+
+The **blank is not the fade**: every skip sends Spotify to `STATE_BUFFERING`, and `NowPlayingService` posts an
+empty `MusicEvent()` while `active` is false (`Posting music event (updateMetadata active=false ...):
+MusicEvent(artist=, song=, albumArt=null)` in logcat), which the line renders as no text. The blanks measured
+across four skips were 1.1-2.2s and vary with buffering, in both engines, and both engines put the same
+~200-350ms ramps either side of them. So the recording proves the two engines behave alike on the path users
+actually see, but it cannot isolate the track-to-track fade - Spotify's buffering blank sits between the two
+events.
+
+That path is pinned headlessly by `NowPlayingOverlayFadeTest`: the real composable on Compose's test clock, a
+state change from one track to the next, alpha 1.0 -> 0.5 at +150ms -> 0 at +300ms, the swap on the next frame
+at alpha 0, 0.5 at +450ms, 1.0 at +600ms. The fade constants are `internal` so the tests build the same `OverlayFade` the overlay defaults to; mutation-checked, `NOW_PLAYING_FADE_MILLIS = 1000` fails it at 0.955
+and `POI_FADE_MILLIS = 300` fails the POI test at 0.642.
+
+The **poll cadence** also differed and was aligned on 2026-11-12: Compose looked every 1s flat, where the
+View waits 1s before its first check and then backs off to 3s after a change. `MetadataOverlay` now does the
+same - first check after `POI_POLL_MILLIS`, then `POI_SETTLE_MILLIS = 3000` after a change and 1s otherwise.
+The 3s runs alongside the 2s fade rather than after it (a `coroutineScope` with the fade in a `launch`, as the
+View's non-blocking `animate()` does), so the next check lands 3s after the change, not 5s.
+That is a code-level alignment, not a device measurement: both cadences pick up a POI within a second of its
+start time when POIs are 8s apart, so the recordings cannot tell them apart. (One difference remains inside the
+comparison itself: the View tracks the last POI *index* and Compose compares the string, so a POI change to
+identical text fades in the View and not in Compose. Nothing is visible either way.)
+
+The View's `isFadingOutMedia` guard was ported on 2026-11-12, closing the last known POI difference. The
+flag lives on `OverlayUiState.fadingOutMedia`; `ScreenController.fadeOutCurrentItem` sets it through
+`overlayStateStore.setFadingOutMedia(true)` beside the loop that flags the View overlays, and it is cleared
+when the next item's metadata lands (`setMetadata`, which is the View's `updateLocationData` reset) or on
+`resetForNextMedia`. `OverlaySlotContent` passes it into every `MetadataOverlay`, whose poll now uses the View's
+condition - `shouldUpdate && !fadingOutMedia` - so a POI that falls due mid fade-out is held until the next
+item, and a pending change keeps the 3s interval the View uses. The store call is gated on `useComposeOverlays`:
+the emission re-renders the View overlays, and their `updateLocationData` would clear the flag it had just been
+given, so writing it unconditionally would have broken the XML engine's own guard.
+
+This one is code-level parity rather than a device measurement. The window is the 800ms media fade-out, which
+starts as the item ends or is skipped, and the metadata line sits underneath the loading view fading to black
+over it - a frame captured then cannot say whether the text held or animated. The mechanism is exercised only
+when a skip lands just before a POI boundary.
+
+**Countdown.** Static photo fixture, `COUNTDOWN` in `slot_top_left1`, label "Launch in", target 13 minutes
+out, and each capture aligned to clock second 30 so the two strings differ only in the minute digit
+(`Launch in 11m 30s` against `Launch in 10m 31s`). Ink box `284x26+67+58` (XML) vs `283x26+67+58` (Compose):
+same left edge, same top, same 26px height, 1px narrower — the same glyph-rounding magnitude as the clock in
+9.3, and the differing-digit crop diff of 2443 pixels is consistent with that. Ticking shows in consecutive
+captures a second apart (`271x26` -> `270x26` XML, `252x26` -> `251x26` Compose, the width changing with the
+seconds value). Completion was checked by starting with a target two minutes out and capturing 9s past it:
+both engines show the custom completion message and nothing else, `92x26+67+58` in both, still unchanged 4s
+later — the Compose `produceState` does stop ticking at zero as the View's job does.
+
+**Message.** The one overlay whose fade is a user setting. `message_animate_changes` (default off) picks
+between the View's `applyVisibilityImmediate` - the line appears and disappears outright - and its 300ms out,
+swap, in. Compose had neither: it always used `AnimatedVisibility(fadeIn/fadeOut(300))`, so with the default
+pref it faded where the View popped, and with the pref on a message-to-message change swapped instantly where
+the View fades. `compose/MessageOverlay.kt` now reads the pref: off draws the text directly, on holds the
+displayed message and runs `OverlayFade(300)` out, swap, in, with `snapHidden()` for an arrival from nothing
+(a fresh `OverlayFade` starts at alpha 1, where the View leaves a hidden overlay at 0).
+
+**Pinned by `MessageOverlayFadeTest`**, both modes. Animated: alpha below 0.1 on arrival rather than popped in,
+past 0.3 at +150ms, 1.0 by +350ms; a change is 0.5 at +150ms, 0 at +300ms, the swap on the next frame at alpha
+0, 0.5 at +450ms, 1.0 at +600ms. Not animated: the new message is on screen at the first settled frame and the
+curve is still 1.0 at +150ms, i.e. never touched, and clearing hides the line at once. Mutation-checked:
+`MESSAGE_FADE_MILLIS = 1000` fails both animated cases, forcing the animated path fails the pref-off case, and
+forcing the instant path fails both animated ones.
+
+Code-level parity, not a device measurement: a message API post per pref setting would show it, but a 300ms fade
+against an immediate swap is not something a still frame proves, and the recordings used elsewhere here cannot
+separate them at 30fps. One difference remains, and is not fixable without a custom `Layout`: the View's
+`ChangeBounds` animates the parent layout as the line appears and disappears, so neighbours reflow smoothly
+there and instantly in Compose.
+
+Screenshots: `local/screenshots/poi_{xml,compose}_{0,1,2,3}.png`, `poi_texts.png`, `cda_*.png`,
+`cdone_*.png`; recordings `local/poi_{xml,compose}_a.mp4`, `local/np_np_{xml,compose}.mp4` (now playing,
+`local/np_xml_f/` and `local/np_comp_f/` frames).
 
 ---
 
@@ -944,7 +1102,7 @@ Removed on 2026-11-12. Flipping `useComposeScreensaver` to `true` is the maintai
 - [x] `use_compose_screensaver` toggle in Settings → Appearance → Startup, defaulting to `false`
 - [x] The `false` path is unchanged — verified by source diff plus a device run. No Phase 0 screenshot was kept, so there is no baseline image to diff against. Every XML-engine file was diffed against the pre-migration commit (`7d8b99a7`): `ClockOverlay`, `CountdownOverlay`, `DateOverlay`, `MessageOverlay`, `MetadataOverlay`, `OverlayHelper` and `WeatherNowOverlay` have no changes other than `package`/`import` lines; `NowPlayingOverlay`'s formatting moved into `utils/NowPlayingFormatter` with the same branches, separator and blank handling; `xml/WeatherForecastOverlay` only lost its `BuildConfig.DEBUG` coloured debug backgrounds. In the shared host, `ScreenController` gained `useComposeOverlays` gates but the `else` branch calls the same methods as before (`overlayHelper.buildOverlaysAndIds`, the same progress-bar setup); the only changes on that branch are `progressBarLocation`/`progressBarOpacity` hoisted to fields read at construction instead of inside `setupViews`, and the message-API/weather predicates asked of slot prefs (`EnabledOverlays`) instead of instantiated Views. Device run on the XML engine (custom feed, clock+date, forecast, message slot, bar `BOTTOM` at 50%): no `FATAL EXCEPTION`, `Progress bar: 0.5, BOTTOM`, `Playlist size: 1`, `WeatherService: Processed forecast: 3 days for London`, and the forecast ink box `257x115+66+206`, the same box measured for the XML engine in the same fixture configuration earlier in this migration. That is an ink-box comparison only: the pixels of the two captures were never diffed, and the clock/date ink in this run (`81x28+66+57`) was taken at a different time of day from the 9.4/9.6 captures (`84x26+66+58`), so it is not a like-for-like figure. With `message_api_enabled = true` the Ktor server starts (`Ktor server listening on port 8081`) and `GET /status` returns 200, which is the branch the predicate rewrite touched
 - [x] Compose renders inside the real `DreamActivity`, not just `TestActivity`
-- [x] Every overlay in Phase 7 passes the on-device comparison checklist — results in 9.4, forecast closure and the 1px centring rounding in 9.5
+- [x] Every overlay in Phase 7 passes the on-device comparison checklist — results in 9.4, forecast closure and the 1px centring rounding in 9.5; POI rotation and countdown, which 9.4 did not cover, were measured in 9.7 (countdown matches; the POI transition was brought to parity by the fade change recorded there). The now playing and message fades went further than an ink box: both were matched in code and pinned headlessly in 9.7, and the now playing device recording shows only Spotify's buffering path, so the track-to-track fade itself rests on the test
 - [x] Loading indicator matches Phase 8
 - [x] Progress bar matches the XML behaviour (Phase 10)
 - [x] Auto-hide/reveal, alternation, opacity, blackout all behave the same way in both engines — see the checklist above, where some of those comparisons are exact ink boxes and others are close-but-not-equal counts
@@ -971,7 +1129,7 @@ Settled:
 Still open (decide when the relevant phase starts):
 
 - **Gradients and brightness dimmer** — out of scope for this migration; they stay XML View layers. Revisit only if the Compose layer needs to own them.
-- **POI position source** — the Compose metadata overlay needs video position; decide between a `StateFlow<Long>` on the store (pushed by `ScreenController`'s existing playback callbacks) or passing the player down. The former keeps the Composable testable.
+- **POI position source** — settled: neither a store `StateFlow` nor the player. `MetadataOverlay` takes a `videoPosition: () -> Long` lambda, read inside its own 1s poll (`MetadataOverlay(videoPosition = ...)`), so the ticker exists only while a POI overlay is on screen and the lookup stays in the pure `PoiText.at`. Measured in 9.7.
 
 ---
 

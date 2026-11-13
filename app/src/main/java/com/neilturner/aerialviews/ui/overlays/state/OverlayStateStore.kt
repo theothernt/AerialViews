@@ -34,8 +34,14 @@ class OverlayStateStore {
                             ),
                         )
                     },
+                // New metadata means a new item: the guard the View clears in updateLocationData
+                fadingOutMedia = false,
             )
         }
+    }
+
+    fun setFadingOutMedia(fadingOut: Boolean) {
+        _uiState.update { it.copy(fadingOutMedia = fadingOut) }
     }
 
     fun setMessage(
@@ -81,6 +87,7 @@ class OverlayStateStore {
             it.copy(
                 metadata = emptyMap(),
                 progress = ProgressOverlayState(),
+                fadingOutMedia = false,
             )
         }
     }
