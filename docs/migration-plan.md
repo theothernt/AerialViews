@@ -1077,9 +1077,27 @@ Settings restored afterwards: message text cleared, the slot back to Now Playing
 engine uses `overlay_fade_in_duration` when the alpha heads for visible and `overlay_fade_out_duration` when
 it heads for 0, and both are user-facing settings (Settings → Appearance → Animations). The layer now takes
 both and picks by target: `if (fadeAlpha > 0f) fadeInDurationMillis else fadeOutDurationMillis`, since 0 is
-`hiddenOverlayTarget` and anything above it is a reveal towards `overlayVisibleAlpha`. No test: the corner
-alpha is applied with `Modifier.alpha`, which `captureToImage()` cannot see under Robolectric (4.2, 9.7), so
-this is a code-path fix rather than a measured one.
+`hiddenOverlayTarget` and anything above it is a reveal towards `overlayVisibleAlpha`. No unit test can see
+it - the corner alpha is applied with `Modifier.alpha`, which `captureToImage()` cannot see under Robolectric
+(4.2, 9.7) - so the two directions were measured on the TV instead.
+
+That measurement (`betaRelease`, Compose overlays on, `SHOW_AFTER_DELAY` / `HIDE_AFTER_DELAY` at 10s so the
+reveal and the hide happen on their own) screen-records the screensaver and takes the luma maximum of a
+`78x45+64+983` crop around the bottom-left clock, one value per video frame (`local/fade_in.mp4`,
+`local/fade_out.mp4`, `local/fade_in_fast.mp4`; series in `local/stats_*.txt`):
+
+- Fade in 4000ms: background until 15.30s, then 19, 21, 23, 26, 28, 31, 35 ... 198, 214, 228, 240, 250, and
+  255/255 at 18.42s - about 3.1s over roughly 80 frames of intermediate values.
+- Fade out 200ms: 253/255 at 13.94s, 34 at 13.98s, 22 at 14.02s, background (17) by 14.06s - about 120ms,
+  three frames.
+- Control with both preferences at 200ms: the same reveal becomes a one-frame step, 16 at 13.63s then 255 at
+  13.86s - so the 3s ramp came from `overlay_fade_in_duration`, not from the media fade or the gradient.
+
+The visible ramp is 3.1s of a 4s tween because the first and last tenths of the eased alpha fall below the
+8-bit luma a text crop can resolve; the two settings are 20x apart, so the direction of travel is not in
+doubt. Filmstrips `local/fade_reveal_strip.png`, `local/fade_hide_strip.png`,
+`local/fade_reveal_control_strip.png`; slowed GIFs `local/fade_reveal_4s_in.gif` and
+`local/fade_hide_200ms_out.gif`.
 
 **Checked and found equal.** Every `OverlayType` has a Compose branch carrying the same size, weight and
 format preferences: clock (minute-boundary ticker through `ClockFormatter`, 12/24 from prefs or the system),
