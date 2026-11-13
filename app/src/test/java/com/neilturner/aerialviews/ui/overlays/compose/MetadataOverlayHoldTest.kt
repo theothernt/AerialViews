@@ -57,6 +57,9 @@ class MetadataOverlayHoldTest {
     /** One permit per poll check; a check runs only when the test releases it. */
     private val gate = Channel<Unit>(Channel.RENDEZVOUS)
 
+    /** The interval each wait asked for, in order - the poll's cadence, which nothing else pins. */
+    private val requestedWaits = mutableListOf<Long>()
+
     private val frameTolerance = 0.06f
 
     @Before
@@ -74,9 +77,10 @@ class MetadataOverlayHoldTest {
                     weight = "300",
                     videoPosition = { position.value },
                     fadingOutMedia = fadingOutMedia.value,
-                    pollMillis = 0,
-                    settleMillis = 0,
-                    waitForNextCheck = { gate.receive() },
+                    waitForNextCheck = { millis ->
+                        requestedWaits += millis
+                        gate.receive()
+                    },
                     fade = fade,
                 )
             }
@@ -125,6 +129,11 @@ class MetadataOverlayHoldTest {
         compose.onNodeWithText(second).assertExists()
         assertEquals(1f, fade.alpha.value, frameTolerance)
 
+        // The View's cadence: a second before the first check, then three after a change, so a POI
+        // that lands right after another cannot cut it short.
+        assertEquals("the first check waits the normal interval", 1_000L, requestedWaits.first())
+        assertEquals("a change waits longer before the next check", 3_000L, requestedWaits[1])
+
         // The item starts leaving just as the next POI falls due.
         compose.runOnUiThread {
             fadingOutMedia.value = true
@@ -132,6 +141,10 @@ class MetadataOverlayHoldTest {
         }
         pumpRecomposition()
         releaseCheck()
+
+        // The held branch keeps the longer interval too, so a POI landing right after another one
+        // is not checked on top of it.
+        assertEquals("a pending change waits longer too", 3_000L, requestedWaits.last())
 
         // Held: no swap, and nothing fades, however much time passes.
         assertEquals("the line faded while the item was leaving", 1f, advanceFrames(120), frameTolerance)

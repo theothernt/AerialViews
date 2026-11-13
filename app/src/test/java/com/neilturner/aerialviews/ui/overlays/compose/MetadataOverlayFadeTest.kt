@@ -8,6 +8,7 @@ import com.chibatching.kotpref.Kotpref
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 import com.neilturner.aerialviews.ui.theme.AerialTheme
+import kotlinx.coroutines.awaitCancellation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -45,6 +46,9 @@ class MetadataOverlayFadeTest {
             metadataType = MetadataType.DYNAMIC,
         )
 
+    /** Waits released before the poll is parked; the first check is the only one this test wants. */
+    private var permits = 1
+
     /** The same fade the overlay would create for itself, held here so its alpha can be read. */
     private val fade = OverlayFade(POI_FADE_MILLIS)
 
@@ -70,14 +74,14 @@ class MetadataOverlayFadeTest {
                     weight = "300",
                     videoPosition = { position.value },
                     fadingOutMedia = false,
-                    // `delay` runs on the main dispatcher rather than the test clock, so the poll's
-                    // own wait is skipped here; the intervals themselves are pins on the constants.
-                    pollMillis = 0,
+                    // The poll's own waits are real time, so the first check is released here and
+                    // the loop is parked afterwards: a no-op wait would spin it.
+                    waitForNextCheck = { if (permits-- > 0) Unit else awaitCancellation() },
                     fade = fade,
                 )
             }
         }
-        // Runs the zero-delay check; the position is past the second POI, so the fade-out begins.
+        // Runs the released check; the position is past the second POI, so the fade-out begins.
         compose.waitForIdle()
 
         // The old text is still there and still at full brightness as the fade begins.

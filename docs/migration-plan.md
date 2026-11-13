@@ -609,8 +609,10 @@ Three things worth knowing before writing another one:
 - **A state change needs `waitForIdle()` before the clock moves, then one frame.** The first attempt advanced a
   frame straight after the state write and read alpha 1.0 at +150ms, i.e. the effect had not started; the
   mirror-image mistake, `waitForIdle()` with no frame, reads the fade one frame short (0.62 instead of 0.5).
-- **`delay` is not driven by the Compose test clock**, so poll and timer intervals are parameters
-  (`MetadataOverlay`'s `pollMillis`) rather than constants a test has to wait out.
+- **`delay` is not driven by the Compose test clock**, and it cannot be shortened either - a zero
+  wait simply spins the poll loop. What is injectable is the wait itself: `MetadataOverlay` takes a
+  `waitForNextCheck` hook in place of `delay`, so a test releases one check at a time instead of
+  waiting a real interval out.
 
 ### What we deliberately do **not** add
 
@@ -859,9 +861,10 @@ not a crossfade of the two strings), 0.5 at +1.5s and 1.0 at +2s. Two structural
 The curve lives in `OverlayFade`, so the test can hold the same `Animatable` the overlay draws with -
 `captureToImage()` was tried first and reads alpha as 1.0 throughout, because a node's own `Modifier.alpha`
 layer is not part of its captured bitmap under Robolectric. And the poll's `delay` is not driven by the
-Compose test clock, so `MetadataOverlay` takes `pollMillis` (default 1s) and the test passes 0 to reach the
-first check without waiting a real second; the 1s and 3s intervals themselves are only pinned by the
-constants. Mutation-checked: with `POI_FADE_MILLIS` set to 300 the test fails at 0.642 instead of 0.5.
+Compose test clock, so `MetadataOverlay` takes a `waitForNextCheck` hook in place of `delay`; this test
+releases the first check and parks the loop (a no-op wait would spin it). The intervals themselves are pinned
+by the hook's recorded arguments in `MetadataOverlayHoldTest` - 1s before the first check, 3s after a change,
+and 3s again for a pending change that is being held - rather than only by the constants. Mutation-checked: with `POI_FADE_MILLIS` set to 300 the test fails at 0.642 instead of 0.5.
 
 **Now playing.** The View version has a second fade the Compose one did not: on a track change it fades the
 line out over 300ms, swaps track and art while it is invisible, then fades it back in - `AnimatedVisibility`
@@ -922,7 +925,9 @@ anything: the port looked right and could not have worked. It is read through `r
 the test that caught it fails if that is undone.
 
 `MetadataOverlayHoldTest` drives the poll one check at a time through a `waitForNextCheck` hook, because the
-poll's `delay` is not on the Compose test clock and cannot be waited out from a test. A check released with
+poll's `delay` is not on the Compose test clock and cannot be waited out from a test. That hook is the only
+test seam on the composable: the `pollMillis` and `settleMillis` overrides it replaced were dead surface once
+the wait itself was injectable, since neither changed any timing a test could observe. A check released with
 the flag set must leave the text alone and never take the alpha below 1 over 120 frames; the same check
 released after the flag clears must fade out, swap and land on the next POI. `ScreenControllerFadingOutMediaTest`
 covers the engine gate: `onImageFinished()` sets the store flag in Compose mode, and in XML mode flags the View

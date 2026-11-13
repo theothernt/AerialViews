@@ -26,6 +26,14 @@ private const val POI_SETTLE_MILLIS = 3000L
 // The View fades the line out and back in over a second each way
 internal const val POI_FADE_MILLIS = 1000
 
+/** The View's interval, or whatever a test put in its place. */
+private suspend fun awaitCheck(
+    millis: Long,
+    waitForNextCheck: (suspend (Long) -> Unit)?,
+) {
+    if (waitForNextCheck != null) waitForNextCheck(millis) else delay(millis)
+}
+
 /**
  * Location / points of interest line.
  *
@@ -39,13 +47,10 @@ fun MetadataOverlay(
     weight: String,
     videoPosition: () -> Long,
     fadingOutMedia: Boolean,
-    // Only shortened by tests: `delay` is not driven by the Compose test clock, so a test cannot
-    // reach the first check without waiting a real second for it
-    pollMillis: Long = POI_POLL_MILLIS,
-    // Only shortened by tests, for the same reason as [pollMillis]
-    settleMillis: Long = POI_SETTLE_MILLIS,
-    // Tests only: replaces the wait itself, so a test can release one check at a time instead of
-    // waiting out a real interval that the Compose clock does not drive.
+    // Tests only. `delay` runs on the coroutine machinery's own clock rather than the Compose test
+    // clock, so a test can neither wait a real interval out nor shorten it; this replaces the wait
+    // itself, which lets a test release one check at a time. It is handed the interval being waited
+    // on, which is how the 1s / 3s cadence is asserted.
     waitForNextCheck: (suspend (Long) -> Unit)? = null,
     fade: OverlayFade = remember { OverlayFade(POI_FADE_MILLIS) },
 ) {
@@ -66,15 +71,13 @@ fun MetadataOverlay(
     // seeing whatever it was when the item started, which is always false.
     val isFadingOutMedia by rememberUpdatedState(fadingOutMedia)
 
-    val awaitCheck: suspend (Long) -> Unit = { millis -> waitForNextCheck?.invoke(millis) ?: delay(millis) }
-
     // A new item arrives fully visible, whichever fade instance is in use
     LaunchedEffect(state) { fade.reset() }
 
     if (rotating) {
         LaunchedEffect(state) {
             // The View's job waits a second before its first check
-            awaitCheck(pollMillis)
+            awaitCheck(POI_POLL_MILLIS, waitForNextCheck)
             while (true) {
                 val next = PoiText.at(videoPosition() / 1000, state.poi, state.text)
                 val shouldUpdate = next != text
@@ -94,11 +97,11 @@ fun MetadataOverlay(
                             text = next
                             fade.fadeIn()
                         }
-                        awaitCheck(settleMillis)
+                        awaitCheck(POI_SETTLE_MILLIS, waitForNextCheck)
                     }
                 } else {
                     // A pending change still waits the longer interval, as the View's does
-                    awaitCheck(if (shouldUpdate) settleMillis else pollMillis)
+                    awaitCheck(if (shouldUpdate) POI_SETTLE_MILLIS else POI_POLL_MILLIS, waitForNextCheck)
                 }
             }
         }
