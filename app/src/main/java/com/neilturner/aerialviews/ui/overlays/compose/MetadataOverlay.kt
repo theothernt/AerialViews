@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,6 +42,11 @@ fun MetadataOverlay(
     // Only shortened by tests: `delay` is not driven by the Compose test clock, so a test cannot
     // reach the first check without waiting a real second for it
     pollMillis: Long = POI_POLL_MILLIS,
+    // Only shortened by tests, for the same reason as [pollMillis]
+    settleMillis: Long = POI_SETTLE_MILLIS,
+    // Tests only: replaces the wait itself, so a test can release one check at a time instead of
+    // waiting out a real interval that the Compose clock does not drive.
+    waitForNextCheck: (suspend (Long) -> Unit)? = null,
     fade: OverlayFade = remember { OverlayFade(POI_FADE_MILLIS) },
 ) {
     val rotating = state.metadataType == MetadataType.DYNAMIC && state.poi.size > 1
@@ -55,20 +61,27 @@ fun MetadataOverlay(
 
     var text by remember(state) { mutableStateOf(initialText) }
 
+    // The flag flips on the item's fade-out, long after this effect was launched, so it has to be
+    // read through the current value: a plain parameter is captured once and the poll would keep
+    // seeing whatever it was when the item started, which is always false.
+    val isFadingOutMedia by rememberUpdatedState(fadingOutMedia)
+
+    val awaitCheck: suspend (Long) -> Unit = { millis -> waitForNextCheck?.invoke(millis) ?: delay(millis) }
+
     // A new item arrives fully visible, whichever fade instance is in use
     LaunchedEffect(state) { fade.reset() }
 
     if (rotating) {
         LaunchedEffect(state) {
             // The View's job waits a second before its first check
-            delay(pollMillis)
+            awaitCheck(pollMillis)
             while (true) {
                 val next = PoiText.at(videoPosition() / 1000, state.poi, state.text)
                 val shouldUpdate = next != text
 
                 // The View holds the text still while the item fades out, so a POI that falls due in
                 // that window is not faded under the loading view; the next item's metadata clears it
-                if (shouldUpdate && !fadingOutMedia) {
+                if (shouldUpdate && !isFadingOutMedia) {
                     // 1s normally, 3s after a change, as the View's interval does. The View starts its
                     // fade without waiting for it, so the two overlap and the next check lands 3s after
                     // the change rather than 3s after the fade ends.
@@ -81,11 +94,11 @@ fun MetadataOverlay(
                             text = next
                             fade.fadeIn()
                         }
-                        delay(POI_SETTLE_MILLIS)
+                        awaitCheck(settleMillis)
                     }
                 } else {
                     // A pending change still waits the longer interval, as the View's does
-                    delay(if (shouldUpdate) POI_SETTLE_MILLIS else pollMillis)
+                    awaitCheck(if (shouldUpdate) settleMillis else pollMillis)
                 }
             }
         }

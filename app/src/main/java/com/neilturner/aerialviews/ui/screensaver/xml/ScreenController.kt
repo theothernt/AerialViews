@@ -1459,6 +1459,9 @@ class ScreenController(
         get() = composeLoadingSpinner.value
 
     /** The alpha the Compose overlay layer is fading towards, for the fade/reveal tests. */
+    internal val fadingOutMedia: Boolean
+        get() = overlayStateStore.uiState.value.fadingOutMedia
+
     internal val composeFade: Float
         get() = composeFadeAlpha.value
 
