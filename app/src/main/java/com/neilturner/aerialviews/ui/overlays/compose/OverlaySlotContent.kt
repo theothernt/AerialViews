@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.ui.overlays.compose
 import androidx.compose.runtime.Composable
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 
@@ -77,7 +76,15 @@ fun OverlaySlotContent(
         OverlayType.MESSAGE3,
         OverlayType.MESSAGE4,
         -> {
-            MessageOverlay(state.message[type] ?: MessageOverlayState())
+            // The slot's configured text, as OverlayHelper gives each View overlay.
+            val configured =
+                when (type) {
+                    OverlayType.MESSAGE1 -> GeneralPrefs.messageLine1
+                    OverlayType.MESSAGE2 -> GeneralPrefs.messageLine2
+                    OverlayType.MESSAGE3 -> GeneralPrefs.messageLine3
+                    else -> GeneralPrefs.messageLine4
+                }
+            MessageOverlay(state = state.message[type], fallbackText = configured)
         }
 
         OverlayType.COUNTDOWN -> {

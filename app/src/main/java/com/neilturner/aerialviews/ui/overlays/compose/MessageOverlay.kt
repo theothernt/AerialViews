@@ -18,25 +18,32 @@ internal const val MESSAGE_FADE_MILLIS = 300
 private const val DEFAULT_MESSAGE_SIZE = 18
 
 /**
- * Message API overlay. The auto-clear timer belongs to the message itself, so a new message from
- * the API restarts it instead of inheriting the previous one's remaining time.
+ * Message API overlay. A slot starts with the message configured in settings, exactly as the View
+ * does, and an API message replaces it; clearing a message leaves the line blank rather than
+ * restoring the configured text, which is also what the View ends up doing.
+ *
+ * The auto-clear timer belongs to the message itself, so a new message from the API restarts it
+ * instead of inheriting the previous one's remaining time.
  *
  * `message_animate_changes` selects the same two modes the View has: off shows and hides the line
  * outright, on fades it out, swaps the message while invisible and fades it back in.
  */
 @Composable
 fun MessageOverlay(
-    state: MessageOverlayState,
+    state: MessageOverlayState?,
+    fallbackText: String = "",
     fade: OverlayFade = remember { OverlayFade(MESSAGE_FADE_MILLIS) },
 ) {
-    val sizeSp = (state.textSize ?: GeneralPrefs.messageSize.toIntOrNull() ?: DEFAULT_MESSAGE_SIZE).toFloat()
-    val weight = state.textWeight?.toString() ?: GeneralPrefs.messageWeight
+    val sizeSp = (state?.textSize ?: GeneralPrefs.messageSize.toIntOrNull() ?: DEFAULT_MESSAGE_SIZE).toFloat()
+    val weight = state?.textWeight?.toString() ?: GeneralPrefs.messageWeight
 
-    var text by remember(state) { mutableStateOf(state.text) }
+    // A null state means the slot has not been given an API message: the View overlays are built
+    // with the configured text, so the Compose slot starts from the same string.
+    var text by remember(state) { mutableStateOf(state?.text ?: fallbackText) }
 
     LaunchedEffect(state) {
-        val duration = state.duration ?: 0
-        if (state.text.isNotBlank() && duration > 0) {
+        val duration = state?.duration ?: 0
+        if (!state?.text.isNullOrBlank() && duration > 0) {
             delay(duration * 1_000L)
             text = ""
         }

@@ -1556,7 +1556,8 @@ class ScreenController(
                                 visibleAlpha = overlayVisibleAlpha,
                                 videoPosition = ::currentVideoPosition,
                                 fadeAlpha = fade,
-                                fadeDurationMillis = overlayFadeOut.toInt(),
+                                fadeInDurationMillis = overlayFadeIn.toInt(),
+                                fadeOutDurationMillis = overlayFadeOut.toInt(),
                                 fadeCorners = fadeCorners,
                             )
 

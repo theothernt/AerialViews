@@ -8,6 +8,7 @@ import com.neilturner.aerialviews.models.SlotPref
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
@@ -57,7 +58,8 @@ class ScreensaverOverlaysTest {
                     alternate = false,
                     visibleAlpha = 1f,
                     fadeAlpha = 1f,
-                    fadeDurationMillis = 0,
+                    fadeInDurationMillis = 0,
+                    fadeOutDurationMillis = 0,
                     fadeCorners = emptySet(),
                 )
             }
@@ -72,6 +74,29 @@ class ScreensaverOverlaysTest {
         )
 
         compose.onNodeWithText("Hello").assertExists()
+    }
+
+    @Test
+    fun `a message slot with no API message shows the text configured in settings`() {
+        GeneralPrefs.messageLine1 = "Station ident"
+        setOverlays(
+            state = OverlayUiState(),
+            slots = listOf(slot(SlotType.SLOT_BOTTOM_LEFT1, OverlayType.MESSAGE1)),
+        )
+
+        compose.onNodeWithText("Station ident").assertExists()
+    }
+
+    @Test
+    fun `an API message replaces the text configured in settings`() {
+        GeneralPrefs.messageLine1 = "Station ident"
+        setOverlays(
+            state = OverlayUiState(message = mapOf(OverlayType.MESSAGE1 to MessageOverlayState(text = "Now boarding"))),
+            slots = listOf(slot(SlotType.SLOT_BOTTOM_LEFT1, OverlayType.MESSAGE1)),
+        )
+
+        compose.onNodeWithText("Now boarding").assertExists()
+        compose.onNodeWithText("Station ident").assertDoesNotExist()
     }
 
     @Test

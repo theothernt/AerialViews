@@ -1052,6 +1052,63 @@ Screenshots: `local/screenshots/poi_{xml,compose}_{0,1,2,3}.png`, `poi_texts.png
 
 ---
 
+### 9.8 Parity review — what the Compose path was missing
+
+A review pass over the two engines on 2026-11-13, file by file and preference by preference, looking for
+anything the Compose layer never received. Two gaps were found and fixed.
+
+**The configured message text never reached the Compose layer.** `message_line1..4` are the fixed message a
+slot shows, and `OverlayHelper` hands them to the View overlays when it builds them
+(`MessageOverlay.message(prefs.messageLine1)`). Nothing seeded the Compose store: `state.message[type]` is
+written only by `OverlayEventBridge` on a Ktor `MessageEvent`, so a slot assigned to a message showed
+nothing in Compose mode until an API message arrived. `OverlaySlotContent` now passes the slot's configured
+string and `MessageOverlay` starts from it - `state?.text ?: fallbackText`, with a null state meaning "no
+API message yet" - and an API message replaces it, while an auto-clear leaves the line blank instead of
+restoring the configured text, which is what the View ends up doing too. Pinned by two cases in
+`ScreensaverOverlaysTest`; dropping `fallbackText` back to `""` fails the first of them. Device-checked the
+same day on `betaRelease` (1.8.6-beta4): `message_line1` set to "Configured line one", `MESSAGE1` in the
+top-left upper slot, Compose overlays on - the line renders with no API message posted and no server
+running (`local/msg_configured_topleft.png`), and `dumpsys activity top` shows the 1920x1080 `ComposeView`
+inside `overlay_view` with a second one for the loading indicator, so the Compose layer is what drew it.
+Settings restored afterwards: message text cleared, the slot back to Now Playing #1, engine off.
+
+**A reveal ran at the hide speed.** `ScreensaverOverlays` took one `fadeDurationMillis`, wired to
+`overlay_fade_out_duration`, for a single `animateFloatAsState` covering both directions - while the View
+engine uses `overlay_fade_in_duration` when the alpha heads for visible and `overlay_fade_out_duration` when
+it heads for 0, and both are user-facing settings (Settings → Appearance → Animations). The layer now takes
+both and picks by target: `if (fadeAlpha > 0f) fadeInDurationMillis else fadeOutDurationMillis`, since 0 is
+`hiddenOverlayTarget` and anything above it is a reveal towards `overlayVisibleAlpha`. No test: the corner
+alpha is applied with `Modifier.alpha`, which `captureToImage()` cannot see under Robolectric (4.2, 9.7), so
+this is a code-path fix rather than a measured one.
+
+**Checked and found equal.** Every `OverlayType` has a Compose branch carrying the same size, weight and
+format preferences: clock (minute-boundary ticker through `ClockFormatter`, 12/24 from prefs or the system),
+date, countdown (shared `CountdownTimeParser`/`CountdownFormatter`, stops at zero), metadata 1-4 (same
+`findLast { it <= seconds }` POI choice through `PoiText`, newlines flattened, `isFadingOutMedia` hold),
+message 1-4 (per-message size/weight overrides, `duration` auto-clear, both `message_animate_changes`
+modes), music 1-2 (`NowPlayingFormatter` with `nowplaying_shorten_track_name`), weather 1-2 (icons through
+`OverlayIcon`, tinted with `overlayColour`). The progress bar's video/photo gating (`progress_bar_type`) and
+`progress_bar_location` are applied in the player Views, before either overlay layer; gradients are still
+the View images in both modes, only the row decision differs (`setComposeGradientAlpha`); the loading
+indicator reads `showLoadingText` and `loading_text_*` through `ScreenController`. Locale switching
+(`locale_screensaver`, `clockForceLatinDigits`) is applied by `LocaleHelper.alternateLocale` to the context
+both engines render with, and `ClockFormatter.format` uses the default locale that helper sets.
+
+**Where the engines deliberately differ.** No `ChangeBounds`: neighbours reflow instantly where the View
+animates layout. Album art is Compose-only in practice, because the device's Spotify sessions report
+`albumArt=null` and only the Sonos path fills it. POI rotation polls on the Compose clock (1s, then 3s after
+a change) where the View has a ticker - the durations match, the mechanism does not.
+
+**Key and gesture handling never sees the engine flag.** `InputHelper.handleKeyEvent` runs from
+`dispatchKeyEvent` on `DreamActivity` and `TestActivity` before the view tree, and every bindable action
+(skip next/previous, music next/previous, speed, seek, brightness, show overlays, blackout, mute, pause,
+looping, restart, exit to settings, exit) calls the same `ScreenController` method either way. Hover-to-exit
+is handled in `dispatchGenericMotionEvent` on the activity. Gestures are a touch listener on
+`controller.view` (`setupGestureListener`) in both modes, and the Compose overlay tree declares no pointer
+input, clickable or focusable modifiers, so it has nothing to consume a swipe or take focus with. What has
+not been tested is a gesture on a phone with Compose overlays on: the paths are shared, but no run has
+exercised a swipe or tap in Compose mode.
+
 ## Phase 10 — Progress Bar
 
 Independent of the overlay layer, and the state already exists: `ProgressBarEvent` (posted on `GlobalBus`) → `OverlayEventBridge` → `OverlayStateStore.setProgress` → `OverlayUiState.progress: ProgressOverlayState` (`state`, `position`, `duration`), consumed today by `ProgressBar.render()` via `ScreenController.renderOverlayState()`.

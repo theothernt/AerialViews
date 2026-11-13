@@ -36,7 +36,8 @@ fun ScreensaverOverlays(
     alternate: Boolean,
     visibleAlpha: Float,
     fadeAlpha: Float,
-    fadeDurationMillis: Int,
+    fadeInDurationMillis: Int,
+    fadeOutDurationMillis: Int,
     fadeCorners: Set<String>,
     modifier: Modifier = Modifier,
 ) {
@@ -45,6 +46,10 @@ fun ScreensaverOverlays(
     val horizontal = OverlayPaddingHelper.horizontalDp(GeneralPrefs.overlayPaddingHorizontal).dp
     val vertical = OverlayPaddingHelper.verticalDp(GeneralPrefs.overlayPaddingVertical).dp
 
+    // Revealing and hiding are separate animations in the View engine too: the preferences carry
+    // both durations, and the mode decides which one the layer is heading towards. A target of 0 is
+    // the hidden target, anything above it is a reveal towards the user's overlay opacity.
+    val fadeDurationMillis = if (fadeAlpha > 0f) fadeInDurationMillis else fadeOutDurationMillis
     val animatedFade by animateFloatAsState(
         targetValue = fadeAlpha,
         animationSpec = tween(durationMillis = fadeDurationMillis),
