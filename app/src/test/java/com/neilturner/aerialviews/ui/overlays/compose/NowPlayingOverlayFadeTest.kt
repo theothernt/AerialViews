@@ -64,6 +64,27 @@ class NowPlayingOverlayFadeTest {
     private fun nextTrack() = compose.runOnUiThread { state.value = NowPlayingOverlayState(MusicEvent(artist = "B", song = "Two")) }
 
     @Test
+    fun `a track appearing after the line was blank fades in without a wasted fade-out`() {
+        // The line starts blank, as it is between tracks while the player buffers.
+        state.value = NowPlayingOverlayState(MusicEvent())
+        show()
+
+        nextTrack()
+        // One frame for the effect to run (snap to zero and swap), one to draw the new text.
+        compose.waitForIdle()
+        compose.mainClock.advanceTimeByFrame()
+        compose.mainClock.advanceTimeByFrame()
+
+        // The text is on screen at once - the old code spent its first 300ms fading out an empty
+        // line - and it is still near zero alpha, so it fades up rather than popping.
+        compose.onNodeWithText("Two · B").assertExists()
+        assertTrue("the line appeared at full brightness", fade.alpha.value < 0.1f)
+
+        compose.mainClock.advanceTimeBy(400)
+        assertEquals(1f, fade.alpha.value, frameTolerance)
+    }
+
+    @Test
     fun `a track change fades out, swaps while blank and fades back in over 600ms`() {
         show()
 

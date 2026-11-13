@@ -74,9 +74,13 @@ fun NowPlayingOverlay(
     // back in - 300ms each way, not a swap at full brightness.
     LaunchedEffect(target) {
         if (target == displayed) return@LaunchedEffect
-        fade.fadeOut()
+        // Nothing on screen to fade: the View only fades out a line that is still visible, and
+        // snaps to alpha 0 while it is gone, so appearing from blank must not spend 300ms fading
+        // out an empty line first - which is every track change, since the blank event arrives
+        // before the new one.
+        if (displayed.text.isNotBlank()) fade.fadeOut() else fade.snapHidden()
         displayed = target
-        fade.fadeIn()
+        if (target.text.isNotBlank()) fade.fadeIn()
     }
 
     val style = overlayTextStyle(sizeSp, weight)

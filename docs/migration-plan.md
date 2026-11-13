@@ -893,6 +893,24 @@ state change from one track to the next, alpha 1.0 -> 0.5 at +150ms -> 0 at +300
 at alpha 0, 0.5 at +450ms, 1.0 at +600ms. The fade constants are `internal` so the tests build the same `OverlayFade` the overlay defaults to; mutation-checked, `NOW_PLAYING_FADE_MILLIS = 1000` fails it at 0.955
 and `POI_FADE_MILLIS = 300` fails the POI test at 0.642.
 
+**Appearing from blank spent 300ms fading nothing.** `NowPlayingOverlay` ran `fade.fadeOut()` on every
+change, where the View only fades out a line that is still visible (`if (isVisible(alpha, visibleAlpha))`) and
+leaves a gone one at alpha 0. Spotify sends an empty event before the new track, so every track change began
+with a 300ms fade-out of an empty line and the new one appeared 300ms later than the View's. It now snaps to
+zero when nothing is displayed and fades in directly, as `MessageOverlay` already did, and
+`NowPlayingOverlayFadeTest` pins it: one frame for the effect and one to draw, the new text is on screen at
+under 0.1 alpha, reaching 1 within 400ms. Mutation-checked by restoring the unconditional `fadeOut()`, which
+fails with the text simply not there after those two frames.
+
+Two other suspected differences are sound, recorded so they need not be re-investigated. A fade running while a
+corner auto-hides multiplies two independent alphas - the corner's (`OverlayCornerColumn(alpha = ...)`) and the
+line's own (`Modifier.alpha(fade.alpha.value)`) - exactly as the View multiplies its per-View alpha by the
+content alpha, so there is nothing to fix and little to test beyond Compose's own composition. And Sonos cannot
+re-fade the line on every poll: `SonosService` compares `SonosClient.Track` (three strings) before fetching art,
+so a `MusicEvent` with a new `Bitmap` only appears when the track actually changed. The remaining weakness is
+latent - `MusicEvent` equality is Bitmap identity, so anything that re-posts the same track with re-decoded art
+would read as a new event.
+
 The **poll cadence** also differed and was aligned on 2026-11-12: Compose looked every 1s flat, where the
 View waits 1s before its first check and then backs off to 3s after a change. `MetadataOverlay` now does the
 same - first check after `POI_POLL_MILLIS`, then `POI_SETTLE_MILLIS = 3000` after a change and 1s otherwise.
