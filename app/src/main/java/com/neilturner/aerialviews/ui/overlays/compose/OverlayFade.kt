@@ -6,8 +6,8 @@ import androidx.compose.animation.core.tween
 
 // Both lines are animated by ViewPropertyAnimator in the View engine, whose default interpolator is
 // AccelerateDecelerateInterpolator; Compose's default (fast-out-slow-in) drops away from full
-// brightness too quickly at the start.
-private val OVERLAY_FADE_EASING = CubicBezierEasing(0.4f, 0f, 0.6f, 1f)
+// brightness too quickly at the start. The layer fade reuses this so both engines move alike.
+internal val OVERLAY_FADE_EASING = CubicBezierEasing(0.4f, 0f, 0.6f, 1f)
 
 /**
  * The alpha one overlay line is drawn at, for the "fade out, swap the text, fade back in" sequence

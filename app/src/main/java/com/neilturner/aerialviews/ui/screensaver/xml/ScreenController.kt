@@ -1440,7 +1440,9 @@ class ScreenController(
         alpha: Float,
         animate: Boolean,
     ) {
-        val corners = overlayCorners(slotPrefs, alternate)
+        // The same value the overlay layer is using, not the mutable field: the field is flipped
+        // after loadItem, while the Compose layer keeps the value it was given for the item.
+        val corners = overlayCorners(slotPrefs, composeAlternate.value)
 
         if (GeneralPrefs.showTopGradient && shouldFadeRow(listOf(corners.topStart, corners.topEnd), fadeCorners)) {
             applyGradientAlpha(gradientTopView, alpha, animate)

@@ -3,12 +3,8 @@ package com.neilturner.aerialviews.ui.overlays.compose
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,9 +13,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.neilturner.aerialviews.R
@@ -89,25 +89,23 @@ fun ProgressBarOverlay(
     }
 
     // The filled fraction is the bar's state and the description names it, so a screen reader says
-    // "Playback progress, 45 percent" rather than a bare percentage. Tests read both back.
-    val description = LocalContext.current.resources.getString(R.string.progress_bar_content_description)
+    // "Playback progress, 45 percent" rather than a bare percentage. Tests read both back. Both are
+    // read outside composition so the per-frame animation only redraws the bar, not the whole node.
+    val context = LocalContext.current
+    val description = remember(context) { context.resources.getString(R.string.progress_bar_content_description) }
 
     Box(
         modifier =
             modifier
                 .height(barHeight)
                 .alpha(opacity)
-                .semantics { contentDescription = description }
-                .progressSemantics(fraction.value),
-    ) {
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(fraction.value)
-                    .background(Color.White),
-        )
-    }
+                .semantics {
+                    contentDescription = description
+                    progressBarRangeInfo = ProgressBarRangeInfo(fraction.value, 0f..1f)
+                }.drawBehind {
+                    drawRect(Color.White, size = Size(size.width * fraction.value, size.height))
+                },
+    )
 }
 
 /** Durations only ever reach `tween` as an Int, so keep an oversized item from wrapping. */

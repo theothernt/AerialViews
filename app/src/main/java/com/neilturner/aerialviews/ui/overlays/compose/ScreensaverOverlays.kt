@@ -44,9 +44,12 @@ fun ScreensaverOverlays(
     modifier: Modifier = Modifier,
 ) {
     // User adjustable edge padding. OverlayHelper overrides the dimens values at runtime, so the
-    // preferences are the authority here too.
-    val horizontal = OverlayPaddingHelper.horizontalDp(GeneralPrefs.overlayPaddingHorizontal).dp
-    val vertical = OverlayPaddingHelper.verticalDp(GeneralPrefs.overlayPaddingVertical).dp
+    // preferences are the authority here too. Parsed once per preference value: this recomposes on
+    // every fade frame and parsing the strings each time is wasted work.
+    val horizontalPref = GeneralPrefs.overlayPaddingHorizontal
+    val verticalPref = GeneralPrefs.overlayPaddingVertical
+    val horizontal = remember(horizontalPref) { OverlayPaddingHelper.horizontalDp(horizontalPref).dp }
+    val vertical = remember(verticalPref) { OverlayPaddingHelper.verticalDp(verticalPref).dp }
 
     // Revealing and hiding are separate animations in the View engine too: the preferences carry
     // both durations, and the mode decides which one the layer is heading towards. A target of 0 is
@@ -58,13 +61,16 @@ fun ScreensaverOverlays(
     val animatedFade = remember { Animatable(fadeAlpha) }
     LaunchedEffect(fadeAlpha, animateFade, fadeDurationMillis) {
         if (animateFade) {
-            animatedFade.animateTo(fadeAlpha, tween(durationMillis = fadeDurationMillis))
+            animatedFade.animateTo(
+                fadeAlpha,
+                tween(durationMillis = fadeDurationMillis, easing = OVERLAY_FADE_EASING),
+            )
         } else {
             animatedFade.snapTo(fadeAlpha)
         }
     }
 
-    val corners = overlayCorners(slots, alternate)
+    val corners = remember(slots, alternate) { overlayCorners(slots, alternate) }
 
     Box(
         modifier =

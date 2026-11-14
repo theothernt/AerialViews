@@ -31,6 +31,11 @@ data class MessageOverlayState(
     val duration: Int? = null,
     val textSize: Int? = null,
     val textWeight: Int? = null,
+    /**
+     * Distinguishes a re-post of the same text/duration from the previous message. Without it the
+     * StateFlow dedupes the two and the auto-clear timer does not restart.
+     */
+    val id: Long = 0,
 )
 
 data class NowPlayingOverlayState(

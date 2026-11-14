@@ -10,10 +10,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.concurrent.atomic.AtomicLong
 
 class OverlayStateStore {
     private val _uiState = MutableStateFlow(OverlayUiState())
     val uiState: StateFlow<OverlayUiState> = _uiState.asStateFlow()
+
+    // Every message event gets a fresh id, so posting the same text and duration twice is a new
+    // state rather than one the StateFlow dedupes away.
+    private val messageIds = AtomicLong(0)
 
     fun setMetadata(
         type: OverlayType,
@@ -48,8 +53,9 @@ class OverlayStateStore {
         type: OverlayType,
         state: MessageOverlayState,
     ) {
+        val event = state.copy(id = messageIds.incrementAndGet())
         _uiState.update {
-            it.copy(message = it.message.toMutableMap().apply { put(type, state) })
+            it.copy(message = it.message.toMutableMap().apply { put(type, event) })
         }
     }
 
