@@ -95,6 +95,7 @@ object TestConfigApplier {
         general.shuffleVideos?.let { GeneralPrefs.shuffleVideos = it }
         general.autoTimeOfDay?.let { GeneralPrefs.autoTimeOfDay = it }
         general.wifiOnly?.let { GeneralPrefs.wifiOnly = it }
+        general.slideshowSpeed?.let { GeneralPrefs.slideshowSpeed = it }
         general.messageApiEnabled?.let { GeneralPrefs.messageApiEnabled = it }
         general.messageApiPort?.let { GeneralPrefs.messageApiPort = it }
     }

@@ -31,6 +31,7 @@ data class GeneralConfig(
     val shuffleVideos: Boolean? = null,
     val autoTimeOfDay: Boolean? = null,
     val wifiOnly: Boolean? = null,
+    val slideshowSpeed: String? = null,
     val messageApiEnabled: Boolean? = null,
     val messageApiPort: String? = null,
 )

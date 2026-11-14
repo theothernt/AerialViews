@@ -305,6 +305,15 @@ internal object ImagePlayerHelper {
                         session.close()
                     } catch (ex: Exception) {
                         Timber.e(ex, "Error closing SMB resources: ${ex.message}")
+                    } finally {
+                        // The client owns the connection and its thread pool. Closing only the
+                        // file/share/session left one connection thread per image alive for the
+                        // life of the process.
+                        try {
+                            smbClient.close()
+                        } catch (ex: Exception) {
+                            Timber.e(ex, "Error closing SMB client: ${ex.message}")
+                        }
                     }
                 }
             }

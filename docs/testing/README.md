@@ -61,6 +61,7 @@ Top level keys:
 | `shuffleVideos` | `GeneralPrefs.shuffleVideos` | `false` keeps ordering stable between runs |
 | `autoTimeOfDay` | `GeneralPrefs.autoTimeOfDay` | `false` stops the time of day filter hiding content |
 | `wifiOnly` | `GeneralPrefs.wifiOnly` | `false` allows the emulator/host network |
+| `slideshowSpeed` | `GeneralPrefs.slideshowSpeed` | Seconds each photo is shown, as the string value from the settings list (e.g. `"3"`, `"30"`) |
 | `messageApiEnabled` | `GeneralPrefs.messageApiEnabled` | Optional, exposes the Ktor message API on port 8081 |
 | `messageApiPort` | `GeneralPrefs.messageApiPort` | Optional, defaults to `8081` |
 
