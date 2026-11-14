@@ -65,12 +65,7 @@ class DreamActivity :
 
         // Must happen before setContentView() below: AbstractComposeView resolves the view-tree
         // owners when it attaches, and throws if there are none.
-        savedStateRegistryController.performRestore(null)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        window?.decorView?.let {
-            it.setViewTreeLifecycleOwner(this)
-            it.setViewTreeSavedStateRegistryOwner(this)
-        }
+        attachSavedStateAndLifecycle()
 
         // Some TVs (eg. Philips OLEDs) classify any 3rd-party dream as an on-screen display and
         // drop their own burn-in screensaver over it after a few minutes, whatever the dream shows.
@@ -104,6 +99,27 @@ class DreamActivity :
             controller = screenController,
             exit = ::altWakeUp,
         )
+    }
+
+    /**
+     * Gives the Compose views a lifecycle and saved-state owner above the decor view.
+     *
+     * [onAttachedToWindow] can run again on the same instance (the guard below logs that case), and
+     * `SavedStateRegistry.performRestore` throws if it is called twice. Restoring and creating are
+     * therefore each done at most once, and creating is skipped if the lifecycle has already moved
+     * past CREATED (a plain ON_CREATE event would walk it back down).
+     */
+    private fun attachSavedStateAndLifecycle() {
+        if (!savedStateRegistry.isRestored && !lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+            savedStateRegistryController.performRestore(null)
+        }
+        if (!lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)) {
+            lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        }
+        window?.decorView?.let {
+            it.setViewTreeLifecycleOwner(this)
+            it.setViewTreeSavedStateRegistryOwner(this)
+        }
     }
 
     override fun onWakeUp() {

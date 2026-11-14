@@ -10,9 +10,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
@@ -88,8 +93,20 @@ fun WeatherForecastOverlay(
     state: ForecastOverlayState,
     sizeSp: Float,
     weight: String,
+    fade: OverlayFade = remember { OverlayFade(WEATHER_FADE_MILLIS) },
 ) {
-    val days = state.event.days
+    var displayed by remember { mutableStateOf(state) }
+
+    // Same fade-out / swap / fade-in as the View version and the current-weather line. A blank
+    // forecast snaps to hidden rather than fading out a line that was not there.
+    LaunchedEffect(state) {
+        if (displayed == state) return@LaunchedEffect
+        if (displayed.event.days.isNotEmpty()) fade.fadeOut() else fade.snapHidden()
+        displayed = state
+        if (state.event.days.isNotEmpty()) fade.fadeIn()
+    }
+
+    val days = displayed.event.days
     if (days.isEmpty()) return
 
     val colour = overlayColour()
@@ -127,7 +144,7 @@ fun WeatherForecastOverlay(
     val spaceWidth = with(density) { separatorSize.width.toFloat().toDp() }
     val separatorHeight = with(density) { separatorSize.height.toFloat().toDp() }
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.alpha(fade.alpha.value)) {
         days.forEachIndexed { index, day ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 OverlayText(

@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.overlays.compose
 
 import android.graphics.Bitmap
+import android.util.TypedValue
+import android.widget.TextView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -20,14 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.overlays.compose.components.OverlayText
-import com.neilturner.aerialviews.ui.overlays.compose.components.overlayTextStyle
 import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
 import com.neilturner.aerialviews.ui.overlays.utils.NowPlayingFormatter
 
@@ -83,16 +84,23 @@ fun NowPlayingOverlay(
         if (target.text.isNotBlank()) fade.fadeIn()
     }
 
-    val style = overlayTextStyle(sizeSp, weight)
-    val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
+    val context = LocalContext.current
+
+    // Same calculation as calculateIconSize() in the View version: the font's ascent-to-descent
+    // span at the full text size. A Compose paragraph's height is a few px larger, which made the
+    // art (and the whole line) taller than the View version.
     val albumArtSize =
-        with(density) {
-            measurer
-                .measure(AnnotatedString("Ag"), style)
-                .size.height
-                .toFloat()
-                .toDp() * ALBUM_ART_SCALE
+        remember(context, sizeSp, weight, density) {
+            val paint =
+                TextView(context)
+                    .apply {
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
+                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                    }.paint
+            val metrics = paint.fontMetrics
+            val textHeightPx = metrics.descent - metrics.ascent
+            with(density) { (textHeightPx * ALBUM_ART_SCALE).toInt().toDp() }
         }
     val albumArt = displayed.albumArt
 

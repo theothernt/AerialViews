@@ -149,6 +149,7 @@ class ScreenController(
     private val fadeCorners = GeneralPrefs.overlayFadeCornersSelection
     private val composeAlternate = MutableStateFlow(false)
     private val composeFadeAlpha = MutableStateFlow(overlayVisibleAlpha)
+    private val composeFadeAnimate = MutableStateFlow(false)
     private val composeLoadingText = MutableStateFlow("")
     private val composeLoadingSpinner = MutableStateFlow(true)
     private val backgroundVideosColour = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
@@ -162,6 +163,8 @@ class ScreenController(
     private var loopUntilSkipped = GeneralPrefs.loopUntilSkipped
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
+    private var overlayHideJob: Job? = null
+    private var overlaySettleJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private var forcedMuteVideo = false
@@ -652,13 +655,16 @@ class ScreenController(
             // One scheduler for the delay: the View animators, the gradients and the Compose fade
             // all start from here, rather than from a startDelay each. A zero-length gradient
             // animator ignores its startDelay, which made the gradient jump ahead of the overlays.
+            overlayHideJob?.cancel()
             if (overlayDelay <= 0L) {
                 animateOverlayTarget(target) { canShowOverlays = true }
             } else {
-                mainScope.launch {
-                    delay(overlayDelay.milliseconds)
-                    animateOverlayTarget(target) { canShowOverlays = true }
-                }
+                overlayHideJob =
+                    mainScope.launch {
+                        delay(overlayDelay.milliseconds)
+                        overlayHideJob = null
+                        animateOverlayTarget(target) { canShowOverlays = true }
+                    }
             }
         }
 
@@ -754,10 +760,13 @@ class ScreenController(
             animateOverlayTarget(hiddenOverlayTarget) { canShowOverlays = true }
             return
         }
-        mainScope.launch {
-            delay(delayMillis.milliseconds)
-            animateOverlayTarget(hiddenOverlayTarget) { canShowOverlays = true }
-        }
+        overlayHideJob?.cancel()
+        overlayHideJob =
+            mainScope.launch {
+                delay(delayMillis.milliseconds)
+                overlayHideJob = null
+                animateOverlayTarget(hiddenOverlayTarget) { canShowOverlays = true }
+            }
     }
 
     private fun setOverlayInstancesHidden(hidden: Boolean) {
@@ -786,6 +795,11 @@ class ScreenController(
         if (!canShowOverlays) return
 
         canShowOverlays = false
+        // A reveal interrupts an auto-hide that has not run yet, including the one this mode
+        // scheduled while it was waiting to show. Leaving it in place would hide the layer the
+        // viewer has just asked to see.
+        overlayHideJob?.cancel()
+        overlayHideJob = null
         animateOverlayTarget(visibleOverlayTarget(overlayVisibleAlpha)) {
             // A revealed overlay goes again after the timeout, the manual equivalent of
             // HIDE_AFTER_DELAY
@@ -862,6 +876,8 @@ class ScreenController(
         musicPlayer?.pause()
         musicPlayer?.release()
         sleepTimerJob?.cancel()
+        overlayHideJob?.cancel()
+        overlaySettleJob?.cancel()
         scheduledBlackoutJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
@@ -1327,9 +1343,11 @@ class ScreenController(
 
     /** Puts both layers straight into [target]: the state a mode starts in, not a transition. */
     private fun applyOverlayTarget(target: OverlayVisibilityTarget) {
+        overlaySettleJob?.cancel()
+        overlaySettleJob = null
         overlayHelper.getOverlaysToFade().forEach { it.alpha = target.alpha }
         setGradients(target, animate = false)
-        setComposeFadeAlpha(target.alpha)
+        setComposeFadeAlpha(target.alpha, animate = false)
     }
 
     /**
@@ -1343,13 +1361,28 @@ class ScreenController(
         target: OverlayVisibilityTarget,
         onSettled: (() -> Unit)? = null,
     ) {
+        overlaySettleJob?.cancel()
+        overlaySettleJob = null
         val hiding = target.alpha <= 0f
         overlayHelper.isHidden = hiding
         setOverlayInstancesHidden(hiding)
 
         val overlaysToFade = overlayHelper.getOverlaysToFade()
         if (overlaysToFade.isEmpty()) {
-            onSettled?.invoke()
+            // The View path has nothing to animate, but the Compose layer always does: settle
+            // after the fade, so a reveal cannot race a transition that is still running
+            // (SHOW_AFTER_DELAY) and the reveal timeout starts when the layer is actually visible.
+            if (useComposeOverlays) {
+                val fadeDuration = if (hiding) overlayFadeOut else overlayFadeIn
+                overlaySettleJob =
+                    mainScope.launch {
+                        delay(fadeDuration.milliseconds)
+                        overlaySettleJob = null
+                        onSettled?.invoke()
+                    }
+            } else {
+                onSettled?.invoke()
+            }
         } else {
             overlaysToFade.forEachIndexed { index, view ->
                 val animator =
@@ -1368,7 +1401,7 @@ class ScreenController(
         }
 
         setGradients(target, animate = true)
-        setComposeFadeAlpha(target.alpha)
+        setComposeFadeAlpha(target.alpha, animate = true)
     }
 
     /**
@@ -1465,6 +1498,10 @@ class ScreenController(
     internal val composeFade: Float
         get() = composeFadeAlpha.value
 
+    /** Whether a user reveal is currently accepted, for the auto-hide/reveal tests. */
+    internal val canRevealOverlays: Boolean
+        get() = canShowOverlays
+
     private fun setLoadingText(text: String) {
         if (!useComposeOverlays) {
             loadingText.text = text
@@ -1546,6 +1583,7 @@ class ScreenController(
                     val state by overlayStateStore.uiState.collectAsStateWithLifecycle()
                     val alternatePosition by composeAlternate.collectAsStateWithLifecycle()
                     val fade by composeFadeAlpha.collectAsStateWithLifecycle()
+                    val animateFade by composeFadeAnimate.collectAsStateWithLifecycle()
 
                     AerialTheme {
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -1556,6 +1594,7 @@ class ScreenController(
                                 visibleAlpha = overlayVisibleAlpha,
                                 videoPosition = ::currentVideoPosition,
                                 fadeAlpha = fade,
+                                animateFade = animateFade,
                                 fadeInDurationMillis = overlayFadeIn.toInt(),
                                 fadeOutDurationMillis = overlayFadeOut.toInt(),
                                 fadeCorners = fadeCorners,
@@ -1595,9 +1634,13 @@ class ScreenController(
         }
     }
 
-    private fun setComposeFadeAlpha(alpha: Float) {
+    private fun setComposeFadeAlpha(
+        alpha: Float,
+        animate: Boolean,
+    ) {
         if (!useComposeOverlays) return
         composeFadeAlpha.value = alpha
+        composeFadeAnimate.value = animate
     }
 
     companion object {

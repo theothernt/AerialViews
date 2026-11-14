@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.ui.overlays.compose
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,6 +40,7 @@ fun ScreensaverOverlays(
     fadeInDurationMillis: Int,
     fadeOutDurationMillis: Int,
     fadeCorners: Set<String>,
+    animateFade: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     // User adjustable edge padding. OverlayHelper overrides the dimens values at runtime, so the
@@ -50,11 +52,17 @@ fun ScreensaverOverlays(
     // both durations, and the mode decides which one the layer is heading towards. A target of 0 is
     // the hidden target, anything above it is a reveal towards the user's overlay opacity.
     val fadeDurationMillis = if (fadeAlpha > 0f) fadeInDurationMillis else fadeOutDurationMillis
-    val animatedFade by animateFloatAsState(
-        targetValue = fadeAlpha,
-        animationSpec = tween(durationMillis = fadeDurationMillis),
-        label = "overlayFadeAlpha",
-    )
+
+    // A snap must land in one frame, like the View's direct alpha set; a fade takes the configured
+    // duration. animateFloatAsState always animates, so the layer drives an Animatable itself.
+    val animatedFade = remember { Animatable(fadeAlpha) }
+    LaunchedEffect(fadeAlpha, animateFade, fadeDurationMillis) {
+        if (animateFade) {
+            animatedFade.animateTo(fadeAlpha, tween(durationMillis = fadeDurationMillis))
+        } else {
+            animatedFade.snapTo(fadeAlpha)
+        }
+    }
 
     val corners = overlayCorners(slots, alternate)
 
@@ -68,7 +76,7 @@ fun ScreensaverOverlays(
             corner = corners.topStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = corners.topStart.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.topStart.alpha(animatedFade.value, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.TopStart),
         )
@@ -76,7 +84,7 @@ fun ScreensaverOverlays(
             corner = corners.topEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = corners.topEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.topEnd.alpha(animatedFade.value, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.TopEnd),
         )
@@ -84,7 +92,7 @@ fun ScreensaverOverlays(
             corner = corners.bottomStart,
             state = state,
             videoPosition = videoPosition,
-            alpha = corners.bottomStart.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.bottomStart.alpha(animatedFade.value, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.align(Alignment.BottomStart),
         )
@@ -92,7 +100,7 @@ fun ScreensaverOverlays(
             corner = corners.bottomEnd,
             state = state,
             videoPosition = videoPosition,
-            alpha = corners.bottomEnd.alpha(animatedFade, visibleAlpha, fadeCorners),
+            alpha = corners.bottomEnd.alpha(animatedFade.value, visibleAlpha, fadeCorners),
             horizontalAlignment = Alignment.End,
             modifier = Modifier.align(Alignment.BottomEnd),
         )

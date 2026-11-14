@@ -16,6 +16,8 @@ import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -181,5 +183,43 @@ class ScreenControllerFadeTest {
 
         idle(1_500)
         assertEquals("the fade runs once the delay has elapsed", 0f, controller.composeFade, tolerance)
+    }
+
+    @Test
+    fun `show after delay blocks a reveal until the fade in has settled`() {
+        GeneralPrefs.overlayVisibility = "SHOW_AFTER_DELAY"
+        GeneralPrefs.overlayVisibilityDelay = "0"
+        GeneralPrefs.overlayFadeInDuration = "1000"
+        val controller = ScreenController(context)
+
+        controller.onImagePrepared()
+        idle(500)
+        assertFalse("a reveal was accepted while the fade in was still running", controller.canRevealOverlays)
+
+        idle(600)
+        assertTrue("the layer never settled, so a reveal stays blocked", controller.canRevealOverlays)
+    }
+
+    @Test
+    fun `a reveal during the auto hide delay is not cut short by the pending hide`() {
+        GeneralPrefs.overlayVisibility = "HIDE_AFTER_DELAY"
+        GeneralPrefs.overlayVisibilityDelay = "4"
+        GeneralPrefs.overlayRevealTimeout = "4"
+        val controller = ScreenController(context)
+
+        controller.onImagePrepared()
+        idle(1_000)
+        assertTrue("the reveal was not available during the hide delay", controller.canRevealOverlays)
+
+        controller.showOverlays()
+        idle()
+
+        // The original hide was due at 4s; it must have been cancelled by the reveal.
+        idle(3_500)
+        assertEquals("the pending hide cut the reveal short", visibleAlpha, controller.composeFade, tolerance)
+
+        // The reveal's own timeout was 4s from the reveal, so it fires at 5s.
+        idle(1_500)
+        assertEquals("the reveal timeout did not hide the layer", 0f, controller.composeFade, tolerance)
     }
 }
