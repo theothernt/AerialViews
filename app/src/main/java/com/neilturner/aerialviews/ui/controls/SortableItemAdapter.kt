@@ -111,7 +111,7 @@ class ItemSelectionAdapter(
     }
 
     fun moveDown(position: Int) {
-        if (position >= items.size - 1) return
+        if (position < 0 || position >= items.size - 1) return
 
         val item = items[position]
         val nextItem = items[position + 1]
