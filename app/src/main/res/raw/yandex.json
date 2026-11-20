@@ -1,0 +1,257 @@
+{
+  "assets": [
+    {
+      "id": "yandex_autumn_01",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_01_0"
+      },
+      "title": "Autumn Forest",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_autumn_02",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_02_0"
+      },
+      "title": "Autumn Valley",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_autumn_06",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_06_0"
+      },
+      "title": "Autumn Lake",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_autumn_08",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_08_0"
+      },
+      "title": "Autumn River",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/8.mov"
+    },
+    {
+      "id": "yandex_autumn_10",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_10_0"
+      },
+      "title": "Autumn Mountains",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/10.mov"
+    },
+    {
+      "id": "yandex_autumn_11",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_11_0"
+      },
+      "title": "Autumn Sunset",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/11.mov"
+    },
+    {
+      "id": "yandex_autumn_13",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_13_0"
+      },
+      "title": "Autumn Woods",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/13.mov"
+    },
+    {
+      "id": "yandex_autumn_14",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_14_0"
+      },
+      "title": "Autumn Morning Mist",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunrise",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/14.mov"
+    },
+    {
+      "id": "yandex_winter_01",
+      "pointsOfInterest": {
+        "0": "yandex_winter_01_0"
+      },
+      "title": "Winter Forest",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_winter_02",
+      "pointsOfInterest": {
+        "0": "yandex_winter_02_0"
+      },
+      "title": "Snowy Taiga",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_winter_03",
+      "pointsOfInterest": {
+        "0": "yandex_winter_03_0"
+      },
+      "title": "Snow Covered Mountains",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/3.mov"
+    },
+    {
+      "id": "yandex_winter_04",
+      "pointsOfInterest": {
+        "0": "yandex_winter_04_0"
+      },
+      "title": "Winter Mountain Ridge",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/4.mov"
+    },
+    {
+      "id": "yandex_winter_fire",
+      "pointsOfInterest": {
+        "0": "yandex_winter_fire_0"
+      },
+      "title": "Cozy Fireplace",
+      "accessibilityLabel": "Russia",
+      "scene": "fire",
+      "timeOfDay": "night",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/e06044e6-35db-4ddd-8400-63c5560eaf0d/fire_4K.mp4"
+    },
+    {
+      "id": "yandex_winter_05",
+      "pointsOfInterest": {
+        "0": "yandex_winter_05_0"
+      },
+      "title": "Frozen River",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/5.mov"
+    },
+    {
+      "id": "yandex_winter_06",
+      "pointsOfInterest": {
+        "0": "yandex_winter_06_0"
+      },
+      "title": "Winter Sunset",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_winter_07",
+      "pointsOfInterest": {
+        "0": "yandex_winter_07_0"
+      },
+      "title": "Snowy Pines",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/7.mov"
+    },
+    {
+      "id": "yandex_summer_01",
+      "pointsOfInterest": {
+        "0": "yandex_summer_01_0"
+      },
+      "title": "Summer Forest",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_summer_02",
+      "pointsOfInterest": {
+        "0": "yandex_summer_02_0"
+      },
+      "title": "Summer River",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_summer_03",
+      "pointsOfInterest": {
+        "0": "yandex_summer_03_0"
+      },
+      "title": "Summer Meadow",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/3.mov"
+    },
+    {
+      "id": "yandex_summer_04",
+      "pointsOfInterest": {
+        "0": "yandex_summer_04_0"
+      },
+      "title": "Summer Lake",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/4.mov"
+    },
+    {
+      "id": "yandex_summer_05",
+      "pointsOfInterest": {
+        "0": "yandex_summer_05_0"
+      },
+      "title": "River Valley",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/5.mov"
+    },
+    {
+      "id": "yandex_summer_06",
+      "pointsOfInterest": {
+        "0": "yandex_summer_06_0"
+      },
+      "title": "Green Hills",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_summer_07",
+      "pointsOfInterest": {
+        "0": "yandex_summer_07_0"
+      },
+      "title": "Summer Sunset",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/7.mov"
+    }
+  ]
+}

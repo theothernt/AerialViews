@@ -14,6 +14,7 @@ enum class AerialMediaSource {
     IMMICH,
     NCMEMORIES,
     HLS,
+    YANDEX,
     ;
 
     /**
@@ -35,6 +36,7 @@ enum class AerialMediaSource {
                 HLS,
                 IMMICH,
                 NCMEMORIES,
+                YANDEX,
             )
     }
 }
