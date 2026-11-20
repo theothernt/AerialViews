@@ -27,6 +27,7 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
+import com.neilturner.aerialviews.models.prefs.YandexVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
@@ -34,6 +35,7 @@ import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.YandexMediaProvider
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesMediaProvider
@@ -102,6 +104,7 @@ class MediaService(
         if (providers.isEmpty()) {
             providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
             providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+            providers.add(YandexMediaProvider(context, YandexVideoPrefs))
             providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
             providers.add(LocalMediaProvider(context, LocalMediaPrefs))
             providers.add(SambaMediaProvider(context, SambaMediaPrefs))
@@ -184,11 +187,13 @@ class MediaService(
                 val numVideos = videos.size
                 val numPhotos = photos.size
                 videos =
-                    videos.distinctBy { videos ->
-                        if (videos.source != AerialMediaSource.IMMICH) {
-                            videos.uri.filename.lowercase()
-                        } else {
-                            videos.uri
+                    videos.distinctBy { video ->
+                        when (video.source) {
+                            AerialMediaSource.IMMICH,
+                            AerialMediaSource.YANDEX,
+                            -> video.uri
+
+                            else -> video.uri.filename.lowercase()
                         }
                     }
                 photos =

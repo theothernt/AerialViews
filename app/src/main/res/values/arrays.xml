@@ -46,6 +46,16 @@
         <item>~3GB</item>
         <item>~6GB</item>
     </string-array>
+    <string-array name="yandex_videos_data_usage_values" translatable="false">
+        <item>~6GB</item>
+    </string-array>
+
+    <string-array name="yandex_videos_quality_entries" translatable="false">
+        <item>4K HEVC</item>
+    </string-array>
+    <string-array name="yandex_videos_quality_values" translatable="false">
+        <item>VIDEO_4K_SDR</item>
+    </string-array>
 
     <!-- Video Time of Day -->
     <string name="time_of_day_sunrise">Sunrise</string>
@@ -84,6 +94,29 @@
     <string-array name="comm2_videos_time_of_day_default" translatable="false">
         <item>DAY</item>
         <item>SUNSET</item>
+    </string-array>
+
+    <string name="yandex_time_of_day_day">Day</string>
+    <string name="yandex_time_of_day_sunset">Sunset</string>
+    <string name="yandex_time_of_day_sunrise">Sunrise</string>
+    <string name="yandex_time_of_day_night">Night</string>
+    <string-array name="yandex_videos_time_of_day_entries" translatable="false">
+        <item>@string/yandex_time_of_day_day</item>
+        <item>@string/yandex_time_of_day_sunset</item>
+        <item>@string/yandex_time_of_day_sunrise</item>
+        <item>@string/yandex_time_of_day_night</item>
+    </string-array>
+    <string-array name="yandex_videos_time_of_day_values" translatable="false">
+        <item>DAY</item>
+        <item>SUNSET</item>
+        <item>SUNRISE</item>
+        <item>NIGHT</item>
+    </string-array>
+    <string-array name="yandex_videos_time_of_day_default" translatable="false">
+        <item>DAY</item>
+        <item>SUNSET</item>
+        <item>SUNRISE</item>
+        <item>NIGHT</item>
     </string-array>
 
     <!-- Video Scene Type -->
@@ -175,6 +208,21 @@
         <item>SEA</item>
     </string-array>
 
+    <string name="yandex_scene_nature">Nature</string>
+    <string name="yandex_scene_fire">Fireplace</string>
+    <string-array name="yandex_videos_scene_type_entries" translatable="false">
+        <item>@string/yandex_scene_nature</item>
+        <item>@string/yandex_scene_fire</item>
+    </string-array>
+    <string-array name="yandex_videos_scene_type_values" translatable="false">
+        <item>NATURE</item>
+        <item>FIRE</item>
+    </string-array>
+    <string-array name="yandex_videos_scene_type_default" translatable="false">
+        <item>NATURE</item>
+        <item>FIRE</item>
+    </string-array>
+
     <!-- Community Videos -->
     <string-array name="comm1_videos_quality_entries" translatable="false">
         <item>1080p H.264</item>
@@ -187,6 +235,7 @@
         <item>VIDEO_4K_SDR</item>
     </string-array>
     <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+    <string name="yandex_videos_quality_default" translatable="false">VIDEO_4K_SDR</string>
 
     <!-- Amazon Videos -->
     <string-array name="amazon_videos_quality_entries" translatable="false">
@@ -1534,11 +1583,13 @@
     <string name="projectivy_amazon">Amazon Videos</string>
     <string name="projectivy_jetson">Jetson Creative Videos</string>
     <string name="projectivy_robin">Robin Fourcade Videos</string>
+    <string name="projectivy_yandex">Yandex Videos</string>
     <string-array name="projectivy_shared_providers_entries" translatable="false">
         <item>@string/projectivy_apple</item>
         <item>@string/projectivy_amazon</item>
         <item>@string/projectivy_jetson</item>
         <item>@string/projectivy_robin</item>
+        <item>@string/projectivy_yandex</item>
         <!--    <item>Local or USB storage</item>-->
     </string-array>
     <string-array name="projectivy_shared_providers_values" translatable="false">
@@ -1546,6 +1597,7 @@
         <item>AMAZON</item>
         <item>COMM1</item>
         <item>COMM2</item>
+        <item>YANDEX</item>
         <!--    <item>LOCAL</item>-->
     </string-array>
     <string-array name="projectivy_shared_providers_default" translatable="false">

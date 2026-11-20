@@ -89,6 +89,24 @@ object ProjectivyComm2Prefs : KotprefModel(), ProviderPreferences {
     override fun settingsHash(): String = settingsHashWithPrefix("projectivy_comm2_videos_")
 }
 
+object ProjectivyYandexPrefs : KotprefModel(), ProviderPreferences {
+    override val kotprefName = "${context.packageName}_preferences"
+
+    override var enabled = ProjectivyPrefs.sharedProviders.contains("YANDEX")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_4K_SDR, "projectivy_yandex_videos_quality")
+    var count by stringPref("-1", "projectivy_yandex_videos_count")
+
+    override val scene by stringSetPref("projectivy_yandex_videos_scene_type") {
+        context.resources.getStringArray(R.array.yandex_videos_scene_type_default).toSet()
+    }
+
+    override val timeOfDay by stringSetPref("projectivy_yandex_videos_time_of_day") {
+        context.resources.getStringArray(R.array.yandex_videos_time_of_day_default).toSet()
+    }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("projectivy_yandex_videos_")
+}
+
 object ProjectivyLocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 

@@ -292,6 +292,12 @@ object VideoPlayerHelper {
             return Pair(0, duration)
         }
 
+        if (type == AerialMediaSource.YANDEX && player.duration in 1..<60_000L) {
+            val targetLimit = if (isLengthLimited) maxVideoLength else 180_000L
+            Timber.i("Calculating looping Yandex short video (target: ${targetLimit.milliseconds})...")
+            return calculateLoopingVideo(player.duration, targetLimit)
+        }
+
         if (!isLengthLimited && prefs.randomStartPosition) {
             Timber.i("Calculating random start position...")
             val range = GeneralPrefs.randomStartPositionRange.toInt()
