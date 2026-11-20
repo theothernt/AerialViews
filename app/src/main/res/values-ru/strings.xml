@@ -297,6 +297,7 @@
   <string name="category_weather_forecast">Прогноз погоды</string>
   <string name="comm1_videos_enabled">Использовать видео сообщества</string>
   <string name="comm2_videos_enabled">Использовать видео сообщества</string>
+  <string name="yandex_videos_enabled">Использовать видео Яндекса</string>
   <string name="common_default">(по умолчанию)</string>
   <string name="countdown_error">Ошибка</string>
   <string name="countdown_invalid_time_format">Неверный формат времени</string>
@@ -582,6 +583,7 @@
   <string name="projectivy_apple_videos_options_title">Параметры видео Apple</string>
   <string name="projectivy_comm1_videos_options_title">Параметры видео Jetson Creative</string>
   <string name="projectivy_comm2_videos_options_title">Параметры видео Робина Фуркада</string>
+  <string name="projectivy_yandex_videos_options_title">Параметры видео Яндекса</string>
   <string name="projectivy_local_videos_options_summary">Настройте место, где находятся локальные видеофайлы для Projectivy</string>
   <string name="projectivy_local_videos_options_title">Варианты, локально или USB-накопитель</string>
   <string name="projectivy_select_videos_summary">Выберите поставщиков видео для совместного использования с Projectivy launcher</string>
@@ -690,6 +692,14 @@
   <string name="sources_comm1_title">Видео от Jetson Creative</string>
   <string name="sources_comm2_summary">Потоковая передача видео сообщества с помощью подключения к Интернету</string>
   <string name="sources_comm2_title">Видео Робина Фуркада</string>
+  <string name="sources_yandex_summary">Потоковая передача видео заставок Яндекс Станции через Интернет</string>
+  <string name="sources_yandex_title">Видео Яндекса</string>
+  <string name="yandex_scene_nature">Природа</string>
+  <string name="yandex_scene_fire">Камин</string>
+  <string name="yandex_time_of_day_day">День</string>
+  <string name="yandex_time_of_day_sunset">Закат</string>
+  <string name="yandex_time_of_day_sunrise">Рассвет</string>
+  <string name="yandex_time_of_day_night">Ночь</string>
   <string name="sources_custom_feed_summary">Добавьте пакеты расширений от Jetson Creative или пользовательскую ленту медиафайлов с описаниями</string>
   <string name="sources_custom_feed_title">Пользовательские каналы</string>
   <string name="sources_immich_summary">Воспроизведение видео и фотографий с сервера Immich</string>

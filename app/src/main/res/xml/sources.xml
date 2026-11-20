@@ -22,6 +22,11 @@
             app:title="@string/sources_comm2_title"
             app:summary="@string/sources_comm2_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_yandex_title"
+            app:summary="@string/sources_yandex_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.YandexVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_custom_videos_and_feeds">

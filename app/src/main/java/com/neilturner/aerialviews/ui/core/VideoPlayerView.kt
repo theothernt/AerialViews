@@ -305,7 +305,10 @@ class VideoPlayerView
                 val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
                 val isLengthLimited = maxVideoLength >= 10000
                 val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
-                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                val isLooping =
+                    (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) ||
+                        (state.type == AerialMediaSource.YANDEX && state.endPosition > exoPlayer.duration)
+                if (isLooping) {
                     player?.repeatMode = Player.REPEAT_MODE_ALL
                 } else {
                     player?.repeatMode = Player.REPEAT_MODE_OFF

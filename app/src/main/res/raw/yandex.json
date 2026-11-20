@@ -1,0 +1,257 @@
+{
+  "assets": [
+    {
+      "id": "yandex_autumn_01",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_01_0"
+      },
+      "title": "Red Squirrel",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_autumn_02",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_02_0"
+      },
+      "title": "Forest Mushroom",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_autumn_06",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_06_0"
+      },
+      "title": "Rye at Sunset",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_autumn_08",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_08_0"
+      },
+      "title": "Autumn Leaves in Stream",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/8.mov"
+    },
+    {
+      "id": "yandex_autumn_10",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_10_0"
+      },
+      "title": "Beagle in Autumn Park",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/10.mov"
+    },
+    {
+      "id": "yandex_autumn_11",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_11_0"
+      },
+      "title": "Blooming Sunflower",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/11.mov"
+    },
+    {
+      "id": "yandex_autumn_13",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_13_0"
+      },
+      "title": "Wheat Field",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/13.mov"
+    },
+    {
+      "id": "yandex_autumn_14",
+      "pointsOfInterest": {
+        "0": "yandex_autumn_14_0"
+      },
+      "title": "Mountain River",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/autumn_season/pack_1/14.mov"
+    },
+    {
+      "id": "yandex_winter_01",
+      "pointsOfInterest": {
+        "0": "yandex_winter_01_0"
+      },
+      "title": "Ski Resort and Cable Car",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_winter_02",
+      "pointsOfInterest": {
+        "0": "yandex_winter_02_0"
+      },
+      "title": "Ice Cave",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_winter_03",
+      "pointsOfInterest": {
+        "0": "yandex_winter_03_0"
+      },
+      "title": "Frozen Lake",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/3.mov"
+    },
+    {
+      "id": "yandex_winter_04",
+      "pointsOfInterest": {
+        "0": "yandex_winter_04_0"
+      },
+      "title": "Northern Lights",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "night",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/4.mov"
+    },
+    {
+      "id": "yandex_winter_fire",
+      "pointsOfInterest": {
+        "0": "yandex_winter_fire_0"
+      },
+      "title": "Burning Fireplace",
+      "accessibilityLabel": "Russia",
+      "scene": "fire",
+      "timeOfDay": "night",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/e06044e6-35db-4ddd-8400-63c5560eaf0d/fire_4K.mp4"
+    },
+    {
+      "id": "yandex_winter_05",
+      "pointsOfInterest": {
+        "0": "yandex_winter_05_0"
+      },
+      "title": "Dog Sledding",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/5.mov"
+    },
+    {
+      "id": "yandex_winter_06",
+      "pointsOfInterest": {
+        "0": "yandex_winter_06_0"
+      },
+      "title": "Snowy Forest and Hills",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_winter_07",
+      "pointsOfInterest": {
+        "0": "yandex_winter_07_0"
+      },
+      "title": "Deer in Winter Forest",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/winter_season/pack_1/7.mov"
+    },
+    {
+      "id": "yandex_summer_01",
+      "pointsOfInterest": {
+        "0": "yandex_summer_01_0"
+      },
+      "title": "Cat on a Garden Wall",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/1.mov"
+    },
+    {
+      "id": "yandex_summer_02",
+      "pointsOfInterest": {
+        "0": "yandex_summer_02_0"
+      },
+      "title": "Sunlight Through Trees",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/2.mov"
+    },
+    {
+      "id": "yandex_summer_03",
+      "pointsOfInterest": {
+        "0": "yandex_summer_03_0"
+      },
+      "title": "Sunlit Pine Forest",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/3.mov"
+    },
+    {
+      "id": "yandex_summer_04",
+      "pointsOfInterest": {
+        "0": "yandex_summer_04_0"
+      },
+      "title": "Tent by a Mountain Stream",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/4.mov"
+    },
+    {
+      "id": "yandex_summer_05",
+      "pointsOfInterest": {
+        "0": "yandex_summer_05_0"
+      },
+      "title": "Campfire in the Night",
+      "accessibilityLabel": "Russia",
+      "scene": "fire",
+      "timeOfDay": "night",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/5.mov"
+    },
+    {
+      "id": "yandex_summer_06",
+      "pointsOfInterest": {
+        "0": "yandex_summer_06_0"
+      },
+      "title": "Mountain Stream",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "day",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/6.mov"
+    },
+    {
+      "id": "yandex_summer_07",
+      "pointsOfInterest": {
+        "0": "yandex_summer_07_0"
+      },
+      "title": "Lakeside Camp",
+      "accessibilityLabel": "Russia",
+      "scene": "nature",
+      "timeOfDay": "sunset",
+      "url-4K-SDR": "https://quasar.s3.yandex.net/screensaver/station_2/summer_season/pack_1/7.mov"
+    }
+  ]
+}

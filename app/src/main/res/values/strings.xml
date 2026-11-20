@@ -155,6 +155,9 @@
     <string name="sources_comm2_title">Videos by Robin Fourcade</string>
     <string name="sources_comm2_summary">Stream these community videos using your internet connection</string>
 
+    <string name="sources_yandex_title">Videos by Yandex</string>
+    <string name="sources_yandex_summary">Stream ambient videos from Yandex Station using your internet connection</string>
+
     <string name="sources_local_title">Local or USB storage</string>
     <string name="sources_local_summary">Play videos &amp; photos directly from your device or attached USB storage</string>
 
@@ -186,6 +189,9 @@
 
     <!-- Main / Video Sources / Comm2 videos -->
     <string name="comm2_videos_enabled">Use community videos</string>
+
+    <!-- Main / Video Sources / Yandex videos -->
+    <string name="yandex_videos_enabled">Use Yandex videos</string>
 
     <!-- Main / Video Sources / Amazon videos -->
     <string name="amazon_videos_enabled">Use Amazon ambient videos</string>
@@ -457,6 +463,7 @@
     <string name="projectivy_amazon_videos_options_title">Amazon video options</string>
     <string name="projectivy_comm1_videos_options_title">Jetson Creative video options</string>
     <string name="projectivy_comm2_videos_options_title">Robin Fourcade video options</string>
+    <string name="projectivy_yandex_videos_options_title">Yandex video options</string>
 
     <!-- Main / Settings / Overlays -->
     <string name="appearance_top_row_title">Top Row</string>
