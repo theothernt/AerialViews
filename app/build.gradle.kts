@@ -24,7 +24,7 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 24 // Android v7
         targetSdk = 37
-        versionCode = 154
+        versionCode = 155
         versionName = "1.8.6"
         betaVersion = "-beta4"
 
