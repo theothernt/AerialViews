@@ -38,6 +38,7 @@
     <uses-permission
         android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 
+    <!-- Used to create system overlay to change screen frame rate -->
     <uses-permission
         android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -49,6 +50,11 @@
             <action android:name="android.settings.SETTINGS" />
         </intent>
     </queries>
+
+    <!-- Needed so that CHANGE_WIFI_MULTICAST_STATE doesn't require wifi-only devices -->
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
