@@ -1,16 +1,30 @@
 package com.neilturner.aerialviews.ui.controls
 
+import android.text.InputType
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroup
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
+
+// Fields that hold prose rather than values, where IME suggestions are genuinely useful
+private val prosePreferenceKeys =
+    setOf(
+        "message_line1",
+        "message_line2",
+        "message_line3",
+        "message_line4",
+        "countdown_label",
+        "countdown_target_message",
+        "weather_location_custom_name",
+    )
 
 abstract class MenuStateFragment :
     PreferenceFragmentCompat(),
@@ -20,6 +34,8 @@ abstract class MenuStateFragment :
     override fun onResume() {
         super.onResume()
 
+        preferenceScreen?.disableValueFieldSuggestions()
+
         if (!DeviceHelper.isTV(requireContext())) {
             return
         }
@@ -27,6 +43,31 @@ abstract class MenuStateFragment :
         lifecycleScope.launch {
             delay(60.milliseconds)
             tryRequestFocus()
+        }
+    }
+
+    // Text preferences hold values (host names, paths, URLs, credentials, date formats), so IME
+    // dictionary suggestions are noise there. They also carry a spell-check popup whose "Add to
+    // dictionary" item starts ACTION_USER_DICTIONARY_INSERT without resolving it first, which
+    // throws ActivityNotFoundException on devices with no handler for it.
+    private fun PreferenceGroup.disableValueFieldSuggestions() {
+        for (index in 0 until preferenceCount) {
+            when (val preference = getPreference(index)) {
+                is PreferenceGroup -> {
+                    preference.disableValueFieldSuggestions()
+                }
+
+                is EditTextPreference -> {
+                    if (preference.key !in prosePreferenceKeys) {
+                        preference.setOnBindEditTextListener { editText ->
+                            val inputType = editText.inputType
+                            if (inputType and InputType.TYPE_MASK_CLASS == InputType.TYPE_CLASS_TEXT) {
+                                editText.inputType = inputType or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
