@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.prefs.ProjectivyComm1Prefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyComm2Prefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyYandexPrefs
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -17,6 +18,7 @@ import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
+import com.neilturner.aerialviews.providers.YandexMediaProvider
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import tv.projectivy.plugin.wallpaperprovider.api.Event
@@ -93,6 +95,7 @@ class WallpaperProviderService : Service() {
             add(AppleMediaProvider(applicationContext, ProjectivyApplePrefs))
             add(Comm1MediaProvider(applicationContext, ProjectivyComm1Prefs))
             add(Comm2MediaProvider(applicationContext, ProjectivyComm2Prefs))
+            add(YandexMediaProvider(applicationContext, ProjectivyYandexPrefs))
             add(AmazonMediaProvider(applicationContext, ProjectivyAmazonPrefs))
             add(LocalMediaProvider(applicationContext, ProjectivyLocalMediaPrefs))
         }
