@@ -17,7 +17,11 @@ plugins {
 
 android {
     namespace = "com.neilturner.aerialviews"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
 
     var betaVersion = ""
     val keyProps = loadProperties("secrets.properties")
