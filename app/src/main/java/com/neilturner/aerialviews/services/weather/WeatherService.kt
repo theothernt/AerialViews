@@ -8,6 +8,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.capitalise
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -140,23 +141,34 @@ class WeatherService(
         updateJob =
             CoroutineScope(Dispatchers.IO).launch {
                 while (isActive) {
-                    val config = buildRequestConfig()
-                    val result =
-                        if (config == null) {
-                            WeatherResult()
-                        } else {
-                            fetchWeatherData(
-                                requests =
-                                    WeatherRequests(
-                                        fetchCurrentWeather = fetchCurrentWeather,
-                                        fetchForecast = fetchForecast,
-                                    ),
-                                config = config,
-                                displayConfig = buildDisplayConfig(),
-                            )
-                        }
-                    if (result.weather != null) GlobalBus.post(result.weather)
-                    if (result.forecast != null) GlobalBus.post(result.forecast)
+                    try {
+                        val config = buildRequestConfig()
+                        val result =
+                            if (config == null) {
+                                WeatherResult()
+                            } else {
+                                fetchWeatherData(
+                                    requests =
+                                        WeatherRequests(
+                                            fetchCurrentWeather = fetchCurrentWeather,
+                                            fetchForecast = fetchForecast,
+                                        ),
+                                    config = config,
+                                    displayConfig = buildDisplayConfig(),
+                                )
+                            }
+                        if (result.weather != null) GlobalBus.post(result.weather)
+                        if (result.forecast != null) GlobalBus.post(result.forecast)
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        // An uncaught exception here kills the whole app process, and this loop
+                        // restarts on the next overlay change or scheduled update, so a single
+                        // bad read (for example a preference stored under the wrong type) would
+                        // crash on every update. Log it and wait for the next cycle instead.
+                        Timber.e(e, "Weather update failed")
+                        FirebaseHelper.crashlyticsException(e)
+                    }
                     Timber.i("Next weather update in ${updateDelay.inWholeMinutes} minutes")
                     delay(updateDelay)
                 }

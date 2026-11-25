@@ -18,6 +18,40 @@ import java.util.Properties
 object PreferenceHelper {
     private const val BACKUP_FILENAME = "backup.avsettings"
 
+    private enum class PrefType {
+        BOOLEAN,
+        FLOAT,
+        INT,
+        LONG,
+        STRING,
+        STRING_SET,
+        ;
+
+        companion object {
+            fun fromValue(value: Any?): PrefType? =
+                when (value) {
+                    is Boolean -> BOOLEAN
+                    is Float -> FLOAT
+                    is Int -> INT
+                    is Long -> LONG
+                    is String -> STRING
+                    is Set<*> -> STRING_SET
+                    else -> null
+                }
+
+            fun fromPrefix(key: String): PrefType? =
+                when {
+                    key.startsWith("bool_") -> BOOLEAN
+                    key.startsWith("float_") -> FLOAT
+                    key.startsWith("int_") -> INT
+                    key.startsWith("long_") -> LONG
+                    key.startsWith("stringset_") -> STRING_SET
+                    key.startsWith("string_") -> STRING
+                    else -> null
+                }
+        }
+    }
+
     private val ignorePrefs =
         listOf(
             "check_for_hevc_support",
@@ -163,49 +197,69 @@ object PreferenceHelper {
                 }
 
             val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+
+            // SharedPreferences does not type check: a value imported under the wrong type
+            // (for example float_weather_location_lat for a preference the app reads as a
+            // String) makes every later read of that key throw a ClassCastException. Remember
+            // the types already stored so an import cannot change them.
+            val storedTypes = prefs.all.mapValues { (_, value) -> PrefType.fromValue(value) }
+
             prefs.edit {
                 if (clearExisting) clear()
 
                 properties.forEach { (key, value) ->
                     val keyString = key.toString()
                     val valueString = value.toString()
+                    val type = PrefType.fromPrefix(keyString)
+                    val prefKey = keyString.substringAfter('_')
 
-                    when {
-                        keyString.startsWith("bool_") -> {
-                            putBoolean(keyString.removePrefix("bool_"), valueString.toBoolean())
+                    if (type == null) {
+                        Timber.w("Skipping preference with unknown type: $keyString")
+                        return@forEach
+                    }
+
+                    val storedType = storedTypes[prefKey]
+                    if (storedType != null && storedType != type) {
+                        Timber.w("Skipping $keyString: value is stored as ${storedType.name.lowercase()}")
+                        return@forEach
+                    }
+
+                    when (type) {
+                        PrefType.BOOLEAN -> {
+                            putBoolean(prefKey, valueString.toBoolean())
                         }
 
-                        keyString.startsWith("float_") -> {
-                            putFloat(keyString.removePrefix("float_"), valueString.toFloat())
+                        PrefType.FLOAT -> {
+                            putFloat(prefKey, valueString.toFloat())
                         }
 
-                        keyString.startsWith("int_") -> {
-                            putInt(keyString.removePrefix("int_"), valueString.toInt())
+                        PrefType.INT -> {
+                            putInt(prefKey, valueString.toInt())
                         }
 
-                        keyString.startsWith("long_") -> {
-                            putLong(keyString.removePrefix("long_"), valueString.toLong())
+                        PrefType.LONG -> {
+                            putLong(prefKey, valueString.toLong())
                         }
 
-                        keyString.startsWith("string_") -> {
-                            putString(keyString.removePrefix("string_"), valueString)
+                        PrefType.STRING -> {
+                            putString(prefKey, valueString)
                         }
 
-                        keyString.startsWith("stringset_") -> {
+                        PrefType.STRING_SET -> {
                             val set =
                                 if (valueString.isEmpty()) {
                                     emptySet()
                                 } else {
                                     valueString.split("|||").toSet()
                                 }
-                            putStringSet(keyString.removePrefix("stringset_"), set)
+                            putStringSet(prefKey, set)
                         }
                     }
                 }
             }
             true
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e, "Failed to import settings")
             false
         }
 
